@@ -19,7 +19,7 @@
 				"btap;.icon-remove" : function(e) {
 					var view = this;
 					var $e = view.$el;
-					
+
 					var $tr = $(e.currentTarget).closest("tr");
 					var id = $tr.attr("data-obj_id");
 					var d = {
@@ -33,6 +33,26 @@
 					}).done(function() {
 						view.refreshContactsList.call(view);
 					})
+				},
+				"click;img" : function(e) {
+					var view = this;
+					var $e = view.$el;
+					var id = $(e.currentTarget).attr("data-value");
+					var d = {
+						fbid : id
+					};
+					app.getFacebookFriendDetail(d).done(function(data) {
+						var $html = app.render("tmpl-FacebookContact-detail", data.result);
+						$(".Contact-detail").find(".modal-body").html($html);
+						$(".Contact-detail").show();
+
+					})
+				},
+				"btap;.close" : function(e) {
+					var view = this;
+					var $e = view.$el;
+					var $div = $(e.currentTarget).closest(".modal");
+					$div.hide();
 				},
 			},
 
@@ -61,6 +81,12 @@
 						},
 						attrs : "style='width: 10%'"
 					}, {
+						text : "Picture",
+						render : function(obj, idx) {
+							return "<img src='http://graph.facebook.com/" + obj.fbid + "/picture' data-value='"+ obj.fbid +"'/>"
+						},
+						attrs : "style='width: 10%'"
+					}, {
 						text : "Name",
 						render : function(obj) {
 							return obj.name
@@ -83,7 +109,7 @@
 					opts : {
 						htmlIfEmpty : "Not contacts found",
 						withPaging : true,
-						withCmdEdit :false,
+						withCmdEdit : false,
 						cmdDelete : "DELETE_CONTACT"
 					}
 				});
