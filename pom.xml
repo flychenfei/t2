@@ -28,6 +28,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <version>1.4</version>
         <executions>
           <execution>
+            <id>compile-less-tmpl</id>
             <phase>package</phase>
             <configuration>
               <tasks>
@@ -35,13 +36,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
                   <arg line="-jar"/>
                   <arg line="apps/jcruncherEx.jar"/>
                 </exec>
-                <mkdir dir="../war"/>
-                <delete includeemptydirs="true">
-                  <fileset dir="../war" includes="**/*" excludes=".git/"/>
-                </delete>
-                <copy todir="../war">
-                  <fileset dir="target/sampleSocial"/>
-                </copy>
               </tasks>
             </configuration>
             <goals>
