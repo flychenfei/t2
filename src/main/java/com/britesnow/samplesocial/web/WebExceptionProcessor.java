@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.web;
 
+import com.britesnow.samplesocial.exception.JsonAuthException;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.exception.WebExceptionContext;

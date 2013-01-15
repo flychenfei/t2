@@ -1,7 +1,7 @@
 package com.britesnow.samplesocial.hook;
 
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.web.JsonAuthException;
+import com.britesnow.samplesocial.exception.JsonAuthException;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.hook.On;
 import com.britesnow.snow.web.hook.ReqPhase;
