@@ -61,25 +61,28 @@ public class FacebookContactHandlers {
     }
 
     @WebActionHandler
-    public Object addFacebookContact(@WebUser User user, @WebParam("groupId") Long groupId,
+    public WebResponse addFacebookContact(@WebUser User user, @WebParam("groupId") Long groupId,
                             @WebParam("fbid") String fbid) {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
             Contact c = fContactService.addContact(token, groupId, fbid);
-            return c;
+            return WebResponse.success(c);
         } catch (Exception e) {
             e.printStackTrace();
+            WebResponse.fail(e);
         }
         return null;
     }
 
     @WebActionHandler
-    public void deleteFacebookContact(@WebParam("id") String id) {
+    public WebResponse deleteFacebookContact(@WebParam("id") String id) {
         try {
             fContactService.deleteContact(id);
+            return WebResponse.success();
         } catch (Exception e) {
             e.printStackTrace();
+            return WebResponse.fail(e);
         }
     }
 

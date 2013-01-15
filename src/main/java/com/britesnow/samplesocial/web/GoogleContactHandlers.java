@@ -60,8 +60,7 @@ public class GoogleContactHandlers {
 
 
     @WebActionHandler(name = "createContact")
-    public Map createContact(@WebUser User user, @WebObject ContactInfo contact) {
-        Map map = new HashMap();
+    public WebResponse createContact(@WebUser User user, @WebObject ContactInfo contact) {
         boolean result = true;
 
             try {
@@ -73,18 +72,16 @@ public class GoogleContactHandlers {
 
             } catch (Exception e) {
                 log.warn("create contact fail", e);
-                result = false;
+                return WebResponse.fail(e);
             }
 
 
-        map.put("result", result);
-        return map;
+        return WebResponse.success(result);
     }
 
     @WebActionHandler(name = "createGroup")
-    public Map createGroup(@WebUser User user, @WebParam("groupId") String groupId,
+    public WebResponse createGroup(@WebUser User user, @WebParam("groupId") String groupId,
                            @WebParam("groupName") String groupName, @WebParam("etag") String etag) {
-        Map map = new HashMap();
         boolean result = true;
             try {
                 if (groupId == null) {
@@ -98,15 +95,15 @@ public class GoogleContactHandlers {
             } catch (Exception e) {
                 log.warn(String.format("create Group %s fail", groupName), e);
                 result = false;
+                return WebResponse.fail(e);
             }
 
 
-        map.put("result", result);
-        return map;
+        return WebResponse.success(result);
     }
 
     @WebActionHandler(name = "deleteGroup")
-    public Map deleteGroup(@WebUser User user, @WebParam("groupId") String groupId, @WebParam("etag") String etag) {
+    public WebResponse deleteGroup(@WebUser User user, @WebParam("groupId") String groupId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
             try {
@@ -114,15 +111,14 @@ public class GoogleContactHandlers {
                 result = true;
             } catch (Exception e) {
                 log.warn(String.format("delete group %s fail", groupId), e);
+                return WebResponse.fail(e);
             }
         }
-        Map map = new HashMap();
-        map.put("result", result);
-        return map;
+        return WebResponse.success(result);
     }
 
     @WebActionHandler(name = "deleteContact")
-    public Map deleteContact(@WebUser User user, @WebParam("contactId") String contactId, @WebParam("etag") String etag) {
+    public WebResponse deleteContact(@WebUser User user, @WebParam("contactId") String contactId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
             try {
@@ -130,11 +126,10 @@ public class GoogleContactHandlers {
                 result = true;
             } catch (Exception e) {
                 log.warn(String.format("delete contact %s fail", contactId), e);
+                return WebResponse.fail(e);
             }
         }
-        Map map = new HashMap();
-        map.put("result", result);
-        return map;
+        return WebResponse.success(result);
     }
 
     @WebModelHandler(startsWith = "/getContact")

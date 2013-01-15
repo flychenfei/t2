@@ -28,9 +28,6 @@ public class SSAuthRequest implements AuthRequest {
     private FacebookAuthService facebookAuthService;
     
     @Inject
-    private WebUtil webUtil;
-    
-    @Inject
     private SocialIdEntityDao socialIdEntityDao;
     
     @Override

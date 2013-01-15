@@ -74,12 +74,10 @@ public class GoogleEmailHandlers {
     }
 
     @WebActionHandler(name = "deleteEmail")
-    public Object deleteEmail(@WebUser User user,
+    public WebResponse deleteEmail(@WebUser User user,
                               @WebParam("id") Integer id, RequestContext rc) throws Exception {
         gMailService.deleteEmail(user, id);
-        Map map = new HashMap();
-        map.put("result", true);
-        return map;
+        return WebResponse.success(true);
     }
 
 
@@ -123,11 +121,11 @@ public class GoogleEmailHandlers {
     }
 
     @WebActionHandler
-    public Object sendMail(@WebUser User user,
+    public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
                            @WebParam("content") String content, @WebParam("to") String to, RequestContext rc) throws Exception {
         gMailService.sendMail(user, subject, content, to);
-        return null;
+        return WebResponse.success();
     }
 
     @WebModelHandler(startsWith = "/searchEmails")

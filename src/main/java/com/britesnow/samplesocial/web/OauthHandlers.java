@@ -17,6 +17,7 @@ import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
+import com.britesnow.snow.web.param.annotation.WebUser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -28,9 +29,6 @@ public class OauthHandlers {
     private GoogleAuthService googleAuthService;
     @Inject
     private LinkedInAuthService linkedInAuthService;
-
-    @Inject
-    private WebUtil             webUtil;
 
     @Inject
     private OAuthUtils          oAuthUtils;
@@ -51,10 +49,9 @@ public class OauthHandlers {
     }
 
     @WebModelHandler(startsWith = "/callback_fb")
-    public void fbCallback(@WebParam("code") String code, @WebModel Map m, RequestContext rc) {
+    public void fbCallback(@WebModel Map m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
         System.out.println("--->" + tokens[0]);
-        User user =   webUtil.getUser(rc);
         SocialIdEntity s =   facebookAuthService.getSocialIdEntity(user.getId());
         String[] strArr =tokens[2].split("&expires=");
         String expire = strArr[1];
