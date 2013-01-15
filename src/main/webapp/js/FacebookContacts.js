@@ -34,7 +34,7 @@
 						view.refreshContactsList.call(view);
 					})
 				},
-				"click;img" : function(e) {
+				"click;img,a" : function(e) {
 					var view = this;
 					var $e = view.$el;
 					var id = $(e.currentTarget).attr("data-value");
@@ -89,7 +89,7 @@
 					}, {
 						text : "Name",
 						render : function(obj) {
-							return obj.name
+							return "<a href='#'  data-value='"+ obj.fbid +"'>"+obj.name+"</a>"
 						},
 						attrs : "style='width: 400px'"
 
