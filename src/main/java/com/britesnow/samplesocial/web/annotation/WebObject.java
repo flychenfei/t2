@@ -1,4 +1,4 @@
-package com.britesnow.samplesocial.web;
+package com.britesnow.samplesocial.web.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,5 +1,7 @@
 package com.britesnow.samplesocial.web;
 
+import com.britesnow.samplesocial.web.annotation.CookieParam;
+import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.util.AnnotationMap;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.resolver.annotation.WebParamResolver;

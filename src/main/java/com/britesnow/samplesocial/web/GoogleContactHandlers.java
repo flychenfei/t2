@@ -4,6 +4,7 @@ package com.britesnow.samplesocial.web;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.ContactInfo;
 import com.britesnow.samplesocial.service.GContactService;
+import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebActionHandler;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
