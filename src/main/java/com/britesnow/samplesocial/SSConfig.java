@@ -1,19 +1,22 @@
 package com.britesnow.samplesocial;
 
-import com.britesnow.samplesocial.dao.DaoRegistry;
+import java.io.IOException;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.britesnow.samplesocial.entity.BaseEntity;
 import com.britesnow.samplesocial.web.SSAuthRequest;
 import com.britesnow.snow.web.auth.AuthRequest;
 import com.britesnow.snow.web.binding.EntityClasses;
 import com.britesnow.snow.web.db.hibernate.HibernateDaoHelper;
 import com.britesnow.snow.web.db.hibernate.HibernateDaoHelperImpl;
-import com.google.inject.*;
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.metapossum.utils.scanner.reflect.ClassesInPackageScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.Set;
 
 
 /**
@@ -51,15 +54,5 @@ public class SSConfig extends AbstractModule {
         }
 
     }
-
-    @Provides
-    @Singleton
-    @Inject
-    public DaoRegistry providesDaoRegistry(Injector injector, @EntityClasses Class[] entityClasses) {
-        DaoRegistry daoRegistry = new DaoRegistry();
-        daoRegistry.init(injector, entityClasses);
-        return daoRegistry;
-    }
-
 
 }
