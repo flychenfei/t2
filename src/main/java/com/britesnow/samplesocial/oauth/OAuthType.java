@@ -5,8 +5,8 @@ import org.scribe.builder.api.Api;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.builder.api.LinkedInApi;
 
-import com.britesnow.samplesocial.scribe.builder.api.GitHubApi;
-import com.britesnow.samplesocial.scribe.builder.api.GoogleApi20;
+import com.britesnow.samplesocial.oauth.api.GitHubApi;
+import com.britesnow.samplesocial.oauth.api.GoogleApi20;
 
 public enum OAuthType {
     FB("facebook", FacebookApi.class), GH("github", GitHubApi.class),

@@ -1,9 +1,11 @@
-package com.britesnow.samplesocial.scribe.builder.api;
+package com.britesnow.samplesocial.oauth.api;
 
 
+import org.scribe.builder.api.DefaultApi20;
+import org.scribe.model.OAuthConfig;
 import org.scribe.utils.OAuthEncoder;
 
-import com.britesnow.samplesocial.scribe.model.OAuthConfig;
+
 
 public class GitHubApi extends DefaultApi20 {
     private static final String AUTHORIZE_URL = "https://github.com/login/oauth/authorize?client_id=%s";
