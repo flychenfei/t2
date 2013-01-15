@@ -36,7 +36,7 @@
 						});
 					})
 				},
-				"click;img" : function(e) {
+				"click;img,a" : function(e) {
 					var view = this;
 					var $e = view.$el;
 					var $tr = $(e.currentTarget).closest("tr");
@@ -47,7 +47,6 @@
 					app.getFacebookFriendDetail(d).done(function(data) {
 						console.log(data)
 						var $html = app.render("tmpl-FacebookFriend-detail", data.result);
-						console.log($html);
 						$(".Friend-detail").find(".modal-body").html($html);
 						$(".Friend-detail").show();
 						
@@ -96,7 +95,7 @@
 					}, {
 						text : "Name",
 						render : function(obj) {
-							return obj.name
+							return "<a href='#'>"+obj.name+"</a>"
 						},
 						attrs : "style='width: 400px'"
 
