@@ -1,4 +1,4 @@
-package com.britesnow.samplesocial.web;
+package com.britesnow.samplesocial.hook;
 
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.britesnow.snow.web.hook.AppPhase;
