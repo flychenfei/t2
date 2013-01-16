@@ -24,13 +24,7 @@
             		$e.find("li").removeClass("active");
             		$li.addClass("active");
             		var menu = $li.attr("data-nav");
-            		if(menu == "facebook"){
-            		  app.oauth.authorize('FaceBook');
-            		}else if(menu == "linkedin"){
-            		  app.oauth.authorize('LinkedIn');
-            		}else if(menu == "google"){
-            		  app.oauth.authorize('Google');
-            		}else if(menu == "contact"){
+            		if(menu == "contact"){
             		  brite.display("GoogleContacts");
             		}else if(menu == "mail"){
             		  brite.display("GoogleMails");
@@ -40,6 +34,13 @@
             		  brite.display("FacebookFriends");
             		}else if(menu == "fbcontact"){
             		  brite.display("FacebookContacts");
+            		}else if(menu == "oauth"){
+            		  var list = [
+            		    {name:"linkedin",label:"Connect to LinkedIn"},
+            		    {name:"google",label:"Connect to Google"},
+            		    {name:"facebook",label:"Connect to Facebook"}
+            		  ];
+            		  brite.display("Dropdown",null,{$target:$li,list:list});
             		}
             	}
             },
