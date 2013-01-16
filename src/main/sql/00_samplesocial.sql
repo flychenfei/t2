@@ -61,3 +61,49 @@ CREATE TABLE contact
 
 GRANT ALL PRIVILEGES ON contact to samplesocial;
 GRANT ALL PRIVILEGES ON contact_id_seq to samplesocial;
+
+
+CREATE TABLE contactinfo
+(
+  id 							bigserial NOT NULL,
+  name 							character varying(256),
+  birthday character varying(256),
+	contactid int8,
+	education character varying(256),
+	email character varying(256),
+	favoriteathletes character varying(256),
+	favoriteteams character varying(256),
+	firstname character varying(256),
+	gender character varying(256),
+	hometown character varying(256),
+	hometownname character varying(256),
+	interestedin character varying(256),
+	languages character varying(256),
+	lastname character varying(256),
+	link character varying(256),
+	locale character varying(256),
+	location character varying(256),
+	meetingfor character varying(256),
+	middlename character varying(256),
+	quotes character varying(256),
+	relationshipstatus character varying(256),
+	religion character varying(256),
+	significantother character varying(256),
+	sports character varying(256),
+	thirdpartyid character varying(256),
+	timezone character varying(256),
+	type character varying(256),
+	updatedtime character varying(256),
+	username character varying(256),
+	verified character varying(256),
+	website character varying(256),
+	work character varying(256),
+  createdby_id                  bigint,
+  created_date                  timestamp without time zone,
+  updatedby_id                  bigint,
+  updated_date                  timestamp without time zone,
+  CONSTRAINT contactinfo_pkey PRIMARY KEY (id )
+);
+
+GRANT ALL PRIVILEGES ON contactinfo to samplesocial;
+GRANT ALL PRIVILEGES ON contactinfo_id_seq to samplesocial;
