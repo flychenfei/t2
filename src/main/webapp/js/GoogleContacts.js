@@ -30,6 +30,22 @@
                     });
                 }
 
+            },
+            "EDIT_CONTACT": function(event, extraData){
+                if (extraData && extraData.objId) {
+                    var contactId = getContactId(extraData.objId);
+
+                    var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");
+
+                    app.getContact({contactId:contactId, etag:etag}).done(function (data) {
+                        if(data && data.result){
+                            if(data.result.id) {
+                                data.result.id = getContactId(data.result.id);
+                            }
+                            brite.display("CreateContact", null, data.result);
+                        }
+                    });
+                }
             }
         },
 
@@ -96,7 +112,8 @@
             opts: {
                 htmlIfEmpty: "Not contacts found",
                 withPaging: true,
-                cmdDelete: "DELETE_CONTACT"
+                cmdDelete: "DELETE_CONTACT",
+                cmdEdit: "EDIT_CONTACT"
             }
         });
     }

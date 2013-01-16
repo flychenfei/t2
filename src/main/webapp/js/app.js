@@ -73,6 +73,28 @@ var app = app || {};
 
 		return dfd.promise();
 	};
+    app.getContact = function(opts){
+        var params = opts||{};
+        params.method = "Get";
+        return app.getJsonData(contextPath + "/getContact.json", params);
+    };
+
+    app.createContact = function(contact){
+        return app.getJsonData(contextPath + "/createContact.do", contact);
+    };
+
+    app.getGroups = function (opts) {
+        var params = {
+            method:"Get"
+        };
+        $.extend(params, opts);
+        return app.getJsonData(contextPath + "/googleGroups.json", params);
+    };
+
+    app.deleteGroup = function(groupId, etag){
+        var params = {"groupId":groupId, etag: etag};
+        return app.getJsonData(contextPath + "/deleteGroup.do", params);
+    };
 
     app.getContacts = function (opts) {
         var params = {

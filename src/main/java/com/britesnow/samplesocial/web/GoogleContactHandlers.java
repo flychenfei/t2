@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,9 +49,7 @@ public class GoogleContactHandlers {
     @WebModelHandler(startsWith = "/googleGroups")
     public void getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
         List<ContactGroupEntry> list;
-
         list = gContactService.getGroupResults(user);
-
 
         m.put("result", list);
 
@@ -133,9 +130,9 @@ public class GoogleContactHandlers {
     }
 
     @WebModelHandler(startsWith = "/getContact")
-    public void getContact(@WebUser String token, @WebParam("contactId") String contactId,
+    public void getContact(@WebParam("contactId") String contactId,
                            @WebParam("etag") String etag, @WebModel Map m, @WebUser User user) {
-        if (token != null && contactId != null) {
+        if (user != null && contactId != null) {
             try {
                 ContactEntry entry = gContactService.getContactEntry(user, contactId);
                 m.put("result", ContactInfo.from(entry));

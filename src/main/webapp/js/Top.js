@@ -34,6 +34,8 @@
             		  brite.display("GoogleContacts");
             		}else if(menu == "mail"){
             		  brite.display("GoogleMails");
+            		}else if(menu == "group"){
+            		  brite.display("GoogleGroups");
             		}else if(menu == "fbfriend"){
             		  brite.display("FacebookFriends");
             		}else if(menu == "fbcontact"){
