@@ -3,15 +3,18 @@ package com.britesnow.samplesocial.service;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.OAuth2Authenticator;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.snow.util.Pair;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.mail.imap.IMAPStore;
+import com.sun.mail.smtp.SMTPTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.mail.FetchProfile;
-import javax.mail.Flags;
-import javax.mail.Folder;
-import javax.mail.Message;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.search.FromStringTerm;
 import javax.mail.search.OrTerm;
 import javax.mail.search.SearchTerm;
@@ -21,6 +24,7 @@ import java.util.List;
 
 @Singleton
 public class GMailService {
+    private static Logger log = LoggerFactory.getLogger(GMailService.class);
     @Inject
     OAuth2Authenticator emailAuthenticator;
 
@@ -115,7 +119,7 @@ public class GMailService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } finally {
             if (inbox != null)
                 inbox.close(true);
@@ -123,22 +127,31 @@ public class GMailService {
         return null;
     }
 
-    public void sendMail(User user, String subject, String content, String to) throws Exception {
-//        SMTPTransport transport = emailAuthenticator.connectToSmtp(email, token);
-//        Session mailSession = emailAuthenticator.getSMTPSession(token);
-//        Message msg = new MimeMessage(mailSession);
-//        try {
-//            msg.setFrom(new InternetAddress(email));
-//            msg.setSubject(subject);
-//            msg.setContent(content, "text/html;charset=UTF-8");
-//            InternetAddress[] iaRecevers = new InternetAddress[1];
-//            iaRecevers[0] = new InternetAddress(to);
-//            msg.setRecipients(Message.RecipientType.TO, iaRecevers);
-//            transport.sendMessage(msg, msg.getAllRecipients());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
+    public boolean sendMail(User user, String subject, String content, String to) throws Exception {
+        SocialIdEntity idEntity = authService.getSocialIdEntity(user.getId());
+        if (idEntity != null) {
+            String email = idEntity.getEmail();
+            String token = idEntity.getToken();
+            SMTPTransport transport = emailAuthenticator.connectToSmtp(email, token);
+            Session mailSession = emailAuthenticator.getSMTPSession(token);
+            Message msg = new MimeMessage(mailSession);
+            try {
+                msg.setFrom(new InternetAddress(email));
+                msg.setSubject(subject);
+                msg.setContent(content, "text/html;charset=UTF-8");
+                InternetAddress[] iaRecevers = new InternetAddress[1];
+                iaRecevers[0] = new InternetAddress(to);
+                msg.setRecipients(Message.RecipientType.TO, iaRecevers);
+                transport.sendMessage(msg, msg.getAllRecipients());
+                return true;
+            } catch (Exception e) {
+                log.warn(String.format("send mail from %s fail", email), e);
+                return false;
+            }
+        }else {
+            throw new OauthException(authService.getAuthorizationUrl());
+        }
+
     }
 
     private IMAPStore getImapStore(User user) throws Exception {

@@ -113,8 +113,8 @@ public class GoogleEmailHandlers {
                 str.append(part.getBodyPart(0).getContent());
             }
             if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
-                Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
-                str.append(cpart.getBodyPart(1).getContent());
+                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
+                str.append(multipart.getBodyPart(1).getContent());
             }
         }
         return str.toString();

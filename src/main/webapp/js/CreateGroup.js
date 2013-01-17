@@ -11,12 +11,10 @@
             emptyParent:false
         }, {
             create:function (data, config) {
-                console.log(data);
                 if(data) {
                     this.groupId = data.groupId;
                     this.etag = data.etag;
                 }
-                console.log("create group");
                 var html = $("#tmpl-CreateGroup").render(data||{});
                 var $e = $(html);
                 return $e;

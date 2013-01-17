@@ -70,9 +70,7 @@ public class GoogleAuthService implements AuthService {
             OAuthRequest request = new OAuthRequest(Verb.GET, OAuthUtils.PROFILE_ENDPOINT);
             oAuthService.signRequest(accessToken, request);
             Response response = request.send();
-            System.out.println(response.getBody());
             Map profile = JsonUtil.toMapAndList(response.getBody());
-            System.out.println(profile);
             //todo extract userinfo
             SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, Service.Google);
             boolean newSocial = false;
