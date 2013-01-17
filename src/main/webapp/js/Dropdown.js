@@ -57,6 +57,8 @@
           var view = this;
           var $e = view.$el;
           
+          $(document).trigger("DO_ON_DROPDOWN_CLOSE");
+          
           if(view.$screen){
             view.$screen.bRemove();
           }

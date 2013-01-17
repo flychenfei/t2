@@ -41,11 +41,18 @@
             		    {name:"facebook",label:"Connect to Facebook"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
+            		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
             		}
             	}
             },
 
             docEvents:{
+              "DO_ON_DROPDOWN_CLOSE":function(){
+                var view = this;
+                var $e = view.$el;
+                var $li = $e.find("li[data-nav='oauth']");
+            		$li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+              }
             },
 
             daoEvents:{
