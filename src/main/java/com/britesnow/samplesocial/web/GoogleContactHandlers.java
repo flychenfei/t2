@@ -91,7 +91,6 @@ public class GoogleContactHandlers {
 
             } catch (Exception e) {
                 log.warn(String.format("create Group %s fail", groupName), e);
-                result = false;
                 return WebResponse.fail(e);
             }
 
