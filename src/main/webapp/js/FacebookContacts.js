@@ -16,24 +16,6 @@
 				view.refreshContactsList.call(view);
 			},
 			events : {
-				"btap;.icon-remove" : function(e) {
-					var view = this;
-					var $e = view.$el;
-
-					var $tr = $(e.currentTarget).closest("tr");
-					var id = $tr.attr("data-obj_id");
-					var d = {
-						id : id
-					};
-					$.ajax({
-						type : "POST",
-						url : contextPath + "/deleteFacebookContact.do",
-						data : d,
-						dataType : "json"
-					}).done(function() {
-						view.refreshContactsList.call(view);
-					})
-				},
 				"click;img,a" : function(e) {
 					var view = this;
 					var $e = view.$el;
@@ -57,6 +39,18 @@
 			},
 
 			docEvents : {
+				"DELETE_FBCONTACT" : function(event, extraData) {
+					var view = this;
+					if (extraData && extraData.objId) {
+						app.deleteFBContact(extraData.objId).done(function(extradata) {
+							if (extradata && extradata.result) {
+								setTimeout((function() {
+									view.refreshContactsList.call(view);
+								}), 500);
+							}
+						});
+					}
+				}
 			},
 
 			daoEvents : {
@@ -83,13 +77,13 @@
 					}, {
 						text : "Picture",
 						render : function(obj, idx) {
-							return "<img src='http://graph.facebook.com/" + obj.fbid + "/picture' data-value='"+ obj.fbid +"'/>"
+							return "<img src='http://graph.facebook.com/" + obj.fbid + "/picture' data-value='" + obj.fbid + "'/>"
 						},
 						attrs : "style='width: 10%'"
 					}, {
 						text : "Name",
 						render : function(obj) {
-							return "<a href='#'  data-value='"+ obj.fbid +"'>"+obj.name+"</a>"
+							return "<a href='#'  data-value='" + obj.fbid + "'>" + obj.name + "</a>"
 						},
 						attrs : "style='width: 400px'"
 
@@ -110,7 +104,7 @@
 						htmlIfEmpty : "Not contacts found",
 						withPaging : true,
 						withCmdEdit : false,
-						cmdDelete : "DELETE_CONTACT"
+						cmdDelete : "DELETE_FBCONTACT"
 					}
 				});
 			}

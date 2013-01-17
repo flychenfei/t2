@@ -142,6 +142,12 @@ var app = app || {};
         };
         return app.getJsonData(contextPath + "/getFacebookFriendDetail.json", $.extend(params, opts||{}));
     };
+    
+    app.deleteFBContact = function(id){
+        var params = {"id":id};
+        return app.getJsonData(contextPath + "/deleteFacebookContact.do", params);
+    };
+
 })(jQuery);
 
 //handlebars plugin

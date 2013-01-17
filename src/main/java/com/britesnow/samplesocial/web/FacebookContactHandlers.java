@@ -79,7 +79,7 @@ public class FacebookContactHandlers {
     public WebResponse deleteFacebookContact(@WebParam("id") String id) {
         try {
             fContactService.deleteContact(id);
-            return WebResponse.success();
+            return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();
             return WebResponse.fail(e);
