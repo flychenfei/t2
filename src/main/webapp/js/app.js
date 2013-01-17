@@ -143,6 +143,11 @@ var app = app || {};
         return app.getJsonData(contextPath + "/getFacebookFriendDetail.json", $.extend(params, opts||{}));
     };
     
+    app.addFacebookContact = function(groupId,fbid){
+        var params = {"fbid":fbid,groupId:groupId};
+        return app.getJsonData(contextPath + "/addFacebookContact.do", params);
+    };
+    
     app.deleteFBContact = function(id){
         var params = {"id":id};
         return app.getJsonData(contextPath + "/deleteFacebookContact.do", params);

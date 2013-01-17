@@ -17,25 +17,6 @@
 				view.refreshFriendsList.call(view);
 			},
 			events : {
-				"click;.icon-edit" : function(e) {
-					var view = this;
-					var $e = view.$el;
-					var $tr = $(e.currentTarget).closest("tr");
-					var id = $tr.attr("data-obj_id");
-					var d = {
-						fbid : id
-					};
-					$.ajax({
-						type : "POST",
-						url : contextPath + "/addFacebookContact.do",
-						data : d,
-						dataType : "json"
-					}).done(function() {
-						$(".result").show(function() {
-							$(".result").hide(3000);
-						});
-					})
-				},
 				"click;img,a" : function(e) {
 					var view = this;
 					var $e = view.$el;
@@ -49,7 +30,7 @@
 						var $html = app.render("tmpl-FacebookFriend-detail", data.result);
 						$(".Friend-detail").find(".modal-body").html($html);
 						$(".Friend-detail").show();
-						
+
 					})
 				},
 				"click;.close" : function(e) {
@@ -58,10 +39,23 @@
 					var $div = $(e.currentTarget).closest(".modal");
 					$div.hide();
 				},
-				
 			},
 
 			docEvents : {
+				"ADD_FBCONTACT" : function(event, extraData) {
+					var view = this;
+					if (extraData && extraData.objId) {
+						app.addFacebookContact(null, extraData.objId).done(function(extradata) {
+							if (extradata && extradata.result) {
+								setTimeout((function() {
+									$(".result").show(function() {
+										$(".result").hide(3000);
+									});
+								}), 100);
+							}
+						});
+					}
+				}
 			},
 
 			daoEvents : {
@@ -95,7 +89,7 @@
 					}, {
 						text : "Name",
 						render : function(obj) {
-							return "<a href='#'>"+obj.name+"</a>"
+							return "<a href='#'>" + obj.name + "</a>"
 						},
 						attrs : "style='width: 400px'"
 
@@ -116,7 +110,7 @@
 						htmlIfEmpty : "Not friend found",
 						withPaging : true,
 						withCmdDelete : false,
-						cmdEdit : "EDIT_CONTACT"
+						cmdEdit : "ADD_FBCONTACT"
 					}
 				});
 			}
