@@ -41,7 +41,6 @@
                     var $this = $(this);
                     data[$this.attr("name")] = $this.val();
                 });
-                console.log(data);
                 data.id = view.id;
                 var input = $e.find("input[name='email']");
                 if (input.val() == "") {
