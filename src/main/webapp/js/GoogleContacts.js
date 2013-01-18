@@ -4,7 +4,7 @@
     brite.registerView("GoogleContacts",{parent:".MainScreen-main"},{
         create: function (data, config) {
             $(".MainScreen-main").empty();
-            return $("#tmpl-GoogleContacts").render();
+            return app.render("tmpl-GoogleContacts");
         },
 
         postDisplay: function (data, config) {
@@ -16,7 +16,6 @@
 
         docEvents: {
             "DELETE_CONTACT": function(event, extraData) {
-                console.log("delete contacts");
                 if (extraData && extraData.objId) {
                     var contactId = getContactId(extraData.objId);
                     var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");

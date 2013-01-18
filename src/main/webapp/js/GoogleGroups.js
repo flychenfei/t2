@@ -4,7 +4,7 @@
     brite.registerView("GoogleGroups",{parent:".MainScreen-main"}, {
         create: function (data, config) {
             $(".MainScreen-main").empty();
-            return $("#tmpl-GoogleGroups").render();
+            return app.render("tmpl-GoogleGroups");
         },
 
         postDisplay: function (data, config) {

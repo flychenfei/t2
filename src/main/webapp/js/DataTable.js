@@ -37,7 +37,7 @@
      */
     (function ($) {
         var daoEvents = {};
-        brite.registerView("DataTable", {loadTmpl:true, emptyParent:true}, {
+        brite.registerView("DataTable", {emptyParent:true}, {
             create:function (data, config) {
                 var view = this;
 
@@ -88,7 +88,7 @@
                 }
 
 
-                var html = $("#tmpl-DataTable").render();
+                var html = app.render("tmpl-DataTable");
                 var $e = $(html);
                 return $e;
             },
@@ -249,7 +249,7 @@
         function renderDataTable() {
             var view = this;
             var htmlContent;
-            var $tableContent = $($("#tmpl-DataTable-Content").html());
+            var $tableContent = $(app.render("tmpl-DataTable-Content"));
 
             var htmlHeader = renderTableHead.call(view);
             $tableContent.find("thead").append(htmlHeader);
@@ -426,7 +426,7 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            return $("#tmpl-DataTable-Foot").render({pageIndex:opts.pageIndex+1,numOfPages:view.numOfPages,
+            return app.render("tmpl-DataTable-Foot",{pageIndex:opts.pageIndex+1,numOfPages:view.numOfPages,
                 pageSize: opts.pageSize, hasNext:view.hasNext});
         }
 

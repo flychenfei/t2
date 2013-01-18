@@ -15,7 +15,7 @@
                     this.groupId = data.groupId;
                     this.etag = data.etag;
                 }
-                var html = $("#tmpl-CreateGroup").render(data||{});
+                var html = app.render("tmpl-CreateGroup",data||{});
                 var $e = $(html);
                 return $e;
             },

@@ -15,7 +15,7 @@
                 if(data) {
                     this.id = data.id;
                 }
-                var html = $("#tmpl-CreateContact").render(data||{});
+                var html = app.render("tmpl-CreateContact",data||{});
                 var $e = $(html);
                 return $e;
             },

@@ -157,30 +157,6 @@ var app = app || {};
 
 //handlebars plugin
 (function($) {
-    //need Handlebars load first for compiled version
-    var compiled;
-    $.fn.render = function(data) {
-        if(!compiled) {
-            compiled = Handlebars.templates||{};
-        }
-        var id = this.selector;
-        if(id.substr(0,1)=='#'){
-            id = id.substr(1);
-        }
-
-        try {
-            if (!compiled[id]) {
-                compiled[id] = Handlebars.compile(this.html());
-            }else{
-                //console.log("load from compiled version");
-            }
-            return compiled[id](data);
-        } catch (e) {
-            // obviously, handle this case as you think most appropriate.
-            return "<small>Error: could not find template: " + id + "</small>";
-        }
-    };
-
     Handlebars.registerHelper('check', function (lvalue, operator, rvalue, options) {
 
         var operators, result;

@@ -4,7 +4,7 @@
     brite.registerView("GoogleMails",{parent:".MainScreen-main"}, {
         create: function (data, config) {
             $(".MainScreen-main").empty();
-            return $("#tmpl-GoogleMails").render();
+            return app.render("tmpl-GoogleMails");
         },
 
         postDisplay: function (data, config) {
