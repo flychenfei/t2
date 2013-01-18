@@ -28,7 +28,7 @@ public class FacebookContactHandlers {
     @Inject
     private FacebookAuthService facebookAuthService;
 
-    @WebModelHandler(startsWith = "/fbFriendsList")
+    @WebModelHandler(startsWith = "/fb/friends")
     public void getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
                             @WebParam("pageIndex") Integer pageIndex, @WebParam("limit") Integer limit,
                             @WebParam("offset") Integer offset, RequestContext rc) {
@@ -41,7 +41,7 @@ public class FacebookContactHandlers {
         }
     }
 
-    @WebModelHandler(startsWith = "/fbContactsList")
+    @WebModelHandler(startsWith = "/fb/contacts")
     public void getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
                             @WebParam("pageIndex") Integer pageIndex, RequestContext rc) {
         List ls = fContactService.getContactsByPage(user);
