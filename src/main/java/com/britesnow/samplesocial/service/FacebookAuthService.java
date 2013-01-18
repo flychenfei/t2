@@ -1,24 +1,32 @@
 package com.britesnow.samplesocial.service;
 
+import java.util.Map;
+
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.FacebookApi;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.Service;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.FacebookApi;
-import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
 
 public class FacebookAuthService implements AuthService {
     @Inject
-    private SocialIdEntityDao   socialIdEntityDao;
+    @ApplicationProperties
+    private Map               cfg;
 
-    private Service             serivce                = Service.FaceBook;
-    private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me";
-    private static final Token  EMPTY_TOKEN            = null;
-    private static String       apiKey                 = "504604412891475";
-    private static String       apiSecret              = "af295ca74435eca963a781200c79ac67";
-    private static String       callBackUrl            = "http://southgatetestjsppage.com:8080/samplesocial/callback_fb";
+    @Inject
+    private SocialIdEntityDao socialIdEntityDao;
+
+    private Service           serivce     = Service.FaceBook;
+    private Token             EMPTY_TOKEN = null;
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
@@ -26,27 +34,44 @@ public class FacebookAuthService implements AuthService {
     }
 
     public String getAuthorizationUrl() {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(apiKey).apiSecret(apiSecret).callback(callBackUrl).build();
+        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
         System.out.println(authorizationUrl);
         return authorizationUrl;
     }
 
     public String[] getAccessToken(String code) {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(apiKey).apiSecret(apiSecret).callback(callBackUrl).build();
+        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         Verifier verifier = new Verifier(code);
         Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
         return new String[] { accessToken.getToken(), accessToken.getSecret(), accessToken.getRawResponse() };
     }
 
     public void verfierAccessToken(String accessToken) {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(apiKey).apiSecret(apiSecret).callback(callBackUrl).build();
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-        service.signRequest(new Token(accessToken, apiSecret), request);
+        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
+        OAuthRequest request = new OAuthRequest(Verb.GET, getPROTECTED_RESOURCE_URL());
+        service.signRequest(new Token(accessToken, getApiSecret()), request);
         Response response = request.send();
         System.out.println(response.getCode());
         System.out.println(response.getBody());
     }
+
+    public String getPROTECTED_RESOURCE_URL() {
+        return (String) cfg.get("facebook.protected_resource_url");
+    }
+
+    public String getApiKey() {
+        return (String) cfg.get("facebook.apiKey");
+    }
+
+    public String getApiSecret() {
+        return (String) cfg.get("facebook.apiSecret");
+    }
+
+    public String getCallBackUrl() {
+        return (String) cfg.get("facebook.callBackUrl");
+    }
+
     //
     // public static void main(String[] args) {
     // try {
