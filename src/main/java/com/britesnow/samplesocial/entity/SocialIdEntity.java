@@ -21,6 +21,7 @@ public class SocialIdEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Service service;
     private String email;
+    private String secret;
     @Transient
     private boolean isValid = false;
     
@@ -63,5 +64,13 @@ public class SocialIdEntity extends BaseEntity {
 
     public void setValid(boolean valid) {
         isValid = valid;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
