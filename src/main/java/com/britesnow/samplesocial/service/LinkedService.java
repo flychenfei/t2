@@ -32,7 +32,7 @@ public class LinkedService {
 
     private Token getToken(User user) {
         SocialIdEntity soId = authService.getSocialIdEntity(user.getId());
-        if (soId != null || soId.getTokenDate().getTime() > System.currentTimeMillis()) {
+        if (soId != null && soId.getTokenDate().getTime() > System.currentTimeMillis()) {
             return new Token(soId.getToken(), soId.getSecret());
         }
         throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
