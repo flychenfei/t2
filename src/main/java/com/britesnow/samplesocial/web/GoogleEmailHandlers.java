@@ -31,7 +31,7 @@ public class GoogleEmailHandlers {
     @Inject
     GMailService gMailService;
 
-    @WebModelHandler(startsWith = "/getFolders")
+    @WebModelHandler(startsWith = "/gmails/folders")
     public void listFolders(@WebUser User user, @WebModel Map m) throws Exception {
         Folder[] folders = gMailService.listFolders(user);
         List list = new ArrayList();
@@ -44,7 +44,7 @@ public class GoogleEmailHandlers {
         m.put("result", list);
     }
 
-    @WebModelHandler(startsWith = "/getEmails")
+    @WebModelHandler(startsWith = "/gmail/list")
     public void listEmails(@WebUser User user,
                            @WebModel Map m, @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
@@ -60,7 +60,7 @@ public class GoogleEmailHandlers {
         m.put("result_count", result.getFirst());
     }
 
-    @WebModelHandler(startsWith = "/getEmails")
+    @WebModelHandler(startsWith = "/gmail/get")
     public void getEmail(@WebUser User user, @WebModel Map m, @WebParam("id") Integer id) throws Exception {
         Message message = gMailService.getEmail(user, id);
         MailInfo info = buildMailInfo(message);
@@ -73,7 +73,7 @@ public class GoogleEmailHandlers {
                 decodeText(message.getFrom()[0].toString()), message.getSubject());
     }
 
-    @WebActionHandler(name = "deleteEmail")
+    @WebActionHandler(name = "gmail/delete")
     public WebResponse deleteEmail(@WebUser User user,
                               @WebParam("id") Integer id, RequestContext rc) throws Exception {
         gMailService.deleteEmail(user, id);
@@ -120,7 +120,7 @@ public class GoogleEmailHandlers {
         return str.toString();
     }
 
-    @WebActionHandler
+    @WebActionHandler(name="gmail/send")
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
                            @WebParam("content") String content, @WebParam("to") String to, RequestContext rc) throws Exception {
@@ -128,7 +128,7 @@ public class GoogleEmailHandlers {
         return WebResponse.success();
     }
 
-    @WebModelHandler(startsWith = "/searchEmails")
+    @WebModelHandler(startsWith = "/gmail/search")
     public void search(@WebUser User user,
                        @WebModel Map m, @WebParam("subject") String subject, @WebParam("from") String from) throws Exception {
 

@@ -28,7 +28,7 @@ public class GoogleContactHandlers {
     @Inject
     private GContactService gContactService;
 
-    @WebModelHandler(startsWith = "/googleContacts")
+    @WebModelHandler(startsWith = "/gcontact/list")
     public void getContacts(@WebUser User user, @WebModel Map m, @WebParam("groupId") String groupId,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
@@ -46,7 +46,7 @@ public class GoogleContactHandlers {
 
     }
 
-    @WebModelHandler(startsWith = "/googleGroups")
+    @WebModelHandler(startsWith = "/ggroup/list")
     public void getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
         List<ContactGroupEntry> list;
         list = gContactService.getGroupResults(user);
@@ -56,7 +56,7 @@ public class GoogleContactHandlers {
     }
 
 
-    @WebActionHandler(name = "createContact")
+    @WebActionHandler(name = "gcontact/create")
     public WebResponse createContact(@WebUser User user, @WebObject ContactInfo contact) {
         boolean result = true;
 
@@ -76,7 +76,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "createGroup")
+    @WebActionHandler(name = "ggroup/create")
     public WebResponse createGroup(@WebUser User user, @WebParam("groupId") String groupId,
                            @WebParam("groupName") String groupName, @WebParam("etag") String etag) {
         boolean result = true;
@@ -98,7 +98,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "deleteGroup")
+    @WebActionHandler(name = "ggroup/delete")
     public WebResponse deleteGroup(@WebUser User user, @WebParam("groupId") String groupId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
@@ -113,7 +113,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "deleteContact")
+    @WebActionHandler(name = "gcontact/delete")
     public WebResponse deleteContact(@WebUser User user, @WebParam("contactId") String contactId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
@@ -128,7 +128,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebModelHandler(startsWith = "/getContact")
+    @WebModelHandler(startsWith = "/gcontact/get")
     public void getContact(@WebParam("contactId") String contactId,
                            @WebParam("etag") String etag, @WebModel Map m, @WebUser User user) {
         if (user != null && contactId != null) {

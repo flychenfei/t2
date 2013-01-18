@@ -76,11 +76,11 @@ var app = app || {};
     app.getContact = function(opts){
         var params = opts||{};
         params.method = "Get";
-        return app.getJsonData(contextPath + "/getContact.json", params);
+        return app.getJsonData(contextPath + "/gcontact/get.json", params);
     };
 
     app.createContact = function(contact){
-        return app.getJsonData(contextPath + "/createContact.do", contact);
+        return app.getJsonData(contextPath + "/gcontact/create.do", contact);
     };
 
     app.getGroups = function (opts) {
@@ -88,38 +88,38 @@ var app = app || {};
             method:"Get"
         };
         $.extend(params, opts);
-        return app.getJsonData(contextPath + "/googleGroups.json", params);
+        return app.getJsonData(contextPath + "/ggroup/list.json", params);
     };
 
     app.deleteGroup = function(groupId, etag){
         var params = {"groupId":groupId, etag: etag};
-        return app.getJsonData(contextPath + "/deleteGroup.do", params);
+        return app.getJsonData(contextPath + "/ggroup/delete.do", params);
     };
 
     app.getContacts = function (opts) {
         var params = {
             method:"Get"
         };
-        return app.getJsonData(contextPath + "/googleContacts.json", $.extend(params, opts||{}));
+        return app.getJsonData(contextPath + "/gcontact/list.json", $.extend(params, opts||{}));
     };
 
     app.deleteContact = function(contactId, etag){
         var params = {"contactId":contactId, etag: etag};
-        return app.getJsonData(contextPath + "/deleteContact.do", params);
+        return app.getJsonData(contextPath + "/gcontact/delete.do", params);
     };
 
     app.getEmails = function (opts) {
         var params = {
             method:"Get"
         };
-        return app.getJsonData(contextPath + "/getEmails.json", $.extend(params, opts||{}));
+        return app.getJsonData(contextPath + "/gmail/list.json", $.extend(params, opts||{}));
     };
 
     app.deleteEmail=function(id){
         var params = {id: id};
         params.method = "Post"
 
-        return app.getJsonData(contextPath + "/deleteEmail.do", params);
+        return app.getJsonData(contextPath + "/gmail/delete.do", params);
     };
 
  	app.getFBContacts = function (opts) {
