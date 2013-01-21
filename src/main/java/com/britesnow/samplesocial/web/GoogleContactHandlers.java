@@ -6,11 +6,11 @@ import com.britesnow.samplesocial.service.ContactInfo;
 import com.britesnow.samplesocial.service.GContactService;
 import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.web.RequestContext;
-import com.britesnow.snow.web.handler.annotation.WebActionHandler;
-import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
+import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.inject.Inject;
@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,12 @@ public class GoogleContactHandlers {
     @Inject
     private GContactService gContactService;
 
-    @WebModelHandler(startsWith = "/gcontact/list")
-    public void getContacts(@WebUser User user, @WebModel Map m, @WebParam("groupId") String groupId,
+    @WebGet("/gcontact/list")
+    public Object getContacts(@WebUser User user, @WebParam("groupId") String groupId,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
         List<ContactEntry> list = gContactService.getContactResults(user, groupId, pageIndex * pageSize + 1, pageSize);
-
+        Map m = new HashMap();
         List<ContactInfo> infos = new ArrayList<ContactInfo>();
         for (ContactEntry contact : list) {
             infos.add(ContactInfo.from(contact));
@@ -43,20 +44,22 @@ public class GoogleContactHandlers {
         if (infos.size() == pageSize) {
             m.put("hasNext", true);
         }
+        return m;
 
     }
 
-    @WebModelHandler(startsWith = "/ggroup/list")
-    public void getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
+    @WebGet("/ggroup/list")
+    public Object getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
         List<ContactGroupEntry> list;
         list = gContactService.getGroupResults(user);
 
         m.put("result", list);
+        return WebResponse.success(list);
 
     }
 
 
-    @WebActionHandler(name = "gcontact/create")
+    @WebPost("/gcontact/create")
     public WebResponse createContact(@WebUser User user, @WebObject ContactInfo contact) {
         boolean result = true;
 
@@ -76,7 +79,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "ggroup/create")
+    @WebPost("/ggroup/create")
     public WebResponse createGroup(@WebUser User user, @WebParam("groupId") String groupId,
                            @WebParam("groupName") String groupName, @WebParam("etag") String etag) {
         boolean result = true;
@@ -98,7 +101,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "ggroup/delete")
+    @WebPost("/ggroup/delete")
     public WebResponse deleteGroup(@WebUser User user, @WebParam("groupId") String groupId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
@@ -113,7 +116,7 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebActionHandler(name = "gcontact/delete")
+    @WebPost("/gcontact/delete")
     public WebResponse deleteContact(@WebUser User user, @WebParam("contactId") String contactId, @WebParam("etag") String etag) {
         boolean result = false;
         if (user != null) {
@@ -128,9 +131,10 @@ public class GoogleContactHandlers {
         return WebResponse.success(result);
     }
 
-    @WebModelHandler(startsWith = "/gcontact/get")
-    public void getContact(@WebParam("contactId") String contactId,
-                           @WebParam("etag") String etag, @WebModel Map m, @WebUser User user) {
+    @WebGet("/gcontact/get")
+    public Object getContact(@WebParam("contactId") String contactId,
+                           @WebParam("etag") String etag, @WebUser User user) {
+        Map m = new HashMap();
         if (user != null && contactId != null) {
             try {
                 ContactEntry entry = gContactService.getContactEntry(user, contactId);
@@ -140,5 +144,6 @@ public class GoogleContactHandlers {
                 m.put("result", false);
             }
         }
+        return m;
     }
 }
