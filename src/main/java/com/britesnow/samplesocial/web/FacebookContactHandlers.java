@@ -15,6 +15,7 @@ import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -60,7 +61,7 @@ public class FacebookContactHandlers {
         m.put("result", friend);
     }
 
-    @WebActionHandler
+    @WebPost("/fb/contact-add")
     public WebResponse addFacebookContact(@WebUser User user, @WebParam("groupId") Long groupId,
                             @WebParam("fbid") String fbid) {
         try {
@@ -75,7 +76,7 @@ public class FacebookContactHandlers {
         return null;
     }
 
-    @WebActionHandler
+    @WebPost("/fb/contact-delete")
     public WebResponse deleteFacebookContact(@WebParam("id") String id) {
         try {
             fContactService.deleteContact(id);

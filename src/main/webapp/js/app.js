@@ -146,12 +146,12 @@ var app = app || {};
     
     app.addFacebookContact = function(groupId,fbid){
         var params = {"fbid":fbid,groupId:groupId};
-        return app.getJsonData(contextPath + "/addFacebookContact.do", params);
+        return app.getJsonData(contextPath + "/fb/contact-add", params);
     };
     
     app.deleteFBContact = function(id){
         var params = {"id":id};
-        return app.getJsonData(contextPath + "/deleteFacebookContact.do", params);
+        return app.getJsonData(contextPath + "/fb/contact-delete", params);
     };
 
 })(jQuery);
