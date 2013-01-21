@@ -46,7 +46,10 @@
 							if (extradata && extradata.result) {
 								setTimeout((function() {
 									view.refreshContactsList.call(view);
-								}), 500);
+									$(".result").show(function() {
+										$(".result").hide(3000);
+									});
+								}), 100);
 							}
 						});
 					}
