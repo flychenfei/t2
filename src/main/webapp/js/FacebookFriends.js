@@ -48,6 +48,7 @@
 						app.addFacebookContact(null, extraData.objId).done(function(extradata) {
 							if (extradata && extradata.result) {
 								setTimeout((function() {
+									view.refreshFriendsList.call(view);
 									$(".result").show(function() {
 										$(".result").hide(3000);
 									});

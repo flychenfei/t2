@@ -1,7 +1,10 @@
 package com.britesnow.samplesocial.web;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.britesnow.samplesocial.entity.Contact;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
@@ -35,8 +38,21 @@ public class FacebookContactHandlers {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
         List ls = facebookService.getFriendsByPage(token, limit, offset);
-        m.put("result", ls);
-        if (ls != null && pageSize != null && ls.size() == pageSize) {
+        List ls2 = fContactService.getContactsByPage(user);
+        Set filterSet = new HashSet();
+        for (int i = 0; i < ls2.size(); i++) {
+            Contact c = (Contact) ls2.get(i);
+            filterSet.add(c.getFbid());
+        }
+        List ls3 = new ArrayList();
+        for (int i = 0; i < ls.size(); i++) {
+            com.restfb.types.User u = (com.restfb.types.User) ls.get(i);
+            if (!filterSet.contains(u.getId().toString())) {
+                ls3.add(u);
+            }
+        }
+        m.put("result", ls3);
+        if (ls3 != null && pageSize != null && ls3.size() == pageSize) {
             m.put("hasNext", true);
         }
         return m;
