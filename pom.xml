@@ -29,7 +29,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <executions>
           <execution>
             <id>compile-less-tmpl</id>
-            <phase>package</phase>
+            <phase>compile</phase>
             <configuration>
               <tasks>
                 <exec executable="java">
