@@ -127,21 +127,21 @@ var app = app || {};
         var params = {
             method:"Get"
         };
-        return app.getJsonData(contextPath + "/fb/contacts.json", $.extend(params, opts||{}));
+        return app.getJsonData(contextPath + "/fb/contacts", $.extend(params, opts||{}));
     };
     
     app.getFBFriends = function (opts) {
         var params = {
             method:"Get"
         };
-        return app.getJsonData(contextPath + "/fb/friends.json", $.extend(params, opts||{}));
+        return app.getJsonData(contextPath + "/fb/friends", $.extend(params, opts||{}));
     };
     
     app.getFacebookFriendDetail = function (opts) {
         var params = {
             method:"Get"
         };
-        return app.getJsonData(contextPath + "/getFacebookFriendDetail.json", $.extend(params, opts||{}));
+        return app.getJsonData(contextPath + "/fb/friend-detail", $.extend(params, opts||{}));
     };
     
     app.addFacebookContact = function(groupId,fbid){
