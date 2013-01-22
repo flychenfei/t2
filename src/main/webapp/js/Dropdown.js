@@ -38,16 +38,10 @@
                 var name = $li.attr("data-name");
                 
                 hide.call(view);
+                  $e.trigger("DO_ONDROP_DOWN_CLICK", name);
                 
-                if(name == "facebook"){
-                  app.oauth.authorize('FaceBook');
-                }else if(name == "linkedin"){
-                  app.oauth.authorize('LinkedIn');
-                }else if(name == "google"){
-                  app.oauth.authorize('Google');
-                }
-                
-                close.call(view);
+
+                 close.call(view);
               }
             }
         });

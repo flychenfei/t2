@@ -2,19 +2,22 @@ package com.britesnow.samplesocial.web;
 
 import com.google.common.base.Strings;
 
-public class WebResponse {
-    
-    private Boolean success;
-    private Object result;
-    private String errorMessage;
-    private Throwable t;
-    
+import java.util.HashMap;
+
+public class WebResponse extends HashMap{
+    private static final long serialVersionUID = 1L;
+    public static final String SUCCESS = "success";
+    public static final String RESULT = "result";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String THROWABLE = "t";
+
+
     
     private WebResponse(){
     }
     
-    private WebResponse(Throwable t){
-        this.t = t;
+    private WebResponse(Throwable t) {
+        this.put(THROWABLE, t);
         this.setSuccess(false);
     }    
 
@@ -29,7 +32,13 @@ public class WebResponse {
         wr.setResult(result);
         return wr;
     }
-    
+
+    public WebResponse set(String key, Object val) {
+        this.put(key, val);
+        return this;
+    }
+
+
     public static WebResponse fail(){
         WebResponse wr = new WebResponse();
         wr.setSuccess(false);
@@ -47,35 +56,36 @@ public class WebResponse {
     }
 
     public Boolean getSuccess() {
-        return success;
+        return (Boolean) this.get(SUCCESS);
     }
     public void setSuccess(Boolean success) {
-        this.success = success;
+        this.put(SUCCESS, success);
     }
 
 
     public Object getResult() {
-        return result;
+        return this.get(RESULT);
     }
     public void setResult(Object result) {
-        this.result = result;
+        this.put(RESULT, result);
     }
 
-    public String getErrorCode(){
-        if (t != null){
+    public String getErrorCode() {
+        Throwable t = (Throwable) get(THROWABLE);
+        if (t != null) {
             return t.getMessage();
         }
         return null;
     }
     
     public String getErrorMessage() {
-        return errorMessage;
+        return (String) this.get(ERROR_MESSAGE);
     }
     public void setErrorMessage(String errorMessage) {
         if (!Strings.isNullOrEmpty(errorMessage)){
-            this.errorMessage = errorMessage;
+            put(ERROR_MESSAGE, errorMessage);
         }else{
-            this.errorMessage = null;
+            put(ERROR_MESSAGE, null);
         }
         
     }

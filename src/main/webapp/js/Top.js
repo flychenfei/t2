@@ -26,10 +26,6 @@
             		var menu = $li.attr("data-nav");
             		if(menu == "contact"){
             		  brite.display("GoogleContacts");
-            		}else if(menu == "mail"){
-            		  brite.display("GoogleMails");
-            		}else if(menu == "group"){
-            		  brite.display("GoogleGroups");
             		}else if(menu == "fbfriend"){
             		  brite.display("FacebookFriends");
             		}else if(menu == "fbcontact"){
@@ -42,7 +38,14 @@
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
             		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
-            		}
+            		}else if(menu == "gmail"){
+                        list = [
+                            {name:"mail",label:"Mail"},
+                            {name:"group",label:"GoogleGroups"}
+                        ];
+                        brite.display("Dropdown",null,{$target:$li,list:list});
+                    }
+
             	}
             },
 
@@ -52,6 +55,26 @@
                 var $e = view.$el;
                 var $li = $e.find("li[data-nav='oauth']");
             		$li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+              },
+              "DO_ONDROP_DOWN_CLICK":function(event, name) {
+                  switch (name) {
+                      case "facebook":
+                          app.oauth.authorize('FaceBook');
+                          break;
+                      case "linkedin":
+                          app.oauth.authorize('LinkedIn');
+                          break;
+                      case "google":
+                          app.oauth.authorize('Google');
+                          break;
+                      case "mail":
+                          brite.display("GoogleMails");
+                          break;
+                      case "group":
+                          brite.display("GoogleGroups");
+                          break;
+                      default:
+                  }
               }
             },
 

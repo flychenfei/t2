@@ -2,8 +2,10 @@ package com.britesnow.samplesocial.web;
 
 
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.service.ContactInfo;
 import com.britesnow.samplesocial.service.GContactService;
+import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -29,22 +31,25 @@ public class GoogleContactHandlers {
     @Inject
     private GContactService gContactService;
 
+    @Inject
+    private GoogleAuthService googleAuthService;
+
+
     @WebGet("/gcontact/list")
-    public Object getContacts(@WebUser User user, @WebParam("groupId") String groupId,
+    public WebResponse getContacts(@WebUser User user, @WebParam("groupId") String groupId,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
         List<ContactEntry> list = gContactService.getContactResults(user, groupId, pageIndex * pageSize + 1, pageSize);
-        Map m = new HashMap();
         List<ContactInfo> infos = new ArrayList<ContactInfo>();
         for (ContactEntry contact : list) {
             infos.add(ContactInfo.from(contact));
         }
 
-        m.put("result", infos);
+        WebResponse resp = WebResponse.success(infos);
         if (infos.size() == pageSize) {
-            m.put("hasNext", true);
+            resp.set("hasNext", true);
         }
-        return m;
+        return resp;
 
     }
 
@@ -132,18 +137,18 @@ public class GoogleContactHandlers {
     }
 
     @WebGet("/gcontact/get")
-    public Object getContact(@WebParam("contactId") String contactId,
+    public WebResponse getContact(@WebParam("contactId") String contactId,
                            @WebParam("etag") String etag, @WebUser User user) {
         Map m = new HashMap();
         if (user != null && contactId != null) {
             try {
                 ContactEntry entry = gContactService.getContactEntry(user, contactId);
-                m.put("result", ContactInfo.from(entry));
+                return WebResponse.success(ContactInfo.from(entry));
             } catch (Exception e) {
                 log.warn(String.format("get contact %s fail", contactId), e);
                 m.put("result", false);
             }
         }
-        return m;
+        throw new OauthException(googleAuthService.getAuthorizationUrl());
     }
 }
