@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import java.util.HashMap;
 
 public class WebResponse extends HashMap{
+    private static final long serialVersionUID = 1L;
     public static final String SUCCESS = "success";
     public static final String RESULT = "result";
     public static final String ERROR_MESSAGE = "errorMessage";
