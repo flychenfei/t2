@@ -32,7 +32,7 @@ public class GoogleEmailHandlers {
     GMailService gMailService;
 
     @WebGet("/gmails/folders")
-    public Object listFolders(@WebUser User user) throws Exception {
+    public WebResponse listFolders(@WebUser User user) throws Exception {
         Folder[] folders = gMailService.listFolders(user);
         List list = new ArrayList();
         for (Folder folder : folders) {
@@ -45,24 +45,21 @@ public class GoogleEmailHandlers {
     }
 
     @WebGet("/gmail/list")
-    public Object listEmails(@WebUser User user,
+    public WebResponse listEmails(@WebUser User user,
                            @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         Pair<Integer, Message[]> pair = gMailService.listMails(user, "inbox", pageSize*pageIndex+1, pageSize);
-        Map result = new HashMap();
         List<MailInfo> mailInfos = new ArrayList<MailInfo>();
 
         for (Message message : pair.getSecond()) {
             MailInfo info = buildMailInfo(message);
             mailInfos.add(0, info);
         }
-        result.put("result", mailInfos);
-        result.put("result_count", pair.getFirst());
-        return result;
+        return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
 
     @WebGet("/gmail/get")
-    public Object getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
+    public WebResponse getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
         Message message = gMailService.getEmail(user, id);
         MailInfo info = buildMailInfo(message);
         info.setContent(getContent(message));
@@ -130,8 +127,8 @@ public class GoogleEmailHandlers {
     }
 
     @WebPost("/gmail/search")
-    public void search(@WebUser User user,
-                       @WebModel Map m, @WebParam("subject") String subject, @WebParam("from") String from) throws Exception {
+    public WebResponse search(@WebUser User user,
+                        @WebParam("subject") String subject, @WebParam("from") String from) throws Exception {
 
         Message[] msgs = gMailService.search(user, subject, from);
         List<MailInfo> infos = new ArrayList<MailInfo>();
@@ -141,9 +138,7 @@ public class GoogleEmailHandlers {
                 infos.add(buildMailInfo(msg));
             }
         }
-
-        m.put("result", infos);
-        m.put("success", true);
+        return WebResponse.success(infos);
     }
 
 }
