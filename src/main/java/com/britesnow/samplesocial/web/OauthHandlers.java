@@ -18,6 +18,7 @@ import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
+import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -35,7 +36,7 @@ public class OauthHandlers {
     @Inject
     private SocialIdEntityDao   socialIdEntityDao;
 
-    @WebModelHandler(startsWith = "/authorize")
+    @WebGet("/authorize")
     public void authorize(@WebModel Map m,@WebParam("service") Service service, RequestContext rc) throws IOException {
         String url = "";
         if (service == Service.FaceBook) {
@@ -48,7 +49,7 @@ public class OauthHandlers {
         rc.getRes().sendRedirect(url);
     }
 
-    @WebModelHandler(startsWith = "/callback_fb")
+    @WebModelHandler(startsWith="/callback_fb")
     public void fbCallback(@WebModel Map m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
         System.out.println("--->" + tokens[0]);
@@ -73,7 +74,7 @@ public class OauthHandlers {
         }
     }
     
-    @WebModelHandler(startsWith = "/linkedinCallback")
+    @WebModelHandler(startsWith="/linkedinCallback")
     public void linkedinCallback(RequestContext rc, @WebParam("oauth_token") String reqToken, @WebParam("oauth_verifier") String code) throws Exception {
         User user = rc.getUser(User.class);
         if (user!=null && code != null) {
@@ -83,7 +84,7 @@ public class OauthHandlers {
         }
     }
     
-    @WebModelHandler(startsWith = "/googleCallback")
+    @WebModelHandler(startsWith="/googleCallback")
     public void googleCallback(RequestContext rc, @WebParam("code") String code) throws Exception {
         User user = rc.getUser(User.class);
         if (user != null && code != null) {
