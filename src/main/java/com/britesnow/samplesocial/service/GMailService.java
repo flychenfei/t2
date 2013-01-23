@@ -72,6 +72,10 @@ public class GMailService {
         IMAPStore imap = getImapStore(user);
         return imap.getDefaultFolder().list();
     }
+    public Folder getFolder(User user, String folderName) throws Exception {
+        IMAPStore imap = getImapStore(user);
+        return imap.getFolder(folderName);
+    }
 
     public Message getEmail(User user, int emailId) throws Exception {
         IMAPStore imap = getImapStore(user);
@@ -94,6 +98,14 @@ public class GMailService {
         inbox.open(Folder.READ_WRITE);
         Message msg = inbox.getMessage(emailId);
         msg.setFlag(Flags.Flag.DELETED, true);
+    }
+    public boolean deleteFolder(User user, String folderName) throws Exception {
+        IMAPStore imap = getImapStore(user);
+        Folder folder = imap.getFolder(folderName);
+        if (folder.isOpen()) {
+            folder.close(true);
+        }
+        return folder.delete(true);
     }
 
     public Message[] search(User user, String subject, String from) throws Exception {

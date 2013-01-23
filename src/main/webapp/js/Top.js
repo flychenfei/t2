@@ -41,7 +41,10 @@
             		}else if(menu == "gmail"){
                         list = [
                             {name:"mail",label:"Mail"},
-                            {name:"group",label:"GoogleGroups"}
+                            {name:"group",label:"Groups"},
+                            {name:"folder",label:"Folders"},
+                            {name:"createGroup",label:"Create Group"},
+                            {name:"createFolder",label:"Create Folder"},
                         ];
                         brite.display("Dropdown",null,{$target:$li,list:list});
                     }
@@ -56,7 +59,7 @@
                 var $li = $e.find("li[data-nav='oauth']");
             		$li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
               },
-              "DO_ONDROP_DOWN_CLICK":function(event, name) {
+              "DO_ON_DROP_DOWN_CLICK":function(event, name) {
                   switch (name) {
                       case "facebook":
                           app.oauth.authorize('FaceBook');
@@ -73,6 +76,9 @@
                       case "group":
                           brite.display("GoogleGroups");
                           break;
+                      case "folder":
+                          brite.display("GoogleFolders");
+                          break;
                       default:
                   }
               }
@@ -83,6 +89,4 @@
         });
         
     })(jQuery);
-
-
 })();

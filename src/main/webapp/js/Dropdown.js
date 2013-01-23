@@ -38,7 +38,7 @@
                 var name = $li.attr("data-name");
                 
                 hide.call(view);
-                  $e.trigger("DO_ONDROP_DOWN_CLICK", name);
+                  $e.trigger("DO_ON_DROP_DOWN_CLICK", name);
                 
 
                  close.call(view);

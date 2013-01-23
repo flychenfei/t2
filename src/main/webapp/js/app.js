@@ -116,6 +116,17 @@ var app = app || {};
         return app.getJsonData(contextPath + "/gmail/list", $.extend(params, opts||{}));
     };
 
+    app.getFolders=function(){
+        var params = {method: "Get"};
+        return app.getJsonData(contextPath + "/gmail/folders", params);
+    };
+
+    app.deleteFolder = function(folderName){
+        var params = {method: "Post", folderName: folderName};
+        return app.getJsonData(contextPath + "/gmail/folder/delete", params);
+
+    }
+
     app.deleteEmail=function(id){
         var params = {id: id};
         params.method = "Post"
