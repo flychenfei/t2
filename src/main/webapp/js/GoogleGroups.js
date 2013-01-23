@@ -1,9 +1,8 @@
 ;
 (function ($) {
 
-    brite.registerView("GoogleGroups",{parent:".MainScreen-main"}, {
+    brite.registerView("GoogleGroups",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
-            $(".MainScreen-main").empty();
             return app.render("tmpl-GoogleGroups");
         },
 

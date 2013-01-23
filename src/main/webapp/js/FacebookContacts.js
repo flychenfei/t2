@@ -3,7 +3,7 @@
 		brite.registerView("FacebookContacts", {
 			loadTmpl : true,
 			emptyParent : true,
-			parent : ".MainScreen-main"
+			parent : ".FacebookScreen-content"
 		}, {
 			create : function(data, config) {
 				var $html = app.render("tmpl-FacebookContacts");

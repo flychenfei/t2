@@ -24,12 +24,10 @@
             		$e.find("li").removeClass("active");
             		$li.addClass("active");
             		var menu = $li.attr("data-nav");
-            		if(menu == "contact"){
-            		  brite.display("GoogleContacts");
-            		}else if(menu == "fbfriend"){
-            		  brite.display("FacebookFriends");
-            		}else if(menu == "fbcontact"){
-            		  brite.display("FacebookContacts");
+            		if(menu == "google"){
+            		  brite.display("GoogleScreen");
+            		}else if(menu == "facebook"){
+            		  brite.display("FacebookScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},
@@ -38,16 +36,7 @@
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
             		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
-            		}else if(menu == "gmail"){
-                        list = [
-                            {name:"mail",label:"Mail"},
-                            {name:"group",label:"Groups"},
-                            {name:"folder",label:"Folders"},
-                            {name:"createGroup",label:"Create Group"},
-                            {name:"createFolder",label:"Create Folder"},
-                        ];
-                        brite.display("Dropdown",null,{$target:$li,list:list});
-                    }
+            		}
 
             	}
             },
@@ -69,15 +58,6 @@
                           break;
                       case "google":
                           app.oauth.authorize('Google');
-                          break;
-                      case "mail":
-                          brite.display("GoogleMails");
-                          break;
-                      case "group":
-                          brite.display("GoogleGroups");
-                          break;
-                      case "folder":
-                          brite.display("GoogleFolders");
                           break;
                       default:
                   }

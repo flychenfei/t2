@@ -4,7 +4,7 @@
 		brite.registerView("FacebookFriends", {
 			loadTmpl : true,
 			emptyParent : true,
-			parent : ".MainScreen-main"
+			parent : ".FacebookScreen-content"
 		}, {
 			create : function(data, config) {
 				var $html = app.render("tmpl-FacebookFriends");

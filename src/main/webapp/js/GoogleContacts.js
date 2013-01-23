@@ -1,9 +1,8 @@
 ;
 (function ($) {
 
-    brite.registerView("GoogleContacts",{parent:".MainScreen-main"},{
+    brite.registerView("GoogleContacts",{parent:".GoogleScreen-content",emptyParent:true},{
         create: function (data, config) {
-            $(".MainScreen-main").empty();
             return app.render("tmpl-GoogleContacts");
         },
 

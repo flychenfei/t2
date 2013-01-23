@@ -1,9 +1,8 @@
 ;
 (function ($) {
 
-    brite.registerView("GoogleFolders",{parent:".MainScreen-main"}, {
+    brite.registerView("GoogleFolders",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
-            $(".MainScreen-main").empty();
             return app.render("tmpl-GoogleFolders");
         },
 
