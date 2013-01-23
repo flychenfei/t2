@@ -21,6 +21,7 @@ import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
+import com.britesnow.snow.web.rest.annotation.WebDelete;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
@@ -31,7 +32,7 @@ public class GoogleEmailHandlers {
     @Inject
     GMailService gMailService;
 
-    @WebGet("/gmails/folders")
+    @WebGet("/gmail/folders")
     public WebResponse listFolders(@WebUser User user) throws Exception {
         Folder[] folders = gMailService.listFolders(user);
         List list = new ArrayList();
@@ -42,6 +43,16 @@ public class GoogleEmailHandlers {
             list.add(map);
         }
         return WebResponse.success(list);
+    }
+
+    @WebPost("/gmail/folder/delete")
+    public WebResponse deleteFolder(@WebUser User user, @WebParam("folderName") String folderName, RequestContext rc) throws Exception {
+        boolean result = gMailService.deleteFolder(user, folderName);
+        if (result) {
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail(String.format("Delete Folder %s fail", folderName));
+        }
     }
 
     @WebGet("/gmail/list")
