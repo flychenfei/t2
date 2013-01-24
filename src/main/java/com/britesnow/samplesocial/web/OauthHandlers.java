@@ -13,6 +13,7 @@ import com.britesnow.samplesocial.oauth.OAuthUtils;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
+import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -30,6 +31,8 @@ public class OauthHandlers {
     private GoogleAuthService googleAuthService;
     @Inject
     private LinkedInAuthService linkedInAuthService;
+    @Inject
+    private SalesForceAuthService salesForceAuthService;
 
     @Inject
     private OAuthUtils          oAuthUtils;
@@ -45,6 +48,8 @@ public class OauthHandlers {
             url = googleAuthService.getAuthorizationUrl();
         }else if(service == Service.LinkedIn){
             url = linkedInAuthService.getAuthorizationUrl();
+        }else if(service == Service.SalesForce){
+            url = salesForceAuthService.getAuthorizationUrl();
         }
         rc.getRes().sendRedirect(url);
     }
@@ -93,6 +98,22 @@ public class OauthHandlers {
             rc.getRes().sendRedirect(googleAuthService.getAuthorizationUrl());
         }
 
+    }
+    
+    @WebModelHandler(startsWith="/salesforce_callback")
+    public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) throws Exception {
+        String[] tokens = salesForceAuthService.getAccessToken(code);
+        SocialIdEntity s =   salesForceAuthService.getSocialIdEntity(user.getId());
+        if (s==null) {
+            s = new SocialIdEntity();
+            s.setUser_id(user.getId());
+            s.setToken(tokens[0]);
+            s.setService(Service.SalesForce);
+            socialIdEntityDao.save(s);
+        }else{
+            s.setToken(tokens[0]);
+            socialIdEntityDao.update(s);
+        }
     }
     
 }

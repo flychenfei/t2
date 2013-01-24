@@ -32,6 +32,7 @@
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},
             		    {name:"google",label:"Connect to Google"},
+            		    {name:"salesforce",label:"Connect to SalesForce"},
             		    {name:"facebook",label:"Connect to Facebook"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
@@ -58,6 +59,9 @@
                           break;
                       case "google":
                           app.oauth.authorize('Google');
+                          break;
+                      case "salesforce":
+                          app.oauth.authorize('SalesForce');
                           break;
                       default:
                   }
