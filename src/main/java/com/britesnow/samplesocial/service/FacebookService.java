@@ -11,6 +11,8 @@ import com.restfb.types.User;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class FacebookService {
     public User getMyInformation(String accessToken) {
         User user = new DefaultFacebookClient(accessToken).fetchObject("me", User.class);
@@ -27,14 +29,19 @@ public class FacebookService {
         return myFriends.getData();
     }
 
-    public List getFriendsByPage(String accessToken, Integer limit, Integer offset) {
+    public List getFriendsByPage(String accessToken, String query, Integer limit, Integer offset) {
         if (limit == null || limit <= 0) {
             limit = 10;
         }
         if (offset == null || offset < 0) {
             offset = 0;
         }
-        Connection<User> myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
+        Connection<User> myFriends = null;
+        if (StringUtils.isNotBlank(query)) {
+            myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class, Parameter.with("q", query), Parameter.with("limit", limit), Parameter.with("offset", offset));
+        } else {
+            myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
+        }
         return myFriends.getData();
     }
 

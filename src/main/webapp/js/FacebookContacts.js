@@ -47,7 +47,6 @@
 	                    var view = this;
 						view.refreshContactsList.call(view);
                 	}
-					
 				}
 			},
 

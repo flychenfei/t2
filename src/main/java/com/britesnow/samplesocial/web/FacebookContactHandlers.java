@@ -32,12 +32,12 @@ public class FacebookContactHandlers {
     private FacebookAuthService facebookAuthService;
 
     @WebGet("/fb/friends")
-    public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
-                            @WebParam("pageIndex") Integer pageIndex, @WebParam("limit") Integer limit,
-                            @WebParam("offset") Integer offset, RequestContext rc) {
+    public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            @WebParam("limit") Integer limit, @WebParam("offset") Integer offset, RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFriendsByPage(token, limit, offset);
+        List ls = facebookService.getFriendsByPage(token, query, limit, offset);
         List ls2 = fContactService.getContactsByPage(user, null);
         Set filterSet = new HashSet();
         for (int i = 0; i < ls2.size(); i++) {

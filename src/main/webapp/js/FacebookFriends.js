@@ -39,6 +39,17 @@
 					var $div = $(e.currentTarget).closest(".modal");
 					$div.hide();
 				},
+				"btap;.formSearch" : function(e) {
+					var view = this;
+					view.refreshFriendsList.call(view);
+				},
+				
+				"keyup":function(e){
+					if(e.which == 13){
+	                    var view = this;
+						view.refreshFriendsList.call(view);
+                	}
+				}
 			},
 
 			docEvents : {
@@ -111,7 +122,8 @@
 						htmlIfEmpty : "Not friend found",
 						withPaging : true,
 						withCmdDelete : false,
-						cmdEdit : "ADD_FBCONTACT"
+						cmdEdit : "ADD_FBCONTACT",
+						dataOpts :{query:$e.find(".search-query").val()}
 					}
 				});
 			}
