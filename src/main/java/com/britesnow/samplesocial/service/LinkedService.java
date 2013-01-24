@@ -21,7 +21,8 @@ public class LinkedService {
     @Inject
     private LinkedInAuthService authService;
 
-    public static final String CONNECTION_URL = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
+    public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
+    public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
 
     private final OAuthService oAuthService;
 
@@ -38,13 +39,37 @@ public class LinkedService {
         throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
     }
 
-    public Map getConnections(User user) {
+    public Map getConnections(User user, Integer pageIndex, Integer pageSize) {
 
-        OAuthRequest request = new OAuthRequest(Verb.GET, CONNECTION_URL);
-        request.addHeader("x-li-format","json");
+        OAuthRequest request = createRequest(Verb.GET, CONNECTION_ENDPOINT);
+
+        addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user),request);
         Response response = request.send();
         Map map = JsonUtil.toMapAndList(response.getBody());
         return map;
+    }
+
+    private OAuthRequest createRequest(Verb verb, String url) {
+        OAuthRequest request = new OAuthRequest(verb, url);
+        request.addHeader("x-li-format","json");
+        return request;
+    }
+
+    private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
+        int start = pageIndex*pageSize;
+        request.addQuerystringParameter("start", String.valueOf(start));
+        request.addQuerystringParameter("count", String.valueOf(pageSize));
+    }
+
+    public Map searchJobs(User user, Integer pageIndex, Integer pageSize, String keywork) {
+        if (keywork == null) {
+            keywork = "hibernate";
+        }
+        OAuthRequest request = createRequest(Verb.GET, String.format(JOB_ENDPOINT, keywork));
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response resp = request.send();
+        return JsonUtil.toMapAndList(resp.getBody());
     }
 }

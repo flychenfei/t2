@@ -21,7 +21,6 @@ import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
-import com.britesnow.snow.web.rest.annotation.WebDelete;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;

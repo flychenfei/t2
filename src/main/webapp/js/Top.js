@@ -28,6 +28,8 @@
             		  brite.display("GoogleScreen");
             		}else if(menu == "facebook"){
             		  brite.display("FacebookScreen");
+            		}else if(menu == "linkedIn"){
+            		  brite.display("LinkedInScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},

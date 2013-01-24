@@ -47,7 +47,7 @@
                     input.focus();
                     input.closest("div").addClass("error").find("span").html("Please enter valid contact name.");
                 } else {
-                    app.createContact(data).done(function (extraData) {
+                    app.googleApi.createContact(data).done(function (extraData) {
                         setTimeout((function () {
                             $("body").trigger("SHOW_CONTACTS");
                         }), 5000);
