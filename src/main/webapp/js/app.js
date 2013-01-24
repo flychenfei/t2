@@ -146,6 +146,7 @@ var app = app || {};
         var params = {
             method:"Get"
         };
+        console.log(opts)
         return app.getJsonData(contextPath + "/fb/contacts", $.extend(params, opts||{}));
     };
     

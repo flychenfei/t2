@@ -32,13 +32,13 @@ public class FacebookContactHandlers {
     private FacebookAuthService facebookAuthService;
 
     @WebGet("/fb/friends")
-    public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
-                            @WebParam("pageIndex") Integer pageIndex, @WebParam("limit") Integer limit,
-                            @WebParam("offset") Integer offset, RequestContext rc) {
+    public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            @WebParam("limit") Integer limit, @WebParam("offset") Integer offset, RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFriendsByPage(token, limit, offset);
-        List ls2 = fContactService.getContactsByPage(user);
+        List ls = facebookService.getFriendsByPage(token, query, limit, offset);
+        List ls2 = fContactService.getContactsByPage(user, null);
         Set filterSet = new HashSet();
         for (int i = 0; i < ls2.size(); i++) {
             Contact c = (Contact) ls2.get(i);
@@ -59,9 +59,10 @@ public class FacebookContactHandlers {
     }
 
     @WebGet("/fb/contacts")
-    public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
-                            @WebParam("pageIndex") Integer pageIndex, RequestContext rc) {
-        List ls = fContactService.getContactsByPage(user);
+    public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        List ls = fContactService.getContactsByPage(user, query);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);
