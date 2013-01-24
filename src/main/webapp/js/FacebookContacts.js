@@ -14,6 +14,7 @@
 				var view = this;
 				var $e = view.$el;
 				view.refreshContactsList.call(view);
+				
 			},
 			events : {
 				"click;img,a" : function(e) {
@@ -36,6 +37,18 @@
 					var $div = $(e.currentTarget).closest(".modal");
 					$div.hide();
 				},
+				"btap;.formSearch" : function(e) {
+					var view = this;
+					view.refreshContactsList.call(view);
+				},
+				
+				"keyup":function(e){
+					if(e.which == 13){
+	                    var view = this;
+						view.refreshContactsList.call(view);
+                	}
+					
+				}
 			},
 
 			docEvents : {
@@ -107,7 +120,8 @@
 						htmlIfEmpty : "Not contacts found",
 						withPaging : true,
 						withCmdEdit : false,
-						cmdDelete : "DELETE_FBCONTACT"
+						cmdDelete : "DELETE_FBCONTACT",
+						dataOpts :{query:$e.find(".search-query").val()}
 					}
 				});
 			}

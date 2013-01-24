@@ -2,6 +2,8 @@ package com.britesnow.samplesocial.dao;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.britesnow.samplesocial.entity.Contact;
 import com.britesnow.samplesocial.entity.User;
 
@@ -15,9 +17,15 @@ public class ContactDao extends BaseHibernateDao<Contact> {
         return null;
     }
 
-    public List getContactsList(User user) {
-        String hql = "from Contact where 1=1";
-        List ls = search(hql);
+    public List getContactsList(User user, String query) {
+        String hql = "from Contact where 1=1 ";
+        List ls = null;
+        if (StringUtils.isNotBlank(query)) {
+            hql += " and (name like ? or hometownname like ?) ";
+            ls = search(hql, "%" + query + "%", "%" + query + "%");
+        } else {
+            ls = search(hql);
+        }
         return ls;
     }
 

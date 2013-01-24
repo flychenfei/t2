@@ -38,7 +38,7 @@ public class FacebookContactHandlers {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
         List ls = facebookService.getFriendsByPage(token, limit, offset);
-        List ls2 = fContactService.getContactsByPage(user);
+        List ls2 = fContactService.getContactsByPage(user, null);
         Set filterSet = new HashSet();
         for (int i = 0; i < ls2.size(); i++) {
             Contact c = (Contact) ls2.get(i);
@@ -59,9 +59,10 @@ public class FacebookContactHandlers {
     }
 
     @WebGet("/fb/contacts")
-    public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
-                            @WebParam("pageIndex") Integer pageIndex, RequestContext rc) {
-        List ls = fContactService.getContactsByPage(user);
+    public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        List ls = fContactService.getContactsByPage(user, query);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);

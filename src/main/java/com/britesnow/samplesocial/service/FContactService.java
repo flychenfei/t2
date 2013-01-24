@@ -15,8 +15,8 @@ public class FContactService {
     @Inject
     private FacebookService facebookService;
 
-    public List getContactsByPage(User user) {
-        return contactDao.getContactsList(user);
+    public List getContactsByPage(User user, String query) {
+        return contactDao.getContactsList(user,query);
     }
 
     public Contact addContact(String token, Long groupId, String fbid) {
