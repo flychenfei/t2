@@ -29,7 +29,7 @@
                 if (extraData && extraData.objId) {
                     var groupId = getGroupId(extraData.objId);
                     var etag = $(extraData.event.currentTarget).closest("tr").attr("data-etag");
-                    app.deleteGroup(groupId, etag).done(function (extradata) {
+                    app.googleApi.deleteGroup(groupId, etag).done(function (extradata) {
                         if (extradata && extradata.result) {
                             setTimeout((function () {
                                 showGroups();
@@ -45,7 +45,7 @@
         }
     });
     function showGroups() {
-        var groups = app.getGroups();
+        var groups = app.googleApi.getGroups();
         return brite.display("DataTable", ".groups-container", {
             gridData: groups,
             rowAttrs: function(obj){ return "data-type='Group' data-etag='{0}' data-title='{1}'".format(obj.etag, obj.title.text)},

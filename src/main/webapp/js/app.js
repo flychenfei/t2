@@ -74,64 +74,67 @@ var app = app || {};
 
 		return dfd.promise();
 	};
-    app.getContact = function(opts){
-        var params = opts||{};
-        params.method = "Get";
-        return app.getJsonData(contextPath + "/gcontact/get", params);
+
+    app.googleApi = {
+        "getContact": function (opts) {
+            var params = opts || {};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gcontact/get", params);
+        },
+        "createContact": function (contact) {
+            return app.getJsonData(contextPath + "/gcontact/create", contact);
+        },
+        "getGroups": function (opts) {
+            var params = {
+                method: "Get"
+            };
+            $.extend(params, opts);
+            return app.getJsonData(contextPath + "/ggroup/list", params);
+        },
+        "deleteGroup": function (groupId, etag) {
+            var params = {"groupId": groupId, etag: etag};
+            return app.getJsonData(contextPath + "/ggroup/delete", params);
+        },
+        getContacts: function (opts) {
+            var params = {
+                method: "Get"
+            };
+            return app.getJsonData(contextPath + "/gcontact/list", $.extend(params, opts || {}));
+        },
+        deleteContact: function (contactId, etag) {
+            var params = {"contactId": contactId, etag: etag};
+            return app.getJsonData(contextPath + "/gcontact/delete", params);
+        },
+        getEmails: function (opts) {
+            var params = {
+                method: "Get"
+            };
+            return app.getJsonData(contextPath + "/gmail/list", $.extend(params, opts || {}));
+        },
+        getFolders: function () {
+            var params = {method: "Get"};
+            return app.getJsonData(contextPath + "/gmail/folders", params);
+        },
+        deleteFolder: function (folderName) {
+            var params = {method: "Post", folderName: folderName};
+            return app.getJsonData(contextPath + "/gmail/folder/delete", params);
+
+        } ,
+        deleteEmail: function (id) {
+            var params = {id: id};
+            params.method = "Post"
+
+            return app.getJsonData(contextPath + "/gmail/delete", params);
+        }
+
     };
 
-    app.createContact = function(contact){
-        return app.getJsonData(contextPath + "/gcontact/create", contact);
-    };
-
-    app.getGroups = function (opts) {
-        var params = {
-            method:"Get"
-        };
-        $.extend(params, opts);
-        return app.getJsonData(contextPath + "/ggroup/list", params);
-    };
-
-    app.deleteGroup = function(groupId, etag){
-        var params = {"groupId":groupId, etag: etag};
-        return app.getJsonData(contextPath + "/ggroup/delete", params);
-    };
-
-    app.getContacts = function (opts) {
-        var params = {
-            method:"Get"
-        };
-        return app.getJsonData(contextPath + "/gcontact/list", $.extend(params, opts||{}));
-    };
-
-    app.deleteContact = function(contactId, etag){
-        var params = {"contactId":contactId, etag: etag};
-        return app.getJsonData(contextPath + "/gcontact/delete", params);
-    };
-
-    app.getEmails = function (opts) {
-        var params = {
-            method:"Get"
-        };
-        return app.getJsonData(contextPath + "/gmail/list", $.extend(params, opts||{}));
-    };
-
-    app.getFolders=function(){
-        var params = {method: "Get"};
-        return app.getJsonData(contextPath + "/gmail/folders", params);
-    };
-
-    app.deleteFolder = function(folderName){
-        var params = {method: "Post", folderName: folderName};
-        return app.getJsonData(contextPath + "/gmail/folder/delete", params);
-
-    }
-
-    app.deleteEmail=function(id){
-        var params = {id: id};
-        params.method = "Post"
-
-        return app.getJsonData(contextPath + "/gmail/delete", params);
+    app.linkedInApi = {
+        getConnections: function(param){
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/connects", param);
+        }
     };
 
  	app.getFBContacts = function (opts) {

@@ -18,7 +18,7 @@
             "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
-                    app.deleteEmail(extra.objId).done(function(result){
+                    app.googleApi.deleteEmail(extra.objId).done(function(result){
                         console.log(result);
                         setTimeout(function(){
                             showEmails().call(view);
@@ -34,7 +34,7 @@
     });
     function showEmails() {
         return brite.display("DataTable", ".mails-container", {
-            dataProvider: {list: app.getEmails},
+            dataProvider: {list: app.googleApi.getEmails},
             columnDef: [
                 {
                     text: "#",

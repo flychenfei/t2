@@ -25,7 +25,7 @@
             },
             "DELETE_FOLDER": function(event, extraData){
                 if (extraData && extraData.objId) {
-                    app.deleteFolder(extraData.objId).done(function (extradata) {
+                    app.googleApi.deleteFolder(extraData.objId).done(function (extradata) {
                         if (extradata && extradata.result) {
                             setTimeout((function () {
                                 showFolders();
@@ -41,7 +41,7 @@
         }
     });
     function showFolders() {
-        var folders = app.getFolders();
+        var folders = app.googleApi.getFolders();
         return brite.display("DataTable", ".folders-container", {
             gridData: folders,
             rowAttrs: function(obj){ return "data-type='Folder' data-obj_id='{0}' data-fullName='{1}'".format(obj.name, obj.fullName)},

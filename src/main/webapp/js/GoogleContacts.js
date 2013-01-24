@@ -18,7 +18,7 @@
                 if (extraData && extraData.objId) {
                     var contactId = getContactId(extraData.objId);
                     var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");
-                    app.deleteContact(contactId, etag).done(function (extradata) {
+                    app.googleApi.deleteContact(contactId, etag).done(function (extradata) {
                         if (extradata && extradata.result) {
                             setTimeout((function () {
                                 showContacts();
@@ -35,7 +35,7 @@
 
                     var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");
 
-                    app.getContact({contactId:contactId, etag:etag}).done(function (data) {
+                    app.googleApi.getContact({contactId:contactId, etag:etag}).done(function (data) {
                         if(data && data.result){
                             if(data.result.id) {
                                 data.result.id = getContactId(data.result.id);
@@ -73,7 +73,7 @@
 
     function showContacts() {
         brite.display("DataTable", ".contacts-container", {
-            dataProvider: {list: app.getContacts},
+            dataProvider: {list: app.googleApi.getContacts},
             rowAttrs: function (obj) {
                 return " etag='{0}'".format(obj.etag)
             },

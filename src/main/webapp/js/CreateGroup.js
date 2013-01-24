@@ -42,9 +42,9 @@
                     input.closest("div").addClass("error").find("span").html("Please enter valid group name.");
                 } else {
                     if(view.groupId) {
-                        dfd = app.createGroup({groupId:view.groupId,etag:view.etag, groupName: input.val()})
+                        dfd = app.googleApi.createGroup({groupId:view.groupId,etag:view.etag, groupName: input.val()})
                     }else{
-                        dfd = app.createGroup({groupName: input.val()});
+                        dfd = app.googleApi.createGroup({groupName: input.val()});
                     }
                     dfd.done(function (extraData) {
                         setTimeout((function () {
