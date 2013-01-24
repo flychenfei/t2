@@ -218,7 +218,6 @@
                     view.gridData;
 
             return dfd.done(function (data) {
-                //console.log(data);
                 if(view.onDone){
                     view.onDone(data);
                 }

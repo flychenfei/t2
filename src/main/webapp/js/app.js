@@ -134,6 +134,11 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/connects", param);
+        },
+        searchJobs : function(param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/jobs", param);
         }
     };
 
