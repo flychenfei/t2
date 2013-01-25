@@ -35,7 +35,7 @@ var app = app || {};
 			  data : params,
 			  dataType : "json"
 		  }).success(function(data) {
-                //console.log(data);
+                console.log(data);
                 //auth fail
                 if (data && data.AUTH_FAILED) {
 

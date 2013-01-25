@@ -1,0 +1,19 @@
+<script id="tmpl-SalesForceContacts" type="text/html">
+    <div class="SalesForceContacts">
+    	<div>
+    		<span class="btn btnAdd"><i class="icon-plus"></i>Add</span>
+    	</div>
+    	<div class="dataTableContainer">
+	    </div>
+    </div>
+</script>
+<script id="tmpl-SalesForceContacts-rowItem" type="text/html">
+	 <div class="trow" data-entity="{{type}}" data-entity-id="{{Id}}">
+	     <div class="tcell">{{index}}</div>
+	     <div class="tcell">{{Name}}</div>
+	     <div class="tcell">
+	     	<span class="btn btnEdit"><i title="Edit" class="icon-pencil"></i> Edit</span>
+	     	<span class="btn btn-danger btnDelete"><i title="Delete" class="icon-trash"></i> Delete</span>
+	     </div>
+     </div>
+</script>
