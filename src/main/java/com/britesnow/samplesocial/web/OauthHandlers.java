@@ -11,6 +11,7 @@ import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OAuthUtils;
 import com.britesnow.samplesocial.service.FacebookAuthService;
+import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
@@ -33,6 +34,8 @@ public class OauthHandlers {
     private LinkedInAuthService linkedInAuthService;
     @Inject
     private SalesForceAuthService salesForceAuthService;
+    @Inject
+    private GithubAuthService githubAuthService;
 
     @Inject
     private OAuthUtils          oAuthUtils;
@@ -50,6 +53,8 @@ public class OauthHandlers {
             url = linkedInAuthService.getAuthorizationUrl();
         }else if(service == Service.SalesForce){
             url = salesForceAuthService.getAuthorizationUrl();
+        }else if (service == Service.Github) {
+            url = githubAuthService.getAuthorizationUrl();
         }
         rc.getRes().sendRedirect(url);
     }
@@ -78,20 +83,30 @@ public class OauthHandlers {
             socialIdEntityDao.update(s);
         }
     }
-    
+
     @WebModelHandler(startsWith="/linkedinCallback")
-    public void linkedinCallback(RequestContext rc, @WebParam("oauth_token") String reqToken, @WebParam("oauth_verifier") String code) throws Exception {
-        User user = rc.getUser(User.class);
+    public void linkedinCallback(RequestContext rc,@WebUser User user,  @WebParam("oauth_token") String reqToken,
+                                 @WebParam("oauth_verifier") String code) throws Exception {
         if (user!=null && code != null) {
             linkedInAuthService.updateAccessToken(reqToken, code, user.getId());
         }else{
             rc.getRes().sendRedirect(linkedInAuthService.getAuthorizationUrl());
         }
     }
+
+
+    @WebModelHandler(startsWith="/github_callback")
+    public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
+        if (user!=null && code != null) {
+            githubAuthService.updateAccessToken(code, user.getId());
+        }else{
+            rc.getRes().sendRedirect(githubAuthService.getAuthorizationUrl());
+        }
+    }
     
     @WebModelHandler(startsWith="/googleCallback")
-    public void googleCallback(RequestContext rc, @WebParam("code") String code) throws Exception {
-        User user = rc.getUser(User.class);
+    public void googleCallback(@WebUser User user, RequestContext rc, @WebParam("code") String code) throws Exception {
         if (user != null && code != null) {
             googleAuthService.updateAccessToken(code, user.getId());
         } else {
@@ -99,6 +114,7 @@ public class OauthHandlers {
         }
 
     }
+
     
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) throws Exception {

@@ -4,5 +4,6 @@ public enum Service {
     FaceBook,
     LinkedIn,
     SalesForce,
+    Github,
     Google;
 }
