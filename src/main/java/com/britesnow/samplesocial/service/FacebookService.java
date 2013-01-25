@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import com.restfb.BinaryAttachment;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
-import com.restfb.DefaultJsonMapper;
-import com.restfb.JsonMapper;
 import com.restfb.Parameter;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
@@ -65,7 +63,6 @@ public class FacebookService {
         Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection("me/feed", JsonObject.class);
         List ls = myFeed.getData();
         List ls2 = new ArrayList();
-        JsonMapper jsonMapper = new DefaultJsonMapper();
         for (int i = 0; i < ls.size(); i++) {
             JsonObject ob = (JsonObject) ls.get(i);
             Iterator it = ob.keys();

@@ -5,7 +5,6 @@ import java.util.Map;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
@@ -51,7 +50,7 @@ public class FacebookAuthService implements AuthService {
         OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         OAuthRequest request = new OAuthRequest(Verb.GET, getPROTECTED_RESOURCE_URL());
         service.signRequest(new Token(accessToken, getApiSecret()), request);
-        Response response = request.send();
+        request.send();
 //        System.out.println(response.getCode());
 //        System.out.println(response.getBody());
     }
@@ -75,7 +74,6 @@ public class FacebookAuthService implements AuthService {
     //
      public static void main(String[] args) {
      try {
-     FacebookAuthService a = new FacebookAuthService();
      OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey("504604412891475").apiSecret("af295ca74435eca963a781200c79ac67").callback("http://southgatetestjsppage.com:8080/samplesocial/callback_fb").build();
      String authorizationUrl = service.getAuthorizationUrl(null);
      System.out.println(authorizationUrl);
