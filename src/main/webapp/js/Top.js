@@ -30,6 +30,8 @@
             		  brite.display("FacebookScreen");
             		}else if(menu == "linkedIn"){
             		  brite.display("LinkedInScreen");
+            		}else if(menu == "salesforce"){
+            		  brite.display("SalesForceScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},
