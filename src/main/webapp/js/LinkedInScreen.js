@@ -29,6 +29,8 @@
                   showConnections.call(view);
                 }else if(menu == "jobs"){
                     showJobs.call(view);
+                }else if(menu == "companys"){
+                    showCompanys.call(view);
                 }
 
               }
@@ -119,6 +121,35 @@
                 ],
                 opts: {
                     htmlIfEmpty: "Not Jobs found",
+                    withPaging: true,
+                    withCmdDelete:false
+                }
+            });
+        }
+
+        function showCompanys(keywork) {
+            var view = this;
+            brite.display("DataTable", ".LinkedInScreen-content",{
+                dataProvider: {list: app.linkedInApi.searchCompanys},
+                columnDef: [
+                    {
+                        text: "#",
+                        render: function (obj, idx) {
+                            return idx + 1
+                        },
+                        attrs: "style='width: 5%'"
+                    },
+                    {
+                        text: "Name",
+                        render: function (obj) {
+                            return obj.name;
+                        },
+                        attrs: "style='width: 20%'"
+
+                    }
+                ],
+                opts: {
+                    htmlIfEmpty: "Not Companys found",
                     withPaging: true,
                     withCmdDelete:false
                 }
