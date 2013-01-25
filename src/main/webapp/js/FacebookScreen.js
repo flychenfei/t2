@@ -15,7 +15,7 @@
                 var view = this;
                 var $e = view.$el;
                 
-                brite.display("FacebookFriends");
+                brite.display("FacebookPosts");
             },
             events:{
               "btap;.nav li":function(e){
@@ -30,6 +30,9 @@
                   brite.display("FacebookContacts");
                 }else if(menu == "friends"){
                   brite.display("FacebookFriends");
+                }
+                else if(menu == "posts"){
+                  brite.display("FacebookPosts");
                 }
               }
             },

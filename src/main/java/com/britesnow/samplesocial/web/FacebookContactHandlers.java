@@ -106,4 +106,17 @@ public class FacebookContactHandlers {
         }
     }
 
+    @WebGet("/fb/posts")
+    public Object getFacebookPosts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        String token = e.getToken();
+        List ls = facebookService.getFeedList(token, null);
+        m.put("result", ls);
+        if (ls != null && pageSize != null && ls.size() == pageSize) {
+            m.put("hasNext", true);
+        }
+        return m;
+    }
 }

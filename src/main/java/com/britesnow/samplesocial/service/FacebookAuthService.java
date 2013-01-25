@@ -52,8 +52,8 @@ public class FacebookAuthService implements AuthService {
         OAuthRequest request = new OAuthRequest(Verb.GET, getPROTECTED_RESOURCE_URL());
         service.signRequest(new Token(accessToken, getApiSecret()), request);
         Response response = request.send();
-        System.out.println(response.getCode());
-        System.out.println(response.getBody());
+//        System.out.println(response.getCode());
+//        System.out.println(response.getBody());
     }
 
     public String getPROTECTED_RESOURCE_URL() {

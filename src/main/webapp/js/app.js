@@ -54,6 +54,7 @@ var app = app || {};
                     }
                     return;
                 } else {
+                	console.log(data)
                     dfd.resolve(data);
                 }
 
@@ -172,6 +173,12 @@ var app = app || {};
     app.deleteFBContact = function(id){
         var params = {"id":id};
         return app.getJsonData(contextPath + "/fb/contact-delete", params);
+    };
+    app.getFBPosts = function(opts){
+    	var params = {
+            method:"Get"
+        };
+        return app.getJsonData(contextPath + "/fb/posts", $.extend(params, opts||{}));
     };
 
 })(jQuery);

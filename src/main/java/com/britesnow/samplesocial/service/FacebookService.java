@@ -1,17 +1,23 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.restfb.BinaryAttachment;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
+import com.restfb.DefaultJsonMapper;
+import com.restfb.JsonMapper;
 import com.restfb.Parameter;
+import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
-import com.restfb.types.Post;
 import com.restfb.types.User;
-
-import java.io.InputStream;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 public class FacebookService {
     public User getMyInformation(String accessToken) {
@@ -56,7 +62,23 @@ public class FacebookService {
     }
 
     public List getFeedList(String accessToken, String userId) {
-        Connection<Post> myFeed = new DefaultFacebookClient(accessToken).fetchConnection("me/feed", Post.class);
-        return myFeed.getData();
+        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection("me/feed", JsonObject.class);
+        List ls = myFeed.getData();
+        List ls2 = new ArrayList();
+        JsonMapper jsonMapper = new DefaultJsonMapper();
+        for (int i = 0; i < ls.size(); i++) {
+            JsonObject ob = (JsonObject) ls.get(i);
+            Iterator it = ob.keys();
+            Map m = new HashMap();
+            while (it.hasNext()) {
+                String key = (String) it.next();
+                Object value = (Object) ob.get(key);
+                if (value instanceof String) {
+                    m.put(key, value);
+                }
+            }
+            ls2.add(m);
+        }
+        return ls2;
     }
 }
