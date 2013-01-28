@@ -33,22 +33,41 @@ public class SFContactWebHandlers {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
     
-	@WebGet("/salesforce/listContacts")
-	public Map listSFContacts(@WebModel Map m,RequestContext rc) {
-	    User user = rc.getUser(User.class);
-	    String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
-	    String url = SF_URL+"/query?";
-	    String sql = "SELECT Id, Name FROM Contact LIMIT 1000";
+    @WebGet("/salesforce/listContacts")
+    public Map listSFContacts(@WebModel Map m,
+                               @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,RequestContext rc) {
+        User user = rc.getUser(User.class);
+        String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
+        String url = SF_URL+"/query?";
+        if(pageIndex == null){
+            pageIndex = 0;
+        }
+        if(pageSize == null){
+            pageSize = 10;
+        }
+        String sql = "SELECT Id, Name FROM Contact LIMIT "+pageSize+"OFFSET "+pageIndex;
+        String csql = "SELECT count(Id) FROM Contact ";
         sql = Client.encode(sql);
-	    String params = "q="+sql;
-	    HttpMethod method = new GetMethod(url+params);
-	    method.addRequestHeader("Authorization", "OAuth "+token);
-	    method.addRequestHeader("X-PrettyPrint", "1");
-	    String response = Client.send(method);
-	    JSONObject opts = (JSONObject) JsonUtil.toMapAndList(response);
-	    m.put("result", opts.get("records"));
-	    return m ;
-	}
+        csql = Client.encode(csql);
+        
+        String params = "q="+sql;
+        HttpMethod method = new GetMethod(url+params);
+        method.addRequestHeader("Authorization", "OAuth "+token);
+        method.addRequestHeader("X-PrettyPrint", "1");
+        String response = Client.send(method);
+        JSONObject opts = (JSONObject) JsonUtil.toMapAndList(response);
+        m.put("result", opts.get("records"));
+        
+        params = "q="+csql;
+        method = new GetMethod(url+params);
+        method.addRequestHeader("Authorization", "OAuth "+token);
+        method.addRequestHeader("X-PrettyPrint", "1");
+        response = Client.send(method);
+        JSONObject copts = (JSONObject) JsonUtil.toMapAndList(response);
+        JSONObject countObj = (JSONObject) ((JSONArray)copts.get("records")).get(0);
+        m.put("result_count", countObj.get("expr0"));
+        return m ;
+    }
 	
 	@WebGet("/salesforce/getContact")
 	public Map getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
