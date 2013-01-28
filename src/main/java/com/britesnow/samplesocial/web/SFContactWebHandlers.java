@@ -34,7 +34,7 @@ public class SFContactWebHandlers {
     private SocialIdEntityDao socialIdEntityDao;
     
 	@WebGet("/salesforce/listContacts")
-	public JSONArray listSFContacts(@WebModel Map m,RequestContext rc) {
+	public Map listSFContacts(@WebModel Map m,RequestContext rc) {
 	    User user = rc.getUser(User.class);
 	    String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
 	    String url = SF_URL+"/query?";
@@ -46,11 +46,12 @@ public class SFContactWebHandlers {
 	    method.addRequestHeader("X-PrettyPrint", "1");
 	    String response = Client.send(method);
 	    JSONObject opts = (JSONObject) JsonUtil.toMapAndList(response);
-	    return (JSONArray) opts.get("records");
+	    m.put("result", opts.get("records"));
+	    return m ;
 	}
 	
 	@WebGet("/salesforce/getContact")
-	public JSONObject getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
+	public Map getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    User user = rc.getUser(User.class);
 	    String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
 	    String url = SF_URL+"/query?";
@@ -63,7 +64,8 @@ public class SFContactWebHandlers {
 	    String response = Client.send(method);
 	    JSONObject opts = (JSONObject) JsonUtil.toMapAndList(response);
 	    JSONArray array = (JSONArray) opts.get("records");
-	    return (JSONObject) array.get(0);
+	    m.put("result", array.get(0));
+	    return m ;
 	}
 	
 	@WebPost("/salesforce/saveContact")
