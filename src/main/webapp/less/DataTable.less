@@ -1,17 +1,30 @@
 .dataTable{
-  
+  margin: 0 20px;
 }
 
 .dataTable  h3{
 	border: none;
 }
+.dataTable  .table-head-fix{
+  margin-bottom:0px;
+  border-collapse:collapse;
+  border:1px solid #000;
+}
+.dataTable  .table-head-fix th{
+  background:#cccccc;
+  border:1px solid #000;
+}
 
 .dataTable .table-item-container{
-    border:1px solid #ccc;
-   	overflow:auto;
+  overflow:auto;
 }
 .dataTable .table-item-container table{
-    margin-bottom: 5px
+  margin-bottom: 5px;
+  border-collapse:collapse;
+  border:1px solid #000;
+}
+.dataTable .table-item-container table td{
+  border:1px solid #000;
 }
 
 .dataTable .tfoot {
@@ -41,7 +54,7 @@
 	cursor: pointer;
 }
 .dataTable td[data-cmd] {
-	width: 20px;
+	width: 50px;
 }
 
 .dataTable td {

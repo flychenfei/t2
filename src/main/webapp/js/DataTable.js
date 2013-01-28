@@ -225,6 +225,7 @@
                     view.numOfPages = data.numOfPages;
                 } else {
                     var resultCount = data.result_count || data.result.length;
+                    view.resultCount = resultCount;
                     view.numOfPages = Math.ceil(resultCount / opts.pageSize);
                 }
                 if(data.hasOwnProperty("hasNext")){
@@ -299,8 +300,8 @@
                 html += "</th>";
             }
 
-            (view.opts.withCmdEdit||view.opts.cmdEdit) && (html += "<th style='width:20px'></th>");
-            (view.opts.withCmdDelete||view.opts.cmdDelete) && (html += "<th style='width:20px'></th>");
+            (view.opts.withCmdEdit||view.opts.cmdEdit) && (html += "<th style='width:50px'></th>");
+            (view.opts.withCmdDelete||view.opts.cmdDelete) && (html += "<th style='width:50px'></th>");
 
             html += "</tr>";
             return html;
@@ -425,7 +426,7 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            var pagination = new app.Pagination(view.gridData.length,null,opts.pageSize);
+            var pagination = new app.Pagination(view.resultCount,null,opts.pageSize);
             pagination.go(opts.pageIndex+1);
             return app.render("tmpl-DataTable-Foot",pagination.getPageInfo());
         }
