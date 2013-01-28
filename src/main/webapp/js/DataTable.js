@@ -129,7 +129,7 @@
 
                 },
 
-                "change; .pageSize select":function (e) {
+                "change;select[name='pageSize']":function (e) {
                     var view = this;
                     var val = $(e.currentTarget).val();
                     view.opts.dataOpts.pageIndex = 0;
@@ -260,7 +260,7 @@
                 htmlContent = renderTableBody.call(view) ;
                 $tableContent.find("tbody").append(htmlContent);
                 if (view.opts.withPaging) {
-                    $tableContent.append(renderPagingFooter.call(view));
+                    $tableContent.prepend(renderPagingFooter.call(view));
                 }
             }
             return $tableContent;
@@ -425,8 +425,9 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            return app.render("tmpl-DataTable-Foot",{pageIndex:opts.pageIndex+1,numOfPages:view.numOfPages,
-                pageSize: opts.pageSize, hasNext:view.hasNext});
+            var pagination = new app.Pagination(view.gridData.length,null,opts.pageSize);
+            pagination.go(opts.pageIndex+1);
+            return app.render("tmpl-DataTable-Foot",pagination.getPageInfo());
         }
 
         function renderEmptyTableBody() {

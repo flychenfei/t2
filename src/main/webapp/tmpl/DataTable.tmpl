@@ -21,22 +21,60 @@
 
 <script id="tmpl-DataTable-Foot" type="text/html">
     <div class="tfoot">
-        {{#check pageIndex ">" 1 }}
-        <span class="navLink prev">Previous</span>
-        {{/check}}
-        <span class="pageIndex"> Page {{pageIndex }} {{#check numOfPages ">" 1 }}of {{numOfPages}}{{/check}} </span>
-        <span class="pageSize">
-         <select>
-             <option value="5" {{#check pageSize "==" 5}}selected {{/check}}>5</option>
-             <option value="10" {{#check pageSize "==" 10}}selected {{/check}}>10</option>
-             <option value="25" {{#check pageSize "==" 25}}selected {{/check}}>25</option>
-             <option value="50" {{#check pageSize "==" 50}}selected {{/check}}>50</option>
-             <option value="100" {{#check pageSize "==" 100}}selected {{/check}}>100</option>
-         </select> Per Page
+        {{#gt pageCount 1}}
+        <span class="goto">
+          <span class="gotoBtn">Go to:</span>
+          <input name="gotoPage" type="text" value="{{pageNum}}" />
         </span>
-        {{#if hasNext}}
-        <span class="navLink next">Next</span>
-        {{/if}}
+        {{/gt}}
+        <span class="showRows">
+          Show Rows
+          <select name="pageSize">
+          <option {{#equal pageSize 5}}selected{{/equal}}>5</option>
+          <option {{#equal pageSize 10}}selected{{/equal}}>10</option>
+          <option {{#equal pageSize 15}}selected{{/equal}}>15</option>
+          <option {{#equal pageSize 25}}selected{{/equal}}>25</option>
+          <option {{#equal pageSize 50}}selected{{/equal}}>50</option>
+          <option {{#equal pageSize 100}}selected{{/equal}}>100</option>
+          <option {{#equal pageSize 500}}selected{{/equal}}>500</option>
+          </select>
+        </span>
+        <span class="info">{{startRows}} - {{endRows}} of {{sizeCount}}</span>
+        {{#gt pageCount 1}}
+          <span class="nums">
+            <span class="num prevStart {{#unless isFirst}}action{{/unless}}">&lt;&lt;</span>
+            <span class="num prev {{#unless isFirst}}action{{/unless}}">&lt;</span>
+            {{#lt pageNum 3}}
+              {{#gt pageCount 6}} 
+                {{#each getArrayFrom1To6}}
+                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+                {{/each}}
+              {{else}}
+                {{#each getArrayFrom1ToPC }}
+                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+                {{/each}}
+              {{/gt}}
+            {{else}}
+              {{#gtt pageCount pageNum 3 }}
+                {{#each getArrayFromPr2ToPa3}}
+                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+                {{/each}}
+              {{else}}
+                {{#gt pageCount 6}}
+                  {{#each getArrayFromPCr6ToPC}}
+                    <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+                  {{/each}}
+                {{else}}
+                  {{#each getArrayFrom1ToPC}}
+                    <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+                  {{/each}}
+                {{/gt}}
+              {{/gtt}}
+            {{/lt}}
+            <span class="num next {{#unless isLast}}action{{/unless}}">&gt;</span>
+            <span class="num nextEnd {{#unless isLast}}action{{/unless}}">&gt;&gt;</span>
+          </span>
+        {{/gt}}
     </div>
 </script>
 

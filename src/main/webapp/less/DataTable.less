@@ -1,3 +1,7 @@
+.dataTable{
+  
+}
+
 .dataTable  h3{
 	border: none;
 }
@@ -11,38 +15,13 @@
 }
 
 .dataTable .tfoot {
-	width: 98%;
-	margin-left: 10px;
-	margin-bottom: 30px;
-    margin-top: 5px;
+  display:block;
+  float:right;
+	margin-right: 20px;
+  margin-top: 5px;
 	position: relative;
 }
- 
-.dataTable .tfoot .prev {
-	display: inline-block;
-	float:left;
-    cursor: pointer;
-} 
- 
- 
-.dataTable .tfoot .next {
-	display: inline-block;
-	float: right;
-    cursor: pointer;
-}
 
-
-.dataTable .tfoot .pageIndex {
-	display:inline-block;
-	left:30%;
-	position: absolute;
-}
-
-.dataTable .tfoot .pageSize {
-	display: inline-block;
-	left:66%;
-	position:absolute;
-}
 	
 .dataTable .thead-ico {
 	display:inline-block;
@@ -94,4 +73,58 @@
 	text-align: center;
 	border-bottom: none;
 	width:100%;
+}
+
+.dataTable .showRows{
+  display: block;
+  float:left;
+  margin-right:20px
+}
+.dataTable .goto{
+  line-height:30px;
+  display: block;
+  float:left;
+  margin-right:20px
+}
+.dataTable .info{
+  display: block;
+  float:left;
+  line-height:30px;
+  margin-right:20px
+}
+.dataTable input[name='gotoPage']{
+  width:50px;
+  height:30px;
+}
+.dataTable select[name='pageSize']{
+  width:80px;
+}
+.dataTable .nums{
+  float:left;
+  border:1px solid #dddddd;
+}
+.dataTable .nums .num{
+  display:block;
+  float:left;
+  border-right:1px solid #dddddd;
+  height:30px;
+  line-height:30px;
+  text-align:center;
+  min-width:30px;
+}
+.dataTable .nums .num{
+  display:block;
+  float:left;
+  border-right:1px solid #dddddd;
+  height:30px;
+  line-height:30px;
+  text-align:center;
+  min-width:30px;
+}
+.dataTable .nums .num.action{
+  color:#0088cc;
+  cursor:pointer;
+}
+.dataTable .nums .num:last-child{
+  border-right:0px solid #dddddd;
 }
