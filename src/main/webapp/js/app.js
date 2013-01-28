@@ -193,50 +193,6 @@ var app = app || {};
 
 })(jQuery);
 
-//handlebars plugin
-(function($) {
-    Handlebars.registerHelper('check', function (lvalue, operator, rvalue, options) {
-
-        var operators, result;
-
-        if (arguments.length < 3) {
-            throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
-        }
-
-        if (options === undefined) {
-            options = rvalue;
-            rvalue = operator;
-            operator = "===";
-        }
-
-        operators = {
-            '==': function (l, r) { return l == r; },
-            '===': function (l, r) { return l === r; },
-            '!=': function (l, r) { return l != r; },
-            '!==': function (l, r) { return l !== r; },
-            '<': function (l, r) { return l < r; },
-            '>': function (l, r) { return l > r; },
-            '<=': function (l, r) { return l <= r; },
-            '>=': function (l, r) { return l >= r; },
-            'typeof': function (l, r) { return typeof l == r; }
-        };
-
-        if (!operators[operator]) {
-            throw new Error("Handlerbars Helper 'compare' doesn't know the operator " + operator);
-        }
-
-        result = operators[operator](lvalue, rvalue);
-
-        if (result) {
-            return options.fn(this);
-        } else {
-            return options.inverse(this);
-        }
-
-    });
-
-})(jQuery);
-
 (function ($) {
     //add format to string
     String.prototype.format = function (args) {
@@ -297,4 +253,143 @@ var app = app || {};
         }
         return format;
     };
+    
+})(jQuery);
+
+
+//get pagination object for some list data
+(function($){
+  
+  var _pageNum = 1;
+  var _pageSize = 25;
+  
+  var _dataList,_sizeCount,_pageCount;
+  
+  // --------- app.Pagination Constructor --------- //
+  function Pagination(count,list,pageSize){
+      //init private members
+      _dataList = [].concat(list);
+      _sizeCount = count;
+      if(typeof pageSize != 'undefined'){
+        _pageSize = pageSize;
+      }
+      _pageCount = getPageCount();
+      return this;
+  }
+  app.Pagination = Pagination; 
+  // --------- /app.Pagination Constructor --------- //
+
+  // --------- Public Methods --------- //
+  Pagination.prototype.getList = function(){
+    return _dataList;
+  }
+  Pagination.prototype.getPageInfo = function(){
+    return this.go(_pageNum);
+  }
+  Pagination.prototype.setPageSize = function(pageSize){
+    if(typeof pageSize != "undefined"){
+      _pageSize = pageSize;
+      _pageCount = getPageCount();
+    }
+  }
+  Pagination.prototype.go = function(pageNum){
+    if(pageNum < 1){
+      pageNum = 1;
+    }
+    var pageSizeNum = _pageSize;
+    if(_pageSize == "all"){
+      pageSizeNum = _sizeCount;
+    }
+    var startRows = ( pageNum-1 ) * pageSizeNum + 1;
+    var endRows = pageNum * pageSizeNum;
+    if(_sizeCount == 0){
+      startRows = 0;
+      endRows = 0;
+    }else{
+      if(startRows > _sizeCount){
+        startRows = ( _pageCount-1 ) * pageSizeNum + 1; 
+        endRows = _sizeCount;
+        _pageNum = _pageCount;
+      }else if(startRows <= _sizeCount && endRows > _sizeCount){
+        endRows = _sizeCount;
+        _pageNum = _pageCount;
+      }else{
+        _pageNum = pageNum;
+      }
+    }
+    
+    //var subList = [];
+    //for(var i = startRows-1 ; i < endRows;i++){
+      //subList.push(_dataList[i]);
+    //}
+
+    var pageCount = getPageCount();
+    var pageInfo = {
+        pageNum:_pageNum,
+        pageSize:_pageSize,
+        sizeCount:_sizeCount,
+        pageCount:pageCount,
+        pageList:_dataList,
+        startRows:startRows,
+        endRows:endRows,
+        isFirst:isFirst(),
+        isLast:isLast(),
+        getArrayFrom1To6:getArrayFromMToN(1,6),
+        getArrayFrom1ToPC:getArrayFromMToN(1,pageCount),
+        getArrayFromPr2ToPa3:getArrayFromMToN(_pageNum-2,_pageNum+3),
+        getArrayFromPCr6ToPC:getArrayFromMToN(pageCount-6,pageCount)
+      }
+
+    return pageInfo;
+  }
+  Pagination.prototype.next = function(){
+    return this.go(_pageNum + 1);
+  }
+  Pagination.prototype.prev = function(){
+    return this.go(_pageNum - 1);
+  }
+  Pagination.prototype.goFirst = function(){
+    return this.go(1);
+  }
+  Pagination.prototype.goLast = function(){
+    return this.go(_pageCount);
+  }
+  // --------- /Public Methods --------- //
+  
+  function isFirst(){
+    if(_pageNum == 1){
+      return true;
+    }
+    return false;
+  }
+  
+  function isLast(){
+    if(_pageNum == _pageCount){
+      return true;
+    }
+    return false;
+  }
+  
+  function getPageCount(){
+    var pageSizeNum = _pageSize;
+    if(_pageSize == "all"){
+      pageSizeNum = _sizeCount;
+    }
+    _pageCount = Math.ceil(_sizeCount / pageSizeNum);
+    return _pageCount;
+  }
+  
+  
+  
+  //get a array from m to n, m and n must be number. m must be smaller than or equal n
+  function getArrayFromMToN(m,n){
+    var arr = [];
+    if(typeof m == 'number' && typeof n == 'number' && m <= n){
+      for(var i=m; i<=n ; i++){
+        arr.push({num:i});
+      }
+      return arr;
+    }
+    return arr;
+  };
 })(jQuery);

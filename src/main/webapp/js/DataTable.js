@@ -129,7 +129,7 @@
 
                 },
 
-                "change; .pageSize select":function (e) {
+                "change;select[name='pageSize']":function (e) {
                     var view = this;
                     var val = $(e.currentTarget).val();
                     view.opts.dataOpts.pageIndex = 0;
@@ -225,6 +225,7 @@
                     view.numOfPages = data.numOfPages;
                 } else {
                     var resultCount = data.result_count || data.result.length;
+                    view.resultCount = resultCount;
                     view.numOfPages = Math.ceil(resultCount / opts.pageSize);
                 }
                 if(data.hasOwnProperty("hasNext")){
@@ -260,7 +261,7 @@
                 htmlContent = renderTableBody.call(view) ;
                 $tableContent.find("tbody").append(htmlContent);
                 if (view.opts.withPaging) {
-                    $tableContent.append(renderPagingFooter.call(view));
+                    $tableContent.prepend(renderPagingFooter.call(view));
                 }
             }
             return $tableContent;
@@ -299,8 +300,8 @@
                 html += "</th>";
             }
 
-            (view.opts.withCmdEdit||view.opts.cmdEdit) && (html += "<th style='width:20px'></th>");
-            (view.opts.withCmdDelete||view.opts.cmdDelete) && (html += "<th style='width:20px'></th>");
+            (view.opts.withCmdEdit||view.opts.cmdEdit) && (html += "<th style='width:50px'></th>");
+            (view.opts.withCmdDelete||view.opts.cmdDelete) && (html += "<th style='width:50px'></th>");
 
             html += "</tr>";
             return html;
@@ -425,8 +426,9 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            return app.render("tmpl-DataTable-Foot",{pageIndex:opts.pageIndex+1,numOfPages:view.numOfPages,
-                pageSize: opts.pageSize, hasNext:view.hasNext});
+            var pagination = new app.Pagination(view.resultCount,null,opts.pageSize);
+            pagination.go(opts.pageIndex+1);
+            return app.render("tmpl-DataTable-Foot",pagination.getPageInfo());
         }
 
         function renderEmptyTableBody() {
