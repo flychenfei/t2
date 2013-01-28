@@ -119,4 +119,18 @@ public class FacebookContactHandlers {
         }
         return m;
     }
+
+    @WebPost("/fb/post-add")
+    public WebResponse addFacebookPost(@WebUser User user, @WebParam("value") String value) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.publish(token, e.getFbid(), value);
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
 }

@@ -175,6 +175,11 @@ var app = app || {};
         return app.getJsonData(contextPath + "/fb/contact-add", params);
     };
     
+    app.addPost = function(value){
+        var params = {"value":value};
+        return app.getJsonData(contextPath + "/fb/post-add", params);
+    };
+    
     app.deleteFBContact = function(id){
         var params = {"id":id};
         return app.getJsonData(contextPath + "/fb/contact-delete", params);

@@ -17,6 +17,15 @@
 				
 			},
 			events : {
+				"click;.postBtn" : function(e) {
+					var view = this;
+					var $e = view.$el;
+					var value = $e.find(".post").val();
+					app.addPost(value).done(function(){
+						view.refreshPostsList.call(view);
+						$e.find(".post").empty();
+					});
+				},
 			},
 
 			docEvents : {
@@ -31,6 +40,12 @@
 				if (!$e) {
 					return;
 				};
+				function fixNull(v){
+					if (v) {
+						return v;
+					};
+					return  "";
+				}
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
 						list : app.getFBPosts
@@ -41,7 +56,7 @@
 					columnDef : [{
 						text : "News",
 						render : function(obj) {
-							return "<a href='#'  data-value='" + obj.fbid + "'>" + obj.story + "</a>"
+							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story)+" "+fixNull(obj.message) + "</a>"
 						},
 						attrs : "style='width: 400px'"
 

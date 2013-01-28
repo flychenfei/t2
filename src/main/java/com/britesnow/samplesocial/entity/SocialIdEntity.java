@@ -22,6 +22,7 @@ public class SocialIdEntity extends BaseEntity {
     private Service service;
     private String email;
     private String secret;
+    private String fbid;
     @Transient
     private boolean isValid = false;
     
@@ -72,5 +73,11 @@ public class SocialIdEntity extends BaseEntity {
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+    public String getFbid() {
+        return fbid;
+    }
+    public void setFbid(String fbid) {
+        this.fbid = fbid;
     }
 }
