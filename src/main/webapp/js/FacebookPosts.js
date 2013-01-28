@@ -17,55 +17,10 @@
 				
 			},
 			events : {
-				"click;img,a" : function(e) {
-					var view = this;
-					var $e = view.$el;
-					var id = $(e.currentTarget).attr("data-value");
-					var d = {
-						fbid : id
-					};
-					app.getFacebookFriendDetail(d).done(function(data) {
-						var $html = app.render("tmpl-FacebookContact-detail", data.result);
-						$(".Contact-detail").find(".modal-body").html($html);
-						$(".Contact-detail").show();
-
-					})
-				},
-				"btap;.close" : function(e) {
-					var view = this;
-					var $e = view.$el;
-					var $div = $(e.currentTarget).closest(".modal");
-					$div.hide();
-				},
-				"btap;.formSearch" : function(e) {
-					var view = this;
-					view.refreshPostsList.call(view);
-				},
-				
-				"keyup":function(e){
-					if(e.which == 13){
-	                    var view = this;
-						view.refreshPostsList.call(view);
-                	}
-				}
 			},
 
 			docEvents : {
-				"DELETE_FBCONTACT" : function(event, extraData) {
-					var view = this;
-					if (extraData && extraData.objId) {
-						app.deleteFBContact(extraData.objId).done(function(extradata) {
-							if (extradata && extradata.result) {
-								setTimeout((function() {
-									view.refreshPostsList.call(view);
-									$(".result").show(function() {
-										$(".result").hide(3000);
-									});
-								}), 100);
-							}
-						});
-					}
-				}
+				
 			},
 
 			daoEvents : {
