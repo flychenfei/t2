@@ -1,0 +1,1 @@
+java -jar c:/apps/jcruncherEx.jar 

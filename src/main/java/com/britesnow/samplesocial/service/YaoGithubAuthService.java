@@ -14,22 +14,22 @@ import com.google.inject.Singleton;
 @Singleton
 public class YaoGithubAuthService implements AuthService{
 
-	@Inject
+    @Inject
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
-	
+
     @Inject
     public YaoGithubAuthService(OAuthServiceHelper oauthServiceHelper) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.SalesForce);
     }
 
-	@Override
-	public SocialIdEntity getSocialIdEntity(Long userId) {
-		return socialIdEntityDao.getSocialdentity(userId, ServiceType.Github);
-	}
-	
-	public String getAuthorizationUrl() {
-	    return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
-	}
+    @Override
+    public SocialIdEntity getSocialIdEntity(Long userId) {
+        return socialIdEntityDao.getSocialdentity(userId, ServiceType.Github);
+    }
+
+    public String getAuthorizationUrl() {
+        return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
+    }
 
 }
