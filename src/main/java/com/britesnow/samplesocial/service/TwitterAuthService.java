@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
-import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.snow.web.binding.ApplicationProperties;
@@ -18,12 +17,19 @@ public class TwitterAuthService{
     @ApplicationProperties
     private Map cfg;
 	
+//    public String getAuthorizationUrl() {
+//        OAuthService service = new ServiceBuilder().provider(TwitterApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
+////        Token requestToken = service.getRequestToken();
+//        String authorizationUrl = service.getAuthorizationUrl(null);
+//        System.out.println(authorizationUrl);
+//        return authorizationUrl;
+//    }
+    
     public String getAuthorizationUrl() {
-        OAuthService service = new ServiceBuilder().provider(TwitterApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
-        Token requestToken = service.getRequestToken();
-        String authorizationUrl = service.getAuthorizationUrl(requestToken);
-        System.out.println(authorizationUrl);
-        return authorizationUrl;
+    	 OAuthService service = new ServiceBuilder().provider(TwitterApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
+    	 String authorizationUrl = service.getAuthorizationUrl(null);
+    	 System.out.println(authorizationUrl);
+    	 return authorizationUrl;
     }
     
     public String getApiKey() {
