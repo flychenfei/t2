@@ -126,6 +126,14 @@ var app = app || {};
             params.method = "Post"
 
             return app.getJsonData(contextPath + "/gmail/delete", params);
+        },
+        getMail: function(id){
+            var params = {id: id};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmail/get", params);
+        },
+        sendMail: function(params) {
+            return app.getJsonData(contextPath + "/gmail/send", params);
         }
 
     };

@@ -26,6 +26,22 @@
 
                     });
                 }
+            },
+            "SHOW_INFO": function(event, extra) {
+                console.log(extra);
+                var data = {id: extra.objId};
+                console.log(data);
+                brite.display("GoogleMailInfo", "body", data);
+            },
+            "REPLAY_EMAIL": function(event, extra) {
+                app.googleApi.getMail(extra.objId).done(function(data){
+                    if(data.success){
+                        console.log(data);
+                        brite.display("GoogleMailSend", "body",data.result);
+                    }
+
+                })
+
             }
         },
 
@@ -41,7 +57,7 @@
                     render: function (obj, idx) {
                         return idx + 1
                     },
-                    attrs: "style='width: 5%'"
+                    attrs: "data-cmd='SHOW_INFO' style='width: 5%;cursor: pointer'"
                 },
                 {
                     text: "Date",
@@ -64,6 +80,12 @@
                     render: function (obj) {
                         return obj.subject
                     }
+                },{
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-user'/>"
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
                 }
             ],
             opts: {

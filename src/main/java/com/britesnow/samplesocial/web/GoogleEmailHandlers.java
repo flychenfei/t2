@@ -9,9 +9,7 @@ import java.util.Map;
 
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeUtility;
+
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
@@ -62,7 +60,7 @@ public class GoogleEmailHandlers {
         List<MailInfo> mailInfos = new ArrayList<MailInfo>();
 
         for (Message message : pair.getSecond()) {
-            MailInfo info = buildMailInfo(message);
+            MailInfo info = gMailService.buildMailInfo(message);
             mailInfos.add(0, info);
         }
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
@@ -70,16 +68,11 @@ public class GoogleEmailHandlers {
 
     @WebGet("/gmail/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
-        Message message = gMailService.getEmail(user, id);
-        MailInfo info = buildMailInfo(message);
-        info.setContent(getContent(message));
+        MailInfo info = gMailService.getEmail(user, id);
         return WebResponse.success(info);
     }
 
-    private MailInfo buildMailInfo(Message message) throws MessagingException, UnsupportedEncodingException {
-        return new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
-                decodeText(message.getFrom()[0].toString()), message.getSubject());
-    }
+
 
     @WebPost("/gmail/delete")
     public WebResponse deleteEmail(@WebUser User user,
@@ -88,45 +81,6 @@ public class GoogleEmailHandlers {
         return WebResponse.success(true);
     }
 
-
-    private String decodeText(String text) throws UnsupportedEncodingException {
-        if (text == null) {
-            return null;
-        }
-        if (text.startsWith("=?GB") || text.startsWith("=?gb")) {
-            text = MimeUtility.decodeText(text);
-        } else {
-            text = new String(text.getBytes("ISO8859_1"));
-        }
-        return text;
-
-    }
-
-    private String getContent(Message message) throws Exception {
-        StringBuffer str = new StringBuffer();
-        if (message.isMimeType("text/plain"))
-            str.append(message.getContent().toString());
-        if (message.isMimeType("multipart/alternative")) {
-            Multipart part = (Multipart) message.getContent();
-            str.append(part.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/related")) {
-            Multipart part = (Multipart) message.getContent();
-            Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
-            str.append(cpart.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/mixed")) {
-            Multipart part = (Multipart) message.getContent();
-            if (part.getBodyPart(0).isMimeType("text/plain")) {
-                str.append(part.getBodyPart(0).getContent());
-            }
-            if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
-                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
-                str.append(multipart.getBodyPart(1).getContent());
-            }
-        }
-        return str.toString();
-    }
 
     @WebPost("/gmail/send")
     public WebResponse sendMail(@WebUser User user,
@@ -145,7 +99,7 @@ public class GoogleEmailHandlers {
         if (msgs.length > 0) {
 
             for (Message msg : msgs) {
-                infos.add(buildMailInfo(msg));
+                infos.add(gMailService.buildMailInfo(msg));
             }
         }
         return WebResponse.success(infos);
