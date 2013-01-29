@@ -1,0 +1,34 @@
+<script id="tmpl-GoogleMailSend" type="text/html">
+    <div class="MailSend modal">
+        <div class="MailSend-header modal-header">
+            <div class="close btnClose"><i class="icon-remove"></i></div>
+            <h3>New Mail</h3>
+        </div>
+        <div class="MailSend-content modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <div class="control-label">Subject:</div>
+                    <div class="controls">
+                        <input type='text' name="subject" {{#if subject }} value="re: {{subject}}" {{/if}} />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">To:</div>
+                    <div class="controls">
+                        <input type='text' name="to" value="{{from}}" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Content:</div>
+                    <div class="controls">
+                        <textarea name="content">{{content}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="MailSend-footer modal-footer">
+            <div class="btn btn-primary btnCreate">Send</div>
+            <div class="btn btnClose">Close</div>
+        </div>
+    </div>
+</script>
