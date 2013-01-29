@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.mail.OAuth2Authenticator;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.snow.util.Pair;
@@ -15,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
 import javax.mail.search.FromStringTerm;
 import javax.mail.search.OrTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,18 +80,17 @@ public class GMailService {
         return imap.getFolder(folderName);
     }
 
-    public Message getEmail(User user, int emailId) throws Exception {
+    public MailInfo getEmail(User user, int emailId) throws Exception {
         IMAPStore imap = getImapStore(user);
         Folder inbox = imap.getFolder("INBOX");
-        inbox.open(Folder.READ_ONLY);
-        FetchProfile profile = new FetchProfile();
-        profile.add(FetchProfile.Item.ENVELOPE);
         if (!inbox.isOpen()) {
             inbox.open(Folder.READ_ONLY);
         }
 
         Message message = inbox.getMessage(emailId);
-        return message;
+        MailInfo info = buildMailInfo(message);
+        info.setContent(getContent(message));
+        return info;
     }
 
     public void deleteEmail(User user, int emailId) throws Exception {
@@ -174,6 +176,50 @@ public class GMailService {
             }
         }
         throw new IllegalArgumentException("access token is invalid");
+    }
+
+    private String getContent(Message message) throws Exception {
+        StringBuffer str = new StringBuffer();
+        if (message.isMimeType("text/plain"))
+            str.append(message.getContent().toString());
+        if (message.isMimeType("multipart/alternative")) {
+            Multipart part = (Multipart) message.getContent();
+            str.append(part.getBodyPart(1).getContent().toString());
+        }
+        if (message.isMimeType("multipart/related")) {
+            Multipart part = (Multipart) message.getContent();
+            Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
+            str.append(cpart.getBodyPart(1).getContent().toString());
+        }
+        if (message.isMimeType("multipart/mixed")) {
+            Multipart part = (Multipart) message.getContent();
+            if (part.getBodyPart(0).isMimeType("text/plain")) {
+                str.append(part.getBodyPart(0).getContent());
+            }
+            if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
+                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
+                str.append(multipart.getBodyPart(1).getContent());
+            }
+        }
+        return str.toString();
+    }
+
+    public MailInfo buildMailInfo(Message message) throws MessagingException, UnsupportedEncodingException {
+        return new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
+                decodeText(message.getFrom()[0].toString()), message.getSubject());
+    }
+
+    private String decodeText(String text) throws UnsupportedEncodingException {
+        if (text == null) {
+            return null;
+        }
+        if (text.startsWith("=?GB") || text.startsWith("=?gb")) {
+            text = MimeUtility.decodeText(text);
+        } else {
+            text = new String(text.getBytes("ISO8859_1"));
+        }
+        return text;
+
     }
 
 

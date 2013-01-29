@@ -15,7 +15,7 @@
                 var view = this;
                 var $e = view.$el;
                 
-                brite.display("GoogleContacts");
+                brite.display("GoogleMails");
             },
             events:{
               "btap;.nav li":function(e){

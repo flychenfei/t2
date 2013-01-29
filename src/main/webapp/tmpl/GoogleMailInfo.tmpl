@@ -1,0 +1,39 @@
+<script id="tmpl-GoogleMailInfo" type="text/html">
+	<div class="MailInfo modal">
+		<div class="MailInfo-header modal-header">
+			<div class="close btnClose"><i class="icon-remove"></i></div>
+			<h3>{{subject}}</h3>
+		</div>
+		<div class="MailInfo-content modal-body">
+			<div class="form-horizontal">
+				<div class="control-group">
+					<div class="control-label">Subject:</div>
+					<div class="controls">
+						{{subject}}
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">From:</div>
+					<div class="controls">
+						{{from}}
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">Date:</div>
+					<div class="controls">
+						{{date}}
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">Content:</div>
+					<div class="controls">
+						<iframe id="mailInfo" src="data:text/html;charset=utf-8,{{content}}"  />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="MailInfo-footer modal-footer">
+			<div class="btn btnClose">Close</div>
+		</div>
+	</div>  
+</script>
