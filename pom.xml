@@ -34,7 +34,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
               <tasks>
                 <exec executable="java">
                   <arg line="-jar"/>
-                  <arg line="apps/jcruncherEx.jar"/>
+                  <arg line="/apps/jcruncherEx.jar"/>
                 </exec>
               </tasks>
             </configuration>
