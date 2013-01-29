@@ -33,7 +33,7 @@ public class FacebookAuthService implements AuthService {
     }
 
     public String getAuthorizationUrl() {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
+        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).scope("publish_actions").scope("stream_publish").scope("create_event").callback(getCallBackUrl()).build();
         String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
         System.out.println(authorizationUrl);
         return authorizationUrl;
@@ -51,8 +51,8 @@ public class FacebookAuthService implements AuthService {
         OAuthRequest request = new OAuthRequest(Verb.GET, getPROTECTED_RESOURCE_URL());
         service.signRequest(new Token(accessToken, getApiSecret()), request);
         request.send();
-//        System.out.println(response.getCode());
-//        System.out.println(response.getBody());
+        // System.out.println(response.getCode());
+        // System.out.println(response.getBody());
     }
 
     public String getPROTECTED_RESOURCE_URL() {
@@ -72,20 +72,20 @@ public class FacebookAuthService implements AuthService {
     }
 
     //
-     public static void main(String[] args) {
-     try {
-     OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey("504604412891475").apiSecret("af295ca74435eca963a781200c79ac67").callback("http://southgatetestjsppage.com:8080/samplesocial/callback_fb").build();
-     String authorizationUrl = service.getAuthorizationUrl(null);
-     System.out.println(authorizationUrl);
-//     String code =
-//     "AQAwCbq8WZ1BrDJmniPjNv-9ttPsDA0YyMrf0vCxnPHwpgk8tfmydBvrZtkVNsYd963wVJhPWl770RvwLMZgnhzdJ1C1zSTDWn7kwdP6VQAqt-MoeT_sba776LopHQlUL6qEtLxiAtL096WCa7k6Nk0iAc1ij-1BZVx-61tjufYyNgmSHYHklRS1_1cU530JctvyIqFbvRbMfbg8MML1-H59#_=_";
-//     // String token = a.getAccessToken(code);
-//     // System.out.println(token);
-//     String token =
-//     "AAAHK717IUVMBAJhWdsmVCqYLZCbw7KIZCdvsK0NAsD7dDNrGnjCGm1QQHvuHvfRJVYEfSmYes0VsJpzWZCZBWKbbYoTv9aVjFomp96dkKgZDZD";
-//     a.verfierAccessToken(token);
-     } catch (Exception e) {
-     e.printStackTrace();
-     }
-     }
+    public static void main(String[] args) {
+        try {
+            OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey("504604412891475").apiSecret("af295ca74435eca963a781200c79ac67").callback("http://southgatetestjsppage.com:8080/samplesocial/callback_fb").build();
+            String authorizationUrl = service.getAuthorizationUrl(null);
+            System.out.println(authorizationUrl);
+            // String code =
+            // "AQAwCbq8WZ1BrDJmniPjNv-9ttPsDA0YyMrf0vCxnPHwpgk8tfmydBvrZtkVNsYd963wVJhPWl770RvwLMZgnhzdJ1C1zSTDWn7kwdP6VQAqt-MoeT_sba776LopHQlUL6qEtLxiAtL096WCa7k6Nk0iAc1ij-1BZVx-61tjufYyNgmSHYHklRS1_1cU530JctvyIqFbvRbMfbg8MML1-H59#_=_";
+            // // String token = a.getAccessToken(code);
+            // // System.out.println(token);
+            // String token =
+            // "AAAHK717IUVMBAJhWdsmVCqYLZCbw7KIZCdvsK0NAsD7dDNrGnjCGm1QQHvuHvfRJVYEfSmYes0VsJpzWZCZBWKbbYoTv9aVjFomp96dkKgZDZD";
+            // a.verfierAccessToken(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
