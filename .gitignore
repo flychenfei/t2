@@ -15,3 +15,4 @@ bin/
 build.xml
 src/main/webapp/js/templates.js
 src/main/webapp/css/
+apps/
