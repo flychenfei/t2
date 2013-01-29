@@ -1,24 +1,28 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
-import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.oauth.OAuthType;
-import com.britesnow.samplesocial.oauth.OAuthUtils;
-import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.samplesocial.oauth.OauthTokenExpireException;
-import com.britesnow.snow.util.JsonUtil;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
+import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
+import com.britesnow.samplesocial.dao.SocialIdEntityDao;
+import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.OauthException;
+import com.britesnow.samplesocial.oauth.OauthTokenExpireException;
+import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.snow.util.JsonUtil;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 
 @Singleton
@@ -26,16 +30,16 @@ public class GoogleAuthService implements AuthService {
 
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
-    private final OAuthService oAuthService;
+    private OAuthService oAuthService;
 
     @Inject
-    public GoogleAuthService(OAuthUtils oAuthUtils) {
-        oAuthService = oAuthUtils.getOauthService(OAuthType.GOOGLE);
+    public GoogleAuthService(OAuthServiceHelper oauthServiceHelper) {
+        oAuthService = oauthServiceHelper.getOauthService(ServiceType.Google);
     }
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, Service.Google);
+        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Google);
         if (socialId != null) {
             if (socialId.getTokenDate().getTime() > System.currentTimeMillis()) {
                 socialId.setValid(true);
@@ -65,12 +69,12 @@ public class GoogleAuthService implements AuthService {
                 expireDate = System.currentTimeMillis() + (Integer.valueOf(matcher.group(1)) - 100) * 1000;
             }
             //get userinfo
-            OAuthRequest request = new OAuthRequest(Verb.GET, OAuthUtils.PROFILE_ENDPOINT);
+            OAuthRequest request = new OAuthRequest(Verb.GET, OAuthServiceHelper.PROFILE_ENDPOINT);
             oAuthService.signRequest(accessToken, request);
             Response response = request.send();
             Map profile = JsonUtil.toMapAndList(response.getBody());
             //todo extract userinfo
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, Service.Google);
+            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Google);
             boolean newSocial = false;
             if (social == null) {
                 social = new SocialIdEntity();
@@ -79,7 +83,7 @@ public class GoogleAuthService implements AuthService {
             social.setEmail((String) profile.get("email"));
             social.setUser_id(userId);
             social.setToken(accessToken.getToken());
-            social.setService(Service.Google);
+            social.setService(ServiceType.Google);
             social.setTokenDate(new Date(expireDate));
             if (newSocial) {
                 socialIdEntityDao.save(social);

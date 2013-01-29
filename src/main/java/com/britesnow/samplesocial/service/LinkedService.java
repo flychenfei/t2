@@ -1,35 +1,38 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.oauth.OAuthType;
-import com.britesnow.samplesocial.oauth.OAuthUtils;
-import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.snow.util.JsonUtil;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.util.Map;
+
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.util.Map;
+import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.OauthException;
+import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.snow.util.JsonUtil;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 @Singleton
 public class LinkedService {
     @Inject
     private LinkedInAuthService authService;
+    @Inject
+    private OAuthServiceHelper oauthServiceFactory;
 
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
 
-    private final OAuthService oAuthService;
+    private OAuthService oAuthService;
 
     @Inject
-    public LinkedService(OAuthUtils oAuthUtils) {
-        oAuthService = oAuthUtils.getOauthService(OAuthType.LINKEDIN);
+    public LinkedService() {
+        oAuthService = oauthServiceFactory.getOauthService(ServiceType.LinkedIn);
     }
 
     private Token getToken(User user) {

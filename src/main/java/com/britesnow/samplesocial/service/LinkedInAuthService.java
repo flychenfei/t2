@@ -1,19 +1,5 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
-import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.oauth.OAuthType;
-import com.britesnow.samplesocial.oauth.OAuthUtils;
-import com.britesnow.snow.util.JsonUtil;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
-
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -21,22 +7,40 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.scribe.model.OAuthConstants;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
+import com.britesnow.samplesocial.dao.SocialIdEntityDao;
+import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.snow.util.JsonUtil;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 
 @Singleton
 public class LinkedInAuthService implements AuthService {
 
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
-    private final OAuthService oAuthService;
+    private OAuthService oAuthService;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
     private final LoadingCache<String, Token> tokenCache;
-
+    
     @Inject
-    public LinkedInAuthService(OAuthUtils oAuthUtils) {
-        oAuthService = oAuthUtils.getOauthService(OAuthType.LINKEDIN);
-
+    public LinkedInAuthService(OAuthServiceHelper oauthServiceHelper) {
+        oAuthService = oauthServiceHelper.getOauthService(ServiceType.LinkedIn);
         tokenCache = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(3, TimeUnit.MINUTES)
                 .build(new CacheLoader<String, Token>() {
                     @Override
@@ -48,7 +52,7 @@ public class LinkedInAuthService implements AuthService {
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, Service.LinkedIn);
+        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
         if (socialId != null) {
             socialId.setValid(true);
         }
@@ -82,7 +86,7 @@ public class LinkedInAuthService implements AuthService {
                 Response response = request.send();
                 Map map = JsonUtil.toMapAndList(response.getBody());
 
-                SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, Service.LinkedIn);
+                SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
                 boolean newSocial = false;
                 if (social == null) {
                     social = new SocialIdEntity();
@@ -92,7 +96,7 @@ public class LinkedInAuthService implements AuthService {
                 social.setEmail((String) map.get("emailAddress"));
                 social.setToken(accessToken.getToken());
                 social.setSecret(accessToken.getSecret());
-                social.setService(Service.LinkedIn);
+                social.setService(ServiceType.LinkedIn);
                 social.setTokenDate(new Date(expireDate));
                 if (newSocial) {
                     socialIdEntityDao.save(social);

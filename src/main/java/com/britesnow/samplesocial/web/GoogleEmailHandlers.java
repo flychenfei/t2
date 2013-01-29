@@ -1,7 +1,6 @@
 package com.britesnow.samplesocial.web;
 
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 import javax.mail.Folder;
 import javax.mail.Message;
-
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;

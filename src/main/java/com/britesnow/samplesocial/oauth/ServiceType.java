@@ -1,6 +1,6 @@
-package com.britesnow.samplesocial.entity;
+package com.britesnow.samplesocial.oauth;
 
-public enum Service {
+public enum ServiceType {
     FaceBook,
     Twitter,
     LinkedIn,

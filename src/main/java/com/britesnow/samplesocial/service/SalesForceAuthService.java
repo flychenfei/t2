@@ -2,15 +2,14 @@ package com.britesnow.samplesocial.service;
 
 import java.util.Map;
 
-import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.oauth.api.SalesForceApi;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 
@@ -22,8 +21,14 @@ public class SalesForceAuthService implements AuthService {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
 
-    private Service           serivce     = Service.SalesForce;
+    private ServiceType       serivce     = ServiceType.SalesForce;
     private Token             EMPTY_TOKEN = null;
+    private OAuthService      oAuthService;
+
+    @Inject
+    public SalesForceAuthService(OAuthServiceHelper oauthServiceHelper) {
+        oAuthService = oauthServiceHelper.getOauthService(ServiceType.SalesForce);
+    }
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
@@ -31,28 +36,14 @@ public class SalesForceAuthService implements AuthService {
     }
 
     public String getAuthorizationUrl() {
-        OAuthService service = new ServiceBuilder().provider(SalesForceApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
-        String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
+        String authorizationUrl = oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
         return authorizationUrl;
     }
 
     public String[] getAccessToken(String code) {
-        OAuthService service = new ServiceBuilder().provider(SalesForceApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         Verifier verifier = new Verifier(code);
-        Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+        Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         return new String[] { accessToken.getToken(), accessToken.getSecret(), accessToken.getRawResponse() };
-    }
-
-    public String getApiKey() {
-        return (String) cfg.get("salesforce.apiKey");
-    }
-
-    public String getApiSecret() {
-        return (String) cfg.get("salesforce.apiSecret");
-    }
-
-    public String getCallBackUrl() {
-        return (String) cfg.get("salesforce.callbackUrl");
     }
 
 }

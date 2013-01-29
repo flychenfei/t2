@@ -11,8 +11,9 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 
@@ -20,36 +21,37 @@ public class FacebookAuthService implements AuthService {
     @Inject
     @ApplicationProperties
     private Map               cfg;
-
+    private OAuthService oAuthService;
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
 
-    private Service           serivce     = Service.FaceBook;
+    private ServiceType           service     = ServiceType.FaceBook;
     private Token             EMPTY_TOKEN = null;
 
+    @Inject
+    public FacebookAuthService(OAuthServiceHelper oauthServiceHelper) {
+        oAuthService = oauthServiceHelper.getOauthService(service);
+    }
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        return socialIdEntityDao.getSocialdentity(userId, serivce);
+        return socialIdEntityDao.getSocialdentity(userId, service);
     }
 
     public String getAuthorizationUrl() {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).scope("publish_actions").scope("stream_publish").scope("create_event").callback(getCallBackUrl()).build();
-        String authorizationUrl = service.getAuthorizationUrl(EMPTY_TOKEN);
+        String authorizationUrl = oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
         System.out.println(authorizationUrl);
         return authorizationUrl;
     }
 
     public String[] getAccessToken(String code) {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         Verifier verifier = new Verifier(code);
-        Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+        Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         return new String[] { accessToken.getToken(), accessToken.getSecret(), accessToken.getRawResponse() };
     }
 
     public void verfierAccessToken(String accessToken) {
-        OAuthService service = new ServiceBuilder().provider(FacebookApi.class).apiKey(getApiKey()).apiSecret(getApiSecret()).callback(getCallBackUrl()).build();
         OAuthRequest request = new OAuthRequest(Verb.GET, getPROTECTED_RESOURCE_URL());
-        service.signRequest(new Token(accessToken, getApiSecret()), request);
+        oAuthService.signRequest(new Token(accessToken, getApiSecret()), request);
         request.send();
         // System.out.println(response.getCode());
         // System.out.println(response.getBody());

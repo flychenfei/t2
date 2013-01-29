@@ -8,10 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.oauth.OAuthUtils;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
@@ -43,24 +42,22 @@ public class OauthHandlers {
     private TwitterAuthService twitterAuthService;
 
     @Inject
-    private OAuthUtils          oAuthUtils;
-    @Inject
     private SocialIdEntityDao   socialIdEntityDao;
 
     @WebGet("/authorize")
-    public void authorize(@WebModel Map m,@WebParam("service") Service service, RequestContext rc) throws IOException {
+    public void authorize(@WebModel Map m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
         String url = "";
-        if (service == Service.FaceBook) {
+        if (service == ServiceType.FaceBook) {
             url = facebookAuthService.getAuthorizationUrl();
-        }else if(service == Service.Google){
+        }else if(service == ServiceType.Google){
             url = googleAuthService.getAuthorizationUrl();
-        }else if(service == Service.LinkedIn){
+        }else if(service == ServiceType.LinkedIn){
             url = linkedInAuthService.getAuthorizationUrl();
-        }else if(service == Service.SalesForce){
+        }else if(service == ServiceType.SalesForce){
             url = salesForceAuthService.getAuthorizationUrl();
-        }else if (service == Service.Github) {
+        }else if (service == ServiceType.Github) {
             url = githubAuthService.getAuthorizationUrl();
-        }else if (service == Service.Twitter) {
+        }else if (service == ServiceType.Twitter) {
             url = twitterAuthService.getAuthorizationUrl();
         }
         rc.getRes().sendRedirect(url);
@@ -81,7 +78,7 @@ public class OauthHandlers {
             s = new SocialIdEntity();
             s.setUser_id(user.getId());
             s.setToken(tokens[0]);
-            s.setService(Service.FaceBook);
+            s.setService(ServiceType.FaceBook);
             s.setTokenDate(tokenDate);
             socialIdEntityDao.save(s);
         }else{
@@ -142,7 +139,7 @@ public class OauthHandlers {
             s = new SocialIdEntity();
             s.setUser_id(user.getId());
             s.setToken(tokens[0]);
-            s.setService(Service.SalesForce);
+            s.setService(ServiceType.SalesForce);
             s.setTokenDate(tokenDate);
             socialIdEntityDao.save(s);
         }else{

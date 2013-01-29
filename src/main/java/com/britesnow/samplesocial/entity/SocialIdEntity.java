@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.britesnow.samplesocial.oauth.ServiceType;
+
 @Entity
 @Table(name = "social_id_entity")
 @javax.persistence.SequenceGenerator(name = "SEQ_STORE", allocationSize = 1, sequenceName = "social_id_entity_id_seq")
@@ -19,7 +21,7 @@ public class SocialIdEntity extends BaseEntity {
     @Column(name="token_date")
     private Date tokenDate;
     @Enumerated(EnumType.STRING)
-    private Service service;
+    private ServiceType service;
     private String email;
     private String secret;
     private String fbid;
@@ -44,10 +46,10 @@ public class SocialIdEntity extends BaseEntity {
     public void setTokenDate(Date tokenDate) {
         this.tokenDate = tokenDate;
     }
-    public Service getService() {
+    public ServiceType getService() {
         return service;
     }
-    public void setService(Service service) {
+    public void setService(ServiceType service) {
         this.service = service;
     }
 

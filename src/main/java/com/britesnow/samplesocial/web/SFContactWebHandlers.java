@@ -13,8 +13,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.entity.Service;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.util.Client;
 import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.web.RequestContext;
@@ -37,7 +37,7 @@ public class SFContactWebHandlers {
     public Map listSFContacts(@WebModel Map m,
                                @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,RequestContext rc) {
         User user = rc.getUser(User.class);
-        String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
+        String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
         String url = SF_URL+"/query?";
         if(pageIndex == null){
             pageIndex = 0;
@@ -72,7 +72,7 @@ public class SFContactWebHandlers {
 	@WebGet("/salesforce/getContact")
 	public Map getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-	    String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
+	    String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
 	    String url = SF_URL+"/query?";
 	    String sql = "SELECT Id, Name FROM Contact WHERE Id='"+id+"'";
 	    sql = Client.encode(sql);
@@ -90,7 +90,7 @@ public class SFContactWebHandlers {
 	@WebPost("/salesforce/saveContact")
 	public Object saveSFContact(@WebModel Map m,@WebParam("id") String id,@WebParam("name") String name,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-	    String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
+	    String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
 	    Map map = new HashMap();
 	    map.put("lastName", name);
 	    String url = null;
@@ -122,7 +122,7 @@ public class SFContactWebHandlers {
 	@WebPost("/salesforce/deleteContact")
 	public Object deleteSFContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-        String token = socialIdEntityDao.getSocialdentity(user.getId(), Service.SalesForce).getToken();
+        String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
         String url = null;
         PostMethod method = null;
         if(id != null && id.length() > 0){
