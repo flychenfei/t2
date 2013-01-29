@@ -17,6 +17,7 @@ import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
+import com.britesnow.samplesocial.service.TwitterAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -38,6 +39,8 @@ public class OauthHandlers {
     private SalesForceAuthService salesForceAuthService;
     @Inject
     private GithubAuthService githubAuthService;
+    @Inject
+    private TwitterAuthService twitterAuthService;
 
     @Inject
     private OAuthUtils          oAuthUtils;
@@ -57,6 +60,8 @@ public class OauthHandlers {
             url = salesForceAuthService.getAuthorizationUrl();
         }else if (service == Service.Github) {
             url = githubAuthService.getAuthorizationUrl();
+        }else if (service == Service.Twitter) {
+            url = twitterAuthService.getAuthorizationUrl();
         }
         rc.getRes().sendRedirect(url);
     }
