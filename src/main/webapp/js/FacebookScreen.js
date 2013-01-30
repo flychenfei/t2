@@ -15,7 +15,7 @@
                 var view = this;
                 var $e = view.$el;
                 
-                brite.display("FacebookPosts");
+                brite.display("FacebookFriends");
             },
             events:{
               "btap;.nav li":function(e){

@@ -60,6 +60,16 @@
 						},
 						attrs : "style='width: 400px'"
 
+					},{
+						text : "Type",
+						render : function(obj) {
+							return fixNull(obj.type);
+						}
+					},{
+						text : "Created time",
+						render : function(obj) {
+							return fixNull(obj.created_time);
+						}
 					}],
 					opts : {
 						htmlIfEmpty : "Not news found",
