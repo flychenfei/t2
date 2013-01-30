@@ -13,6 +13,7 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GithubAuthService;
+import com.britesnow.samplesocial.service.GithubService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
@@ -60,6 +61,7 @@ public class OauthHandlers {
         }else if (service == ServiceType.Twitter) {
             url = twitterAuthService.getAuthorizationUrl();
         }
+        
         rc.getRes().sendRedirect(url);
     }
 
@@ -97,7 +99,6 @@ public class OauthHandlers {
             rc.getRes().sendRedirect(linkedInAuthService.getAuthorizationUrl());
         }
     }
-
 
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
