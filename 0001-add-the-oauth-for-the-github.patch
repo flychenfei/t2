@@ -1,0 +1,182 @@
+From 74330793517354f3d807cecfd84a33dc863c5f94 Mon Sep 17 00:00:00 2001
+From: flymyao <flymyao@gmail.com>
+Date: Tue, 29 Jan 2013 19:12:23 +0800
+Subject: [PATCH 1/6] add the oauth for the github
+
+---
+ jcruncher-starter.bat                              |    1 +
+ jcruncher.cfg                                      |    2 +-
+ .../samplesocial/service/YaoGithubAuthService.java |   36 ++++++++++++++++++++
+ .../britesnow/samplesocial/web/GitHubHandlers.java |   21 +++++++++++
+ .../britesnow/samplesocial/web/OauthHandlers.java  |    1 +
+ src/main/webapp/js/GithubScreen.js                 |   12 ++++++
+ src/main/webapp/js/Top.js                          |    2 +
+ src/main/webapp/tmpl/GithubScreen.tmpl             |    5 +++
+ src/main/webapp/tmpl/Top.tmpl                      |    1 +
+ 9 files changed, 80 insertions(+), 1 deletions(-)
+ create mode 100644 jcruncher-starter.bat
+ create mode 100644 src/main/java/com/britesnow/samplesocial/service/YaoGithubAuthService.java
+ create mode 100644 src/main/java/com/britesnow/samplesocial/web/GitHubHandlers.java
+ create mode 100644 src/main/webapp/js/GithubScreen.js
+ create mode 100644 src/main/webapp/tmpl/GithubScreen.tmpl
+
+diff --git a/jcruncher-starter.bat b/jcruncher-starter.bat
+new file mode 100644
+index 0000000..41fcea9
+--- /dev/null
++++ b/jcruncher-starter.bat
+@@ -0,0 +1 @@
++java -jar c:/apps/jcruncherEx.jar 
+\ No newline at end of file
+diff --git a/jcruncher.cfg b/jcruncher.cfg
+index a40df85..c126903 100644
+--- a/jcruncher.cfg
++++ b/jcruncher.cfg
+@@ -1,5 +1,5 @@
+ # compile the .less files minus the lesshat.less
+---less src/main/webapp/less/all.less src/main/webapp/css/all.css -e lesshat.less
++#--less src/main/webapp/less/all.less src/main/webapp/css/all.css -e lesshat.less
+ 
+ # compile the .hbs
+ --hbs src/main/webapp/tmpl/ src/main/webapp/js/templates.js
+\ No newline at end of file
+diff --git a/src/main/java/com/britesnow/samplesocial/service/YaoGithubAuthService.java b/src/main/java/com/britesnow/samplesocial/service/YaoGithubAuthService.java
+new file mode 100644
+index 0000000..cd8fb08
+--- /dev/null
++++ b/src/main/java/com/britesnow/samplesocial/service/YaoGithubAuthService.java
+@@ -0,0 +1,36 @@
++package com.britesnow.samplesocial.service;
++
++import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
++
++import org.scribe.oauth.OAuthService;
++
++import com.britesnow.samplesocial.dao.SocialIdEntityDao;
++import com.britesnow.samplesocial.entity.Service;
++import com.britesnow.samplesocial.entity.SocialIdEntity;
++import com.britesnow.samplesocial.oauth.OAuthType;
++import com.britesnow.samplesocial.oauth.OAuthUtils;
++import com.google.inject.Inject;
++import com.google.inject.Singleton;
++
++@Singleton
++public class YaoGithubAuthService implements AuthService{
++
++	@Inject
++    private SocialIdEntityDao socialIdEntityDao;
++    private OAuthService oAuthService;
++	
++    @Inject
++    public YaoGithubAuthService(OAuthUtils oAuthUtils){
++    	oAuthService =  oAuthUtils.getOauthService(OAuthType.GH);
++    }
++
++	@Override
++	public SocialIdEntity getSocialIdEntity(Long userId) {
++		return socialIdEntityDao.getSocialdentity(userId, Service.Github);
++	}
++	
++	public String getAuthorizationUrl() {
++	    return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
++	}
++
++}
+diff --git a/src/main/java/com/britesnow/samplesocial/web/GitHubHandlers.java b/src/main/java/com/britesnow/samplesocial/web/GitHubHandlers.java
+new file mode 100644
+index 0000000..3517df0
+--- /dev/null
++++ b/src/main/java/com/britesnow/samplesocial/web/GitHubHandlers.java
+@@ -0,0 +1,21 @@
++package com.britesnow.samplesocial.web;
++
++import java.io.IOException;
++
++import com.britesnow.samplesocial.service.YaoGithubAuthService;
++import com.britesnow.snow.web.RequestContext;
++import com.britesnow.snow.web.rest.annotation.WebGet;
++import com.google.inject.Inject;
++import com.google.inject.Singleton;
++
++@Singleton
++public class GitHubHandlers {
++
++	@Inject
++	private YaoGithubAuthService yaoGithubAuthService;
++	
++	@WebGet("/github/connects")
++	public void auth(RequestContext rc) throws IOException{
++		  rc.getRes().sendRedirect(yaoGithubAuthService.getAuthorizationUrl());
++	}
++}
+diff --git a/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java b/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java
+index 7461e70..fdbd083 100644
+--- a/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java
++++ b/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java
+@@ -100,6 +100,7 @@ public class OauthHandlers {
+     @WebModelHandler(startsWith="/github_callback")
+     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
+         System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
++        System.out.println(code);
+         if (user!=null && code != null) {
+             githubAuthService.updateAccessToken(code, user.getId());
+         }else{
+diff --git a/src/main/webapp/js/GithubScreen.js b/src/main/webapp/js/GithubScreen.js
+new file mode 100644
+index 0000000..00d75b0
+--- /dev/null
++++ b/src/main/webapp/js/GithubScreen.js
+@@ -0,0 +1,12 @@
++(function(){
++	brite.registerView("GithubScreen",{parent:".MainScreen-main",emptyParent:true},{
++		create:function(data,config){
++			return  app.render("tmpl-GithubScreen")
++		},
++		events:{
++			"click;.btn":function(event){
++				app.oauth.authorize("Github");
++			}
++		}
++	})
++})();
+\ No newline at end of file
+diff --git a/src/main/webapp/js/Top.js b/src/main/webapp/js/Top.js
+index 1f0951c..4d08c0a 100644
+--- a/src/main/webapp/js/Top.js
++++ b/src/main/webapp/js/Top.js
+@@ -32,6 +32,8 @@
+             		  brite.display("LinkedInScreen");
+             		}else if(menu == "salesforce"){
+             		  brite.display("SalesForceScreen");
++            		}else if(menu == "github"){
++            		  brite.display("GithubScreen");
+             		}else if(menu == "oauth"){
+             		  var list = [
+             		    {name:"linkedin",label:"Connect to LinkedIn"},
+diff --git a/src/main/webapp/tmpl/GithubScreen.tmpl b/src/main/webapp/tmpl/GithubScreen.tmpl
+new file mode 100644
+index 0000000..e7b4b5d
+--- /dev/null
++++ b/src/main/webapp/tmpl/GithubScreen.tmpl
+@@ -0,0 +1,5 @@
++<script id="tmpl-GithubScreen" type="text/html">
++  <div>
++  <button class="btn btn-primary">Github Auth</button>
++  </div>
++</script>
+\ No newline at end of file
+diff --git a/src/main/webapp/tmpl/Top.tmpl b/src/main/webapp/tmpl/Top.tmpl
+index 6ce13ba..24f5ee5 100644
+--- a/src/main/webapp/tmpl/Top.tmpl
++++ b/src/main/webapp/tmpl/Top.tmpl
+@@ -8,6 +8,7 @@
+ 		      <li data-nav="google" class="menu">Google</li>
+ 		      <li data-nav="linkedIn" class="menu">LinkedIn</li>
+ 		      <li data-nav="salesforce" class="menu">SalesForce</li>
++		      <li data-nav="github" class="menu">Github</li>
+ 		      <li data-nav="oauth" class="menu">OAuth<i class="icon-chevron-down"></i></li>
+ 		    </ul>
+ 		  </div>
+-- 
+1.7.5.1
+

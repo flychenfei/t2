@@ -1,0 +1,25 @@
+From 36d5fbbf1257388ffd1f707ca3fb56edc7f08682 Mon Sep 17 00:00:00 2001
+From: flymyao <flymyao@gmail.com>
+Date: Tue, 29 Jan 2013 19:21:18 +0800
+Subject: [PATCH 2/6] Update jcruncher.cfg
+
+---
+ jcruncher.cfg |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/jcruncher.cfg b/jcruncher.cfg
+index c126903..dfd080a 100644
+--- a/jcruncher.cfg
++++ b/jcruncher.cfg
+@@ -1,5 +1,5 @@
+ # compile the .less files minus the lesshat.less
+-#--less src/main/webapp/less/all.less src/main/webapp/css/all.css -e lesshat.less
++--less src/main/webapp/less/all.less src/main/webapp/css/all.css -e lesshat.less
+ 
+ # compile the .hbs
+---hbs src/main/webapp/tmpl/ src/main/webapp/js/templates.js
+\ No newline at end of file
++--hbs src/main/webapp/tmpl/ src/main/webapp/js/templates.js
+-- 
+1.7.5.1
+

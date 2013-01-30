@@ -1,0 +1,35 @@
+From 78f23c5a411a0a365b23854f122b58c42271d263 Mon Sep 17 00:00:00 2001
+From: flymyao <flymyao@gmail.com>
+Date: Wed, 30 Jan 2013 18:04:42 +0800
+Subject: [PATCH 5/6] resolve the confilt
+
+---
+ src/main/webapp/WEB-INF/snow.properties |   10 ----------
+ 1 files changed, 0 insertions(+), 10 deletions(-)
+
+diff --git a/src/main/webapp/WEB-INF/snow.properties b/src/main/webapp/WEB-INF/snow.properties
+index a49726d..d8ab843 100644
+--- a/src/main/webapp/WEB-INF/snow.properties
++++ b/src/main/webapp/WEB-INF/snow.properties
+@@ -5,18 +5,8 @@ snow.webApplicationModules=com.britesnow.samplesocial.SSConfig
+ hibernate.connection.driver_class = org.postgresql.Driver
+ hibernate.connection.url=jdbc:postgresql://192.168.10.22:5432/samplesocial
+ hibernate.default_schema = samplesocial
+-<<<<<<< HEAD
+-<<<<<<< Updated upstream
+-hibernate.connection.username=samplesocial
+-hibernate.connection.password=welcome
+-=======
+-hibernate.connection.username= postgres
+-hibernate.connection.password= 123456
+->>>>>>> Stashed changes
+-=======
+ hibernate.connection.username= samplesocial
+ hibernate.connection.password= welcome
+->>>>>>> upstream/master
+ hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+ hibernate.hbm2ddl.auto = update
+ 
+-- 
+1.7.5.1
+
