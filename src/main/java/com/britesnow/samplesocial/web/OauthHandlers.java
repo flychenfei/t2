@@ -101,8 +101,7 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
-        System.out.println(code);
+         System.out.println(code);
         if (user!=null && code != null) {
             githubAuthService.updateAccessToken(code, user.getId());
         }else{

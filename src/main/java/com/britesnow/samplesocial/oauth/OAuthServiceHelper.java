@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.oauth;
 
 import java.util.Map;
 
+import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.builder.api.LinkedInApi;
@@ -100,7 +101,7 @@ public class OAuthServiceHelper {
         String secret = (String) appconfig.get(prefix+".secret");
         String callback = (String) appconfig.get(prefix+".callback");
         String scope = (String) appconfig.get(prefix+".scope");
-        ServiceBuilder builder = new ServiceBuilder().provider(LinkedInApi.class).apiKey(clientId).apiSecret(secret);
+        ServiceBuilder builder = new ServiceBuilder().provider(GitHubApi.class).apiKey(clientId).apiSecret(secret);
         //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
         if (callback != null) {
             builder.callback(callback);
