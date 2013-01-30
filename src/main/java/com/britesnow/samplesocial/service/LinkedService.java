@@ -21,8 +21,6 @@ import com.google.inject.Singleton;
 public class LinkedService {
     @Inject
     private LinkedInAuthService authService;
-    @Inject
-    private OAuthServiceHelper oauthServiceFactory;
 
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
@@ -31,7 +29,7 @@ public class LinkedService {
     private OAuthService oAuthService;
 
     @Inject
-    public LinkedService() {
+    public LinkedService(OAuthServiceHelper oauthServiceFactory) {
         oAuthService = oauthServiceFactory.getOauthService(ServiceType.LinkedIn);
     }
 
