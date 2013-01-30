@@ -34,6 +34,8 @@
                   brite.display("GoogleGroups");
                 }else if(menu == "folders"){
                   brite.display("GoogleFolders");
+                }else if(menu == "sendMail"){
+                    brite.display("GoogleMailSend");
                 }
               }
             },
