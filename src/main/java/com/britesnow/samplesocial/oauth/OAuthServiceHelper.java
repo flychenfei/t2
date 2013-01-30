@@ -63,7 +63,8 @@ public class OAuthServiceHelper {
         String clientId = (String) appconfig.get(prefix+".apiKey");
         String secret = (String) appconfig.get(prefix+".apiSecret");
         String callback = (String) appconfig.get(prefix+".callBackUrl");
-        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        String scope =  "publish_actions";
+        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).scope(scope).callback(callback);
         return builder.build();
     }
     
