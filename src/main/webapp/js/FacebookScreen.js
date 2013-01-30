@@ -26,13 +26,13 @@
                 $li.addClass("active");
                 
                 var menu = $li.attr("data-nav");
-                if(menu == "contacts"){
+                if(menu == "contact"){
                   brite.display("FacebookContacts");
-                }else if(menu == "friends"){
+                }else if(menu == "friend"){
                   brite.display("FacebookFriends");
                 }
-                else if(menu == "posts"){
-                  brite.display("FacebookPosts");
+                else if(menu == "feed"){
+                  brite.display("FacebookFeeds");
                 }
               }
             },

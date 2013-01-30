@@ -112,7 +112,7 @@ public class FacebookContactHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFeedList(token, "me", pageSize, pageIndex);
+        List ls = facebookService.getFeedList(token, "me", "link", pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);
