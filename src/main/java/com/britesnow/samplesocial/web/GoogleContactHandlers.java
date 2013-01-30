@@ -7,6 +7,7 @@ import com.britesnow.samplesocial.service.ContactInfo;
 import com.britesnow.samplesocial.service.GContactService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.web.annotation.WebObject;
+import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -39,28 +40,21 @@ public class GoogleContactHandlers {
     public WebResponse getContacts(@WebUser User user, @WebParam("groupId") String groupId,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
-        List<ContactEntry> list = gContactService.getContactResults(user, groupId, pageIndex * pageSize + 1, pageSize);
+        Pair<List<ContactEntry>, Integer> pair;
+        pair = gContactService.getContactResults(user, groupId, pageIndex * pageSize + 1, pageSize);
+        List<ContactEntry> list = pair.getFirst();
         List<ContactInfo> infos = new ArrayList<ContactInfo>();
         for (ContactEntry contact : list) {
             infos.add(ContactInfo.from(contact));
         }
 
-        WebResponse resp = WebResponse.success(infos);
-        if (infos.size() == pageSize) {
-            resp.set("hasNext", true);
-        }
-        return resp;
-
+        return WebResponse.success(infos).setResultCount(pair.getSecond());
     }
 
     @WebGet("/ggroup/list")
     public Object getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
-        List<ContactGroupEntry> list;
-        list = gContactService.getGroupResults(user);
-
-        m.put("result", list);
-        return WebResponse.success(list);
-
+        Pair<List<ContactGroupEntry>, Integer> pair = gContactService.getGroupResults(user);
+        return WebResponse.success(pair.getFirst()).set("result_count", pair.getSecond());
     }
 
 

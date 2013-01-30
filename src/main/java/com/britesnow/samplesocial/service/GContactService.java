@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.snow.util.Pair;
 import com.google.gdata.client.contacts.ContactQuery;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.data.PlainTextConstruct;
@@ -42,7 +43,7 @@ public class GContactService {
     }
 
 
-    public List<ContactEntry> getContactResults(User user, String groupId, int startIndex, int count) throws ServiceException, IOException {
+    public Pair<List<ContactEntry>,Integer> getContactResults(User user, String groupId, int startIndex, int count) throws ServiceException, IOException {
         URL feedUrl = new URL(BASE_CONTACTS_URL);
         ContactQuery myQuery = new ContactQuery(feedUrl);
         if (groupId != null) {
@@ -53,14 +54,16 @@ public class GContactService {
 //       myQuery.setGroup(String.format(BASE_GROUP_URL + "/" + groupId).replace("full","base"));
 //        myQuery.setGroup("https://www.google.com/m8/feeds/groups/woofgl%40gmail.com/base/6");
         ContactFeed resultFeed = getContactsService(user).query(myQuery, ContactFeed.class);
-        return resultFeed.getEntries();
+        int total = resultFeed.getTotalResults();
+        return new Pair<List<ContactEntry>, Integer>(resultFeed.getEntries(), total);
     }
 
 
-    public List<ContactGroupEntry> getGroupResults(User user) throws IOException, ServiceException {
+    public Pair<List<ContactGroupEntry>, Integer> getGroupResults(User user) throws IOException, ServiceException {
         URL feedurUrl = new URL(BASE_GROUP_URL);
         ContactGroupFeed contactGroupFeed = getContactsService(user).getFeed(feedurUrl, ContactGroupFeed.class);
-        return contactGroupFeed.getEntries();
+        int count = contactGroupFeed.getTotalResults();
+        return new Pair<List<ContactGroupEntry>, Integer>(contactGroupFeed.getEntries(), count);
     }
 
 
