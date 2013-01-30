@@ -107,7 +107,7 @@
             },
 
             events:{
-                "btap; .prev":function (e) {
+                "btap; .prev.action":function (e) {
                     var view = this;
                     if (view.opts.withPaging) {
                         var opts = view.opts.dataOpts;
@@ -117,7 +117,7 @@
                         }
                     }
                 },
-                "btap; .next":function (e) {
+                "btap; .next.action":function (e) {
                     var view = this;
                     if (view.opts.withPaging) {
                         var opts = view.opts.dataOpts;
@@ -125,6 +125,33 @@
                             opts.pageIndex++;
                             refreshDataTable.call(view);
                         }
+                    }
+
+                },
+                "btap; .prevStart.action":function (e) {
+                    var view = this;
+                    if (view.opts.withPaging) {
+                        var opts = view.opts.dataOpts;
+                        opts.pageIndex = 0;
+                        refreshDataTable.call(view);
+                    }
+                },
+                "btap; .nextEnd.action":function (e) {
+                    var view = this;
+                    if (view.opts.withPaging) {
+                        var opts = view.opts.dataOpts;
+                        opts.pageIndex = view.numOfPages;
+                        refreshDataTable.call(view);
+                    }
+
+                },
+                "btap; .pageNum.action":function (e) {
+                    var view = this;
+                    if (view.opts.withPaging) {
+                        var opts = view.opts.dataOpts;
+                        var num = $(e.currentTarget).attr("data-num") * 1 - 1;
+                        opts.pageIndex = num;
+                        refreshDataTable.call(view);
                     }
 
                 },
