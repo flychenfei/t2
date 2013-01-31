@@ -13,7 +13,6 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GithubAuthService;
-import com.britesnow.samplesocial.service.GithubService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
@@ -89,7 +88,17 @@ public class OauthHandlers {
             socialIdEntityDao.update(s);
         }
     }
-
+    
+    @WebModelHandler(startsWith="/twitterCallback")
+    public void twitterCallback(@WebUser User user, @WebParam("oauth_token") String requestToken, 
+    		@WebParam("oauth_verifier") String verifier,  RequestContext rc) throws Exception {
+    	 if (user != null && verifier != null) {
+             twitterAuthService.updateAccessToken(requestToken, verifier, user.getId());
+         }else{
+			rc.getRes().sendRedirect(twitterAuthService.getAuthorizationUrl());
+         }
+    }
+    
     @WebModelHandler(startsWith="/linkedinCallback")
     public void linkedinCallback(RequestContext rc,@WebUser User user,  @WebParam("oauth_token") String reqToken,
                                  @WebParam("oauth_verifier") String code) throws Exception {
