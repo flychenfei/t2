@@ -10,9 +10,12 @@
                 var $html = app.render("tmpl-TwitterScreen");
                 var $e = $($html);
                 return $e;
+            	
             },
             postDisplay:function (data, config) {
-            	app.oauth.authorize('Twitter');
+            	app.twitterApi.getUserInfo().pipe(function(data) {
+                   console.log("success");
+            	});
             },
             events:{
              
