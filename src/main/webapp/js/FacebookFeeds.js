@@ -21,9 +21,10 @@
 					var view = this;
 					var $e = view.$el;
 					var value = $e.find(".post").val();
+					if (value=="") {return};
 					app.addPost(value).done(function(){
 						view.refreshPostsList.call(view);
-						$e.find(".post").empty();
+						$e.find(".post").val('');
 					});
 				},
 			},
