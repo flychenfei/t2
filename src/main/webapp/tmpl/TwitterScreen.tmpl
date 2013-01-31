@@ -1,8 +1,10 @@
 <script id="tmpl-TwitterScreen" type="text/html">
   <div class="TwitterScreen">
-    <div class="TwitterScreen-content">
-      	this is the twitter content
-      	{{profile_background_image_url}}
+    <div class="TwitterScreen-content container">
+      	<h2>this is the twitter content</h2>
+      	<br/>
+      	<img src="{{user.profile_image_url}}" />
+      	<h2>{{user.screen_name}}</h2>
     </div>
   </div>
 </script>

@@ -19,7 +19,6 @@ public class TwitterHandlers {
     @WebGet("/twitter/getUserInfo")
     public WebResponse getContacts(@WebUser User user, RequestContext rc) throws Exception {
     	Map userInfo = twitterService.getUserInfo(user);
-    	System.out.println(userInfo.get("id"));
     	WebResponse response = WebResponse.success(userInfo);
     	return response;
     }
