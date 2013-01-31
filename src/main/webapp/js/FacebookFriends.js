@@ -78,7 +78,12 @@
 				if (!$e) {
 					return;
 				};
-
+				function fixNull(v){
+					if (v) {
+						return v;
+					};
+					return  "";
+				}
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
 						list : app.getFBFriends
@@ -108,13 +113,13 @@
 					}, {
 						text : "Email",
 						render : function(obj) {
-							return obj.email
+							return fixNull(obj.email)
 						},
 						attrs : "style='width: 25%'"
 					}, {
 						text : "Hometown Name",
 						render : function(obj) {
-							return obj.hometownName
+							return fixNull(obj.hometownName)
 						},
 						attrs : "style='width: 25%'"
 					}],
