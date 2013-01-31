@@ -1,9 +1,0 @@
-diff a/src/main/webapp/tmpl/Top.tmpl b/src/main/webapp/tmpl/Top.tmpl	(rejected hunks)
-@@ -8,6 +8,7 @@
- 		      <li data-nav="google" class="menu">Google</li>
- 		      <li data-nav="linkedIn" class="menu">LinkedIn</li>
- 		      <li data-nav="salesforce" class="menu">SalesForce</li>
-+		      <li data-nav="github" class="menu">Github</li>
- 		      <li data-nav="oauth" class="menu">OAuth<i class="icon-chevron-down"></i></li>
- 		    </ul>
- 		  </div>
