@@ -64,12 +64,14 @@
 						text : "Type",
 						render : function(obj) {
 							return fixNull(obj.type);
-						}
+						},
+						attrs : "style='width: 200px'"
 					},{
 						text : "Created time",
 						render : function(obj) {
 							return fixNull(obj.created_time);
-						}
+						},
+						attrs : "style='width: 300px'"
 					}],
 					opts : {
 						htmlIfEmpty : "Not news found",
