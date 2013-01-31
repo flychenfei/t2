@@ -9,6 +9,7 @@ import org.scribe.builder.api.LinkedInApi;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.oauth.api.GoogleApi20;
+import com.britesnow.samplesocial.oauth.api.SalesForceApi;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -91,7 +92,7 @@ public class OAuthServiceHelper {
         String clientId = (String) appconfig.get(prefix+".apiKey");
         String secret = (String) appconfig.get(prefix+".apiSecret");
         String callback = (String) appconfig.get(prefix+".callbackUrl");
-        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        ServiceBuilder builder = new ServiceBuilder().provider(SalesForceApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
         return builder.build();
     }
     
