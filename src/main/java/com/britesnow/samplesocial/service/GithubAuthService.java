@@ -49,6 +49,7 @@ public class GithubAuthService implements AuthService {
     public boolean updateAccessToken(String verifierCode, long userId) throws IOException {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
+        System.out.println(accessToken.getRawResponse()+verifierCode+" "+userId);
         if (accessToken.getToken() != null) {
             //get userinfo
             GitHubClient client = new GitHubClient();

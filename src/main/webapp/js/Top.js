@@ -35,15 +35,14 @@
             		}else if(menu == "twitter"){
             		  brite.display("TwitterScreen");
             		}else if(menu == "github"){
-                  brite.display("GithubScreen");
+                        brite.display("GithubScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},
             		    {name:"google",label:"Connect to Google"},
             		    {name:"salesforce",label:"Connect to SalesForce"},
             		    {name:"github",label:"Connect to Github"},
-            		    {name:"facebook",label:"Connect to Facebook"},
-            		    {name:"twitter",label:"Connect to Twitter"}
+            		    {name:"facebook",label:"Connect to Facebook"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
             		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");

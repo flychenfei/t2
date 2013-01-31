@@ -11,6 +11,8 @@ public class WebResponse extends HashMap{
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String THROWABLE = "t";
 
+    public static final String RESULT_COUNT = "result_count";
+
 
     
     private WebResponse(){
@@ -35,6 +37,10 @@ public class WebResponse extends HashMap{
 
     public WebResponse set(String key, Object val) {
         this.put(key, val);
+        return this;
+    }
+    public WebResponse setResultCount(Number val) {
+        this.put(RESULT_COUNT, val);
         return this;
     }
 

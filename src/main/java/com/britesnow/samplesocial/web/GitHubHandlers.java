@@ -2,8 +2,10 @@ package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.YaoGithubAuthService;
 import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -18,4 +20,5 @@ public class GitHubHandlers {
 	public void auth(RequestContext rc) throws IOException{
 		  rc.getRes().sendRedirect(yaoGithubAuthService.getAuthorizationUrl());
 	}
+	
 }

@@ -13,6 +13,7 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GithubAuthService;
+import com.britesnow.samplesocial.service.GithubService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
@@ -60,6 +61,7 @@ public class OauthHandlers {
         }else if (service == ServiceType.Twitter) {
             url = twitterAuthService.getAuthorizationUrl();
         }
+        
         rc.getRes().sendRedirect(url);
     }
 
@@ -98,10 +100,8 @@ public class OauthHandlers {
         }
     }
 
-
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
         System.out.println(code);
         if (user!=null && code != null) {
             githubAuthService.updateAccessToken(code, user.getId());
@@ -109,7 +109,7 @@ public class OauthHandlers {
             rc.getRes().sendRedirect(githubAuthService.getAuthorizationUrl());
         }
     }
-    
+
     @WebModelHandler(startsWith="/googleCallback")
     public void googleCallback(@WebUser User user, RequestContext rc, @WebParam("code") String code) throws Exception {
         if (user != null && code != null) {
@@ -120,7 +120,7 @@ public class OauthHandlers {
 
     }
 
-    
+
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) throws Exception {
         String[] tokens = salesForceAuthService.getAccessToken(code);
@@ -131,7 +131,7 @@ public class OauthHandlers {
         if(matcher.find()){
             expire = matcher.group(1);
         }
-        
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.SECOND,new Long(expire).intValue()/1000);
@@ -149,5 +149,5 @@ public class OauthHandlers {
             socialIdEntityDao.update(s);
         }
     }
-    
+
 }
