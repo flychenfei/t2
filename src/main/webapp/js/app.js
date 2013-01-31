@@ -92,6 +92,9 @@ var app = app || {};
             $.extend(params, opts);
             return app.getJsonData(contextPath + "/ggroup/list", params);
         },
+        createGroup: function(params){
+            return app.getJsonData(contextPath + "/ggroup/create", params);
+        },
         "deleteGroup": function (groupId, etag) {
             var params = {"groupId": groupId, etag: etag};
             return app.getJsonData(contextPath + "/ggroup/delete", params);
