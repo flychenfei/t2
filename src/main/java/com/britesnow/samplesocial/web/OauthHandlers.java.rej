@@ -1,9 +1,0 @@
-diff a/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java b/src/main/java/com/britesnow/samplesocial/web/OauthHandlers.java	(rejected hunks)
-@@ -100,6 +100,7 @@ public class OauthHandlers {
-     @WebModelHandler(startsWith="/github_callback")
-     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
-         System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
-+        System.out.println(code);
-         if (user!=null && code != null) {
-             githubAuthService.updateAccessToken(code, user.getId());
-         }else{
