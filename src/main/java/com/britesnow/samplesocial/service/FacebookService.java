@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import com.restfb.BinaryAttachment;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
+import com.restfb.Facebook;
 import com.restfb.Parameter;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
@@ -34,19 +35,28 @@ public class FacebookService {
     }
 
     public List getFriendsByPage(String accessToken, String query, Integer limit, Integer offset) {
-        if (limit == null || limit <= 0) {
-            limit = 10;
-        }
-        if (offset == null || offset < 0) {
-            offset = 0;
-        }
-        Connection<User> myFriends = null;
+        // if (limit == null || limit <= 0) {
+        // limit = 10;
+        // }
+        // if (offset == null || offset < 0) {
+        // offset = 0;
+        // }
+        // Connection<User> myFriends = null;
+        // if (StringUtils.isNotBlank(query)) {
+        // myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class,
+        // Parameter.with("q", query), Parameter.with("limit", limit), Parameter.with("offset", offset));
+        // } else {
+        // myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class,
+        // Parameter.with("limit", limit), Parameter.with("offset", offset));
+        // }
+        // return myFriends.getData();
+        String fql = "SELECT name,uid,email FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me())";
         if (StringUtils.isNotBlank(query)) {
-            myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class, Parameter.with("q", query), Parameter.with("limit", limit), Parameter.with("offset", offset));
-        } else {
-            myFriends = new DefaultFacebookClient(accessToken).fetchConnection("me/friends", User.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
+            fql += " and name='" + query + "'";
         }
-        return myFriends.getData();
+        List<FqlUser> users = new DefaultFacebookClient(accessToken).executeQuery(fql, FqlUser.class);
+        return users;
+
     }
 
     public String publish(String accessToken, String userId, String message) {
@@ -77,5 +87,64 @@ public class FacebookService {
             ls2.add(m);
         }
         return ls2;
+    }
+
+    public static class FqlUser {
+        @Facebook("uid")
+        String id;
+        @Facebook
+        String uid;
+
+        @Facebook
+        String name;
+        @Facebook
+        String email;
+        @Facebook
+        String hometownname;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return name + "  " + uid;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getHometownname() {
+            return hometownname;
+        }
+
+        public void setHometownname(String hometownname) {
+            this.hometownname = hometownname;
+        }
     }
 }

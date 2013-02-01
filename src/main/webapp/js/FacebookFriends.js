@@ -100,7 +100,7 @@
 					}, {
 						text : "Picture",
 						render : function(obj, idx) {
-							return "<img src='http://graph.facebook.com/" + obj.id + "/picture'/>"
+							return "<img src='http://graph.facebook.com/" + obj.uid + "/picture'/>"
 						},
 						attrs : "style='width: 10%'"
 					}, {
@@ -114,12 +114,6 @@
 						text : "Email",
 						render : function(obj) {
 							return fixNull(obj.email)
-						},
-						attrs : "style='width: 25%'"
-					}, {
-						text : "Hometown Name",
-						render : function(obj) {
-							return fixNull(obj.hometownName)
 						},
 						attrs : "style='width: 25%'"
 					}],
