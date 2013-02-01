@@ -12,6 +12,7 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FContactService;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.FacebookService;
+import com.britesnow.samplesocial.service.FacebookService.FqlUser;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -41,13 +42,13 @@ public class FacebookContactHandlers {
         List ls2 = fContactService.getContactsByPage(user, null);
         Set filterSet = new HashSet();
         for (int i = 0; i < ls2.size(); i++) {
-            //Contact c = (Contact) ls2.get(i);
-            //filterSet.add(c.getFbid());
+            // Contact c = (Contact) ls2.get(i);
+            // filterSet.add(c.getFbid());
         }
         List ls3 = new ArrayList();
         for (int i = 0; i < ls.size(); i++) {
-            com.restfb.types.User u = (com.restfb.types.User) ls.get(i);
-            if (!filterSet.contains(u.getId().toString())) {
+            FqlUser u = (FqlUser) ls.get(i);
+            if (!filterSet.contains(u.getUid().toString())) {
                 ls3.add(u);
             }
         }
