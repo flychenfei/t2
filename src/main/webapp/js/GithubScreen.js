@@ -3,9 +3,39 @@
 		create:function(data,config){
 			return  app.render("tmpl-GithubScreen")
 		},
+		postDisplay:function(){
+			app.githubApi.showUserInfo().pipe(function(userInfo){
+				userInfo = JSON.parse(userInfo.result);
+				brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+			});
+		},
 		events:{
-			"click;.btn":function(event){
+			"click;.auth":function(event){
 				app.oauth.authorize("Github");
+			},
+			"click;.show":function(event){
+				app.githubApi.showUserInfo().pipe(function(userInfo){
+					userInfo = JSON.parse(userInfo.result);
+					brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+				});
+			},
+			"click;.nav-tabs li":function(event){
+				this.$el.find("li").removeClass("active");
+				var $li = $(event.currentTarget);
+				$li.addClass("active");
+				var menu = $li.attr("data-nav");
+				$(".tab-content").html("<div class=\"alert alert-info\">Tring to load data,Please wait...</div>");
+				if(menu=="UserInformation"){
+					app.githubApi.showUserInfo().pipe(function(userInfo){
+						userInfo = JSON.parse(userInfo.result);
+						brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+					});
+				}else if(menu=="Repositories"){
+					app.githubApi.getRepositories().pipe(function(repositories){
+						repositories = JSON.parse(repositories.result);
+						brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+					});
+				}
 			}
 		}
 	})

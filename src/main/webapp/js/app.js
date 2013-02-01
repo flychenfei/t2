@@ -76,6 +76,19 @@ var app = app || {};
 		return dfd.promise();
 	};
 
+	app.githubApi={
+	        showUserInfo : function(){
+	        	 var params = {};
+	        	 params.method = "Get";
+	        	return app.getJsonData(contextPath + "/github/userInfo",params);
+	        },
+	        getRepositories:function(){
+	        	var params = {};
+	        	params.method = "Get";
+	        	return app.getJsonData(contextPath + "/github/repositories",params);
+	        }
+	    };
+	
     app.googleApi = {
         "getContact": function (opts) {
             var params = opts || {};

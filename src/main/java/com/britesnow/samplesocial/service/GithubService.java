@@ -1,45 +1,27 @@
 package com.britesnow.samplesocial.service;
 
-import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
-
 import java.util.Map;
 
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
-import com.britesnow.samplesocial.oauth.ServiceType;
-import com.britesnow.snow.web.binding.ApplicationProperties;
+import com.britesnow.snow.util.JsonUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class GithubService {
-	private final Map appConfig;
 
-	private static String TOKEN_URL = "https://github.com/login/oauth/access_token";
-
+	private static String USER_INFO = "https://api.github.com/user";
 	@Inject
 	private YaoGithubAuthService yaoGithubAuthService;
 
-	private OAuthService oAuthService;
-
-	@Inject
-	public GithubService(@ApplicationProperties Map appConfig,OAuthServiceHelper oauthServiceHelper) {
-		this.appConfig = appConfig;
-		oAuthService = oauthServiceHelper
-				.getOauthService(ServiceType.Github);
-	}
-
 	public Token getToken(User user) {
-		SocialIdEntity soId = yaoGithubAuthService.getSocialIdEntity(user
-				.getId());
+		SocialIdEntity soId = yaoGithubAuthService.getSocialIdEntity(user.getId());
 		return new Token(soId.getToken(), soId.getSecret());
 	}
 
@@ -49,11 +31,21 @@ public class GithubService {
 		return request;
 	}
 
-	public String getUserInfo(User user, String code) {
-		OAuthRequest request = createRequest(Verb.POST, TOKEN_URL);
-		 Verifier verifier = new Verifier(code);
-	     Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
-		System.out.println( accessToken.getToken());
-		return null;
+	public String showUserInfoUrl(User user){
+		return USER_INFO+"?access_token="+getToken(user).getToken();
+	}
+	
+	public String getUserInfo(User user) {
+		OAuthRequest request = createRequest(Verb.GET, showUserInfoUrl(user));
+		Response response = request.send();
+	    return response.getBody();
+	}
+	
+	public String getRepositories(User user) {
+		Map userInfo = JsonUtil.toMapAndList(getUserInfo(user));
+		OAuthRequest request = createRequest(Verb.GET, userInfo.get("repos_url").toString());
+		Response response = request.send();
+		System.out.println(response.getBody());
+	    return response.getBody();
 	}
 }
