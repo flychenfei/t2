@@ -90,6 +90,8 @@ public class FacebookService {
     }
 
     public static class FqlUser {
+        @Facebook("uid")
+        String id;
         @Facebook
         String uid;
 
@@ -99,6 +101,14 @@ public class FacebookService {
         String email;
         @Facebook
         String hometownname;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         @Override
         public String toString() {
