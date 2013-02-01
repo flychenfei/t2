@@ -41,8 +41,8 @@ public class FacebookContactHandlers {
         List ls2 = fContactService.getContactsByPage(user, null);
         Set filterSet = new HashSet();
         for (int i = 0; i < ls2.size(); i++) {
-            Contact c = (Contact) ls2.get(i);
-            filterSet.add(c.getFbid());
+            //Contact c = (Contact) ls2.get(i);
+            //filterSet.add(c.getFbid());
         }
         List ls3 = new ArrayList();
         for (int i = 0; i < ls.size(); i++) {
@@ -112,7 +112,7 @@ public class FacebookContactHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFeedList(token, null);
+        List ls = facebookService.getFeedList(token, "me", "link", pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);

@@ -1,12 +1,12 @@
 ;(function() {
 	(function($) {
-		brite.registerView("FacebookPosts", {
+		brite.registerView("FacebookFeeds", {
 			loadTmpl : true,
 			emptyParent : true,
 			parent : ".FacebookScreen-content"
 		}, {
 			create : function(data, config) {
-				var $html = app.render("tmpl-FacebookPosts");
+				var $html = app.render("tmpl-FacebookFeeds");
 				var $e = $($html);
 				return $e;
 			},
@@ -21,9 +21,10 @@
 					var view = this;
 					var $e = view.$el;
 					var value = $e.find(".post").val();
+					if (value=="") {return};
 					app.addPost(value).done(function(){
 						view.refreshPostsList.call(view);
-						$e.find(".post").empty();
+						$e.find(".post").val('');
 					});
 				},
 			},
@@ -60,6 +61,18 @@
 						},
 						attrs : "style='width: 400px'"
 
+					},{
+						text : "Type",
+						render : function(obj) {
+							return fixNull(obj.type);
+						},
+						attrs : "style='width: 200px'"
+					},{
+						text : "Created time",
+						render : function(obj) {
+							return fixNull(obj.created_time);
+						},
+						attrs : "style='width: 300px'"
 					}],
 					opts : {
 						htmlIfEmpty : "Not news found",

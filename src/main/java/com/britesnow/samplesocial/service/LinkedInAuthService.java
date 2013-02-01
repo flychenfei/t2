@@ -52,7 +52,7 @@ public class LinkedInAuthService implements AuthService {
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
+        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Twitter);
         if (socialId != null) {
             socialId.setValid(true);
         }

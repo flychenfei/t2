@@ -6,9 +6,11 @@ import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.builder.api.LinkedInApi;
+import org.scribe.builder.api.TwitterApi;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.oauth.api.GoogleApi20;
+import com.britesnow.samplesocial.oauth.api.SalesForceApi;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,12 +39,23 @@ public class OAuthServiceHelper {
             oauthService = this.getSalesForceOAuthService();
         }else if(serviceType == ServiceType.Github){
             oauthService = this.getGitHubOAuthService();
+        }else if(serviceType == ServiceType.Twitter){
+            oauthService = this.getTwitterOAuthService();
         }
         
         return oauthService;
     }
     
-    private OAuthService getGoogleOAuthService(){
+    private OAuthService getTwitterOAuthService() {
+    	 String prefix = "twitter";
+         String clientId = (String) appconfig.get(prefix+".apiKey");
+         String secret = (String) appconfig.get(prefix+".apiSecret");
+         String callback = (String) appconfig.get(prefix+".callBackUrl");
+         ServiceBuilder builder = new ServiceBuilder().provider(TwitterApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+         return builder.build();
+	}
+
+	private OAuthService getGoogleOAuthService(){
         String prefix = "google";
         String clientId = (String) appconfig.get(prefix+".client_id");
         String secret = (String) appconfig.get(prefix+".secret");
@@ -91,7 +104,7 @@ public class OAuthServiceHelper {
         String clientId = (String) appconfig.get(prefix+".apiKey");
         String secret = (String) appconfig.get(prefix+".apiSecret");
         String callback = (String) appconfig.get(prefix+".callbackUrl");
-        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        ServiceBuilder builder = new ServiceBuilder().provider(SalesForceApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
         return builder.build();
     }
     

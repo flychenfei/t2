@@ -137,6 +137,14 @@ var app = app || {};
         }
 
     };
+    
+    app.twitterApi = {
+		getUserInfo : function(param) {
+			param = param||{};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/twitter/getUserInfo", param);
+		}
+    }
 
     app.linkedInApi = {
         getConnections: function(param){

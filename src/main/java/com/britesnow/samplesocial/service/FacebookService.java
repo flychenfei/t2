@@ -59,8 +59,8 @@ public class FacebookService {
         return publishPhotoResponse.getId();
     }
 
-    public List getFeedList(String accessToken, String userId) {
-        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection("me/feed", JsonObject.class);
+    public List getFeedList(String accessToken, String userId, String type, Integer limit, Integer offset) {
+        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/feed", JsonObject.class, Parameter.with("type", type), Parameter.with("limit", 25), Parameter.with("offset", 0));
         List ls = myFeed.getData();
         List ls2 = new ArrayList();
         for (int i = 0; i < ls.size(); i++) {
