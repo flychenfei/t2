@@ -34,13 +34,42 @@
                   brite.display("GoogleGroups");
                 }else if(menu == "folders"){
                   brite.display("GoogleFolders");
-                }else if(menu == "sendMail"){
-                    brite.display("GoogleMailSend");
+                }else if(menu == "actions"){
+                    var list = [
+                        {name:"sendMail",label:"Send Mail"},
+                        {name:"createGroup",label:"Create Group"},
+                        {name:"createContact",label:"Create Contact"}
+                    ];
+                    brite.display("Dropdown",null,{$target:$li,list:list});
+                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
                 }
               }
             },
 
             docEvents:{
+                "DO_ON_DROPDOWN_CLOSE":function(){
+                    var view = this;
+                    var $e = view.$el;
+                    var $li = $e.find("li[data-nav='actions']");
+                    $li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+                },
+                "DO_ON_DROP_DOWN_CLICK":function(event, name) {
+                    switch (name) {
+                        case "sendMail":
+                            brite.display("GoogleMailSend");
+                            break;
+                        case "createGroup":
+                            brite.display("CreateGroup");
+                            break;
+                        case "createFolder":
+                            app.oauth.authorize('GoogleFodler');
+                            break;
+                        case "createContact":
+                            brite.display("CreateContact");
+                            break;
+                        default:
+                    }
+                }
             },
 
             daoEvents:{
