@@ -100,7 +100,7 @@
 					}, {
 						text : "Picture",
 						render : function(obj, idx) {
-							return "<img src='http://graph.facebook.com/" + obj.id + "/picture'/>"
+							return "<img src='http://graph.facebook.com/" + obj.uid + "/picture'/>"
 						},
 						attrs : "style='width: 10%'"
 					}, {
