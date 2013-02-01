@@ -13,7 +13,7 @@
         }, {
             create:function (data, config) {
                 if(data) {
-                    this.id = data.id;
+                    this.contractId = data.id;
                 }
                 var html = app.render("tmpl-CreateContact",data||{});
                 var $e = $(html);
@@ -41,7 +41,7 @@
                     var $this = $(this);
                     data[$this.attr("name")] = $this.val();
                 });
-                data.id = view.id;
+                data.id = view.contractId;
                 var input = $e.find("input[name='email']");
                 if (input.val() == "") {
                     input.focus();
