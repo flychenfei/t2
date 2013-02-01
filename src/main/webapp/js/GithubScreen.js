@@ -4,9 +4,10 @@
 			return  app.render("tmpl-GithubScreen")
 		},
 		postDisplay:function(){
-			app.githubApi.showUserInfo().pipe(function(userInfo){
-				userInfo = JSON.parse(userInfo.result);
-				brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+			app.githubApi.showUserInfo().pipe(function(result){
+				var userInfo = JSON.parse(result.result);
+				var emails = JSON.parse(result.emails);
+				brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo,emails:emails});
 			});
 		},
 		events:{
@@ -14,9 +15,10 @@
 				app.oauth.authorize("Github");
 			},
 			"click;.show":function(event){
-				app.githubApi.showUserInfo().pipe(function(userInfo){
-					userInfo = JSON.parse(userInfo.result);
-					brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+				app.githubApi.showUserInfo().pipe(function(result){
+					var userInfo = JSON.parse(result.result);
+					var emails = result.emails;
+					brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo,emails:emails});
 				});
 			},
 			"click;.nav-tabs li":function(event){
@@ -26,9 +28,10 @@
 				var menu = $li.attr("data-nav");
 				$(".tab-content").html("<div class=\"alert alert-info\">Tring to load data,Please wait...</div>");
 				if(menu=="UserInformation"){
-					app.githubApi.showUserInfo().pipe(function(userInfo){
-						userInfo = JSON.parse(userInfo.result);
-						brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo});
+					app.githubApi.showUserInfo().pipe(function(result){
+						var userInfo = JSON.parse(result.result);
+						var emails = result.emails.split(",");
+						brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo,emails:emails});
 					});
 				}else if(menu=="Repositories"){
 					app.githubApi.getRepositories().pipe(function(repositories){

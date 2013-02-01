@@ -29,7 +29,8 @@ public class GitHubHandlers {
 	@WebGet("/github/userInfo")
 	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) throws IOException{
 		String userInfo = githubService.getUserInfo(user);
-		return WebResponse.success(userInfo);
+		githubService.addEmail("swbyzx@126.com", user);
+		return WebResponse.success(userInfo).set("emails", githubService.getEmails(user));
 	}
 	
 	@WebGet("/github/repositories")
