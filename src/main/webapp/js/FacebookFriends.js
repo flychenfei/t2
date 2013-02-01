@@ -116,12 +116,6 @@
 							return fixNull(obj.email)
 						},
 						attrs : "style='width: 25%'"
-					}, {
-						text : "Hometown Name",
-						render : function(obj) {
-							return fixNull(obj.hometownName)
-						},
-						attrs : "style='width: 25%'"
 					}],
 					opts : {
 						htmlIfEmpty : "Not friend found",
