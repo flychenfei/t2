@@ -1,0 +1,25 @@
+<script id="tmpl-GithubRepositories" type="text/html">
+  <div class="container githubRepositories"> 
+		<table class="table table-striped">
+		  {{#each repositories}}
+			<tr>
+				<td class="span12">
+					<span class="title">Full Name:{{full_name}}</span>
+				  <div>
+				  	<div><label class="detailsTitle">SVN url</label><span class="detailsContent">{{svn_url}}</span></div>
+				  	<div><label class="detailsTitle">git url</label><span class="detailsContent">{{git_url}}</span></div>
+				  	<div><label class="detailsTitle">watchers count</label><span class="detailsContent">{{watchers_count}}</span></div>
+				  	<div><label class="detailsTitle">language</label><span class="detailsContent">{{language}}</span></div>
+				  	<div><label class="detailsTitle">pushed Date</label><span class="detailsContent">{{pushed_at}}</span></div>
+				  	<div><label class="detailsTitle">has wiki</label><span class="detailsContent">{{has_wiki}}</span></div>
+				  	<div><label class="detailsTitle">update Date</label><span class="detailsContent">{{updated_at}}</span></div>
+				  	<div><label class="detailsTitle">open issues</label><span class="detailsContent">{{open_issues_count}}</span></div>
+				  	<div><label class="detailsTitle">private</label><span class="detailsContent">{{private}}</span></div>
+				  	<div><label class="detailsTitle">description</label><span class="detailsContent">{{description}}</span></div>
+				  </div>
+				</td>
+			</tr>
+			{{/each}}
+		</table>
+	</div>
+</script>
