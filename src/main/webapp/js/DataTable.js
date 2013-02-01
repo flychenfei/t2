@@ -155,6 +155,18 @@
                     }
 
                 },
+                "keyup; input[name='gotoPage']":function (e) {
+                    var view = this;
+                    if (e.which === 13) {
+                        if (view.opts.withPaging) {
+                            var opts = view.opts.dataOpts;
+                            var num = $(e.currentTarget).val() - 1;
+                            opts.pageIndex = num;
+                            refreshDataTable.call(view);
+                        }
+                    }
+
+                },
 
                 "change;select[name='pageSize']":function (e) {
                     var view = this;
@@ -208,7 +220,7 @@
                     $e.trigger(eventName, {objType:view.dataType, objId: objId, event:event});
 
                 },
-                "cmdDelete": function(event, extra){
+                "cmdEdit": function(event, extra){
                     var view = this;
                     if (extra) {
                         var objId = extra.objId;
