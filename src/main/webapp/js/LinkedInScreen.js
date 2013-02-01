@@ -27,16 +27,40 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "connections"){
                   showConnections.call(view);
-                }else if(menu == "jobs"){
-                    showJobs.call(view);
-                }else if(menu == "companys"){
-                    showCompanys.call(view);
+                }else if(menu == "search"){
+                    var list = [
+                        {name:"searchJobs",label:"Search Jobs"},
+                        {name:"searchCompany",label:"Search Company"}
+                    ];
+                    brite.display("Dropdown",null,{$target:$li,list:list});
+                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
                 }
 
               }
             },
 
             docEvents:{
+                "DO_ON_DROPDOWN_CLOSE":function(){
+                    var view = this;
+                    var $e = view.$el;
+                    var $li = $e.find("li[data-nav='search']");
+                    $li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+                },
+                "DO_ON_DROP_DOWN_CLICK":function(event, name) {
+                    var view = this;
+                    switch (name) {
+                        case "searchJobs":
+                            brite.display("InputValue",".MainScreen", {callback:function(keywork){
+                                showJobs(keywork);
+                            }});
+                            break;
+                        case "searchCompany":
+                            brite.display("InputValue", ".MainScreen",{callback:function(keywork){
+                                showCompanys(keywork);
+                            }});
+                        default:
+                    }
+                }
             },
 
             daoEvents:{
@@ -44,7 +68,6 @@
             
         });
         function showConnections() {
-            var view = this;
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: app.linkedInApi.getConnections},
                 columnDef: [
@@ -86,9 +109,11 @@
         }
 
         function showJobs(keywork) {
-            var view = this;
             brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: app.linkedInApi.searchJobs},
+                dataProvider: {list: function(params){
+                    params.keywork = keywork;
+                    return app.linkedInApi.searchJobs(params);
+                }},
                 columnDef: [
                     {
                         text: "#",
@@ -130,7 +155,10 @@
         function showCompanys(keywork) {
             var view = this;
             brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: app.linkedInApi.searchCompanys},
+                dataProvider: {list: function(params){
+                    params.keywork = keywork;
+                   return app.linkedInApi.searchCompanys(params);
+                }},
                 columnDef: [
                     {
                         text: "#",
