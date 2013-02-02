@@ -2,12 +2,14 @@
     <div class="InputValue">
 		<div class='InputValueDialogGlass' />
 	    <div class="InputValue-content">
-	        <h2>Input Value</h2>
+	        <h2>{{title}}</h2>
 	        <div class="form">
+                {{#each fields }}
 		        <div class="control-group">
-		  		Name:<input type="text"  name="name"  placeholder="input value"><span class="help-inline" ></span>
+		  		{{label}}:<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
 		  		<br/>
 		  		</div>
+                {{/each}}
 		  		<div>
 		    		<a href="#" class="btn btn-primary inputValueBtn">OK</a>
 		    		<a href="#" class="btn cancelBtn">Close</a>

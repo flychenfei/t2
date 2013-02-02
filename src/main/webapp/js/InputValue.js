@@ -11,10 +11,13 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+                this.model = {};
                 if(data||data.callback) {
-                    this.callback = data.callback;
+                    this.model.callback = data.callback;
                 }
-                var html = app.render("tmpl-InputValue");
+                this.model.title = data.title || 'Input Value';
+                this.model.fields = data.fields || [{label: "Name", name: 'name', mandatory: true}];
+                var html = app.render("tmpl-InputValue", this.model);
                 var $e = $(html);
                 return $e;
             },
@@ -34,12 +37,26 @@
                 var view = this;
                 var $e = this.$el;
                 var mainScreen = view.mainScreen;
-                var input = $e.find("input[name='name']");
-                if (input.val() == "") {
-                    input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter value.");
-                } else {
-                    view.callback(input.val());
+                var result = {};
+                var input;
+                var check = true;
+                $.each(this.model.fields, function(idx, val){
+                     console.log(idx);
+                    console.log(val);
+                    if (check) {
+                        input = $e.find("input[name='{0}']".format(val.name));
+                        if (val.mandatory && input.val() == "") {
+                            input.focus();
+                            input.closest("div").addClass("error").find("span").html("Please enter value.");
+                            check = false;
+                        } else {
+                            result[val.name] = input.val();
+                        }
+                    }
+                });
+
+                if(check){
+                    view.model.callback(result);
                     view.close();
                 }
             },

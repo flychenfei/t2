@@ -111,7 +111,7 @@
         function showJobs(keywork) {
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: function(params){
-                    params.keywork = keywork;
+                    params.keywork = keywork.name;
                     return app.linkedInApi.searchJobs(params);
                 }},
                 columnDef: [
@@ -156,7 +156,7 @@
             var view = this;
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: function(params){
-                    params.keywork = keywork;
+                    params.keywork = keywork.name;
                    return app.linkedInApi.searchCompanys(params);
                 }},
                 columnDef: [
