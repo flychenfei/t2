@@ -3,6 +3,11 @@
 
     brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
+            if(data && data.search) {
+                this.search = data.search;
+            }else{
+                this.search = app.googleApi.getEmails;
+            }
             return app.render("tmpl-GoogleMails");
         },
 
@@ -49,8 +54,9 @@
         }
     });
     function showEmails() {
+        var view = this;
         return brite.display("DataTable", ".mails-container", {
-            dataProvider: {list: app.googleApi.getEmails},
+            dataProvider: {list: view.search},
             columnDef: [
                 {
                     text: "#",

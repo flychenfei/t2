@@ -1,14 +1,6 @@
 package com.britesnow.samplesocial.web;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.Folder;
-import javax.mail.Message;
-
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.service.GMailService;
@@ -21,6 +13,13 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import javax.mail.Folder;
+import javax.mail.Message;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class GoogleEmailHandlers {
@@ -88,19 +87,13 @@ public class GoogleEmailHandlers {
         return WebResponse.success();
     }
 
-    @WebPost("/gmail/search")
+    @WebGet("/gmail/search")
     public WebResponse search(@WebUser User user,
-                        @WebParam("subject") String subject, @WebParam("from") String from) throws Exception {
+                        @WebParam("subject") String subject, @WebParam("from") String from,
+                        @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
 
-        Message[] msgs = gMailService.search(user, subject, from);
-        List<MailInfo> infos = new ArrayList<MailInfo>();
-        if (msgs.length > 0) {
-
-            for (Message msg : msgs) {
-                infos.add(gMailService.buildMailInfo(msg));
-            }
-        }
-        return WebResponse.success(infos);
+        Pair<List<MailInfo>, Integer> pair = gMailService.search(user, subject, from, pageSize, pageIndex);
+        return WebResponse.success(pair.getFirst()).setResultCount(pair.getSecond());
     }
 
 }

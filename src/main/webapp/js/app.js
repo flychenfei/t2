@@ -150,6 +150,11 @@ var app = app || {};
         },
         sendMail: function(params) {
             return app.getJsonData(contextPath + "/gmail/send", params);
+        },
+        searchEmails: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmail/search", params);
         }
 
     };

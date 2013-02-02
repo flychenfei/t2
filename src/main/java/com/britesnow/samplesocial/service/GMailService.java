@@ -13,7 +13,13 @@ import com.sun.mail.smtp.SMTPTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.*;
+import javax.mail.FetchProfile;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
@@ -23,6 +29,7 @@ import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Singleton
@@ -110,8 +117,10 @@ public class GMailService {
         return folder.delete(true);
     }
 
-    public Message[] search(User user, String subject, String from) throws Exception {
+    public Pair<List<MailInfo>, Integer> search(User user, String subject, String from, int pageSize, int pageIndex) throws Exception {
         Folder inbox = null;
+        List<MailInfo> infos = new ArrayList<MailInfo>();
+        int count = 0;
         try {
             IMAPStore imap = getImapStore(user);
 
@@ -127,9 +136,21 @@ public class GMailService {
                 searchTerms.add(fromStringTerm);
             }
             if (searchTerms.size() > 0) {
-                return inbox.search(new OrTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
+                Message[] msgs =  inbox.search(new OrTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
+                count = msgs.length;
+                Message[] resultMsgs={};
+                int start = pageSize*pageIndex;
+                if (msgs.length > start && msgs.length > start+pageSize) {
+                    resultMsgs = Arrays.copyOfRange(msgs, start, start + pageSize);
+                }else if (msgs.length > start && msgs.length < start + pageSize) {
+                    resultMsgs = Arrays.copyOfRange(msgs, start, msgs.length);
+                }
 
-
+                if (resultMsgs.length > 0) {
+                    for (Message msg : resultMsgs) {
+                        infos.add(buildMailInfo(msg));
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -138,7 +159,7 @@ public class GMailService {
             if (inbox != null)
                 inbox.close(true);
         }
-        return null;
+        return new Pair<List<MailInfo>, Integer>(infos, count);
     }
 
     public boolean sendMail(User user, String subject, String content, String to) throws Exception {

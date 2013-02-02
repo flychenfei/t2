@@ -38,7 +38,8 @@
                     var list = [
                         {name:"sendMail",label:"Send Mail"},
                         {name:"createGroup",label:"Create Group"},
-                        {name:"createContact",label:"Create Contact"}
+                        {name:"createContact",label:"Create Contact"},
+                        {name:"searchEmail",label:"Search Email"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -66,6 +67,23 @@
                             break;
                         case "createContact":
                             brite.display("CreateContact");
+                            break;
+                        case "searchEmail":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Search Email',
+                                fields: [
+                                    {label:"Subject", name:'subject', mandatory:false},
+                                    {label:"From", name:"from", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("GoogleMails",".mails-container",{
+                                       search: function(opts){
+                                           opts = opts||[];
+                                            $.extend(opts, params)
+                                           return app.googleApi.searchEmails(opts)
+                                       }
+                                    });
+                                }});
                             break;
                         default:
                     }
