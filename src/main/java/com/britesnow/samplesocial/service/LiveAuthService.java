@@ -4,7 +4,6 @@ import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.samplesocial.oauth.OauthTokenExpireException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.util.JsonUtil;
 import com.google.inject.Inject;
@@ -68,7 +67,7 @@ public class LiveAuthService implements AuthService {
             Response response = request.send();
             Map profile = JsonUtil.toMapAndList(response.getBody());
             String email = (String) ((Map) profile.get("emails")).get("account");
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Google);
+            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
             boolean newSocial = false;
             if (social == null) {
                 social = new SocialIdEntity();
