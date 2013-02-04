@@ -6,8 +6,10 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.GithubService;
 import com.britesnow.samplesocial.service.YaoGithubAuthService;
 import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -29,13 +31,18 @@ public class GitHubHandlers {
 	@WebGet("/github/userInfo")
 	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) throws IOException{
 		String userInfo = githubService.getUserInfo(user);
-		githubService.addEmail("swbyzx@126.com", user);
 		return WebResponse.success(userInfo).set("emails", githubService.getEmails(user));
 	}
 	
-	@WebGet("/github/repositories")
+	@WebGet("/github/user")
 	public WebResponse getRepositories(RequestContext rc,@WebUser User user) throws IOException{
 		String userInfo = githubService.getRepositories(user);
 		return WebResponse.success(userInfo);
+	}
+	
+	@WebPost("/github/addEmail")
+	public WebResponse addEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
+		githubService.addEmail(email, user);
+		return WebResponse.success(email);
 	}
 }

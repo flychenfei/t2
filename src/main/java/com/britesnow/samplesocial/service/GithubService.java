@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.UserService;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -69,22 +71,14 @@ public class GithubService {
 	    return response.getBody();
 	}
 	
+
 	public String addEmail(String email,User user) throws IOException{
-		OAuthRequest request = createRequest(Verb.POST, PREFIX+EMAILS);
-		request.addHeader("Accept", "application/vnd.github.v3");
-		request.addQuerystringParameter("access_token", getToken(user).getToken());
-		Response response = request.send();
-		System.out.println(response.getBody());
-	    return response.getBody();
-		/*URL url = new URL( PREFIX+EMAILS+"?access_token="+getToken(user));
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestProperty("Accept", "application/vnd.github.v3");
-		con.setRequestProperty("User-Agent", "GitHubJava/2.1.0");
-		con.setRequestMethod("POST");
-		String[] mails = {"swbyzx@126.com"};
-		sendParams(con, mails);
-		System.out.println(con.getResponseMessage());
-		return email;*/
+		GitHubClient client = new GitHubClient();
+		client.setOAuth2Token(getToken(user).getToken());
+		client.setUserAgent("GitHubJava/2.1.0");
+		UserService service = new UserService(client);
+		service.addEmail(email);
+		return email;
 	}
 	
 	public void addToken(OAuthRequest request,User user){
@@ -103,8 +97,9 @@ public class GithubService {
 					+ "; charset=UTF-8" );
 			byte[] data = JsonUtil.toJson(params).getBytes("UTF-8");
 			request.setFixedLengthStreamingMode(data.length);
+			System.out.println(new String(data));
 			BufferedOutputStream output = new BufferedOutputStream(
-					request.getOutputStream(), 8192);
+					request.getOutputStream(), data.length);
 			try {
 				output.write(data);
 				output.flush();

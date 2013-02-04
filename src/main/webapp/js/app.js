@@ -86,6 +86,11 @@ var app = app || {};
 	        	var params = {};
 	        	params.method = "Get";
 	        	return app.getJsonData(contextPath + "/github/repositories",params);
+	        },
+	        addEmail:function(opts){
+	        	var params = {}||opts;
+	        	params.method = "Post";
+	        	return app.getJsonData(contextPath + "/github/addEmail",params);
 	        }
 	    };
 	
