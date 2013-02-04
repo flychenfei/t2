@@ -1,10 +1,7 @@
 package com.britesnow.samplesocial.web;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.britesnow.samplesocial.entity.Contact;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
@@ -12,7 +9,6 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FContactService;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.FacebookService;
-import com.britesnow.samplesocial.service.FacebookService.FqlUser;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -28,36 +24,8 @@ public class FacebookContactHandlers {
     private FacebookService     facebookService;
     @Inject
     private FContactService     fContactService;
-
     @Inject
     private FacebookAuthService facebookAuthService;
-
-    @WebGet("/fb/friends")
-    public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
-                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
-                            @WebParam("limit") Integer limit, @WebParam("offset") Integer offset, RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
-        String token = e.getToken();
-        List ls = facebookService.getFriendsByPage(token, query, limit, offset);
-        List ls2 = fContactService.getContactsByPage(user, null);
-        Set filterSet = new HashSet();
-        for (int i = 0; i < ls2.size(); i++) {
-            // Contact c = (Contact) ls2.get(i);
-            // filterSet.add(c.getFbid());
-        }
-        List ls3 = new ArrayList();
-        for (int i = 0; i < ls.size(); i++) {
-            FqlUser u = (FqlUser) ls.get(i);
-            if (!filterSet.contains(u.getUid().toString())) {
-                ls3.add(u);
-            }
-        }
-        m.put("result", ls3);
-        if (ls3 != null && pageSize != null && ls3.size() == pageSize) {
-            m.put("hasNext", true);
-        }
-        return m;
-    }
 
     @WebGet("/fb/contacts")
     public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
