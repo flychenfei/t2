@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.service.FContactService;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.FacebookService;
 import com.britesnow.snow.web.RequestContext;

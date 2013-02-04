@@ -108,12 +108,6 @@
 							return obj.email
 						},
 						attrs : "style='width: 25%'"
-					}, {
-						text : "Hometown Name",
-						render : function(obj) {
-							return obj.hometownname
-						},
-						attrs : "style='width: 25%'"
 					}],
 					opts : {
 						htmlIfEmpty : "Not contacts found",
