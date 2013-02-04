@@ -42,7 +42,8 @@
             		    {name:"google",label:"Connect to Google"},
             		    {name:"salesforce",label:"Connect to SalesForce"},
             		    {name:"github",label:"Connect to Github"},
-            		    {name:"facebook",label:"Connect to Facebook"}
+            		    {name:"facebook",label:"Connect to Facebook"},
+            		    {name:"live",label:"Connect to Live"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
             		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -74,6 +75,9 @@
                           break;
                       case "github":
                           app.oauth.authorize('Github');
+                          break;
+                      case "live":
+                          app.oauth.authorize("Live");
                           break;
                       default:
                   }

@@ -6,6 +6,7 @@ import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.FacebookApi;
 import org.scribe.builder.api.LinkedInApi;
+import org.scribe.builder.api.LiveApi;
 import org.scribe.builder.api.TwitterApi;
 import org.scribe.oauth.OAuthService;
 
@@ -41,6 +42,8 @@ public class OAuthServiceHelper {
             oauthService = this.getGitHubOAuthService();
         }else if(serviceType == ServiceType.Twitter){
             oauthService = this.getTwitterOAuthService();
+        }else if (serviceType == ServiceType.Live) {
+            oauthService = this.getLiveOauthService();
         }
         
         return oauthService;
@@ -125,4 +128,20 @@ public class OAuthServiceHelper {
         return builder.build();
     }
 
+    public OAuthService getLiveOauthService() {
+        String prefix = "live";
+        String clientId = (String) appconfig.get(prefix+".apiKey");
+        String secret = (String) appconfig.get(prefix+".apiSecret");
+        String callback = (String) appconfig.get(prefix+".callBackUrl");
+        String scope = (String) appconfig.get(prefix+".scope");
+        ServiceBuilder builder = new ServiceBuilder().provider(LiveApi.class).apiKey(clientId).apiSecret(secret);
+        //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
+        if (callback != null) {
+            builder.callback(callback);
+        }
+        if (scope != null) {
+            builder.scope(scope);
+        }
+        return builder.build();
+    }
 }

@@ -30,7 +30,7 @@ CREATE TABLE social_id_entity
 (
   id 							bigserial NOT NULL,
   user_id 						bigint NOT NULL,
-  token 						character varying(256),
+  token 						character varying(2048),
   token_date 					timestamp without time zone,
   secret 						character varying(128),
   service 						character varying(256),
