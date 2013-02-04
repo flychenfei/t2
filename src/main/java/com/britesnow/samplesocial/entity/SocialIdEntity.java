@@ -17,6 +17,7 @@ import com.britesnow.samplesocial.oauth.ServiceType;
 @javax.persistence.SequenceGenerator(name = "SEQ_STORE", allocationSize = 1, sequenceName = "social_id_entity_id_seq")
 public class SocialIdEntity extends BaseEntity {
     private Long   user_id;
+    @Column(length = 2048)
     private String token;
     @Column(name="token_date")
     private Date tokenDate;

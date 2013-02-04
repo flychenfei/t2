@@ -15,6 +15,7 @@ import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.service.LinkedInAuthService;
+import com.britesnow.samplesocial.service.LiveAuthService;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.samplesocial.service.TwitterAuthService;
 import com.britesnow.snow.web.RequestContext;
@@ -40,6 +41,8 @@ public class OauthHandlers {
     private GithubAuthService githubAuthService;
     @Inject
     private TwitterAuthService twitterAuthService;
+    @Inject
+    private LiveAuthService liveAuthService;
 
     @Inject
     private SocialIdEntityDao   socialIdEntityDao;
@@ -59,6 +62,8 @@ public class OauthHandlers {
             url = githubAuthService.getAuthorizationUrl();
         }else if (service == ServiceType.Twitter) {
             url = twitterAuthService.getAuthorizationUrl();
+        }else if (service == ServiceType.Live) {
+            url = liveAuthService.getAuthorizationUrl();
         }
         
         rc.getRes().sendRedirect(url);
@@ -106,6 +111,14 @@ public class OauthHandlers {
             linkedInAuthService.updateAccessToken(reqToken, code, user.getId());
         }else{
             rc.getRes().sendRedirect(linkedInAuthService.getAuthorizationUrl());
+        }
+    }
+    @WebModelHandler(startsWith="/liveCallback")
+    public void liveCallback(RequestContext rc,@WebUser User user, @WebParam("code") String code) throws Exception {
+        if (user!=null && code != null) {
+            liveAuthService.updateAccessToken(code, user.getId());
+        }else{
+            rc.getRes().sendRedirect(liveAuthService.getAuthorizationUrl());
         }
     }
 

@@ -50,12 +50,12 @@
                     var view = this;
                     switch (name) {
                         case "searchJobs":
-                            brite.display("InputValue",".MainScreen", {callback:function(keywork){
+                            brite.display("InputValue",".MainScreen", {title:'Search Job',callback:function(keywork){
                                 showJobs(keywork);
                             }});
                             break;
                         case "searchCompany":
-                            brite.display("InputValue", ".MainScreen",{callback:function(keywork){
+                            brite.display("InputValue", ".MainScreen",{title:'Search Company',callback:function(keywork){
                                 showCompanys(keywork);
                             }});
                         default:
