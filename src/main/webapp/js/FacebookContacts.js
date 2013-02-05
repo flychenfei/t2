@@ -17,16 +17,21 @@
 				
 			},
 			events : {
-				"click;img,a" : function(e) {
+				"click;img,.contactDetail" : function(e) {
 					var view = this;
 					var $e = view.$el;
 					var id = $(e.currentTarget).attr("data-value");
 					var d = {
 						fbid : id
 					};
-					var $html = app.render("tmpl-FacebookContact-detail",{});
-						$(".Contact-detail").find(".modal-body").html($html);
-						$(".Contact-detail").show();
+					var $html = $(app.render("tmpl-FacebookContact-detail",{}));
+						$(".Contact-detail-dialog").find(".modal-body").html($html);
+						$(".Contact-detail-dialog").show();
+						console.log($html.find("li").length)
+						$html.find("li").click(function(){
+							$html.find("li").removeClass("active");
+							$(this).addClass("active");	
+						});
 
 					// app.getFacebookFriendDetail(d).done(function(data) {
 						// var $html = app.render("tmpl-FacebookContact-detail", data.result);
@@ -102,7 +107,7 @@
 					}, {
 						text : "Name",
 						render : function(obj) {
-							return "<a href='#'  data-value='" + obj.fbid + "'>" + obj.name + "</a>"
+							return "<a href='#' class='contactDetail'  data-value='" + obj.fbid + "'>" + obj.name + "</a>"
 						},
 						attrs : "style='width: 400px'"
 
