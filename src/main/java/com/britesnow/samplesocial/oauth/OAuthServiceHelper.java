@@ -4,10 +4,7 @@ import java.util.Map;
 
 import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.FacebookApi;
-import org.scribe.builder.api.LinkedInApi;
-import org.scribe.builder.api.LiveApi;
-import org.scribe.builder.api.TwitterApi;
+import org.scribe.builder.api.*;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.oauth.api.GoogleApi20;
@@ -44,11 +41,29 @@ public class OAuthServiceHelper {
             oauthService = this.getTwitterOAuthService();
         }else if (serviceType == ServiceType.Live) {
             oauthService = this.getLiveOauthService();
+        }else if (serviceType == ServiceType.Foursquare) {
+            oauthService = this.getFoursquare();
         }
         
         return oauthService;
     }
-    
+
+    private OAuthService getFoursquare() {
+        String prefix = "foursquare";
+        String clientId = (String) appconfig.get(prefix+".client_id");
+        String secret = (String) appconfig.get(prefix+".secret");
+        String callback = (String) appconfig.get(prefix+".callback");
+        String scope = (String) appconfig.get(prefix+".scope");
+        ServiceBuilder builder = new ServiceBuilder().provider(Foursquare2Api.class).apiKey(clientId).apiSecret(secret);
+        if (callback != null) {
+            builder.callback(callback);
+        }
+        if (scope != null) {
+            builder.scope(scope);
+        }
+        return builder.build();
+    }
+
     private OAuthService getTwitterOAuthService() {
     	 String prefix = "twitter";
          String clientId = (String) appconfig.get(prefix+".apiKey");

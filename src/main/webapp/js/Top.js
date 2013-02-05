@@ -43,6 +43,7 @@
             		    {name:"salesforce",label:"Connect to SalesForce"},
             		    {name:"github",label:"Connect to Github"},
             		    {name:"facebook",label:"Connect to Facebook"},
+            		    {name:"foursquare",label:"Connect to FourSquare"},
             		    {name:"live",label:"Connect to Live"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
@@ -78,6 +79,9 @@
                           break;
                       case "live":
                           app.oauth.authorize("Live");
+                          break;
+                      case "foursquare":
+                          app.oauth.authorize("Foursquare");
                           break;
                       default:
                   }

@@ -11,13 +11,7 @@ import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
-import com.britesnow.samplesocial.service.FacebookAuthService;
-import com.britesnow.samplesocial.service.GithubAuthService;
-import com.britesnow.samplesocial.service.GoogleAuthService;
-import com.britesnow.samplesocial.service.LinkedInAuthService;
-import com.britesnow.samplesocial.service.LiveAuthService;
-import com.britesnow.samplesocial.service.SalesForceAuthService;
-import com.britesnow.samplesocial.service.TwitterAuthService;
+import com.britesnow.samplesocial.service.*;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -43,6 +37,8 @@ public class OauthHandlers {
     private TwitterAuthService twitterAuthService;
     @Inject
     private LiveAuthService liveAuthService;
+    @Inject
+    private FoursquareAuthService foursquareAuthService;
 
     @Inject
     private SocialIdEntityDao   socialIdEntityDao;
@@ -64,6 +60,8 @@ public class OauthHandlers {
             url = twitterAuthService.getAuthorizationUrl();
         }else if (service == ServiceType.Live) {
             url = liveAuthService.getAuthorizationUrl();
+        }else if (service == ServiceType.Foursquare) {
+            url = foursquareAuthService.getAuthorizationUrl();
         }
         
         rc.getRes().sendRedirect(url);
@@ -119,6 +117,15 @@ public class OauthHandlers {
             liveAuthService.updateAccessToken(code, user.getId());
         }else{
             rc.getRes().sendRedirect(liveAuthService.getAuthorizationUrl());
+        }
+    }
+
+    @WebModelHandler(startsWith="/foursquareCallback")
+    public void fourquareCallback(RequestContext rc,@WebUser User user, @WebParam("code") String code) throws Exception {
+        if (user!=null && code != null) {
+            foursquareAuthService.updateAccessToken(code, user.getId());
+        }else{
+            rc.getRes().sendRedirect(foursquareAuthService.getAuthorizationUrl());
         }
     }
 
