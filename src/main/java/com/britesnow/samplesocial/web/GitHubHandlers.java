@@ -34,7 +34,7 @@ public class GitHubHandlers {
 		return WebResponse.success(userInfo).set("emails", githubService.getEmails(user));
 	}
 	
-	@WebGet("/github/user")
+	@WebGet("/github/repositories")
 	public WebResponse getRepositories(RequestContext rc,@WebUser User user) throws IOException{
 		String userInfo = githubService.getRepositories(user);
 		return WebResponse.success(userInfo);
@@ -42,7 +42,13 @@ public class GitHubHandlers {
 	
 	@WebPost("/github/addEmail")
 	public WebResponse addEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
-		githubService.addEmail(email, user);
-		return WebResponse.success(email);
+		String status = githubService.addEmail(email, user);
+		return WebResponse.success(status).set("email", email).set("addSuccess", status.startsWith("adding"));
+	}
+	
+	@WebPost("/github/deleteEmail")
+	public WebResponse deleteEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
+		String status = githubService.deleteEmail(email, user);
+		return WebResponse.success(status).set("deleteSuccess", status.contains("successfully"));
 	}
 }

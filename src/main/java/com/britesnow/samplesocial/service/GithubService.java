@@ -72,13 +72,32 @@ public class GithubService {
 	}
 	
 
-	public String addEmail(String email,User user) throws IOException{
+	public String addEmail(String email,User user){
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(getToken(user).getToken());
 		client.setUserAgent("GitHubJava/2.1.0");
 		UserService service = new UserService(client);
-		service.addEmail(email);
-		return email;
+		try {
+			service.addEmail(email);
+		} catch (IOException e) {
+			if(e.getMessage().startsWith("Validation Failed"))
+			return "Error adding '"+email+"' email is already in use";
+			return "Error adding '"+email+"'Unknown error.";
+		}
+		return "adding '"+email+"' successfully";
+	}
+	
+	public String deleteEmail(String email,User user){
+		GitHubClient client = new GitHubClient();
+		client.setOAuth2Token(getToken(user).getToken());
+		client.setUserAgent("GitHubJava/2.1.0");
+		UserService service = new UserService(client);
+		try {
+			service.removeEmail(email);
+		} catch (IOException e) {
+			return "Error deleting '"+email+"',There at least on Email required.";
+		}
+		return "deleting '"+email+"' successfully";
 	}
 	
 	public void addToken(OAuthRequest request,User user){
