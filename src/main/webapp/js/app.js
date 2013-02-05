@@ -91,6 +91,11 @@ var app = app || {};
 	        	var params = opts||{};
 	        	params.method = "Post";
 	        	return app.getJsonData(contextPath + "/github/addEmail",params);
+	        },
+	        deleteEmail:function(opts){
+	        	var params = opts||{};
+	        	params.method = "Post";
+	        	return app.getJsonData(contextPath + "/github/deleteEmail",params);
 	        }
 	    };
 	

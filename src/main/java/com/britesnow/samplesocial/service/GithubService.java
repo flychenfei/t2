@@ -87,6 +87,19 @@ public class GithubService {
 		return "adding '"+email+"' successfully";
 	}
 	
+	public String deleteEmail(String email,User user){
+		GitHubClient client = new GitHubClient();
+		client.setOAuth2Token(getToken(user).getToken());
+		client.setUserAgent("GitHubJava/2.1.0");
+		UserService service = new UserService(client);
+		try {
+			service.removeEmail(email);
+		} catch (IOException e) {
+			return "Error deleting '"+email+"',There at least on Email required.";
+		}
+		return "deleting '"+email+"' successfully";
+	}
+	
 	public void addToken(OAuthRequest request,User user){
 		if(request.getVerb()==Verb.GET)
 			request.addQuerystringParameter("access_token", getToken(user).getToken());

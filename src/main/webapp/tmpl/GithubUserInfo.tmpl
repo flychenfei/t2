@@ -26,10 +26,14 @@
 				<td>{{userInfo.followers}}</td>
 			</tr>
 			<tr>
-				<td>Emails:</td>
-				<td id="emailPlace">
+				<td class="verticalMiddle">Emails:</td>
+				<td id="emailPlace" class="span12">
 					{{#each emails}}
-					{{email}}&nbsp;
+					<div data-email="{{email}}">
+						<span class="emailName">{{email}}</span>
+						<button class="btn btn-mini delete">Delete</button>
+						<img class="githubloading hide deleting" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+					</div>
 					{{/each}}
 				</td>
 			</tr>
@@ -46,8 +50,8 @@
 					<div class="well form-search">
 						<label>Add another email address:</label>
 						<input name="email" type="text" class="input-block-level emailInput" placeholder="Type email address"/>
-						<button class="btn btn-primary">Add</button>
-						<img class="githubloading hide" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+						<button class="btn btn-primary add">Add</button>
+						<img class="githubloading hide adding" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
 					</div>
 				</td>
 			</tr>
