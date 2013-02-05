@@ -27,7 +27,11 @@
 			</tr>
 			<tr>
 				<td>Emails:</td>
-				<td>{{#each emails}}{{email}}&nbsp;{{/each}}<input name="email" type="text"/><button class="btn btn-primary">Add Email</button></td>
+				<td id="emailPlace">
+					{{#each emails}}
+					{{email}}&nbsp;
+					{{/each}}
+				</td>
 			</tr>
 			<tr>
 				<td>created Date:</td>
@@ -37,7 +41,16 @@
 				<td>updated Date:</td>
 				<td>{{userInfo.updated_at}}</td>
 			</tr>
-		
+			<tr>
+				<td colspan="2">
+					<div class="well form-search">
+						<label>Add another email address:</label>
+						<input name="email" type="text" class="input-block-level emailInput" placeholder="Type email address"/>
+						<button class="btn btn-primary">Add</button>
+						<img class="githubloading hide" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+					</div>
+				</td>
+			</tr>
 		</table>
 	</div>
 </script>

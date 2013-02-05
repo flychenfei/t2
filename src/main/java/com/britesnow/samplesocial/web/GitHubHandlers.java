@@ -42,7 +42,7 @@ public class GitHubHandlers {
 	
 	@WebPost("/github/addEmail")
 	public WebResponse addEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
-		githubService.addEmail(email, user);
-		return WebResponse.success(email);
+		String status = githubService.addEmail(email, user);
+		return WebResponse.success(status).set("email", email).set("addSuccess", status.startsWith("adding"));
 	}
 }
