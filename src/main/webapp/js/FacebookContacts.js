@@ -24,12 +24,16 @@
 					var d = {
 						fbid : id
 					};
-					app.getFacebookFriendDetail(d).done(function(data) {
-						var $html = app.render("tmpl-FacebookContact-detail", data.result);
+					var $html = app.render("tmpl-FacebookContact-detail",{});
 						$(".Contact-detail").find(".modal-body").html($html);
 						$(".Contact-detail").show();
 
-					})
+					// app.getFacebookFriendDetail(d).done(function(data) {
+						// var $html = app.render("tmpl-FacebookContact-detail", data.result);
+						// $(".Contact-detail").find(".modal-body").html($html);
+						// $(".Contact-detail").show();
+// 
+					// })
 				},
 				"btap;.close" : function(e) {
 					var view = this;
