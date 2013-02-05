@@ -7,5 +7,6 @@ public enum ServiceType {
     SalesForce,
     Github,
     Google,
-    Live;
+    Live,
+    Foursquare;
 }
