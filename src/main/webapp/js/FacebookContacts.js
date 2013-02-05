@@ -27,10 +27,16 @@
 					var $html = $(app.render("tmpl-FacebookContact-detail",{}));
 						$(".Contact-detail-dialog").find(".modal-body").html($html);
 						$(".Contact-detail-dialog").show();
-						console.log($html.find("li").length)
 						$html.find("li").click(function(){
 							$html.find("li").removeClass("active");
 							$(this).addClass("active");	
+							var type = $(this).attr("data-type");
+							if(type == "info"){
+								$(".Contact-detail-dialog").find(".infotable").show();
+							}
+							if(type == "feed"){
+								$(".Contact-detail-dialog").find(".infotable").hide();;
+							}
 						});
 
 					// app.getFacebookFriendDetail(d).done(function(data) {
