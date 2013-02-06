@@ -26,9 +26,11 @@ public class GithubRepositoriesHandler {
 	}
 	
 	@WebPost("/github/createRepository")
-	public WebResponse createRepository(@WebUser User user,@WebParam("name") String name) {
+	public WebResponse createRepository(@WebUser User user,@WebParam("name") String name,
+			@WebParam("description") String description) {
 		Repository repo = new Repository();
 		repo.setName(name);
+		repo.setDescription(description);
 		try{
 			repo = githubRepositoriesService.createRepository(user, repo);
 			return WebResponse.success(repo);

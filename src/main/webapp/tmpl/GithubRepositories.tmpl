@@ -3,8 +3,10 @@
 		<table class="table table-striped">
 			<tr>
 				<td colspan="2" class="form-inline">
-					<input type="text" name="newRepository" class="input-block-level"/> 
+					<input type="text" name="newRepository" class="input-block-level repositoryName" placeholder="type the repository name"/>
+					<input type="text" name="description" class="input-block-level description" placeholder="description for repository"/> 
 					<button class="btn btn-primary createRepository">Create repository</button>
+					<img class="githubloading hide create" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
 				</td>
 			</tr>
 		  {{#each repositories}}

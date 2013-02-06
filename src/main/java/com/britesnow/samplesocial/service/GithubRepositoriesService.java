@@ -15,8 +15,6 @@ public class GithubRepositoriesService {
 
 	@Inject
 	private YaoGithubAuthService githubAuthService;
-	@Inject
-	private GithubUserService githubUserService;
 	
 	public List<Repository> getRepositories(User user) throws IOException {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
