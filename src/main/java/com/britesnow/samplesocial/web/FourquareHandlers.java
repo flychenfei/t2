@@ -55,7 +55,7 @@ public class FourquareHandlers {
     }
     @WebGet("/foursquare/recentCheckins")
     public WebResponse recentCheckins(@WebUser User user, RequestContext rc, @WebParam("ll") String ll,
-                                  @WebParam("limit") int limit,@WebParam("after") String after) throws Exception {
+                                  @WebParam("limit") Integer limit,@WebParam("after") String after) throws Exception {
         if (user != null) {
             long afterTime = System.currentTimeMillis() - 4 * 1000*60*60;
             Result<Checkin[]> result = foursquareService.recentCheckins(user.getId(), ll, limit, afterTime);
