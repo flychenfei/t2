@@ -1,8 +1,6 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -19,7 +17,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class GithubService {
+public class GithubUserService {
 
 	private static String USER_INFO = "https://api.github.com/user";
 	
@@ -57,12 +55,6 @@ public class GithubService {
 	    return response.getBody();
 	}
 	
-	public Map getAuthorizations(User user){
-		OAuthRequest request = createRequest(Verb.GET, "https://api.github.com/authorizations/");
-		Response response = request.send();
-	    return JsonUtil.toMapAndList(response.getBody());
-	}
-	
 	public String  getEmails(User user){
 		OAuthRequest request = createRequest(Verb.GET, PREFIX+EMAILS);
 		request.addHeader("Accept", "application/vnd.github.v3");
@@ -71,7 +63,6 @@ public class GithubService {
 	    return response.getBody();
 	}
 	
-
 	public String addEmail(String email,User user){
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(getToken(user).getToken());
@@ -105,32 +96,6 @@ public class GithubService {
 			request.addQuerystringParameter("access_token", getToken(user).getToken());
 		else{
 			request.addBodyParameter("access_token", getToken(user).getToken());
-		}
-	}
-	
-	protected void sendParams(HttpURLConnection request, Object params)
-			throws IOException {
-		request.setDoOutput(true);
-		if (params != null) {
-			request.setRequestProperty("Content-Type", "application/json"
-					+ "; charset=UTF-8" );
-			byte[] data = JsonUtil.toJson(params).getBytes("UTF-8");
-			request.setFixedLengthStreamingMode(data.length);
-			System.out.println(new String(data));
-			BufferedOutputStream output = new BufferedOutputStream(
-					request.getOutputStream(), data.length);
-			try {
-				output.write(data);
-				output.flush();
-			} finally {
-				try {
-					output.close();
-				} catch (IOException ignored) {
-				}
-			}
-		} else {
-			request.setFixedLengthStreamingMode(0);
-			request.setRequestProperty("Content-Length", "0");
 		}
 	}
 }
