@@ -33,9 +33,11 @@
 							var type = $(this).attr("data-type");
 							if(type == "info"){
 								$(".Contact-detail-dialog").find(".infotable").show();
+								$(".Contact-detail-dialog").find(".feedForm").show();
 							}
 							if(type == "feed"){
-								$(".Contact-detail-dialog").find(".infotable").hide();;
+								$(".Contact-detail-dialog").find(".infotable").hide();
+								$(".Contact-detail-dialog").find(".feedForm").hide();
 							}
 						});
 

@@ -3,6 +3,8 @@ package com.britesnow.samplesocial.web;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
+
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FacebookAuthService;
@@ -43,6 +45,21 @@ public class FacebookFeedHandlers {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
             facebookService.publishFeed(token, e.getFbid(), value);
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
+
+    @WebPost("/fb/post-add-photo")
+    public WebResponse addFacebookPhoto(@WebUser User user, @WebParam("fbid") String fbid,
+                            @WebParam("fileItem") FileItem fileItem) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.publishPhoto(token, e.getFbid(), "", fileItem.getInputStream());
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();
