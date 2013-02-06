@@ -67,6 +67,11 @@ public class FacebookService {
         return result;
     }
 
+    public FetchObjectsResults fetchObjects(String accessToken) {
+        FetchObjectsResults fetchObjectsResults = new DefaultFacebookClient(accessToken).fetchObjects(Arrays.asList("me", "cocacola"), FetchObjectsResults.class);
+        return fetchObjectsResults;
+    }
+
     public List getFeedList(String accessToken, String userId, String type, Integer limit, Integer offset) {
         Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/feed", JsonObject.class, Parameter.with("type", type), Parameter.with("limit", 25), Parameter.with("offset", 0));
         List ls = myFeed.getData();
