@@ -42,7 +42,7 @@ public class FacebookFeedHandlers {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
-            facebookService.publish(token, e.getFbid(), value);
+            facebookService.publishFeed(token, e.getFbid(), value);
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();

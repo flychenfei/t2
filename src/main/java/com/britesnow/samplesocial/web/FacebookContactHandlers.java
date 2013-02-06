@@ -44,7 +44,7 @@ public class FacebookContactHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        com.restfb.types.User friend = (com.restfb.types.User) facebookService.getFriendInformation(token, fbid);
+        com.restfb.types.User friend = (com.restfb.types.User) facebookService.getUserInformation(token, fbid);
         m.put("result", friend);
         return m;
     }

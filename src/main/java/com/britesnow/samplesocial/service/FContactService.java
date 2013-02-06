@@ -25,7 +25,7 @@ public class FContactService {
             c = new Contact();
         }
         c.setFbid(fbid);
-        com.restfb.types.User user = facebookService.getFriendInformation(token, fbid);
+        com.restfb.types.User user = facebookService.getUserInformation(token, fbid);
         c.setName(user.getName());
         c.setEmail(user.getEmail());
         c.setHometownname(user.getHometownName());

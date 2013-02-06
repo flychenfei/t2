@@ -53,7 +53,7 @@ public class FacebookService {
         return publishMessageResponse.getId();
     }
 
-    public String publishFeed(String accessToken, String type, String userId, String message) {
+    public String publishFeed(String accessToken, String userId, String message) {
         return publish(accessToken, "feed", userId, message);
     }
 
