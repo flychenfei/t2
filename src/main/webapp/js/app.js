@@ -195,6 +195,14 @@ var app = app || {};
         }
     };
 
+    app.foursquareApi = {
+        getUserInfo: function(){
+            var param = {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/foursquare/getUserInfo", param);
+        }
+    }
+
  	app.getFBContacts = function (opts) {
         var params = {
             method:"Get"
