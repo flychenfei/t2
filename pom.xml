@@ -106,6 +106,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <version>1.6.9</version>
     </dependency>
     <!--/Facebook api-->
+      <!--foursquare api-->
+      <dependency>
+          <groupId>fi.foyt</groupId>
+          <artifactId>foursquare-api</artifactId>
+          <version>1.0.2</version>
+      </dependency>
+      <!--/foursquare api-->
     
     <!-- http -->
     <dependency>
@@ -190,13 +197,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <!-- /javasimon -->
   </dependencies>
   <repositories>
-    <repository>
-      <id>Sonatype Snapshot</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
-    <repository>
-      <id>mandubian-mvn</id>
-      <url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
-    </repository>
+      <repository>
+          <id>Sonatype Snapshot</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      </repository>
+      <repository>
+          <id>mandubian-mvn</id>
+          <url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
+      </repository>
+      <repository>
+          <id>foursquareapijava</id>
+          <name>Foursquare V2 API for Java Repository</name>
+          <url>http://foursquare-api-java.googlecode.com/svn/repository</url>
+      </repository>
   </repositories>
 </project>
