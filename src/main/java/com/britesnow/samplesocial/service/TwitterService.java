@@ -32,7 +32,11 @@ public class TwitterService {
 		
 	public static final String USER_INFO = "https://api.twitter.com/1.1/users/show.json?user_id=%d";
 	
+	public static final String TWITTER_TIMELINE = "https://api.twitter.com/1.1/statuses/home_timeline.json";
+	
 	public static final String USER_TWITTER_ID = "https://api.twitter.com/1.1/account/verify_credentials.json";
+	
+	public static final String POST_STATUS = "https://api.twitter.com/1.1/statuses/update.json";
 	
 
 	private Token getToken(User user) {
@@ -51,13 +55,31 @@ public class TwitterService {
 	    return map;
 	}
 	
+	public String getTimeline(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, TWITTER_TIMELINE);
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    return response.getBody();
+
+	}
+	
 	private Map getIdInTwitter(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, USER_TWITTER_ID);
 		Token accessToken = getToken(user);
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
+	   
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 	    return map;
+	}
+
+	public String postStatus(User user, String status) {
+		OAuthRequest request = new OAuthRequest(Verb.POST, POST_STATUS);
+		request.addBodyParameter("status", status);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
 	}
 
 }

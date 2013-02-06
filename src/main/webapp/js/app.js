@@ -174,6 +174,16 @@ var app = app || {};
 			param = param||{};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/twitter/getUserInfo", param);
+		},
+		getTimeline : function(param) {
+			param = param||{};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/twitter/getTimeline", param);
+		},
+		postStatus : function(param) {
+			aram = param||{};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/twitter/postStatus", param);
 		}
     }
 
