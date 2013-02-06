@@ -22,6 +22,7 @@
 				});
 			},
 			"click;.nav-tabs li":function(event){
+				app.githubApi.createRepository({name:'test'}).pipe(function(json){alert('Ìí¼Ó');});
 				this.$el.find("li").removeClass("active");
 				var $li = $(event.currentTarget);
 				$li.addClass("active");
@@ -35,7 +36,7 @@
 					});
 				}else if(menu=="Repositories"){
 					app.githubApi.getRepositories().pipe(function(repositories){
-						repositories = JSON.parse(repositories.result);
+						repositories = repositories.result;
 						brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
 					});
 				}
