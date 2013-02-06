@@ -36,6 +36,8 @@
             		  brite.display("TwitterScreen");
             		}else if(menu == "github"){
                         brite.display("GithubScreen");
+            		}else if(menu == "foursquare"){
+                        brite.display("FoursquareScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},

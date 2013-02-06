@@ -82,11 +82,6 @@ var app = app || {};
 	        	 params.method = "Get";
 	        	return app.getJsonData(contextPath + "/github/userInfo",params);
 	        },
-	        getRepositories:function(){
-	        	var params = {};
-	        	params.method = "Get";
-	        	return app.getJsonData(contextPath + "/github/repositories",params);
-	        },
 	        addEmail:function(opts){
 	        	var params = opts||{};
 	        	params.method = "Post";
@@ -96,6 +91,16 @@ var app = app || {};
 	        	var params = opts||{};
 	        	params.method = "Post";
 	        	return app.getJsonData(contextPath + "/github/deleteEmail",params);
+	        },
+	        getRepositories:function(){
+	        	var params = {};
+	        	params.method = "Get";
+	        	return app.getJsonData(contextPath + "/github/repositories",params);
+	        },
+	        createRepository:function(opts){
+	        	var params = opts||{};
+	        	params.method = "Post";
+	        	return app.getJsonData(contextPath + "/github/createRepository",params);
 	        }
 	    };
 	
@@ -204,6 +209,14 @@ var app = app || {};
             return app.getJsonData(contextPath + "/linkedin/companys", param);
         }
     };
+
+    app.foursquareApi = {
+        getUserInfo: function(){
+            var param = {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/foursquare/getUserInfo", param);
+        }
+    }
 
  	app.getFBContacts = function (opts) {
         var params = {

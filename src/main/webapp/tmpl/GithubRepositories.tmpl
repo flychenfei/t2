@@ -1,20 +1,40 @@
 <script id="tmpl-GithubRepositories" type="text/html">
   <div class="container githubRepositories"> 
 		<table class="table table-striped">
+			<tr>
+				<td colspan="2" class="form-inline">
+					<input type="text" name="newRepository" class="input-block-level repositoryName" placeholder="type the repository name"/>
+					<input type="text" name="description" class="input-block-level description" placeholder="description for repository"/> 
+					<button class="btn btn-primary createRepository">Create repository</button>
+					<img class="githubloading hide create" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+				</td>
+			</tr>
 		  {{#each repositories}}
 			<tr>
 				<td class="span12">
-					<span class="title">Full Name:{{full_name}}</span>
+					<span class="title">
+						{{#if private}}
+						<span class="alert alert-waring 8padding">Private</span>
+						{{else}}
+						<span class="alert alert-info 8padding">Public</span>
+						{{/if}}
+						<span>
+							Name:{{name}}
+						</span>
+					</span>
 				  <div>
-				  	<div><label class="detailsTitle">SVN url</label><span class="detailsContent">{{svn_url}}</span></div>
-				  	<div><label class="detailsTitle">git url</label><span class="detailsContent">{{git_url}}</span></div>
-				  	<div><label class="detailsTitle">watchers count</label><span class="detailsContent">{{watchers_count}}</span></div>
+				  	<div><label class="detailsTitle">url</label><span class="detailsContent">{{url}}</span></div>
+				  	<div><label class="detailsTitle">Html url</label><span class="detailsContent">{{htmlUrl}}</span></div>
+				  	<div><label class="detailsTitle">SVN url</label><span class="detailsContent">{{svnUrl}}</span></div>
+				  	<div><label class="detailsTitle">Git url</label><span class="detailsContent">{{gitUrl}}</span></div>
+				  	<div><label class="detailsTitle">Mirror Url</label><span class="detailsContent">{{mirrorUrl}}</span></div>
+				  	<div><label class="detailsTitle">watchers</label><span class="detailsContent">{{watchers}}</span></div>
 				  	<div><label class="detailsTitle">language</label><span class="detailsContent">{{language}}</span></div>
-				  	<div><label class="detailsTitle">pushed Date</label><span class="detailsContent">{{pushed_at}}</span></div>
-				  	<div><label class="detailsTitle">has wiki</label><span class="detailsContent">{{has_wiki}}</span></div>
-				  	<div><label class="detailsTitle">update Date</label><span class="detailsContent">{{updated_at}}</span></div>
-				  	<div><label class="detailsTitle">open issues</label><span class="detailsContent">{{open_issues_count}}</span></div>
-				  	<div><label class="detailsTitle">private</label><span class="detailsContent">{{private}}</span></div>
+				  	<div><label class="detailsTitle">Pushed Date</label><span class="detailsContent">{{date pushedAt}}</span></div>
+				  	<div><label class="detailsTitle">Create Date</label><span class="detailsContent">{{date createdAt}}</span></div>
+				  	<div><label class="detailsTitle">Update Date</label><span class="detailsContent">{{date updatedAt}}</span></div>
+				  	<div><label class="detailsTitle">Has wiki</label><span class="detailsContent">{{hasWiki}}</span></div>
+				  	<div><label class="detailsTitle">open issues</label><span class="detailsContent">{{openIssues}}</span></div>
 				  	<div><label class="detailsTitle">description</label><span class="detailsContent">{{description}}</span></div>
 				  </div>
 				</td>

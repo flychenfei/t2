@@ -1,0 +1,60 @@
+<script id="tmpl-GithubUserInfo" type="text/html">
+	<div class="container githubUserInfo"> 
+		<table class="table table-striped">
+			<tr>
+				<td>User Name:</td>
+				<td>{{userInfo.login}}</td>
+			</tr>
+			<tr>
+				<td>Avatar:</td>
+				<td><image src="{{userInfo.avatar_url}}" class="avatar"/></td>
+			</tr>
+			<tr>
+				<td>Home Page:</td>
+				<td><a href="{{userInfo.html_url}}">{{userInfo.html_url}}</a></td>
+			</tr>
+			<tr>
+				<td>private_repos:</td>
+				<td>{{userInfo.total_private_repos}}</td>
+			</tr>
+			<tr>
+				<td>public_gists:</td>
+				<td>{{userInfo.public_gists}}</td>
+			</tr>
+			<tr>
+				<td>followers:</td>
+				<td>{{userInfo.followers}}</td>
+			</tr>
+			<tr>
+				<td class="verticalMiddle">Emails:</td>
+				<td id="emailPlace" class="span12">
+					{{#each emails}}
+					<div data-email="{{email}}">
+						<span class="emailName">{{email}}</span>
+						<button class="btn btn-mini delete">Delete</button>
+						<img class="githubloading hide deleting" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+					</div>
+					{{/each}}
+				</td>
+			</tr>
+			<tr>
+				<td>created Date:</td>
+				<td>{{userInfo.created_at}}</td>
+			</tr>
+			<tr>
+				<td>updated Date:</td>
+				<td>{{userInfo.updated_at}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="well form-search">
+						<label>Add another email address:</label>
+						<input name="email" type="text" class="input-block-level emailInput" placeholder="Type email address"/>
+						<button class="btn btn-primary add">Add</button>
+						<img class="githubloading hide adding" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</script>

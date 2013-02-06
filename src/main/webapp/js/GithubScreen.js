@@ -35,7 +35,7 @@
 					});
 				}else if(menu=="Repositories"){
 					app.githubApi.getRepositories().pipe(function(repositories){
-						repositories = JSON.parse(repositories.result);
+						repositories = repositories.result;
 						brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
 					});
 				}
