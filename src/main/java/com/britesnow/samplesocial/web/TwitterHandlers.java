@@ -32,6 +32,13 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getUserTimeline")
+    public WebResponse getUserTimeline(@WebUser User user, RequestContext rc) throws Exception {
+    	String timeline = twitterService.getUserTimeline(user);
+    	WebResponse response = WebResponse.success(timeline);
+    	return response;
+    }
+    
     @WebPost("/twitter/postStatus")
     public WebResponse postStatus(@WebUser User user,@WebParam("status")String status, RequestContext rc) throws Exception {
     	String timeline = twitterService.postStatus(user,status);
@@ -43,6 +50,13 @@ public class TwitterHandlers {
     public WebResponse retweet(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
     	Map retweet = twitterService.retweet(user,tweet_id);
     	WebResponse response = WebResponse.success(retweet);
+    	return response;
+    }
+    
+    @WebPost("/twitter/destroyTweet")
+    public WebResponse destroyTweet(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
+    	Map destroyTweet = twitterService.destroyTweet(user,tweet_id);
+    	WebResponse response = WebResponse.success(destroyTweet);
     	return response;
     }
     
