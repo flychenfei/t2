@@ -9,7 +9,6 @@
 	});
 
     function showUserInfo(){
-        console.log("XXXXXXXXXX")
         app.foursquareApi.getUserInfo().done(function(result){
             console.log(result)
             if(result.result.meta.code=='200'){
