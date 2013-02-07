@@ -9,6 +9,7 @@ import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -31,10 +32,17 @@ public class TwitterHandlers {
     	return response;
     }
     
-    @WebGet("/twitter/postStatus")
+    @WebPost("/twitter/postStatus")
     public WebResponse postStatus(@WebUser User user,@WebParam("status")String status, RequestContext rc) throws Exception {
     	String timeline = twitterService.postStatus(user,status);
     	WebResponse response = WebResponse.success(timeline);
+    	return response;
+    }
+    
+    @WebPost("/twitter/retweet")
+    public WebResponse retweet(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
+    	Map retweet = twitterService.retweet(user,tweet_id);
+    	WebResponse response = WebResponse.success(retweet);
     	return response;
     }
 

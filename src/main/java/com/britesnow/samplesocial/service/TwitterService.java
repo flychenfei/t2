@@ -38,6 +38,8 @@ public class TwitterService {
 	
 	public static final String POST_STATUS = "https://api.twitter.com/1.1/statuses/update.json";
 	
+	public static final String RETWEET = "https://api.twitter.com/1.1/statuses/retweet/%s.json";
+	
 
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
@@ -80,6 +82,16 @@ public class TwitterService {
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
+	}
+
+	public Map retweet(User user, String tweet_id) {
+		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(RETWEET, tweet_id));
+		request.addBodyParameter("id", tweet_id);
+		System.out.println(String.format(RETWEET, tweet_id));
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    Map map = JsonUtil.toMapAndList(response.getBody());
+	    return map;
 	}
 
 }

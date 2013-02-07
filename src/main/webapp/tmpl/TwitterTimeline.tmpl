@@ -9,7 +9,7 @@
 		       
 		       <div class="timeline-container">
 			       {{#each timeline}}
-			       <div class="tweet-container">
+			       <div class="tweet-container" tweet_id="{{id}}">
 						<div class="row-fluid">
 							<div class="span1"><img src={{user.profile_image_url}} /></div>
 							<div class="span11">
@@ -21,6 +21,11 @@
 								</div>
 								<div class="row-fluid">
 									<div class="span11">{{text}}</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">
+										<span class="retweet"><i class="icon-share-alt"></i>retweet</span>
+									</div>
 								</div>
 							
 							</div>
