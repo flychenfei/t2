@@ -25,4 +25,9 @@ public class GithubRepositoriesService {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 	    return repositoryService.createRepository(repo);
 	}
+	
+	public Repository editRepository(User user,Repository repo) throws IOException {
+		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
+	    return repositoryService.editRepository(repo);
+	}
 }

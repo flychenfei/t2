@@ -34,6 +34,7 @@ public class GithubUserService {
 	    return response.getBody();
 	}
 	
+	
 	public String  getEmails(User user){
 		OAuthRequest request = githubAuthService.createRequest(Verb.GET, PREFIX+EMAILS);
 		request.addHeader("Accept", "application/vnd.github.v3");

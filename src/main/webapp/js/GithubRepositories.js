@@ -30,6 +30,16 @@
 					$(name).val("");
 					$(description).val("");
 				});
+			},
+			"click;.icon-edit":function(event){
+				var repositoryId = $(event.target).closest("span").attr("data-repository-id");
+				var name = $(event.target).closest("span").attr("data-repository-name");
+				var description = $(event.target).closest("span").attr("data-repository-description");
+				var login = $(event.target).closest("span").attr("data-login");
+				brite.display("GithubRepositoryEdit",$("body"),{id:repositoryId,name:name,description:description,login:login});
+			},
+			"click;.icon-remove":function(event){
+				
 			}
 		}
 	});

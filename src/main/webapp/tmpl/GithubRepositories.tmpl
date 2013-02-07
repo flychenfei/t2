@@ -14,12 +14,16 @@
 				<td class="span12">
 					<span class="title">
 						{{#if private}}
-						<span class="alert alert-waring 8padding">Private</span>
+						<span class="alert alert-waring padding8">Private</span>
 						{{else}}
-						<span class="alert alert-info 8padding">Public</span>
+						<span class="alert alert-info padding8">Public</span>
 						{{/if}}
 						<span>
 							Name:{{name}}
+						</span>
+						<span data-repository-id="{{id}}" data-login="{{owner.login}}" data-repository-name="{{name}}" data-repository-description="{{description}}">
+							<i class="icon-edit iconHover"></i>
+							<i class="icon-remove iconHover"></i>
 						</span>
 					</span>
 				  <div>

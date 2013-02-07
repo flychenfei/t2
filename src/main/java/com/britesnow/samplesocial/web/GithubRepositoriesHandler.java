@@ -37,7 +37,26 @@ public class GithubRepositoriesHandler {
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
-		
 	}
 	
+	@WebPost("/github/editRepository")
+	public WebResponse editRepository(@WebUser User user,@WebParam("name") String name,
+			@WebParam("description") String description,@WebParam("repositoryId")Long repositoryId,
+			@WebParam("login") String login){
+		//since the repository edit must need the login and name to generateId,so need these parameters
+		Repository repo = new Repository();
+		repo.setDescription(description);
+		org.eclipse.egit.github.core.User owner = new org.eclipse.egit.github.core.User();
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		repo.setId(repositoryId);
+		try{
+			repo = githubRepositoriesService.editRepository(user, repo);
+			return WebResponse.success(repo);
+		}catch(Exception e){
+			e.printStackTrace();
+			return WebResponse.fail(e.getMessage());
+		}
+	}
 }
