@@ -27,6 +27,14 @@
             			console.log("excute retweet");
             			console.log(data);
             		})
+            	},
+            	
+            	"click;.favorite" : function(event) {
+            		var tweet_id = $(event.target).closest(".tweet-container").attr("tweet_id");
+            		app.twitterApi.favorite({tweet_id : tweet_id}).pipe(function(data) {
+            			console.log("excute favorite");
+            			console.log(data);
+            		})
             	}
             }
             

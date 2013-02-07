@@ -45,5 +45,12 @@ public class TwitterHandlers {
     	WebResponse response = WebResponse.success(retweet);
     	return response;
     }
+    
+    @WebPost("/twitter/favorite")
+    public WebResponse favorite(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
+    	Map retweet = twitterService.favorite(user,tweet_id);
+    	WebResponse response = WebResponse.success(retweet);
+    	return response;
+    }
 
 }

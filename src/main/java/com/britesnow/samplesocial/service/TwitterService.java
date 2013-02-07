@@ -40,6 +40,8 @@ public class TwitterService {
 	
 	public static final String RETWEET = "https://api.twitter.com/1.1/statuses/retweet/%s.json";
 	
+	public static final String FAVORITE = "https://api.twitter.com/1.1/favorites/create.json";
+	
 
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
@@ -87,7 +89,15 @@ public class TwitterService {
 	public Map retweet(User user, String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(RETWEET, tweet_id));
 		request.addBodyParameter("id", tweet_id);
-		System.out.println(String.format(RETWEET, tweet_id));
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    Map map = JsonUtil.toMapAndList(response.getBody());
+	    return map;
+	}
+	
+	public Map favorite(User user, String tweet_id) {
+		OAuthRequest request = new OAuthRequest(Verb.POST, FAVORITE);
+		request.addBodyParameter("id", tweet_id);
 		oAuthService.signRequest(getToken(user), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());

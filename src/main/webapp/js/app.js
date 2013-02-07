@@ -194,6 +194,11 @@ var app = app || {};
 			param = param||{};
 			param.method = "POST";
 			return app.getJsonData(contextPath + "/twitter/retweet", param);
+		},
+		favorite : function(param) {
+			param = param||{};
+			param.method = "POST";
+			return app.getJsonData(contextPath + "/twitter/favorite", param);
 		}
     }
 
