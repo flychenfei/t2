@@ -8,9 +8,11 @@
         brite.registerView("TwitterScreen",  {parent:".MainScreen-main", emptyParent:true}, {
             create:function (data, config) {
             	return app.twitterApi.getUserInfo().pipe(function(data) {
-            		var $html = app.render("tmpl-TwitterScreen", {user : data.result});
-                    var $e = $($html);
-                    return $e;
+            		return app.twitterApi.getUserTimeline().pipe(function(timeline) {
+            			var $html = app.render("tmpl-TwitterScreen", {user : data.result, timeline : JSON.parse(timeline.result)});
+                        var $e = $($html);
+                        return $e;
+            		})	
             	});
             },
             postDisplay:function (data, config) {
@@ -37,6 +39,13 @@
             				alert("Send successfully!");
             			})
             		}
+            	},
+            	
+            	"click;.destroy" : function(event) {
+            		var tweet_id = $(event.target).closest(".tweet-container").attr("tweet_id");
+            		app.twitterApi.destroyTweet({tweet_id : tweet_id}).pipe(function(data) {
+            			brite.display("TwitterScreen");
+            		})
             	}
             }
             

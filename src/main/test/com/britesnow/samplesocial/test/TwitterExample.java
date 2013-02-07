@@ -15,8 +15,8 @@ public class TwitterExample
   {
     OAuthService service = new ServiceBuilder()
                                 .provider(TwitterApi.class)
-                                .apiKey("6icbcAXyZx67r8uTAUM5Qw")
-                                .apiSecret("SCCAdUUc6LXxiazxH3N0QfpNUvlUy84mZ2XZKiv39s")
+                                .apiKey("jixgnC6CTbZzdQgDjo4eg")
+                                .apiSecret("X5zOl3CBgf82gv8pgRV1CII93BXfPiS32dao25U")
                                 .build();
     Scanner in = new Scanner(System.in);
 
@@ -41,6 +41,9 @@ public class TwitterExample
     Token accessToken = service.getAccessToken(requestToken, verifier);
     System.out.println("Got the Access Token!");
     System.out.println("(if your curious it looks like this: " + accessToken + " )");
+    System.out.println(accessToken.getToken());
+    System.out.println(accessToken.getSecret());
+    
     System.out.println();
 
     // Now let's go and ask for a protected resource!

@@ -45,6 +45,34 @@
 					<button class="btn go" type="button">Go!</button>
 				</div>
 				
+				 <div class="timeline-container">
+			       {{#each timeline}}
+			       <div class="tweet-container" tweet_id="{{id}}">
+						<div class="row-fluid">
+							<div class="span1"><img src={{user.profile_image_url}} /></div>
+							<div class="span11">
+								
+								<div class="row-fluid">
+									<div class="span11">
+										<strong>{{user.name}}</strong>@{{user.screen_name}}
+									</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">{{text}}</div>
+								</div>
+								
+								<div class="row-fluid">
+									<div class="span11">
+										<span class="destroy"><i class="icon-trash"></i>Destroy</span>
+									</div>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+			        {{/each}}
+				</div>
+				
 			</div>
 			
         </div>
