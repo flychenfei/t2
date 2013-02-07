@@ -38,7 +38,7 @@ public class LiveAuthService implements AuthService {
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
         SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
-        if (socialId != null) {
+        if (socialId != null && System.currentTimeMillis() - socialId.getTokenDate().getTime() >0) {
             return socialId;
         }
         //if result is null, need redo auth
@@ -87,5 +87,13 @@ public class LiveAuthService implements AuthService {
         }
         throw new OauthException(getAuthorizationUrl());
 
+    }
+
+    public OAuthRequest createRequest(Long userId, Verb verb, String url) {
+        SocialIdEntity soid = getSocialIdEntity(userId);
+
+        OAuthRequest request = new OAuthRequest(verb, url);
+        oAuthService.signRequest(new Token(soid.getToken(), null), request);
+        return request;
     }
 }

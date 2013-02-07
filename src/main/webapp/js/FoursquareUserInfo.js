@@ -10,7 +10,10 @@
 
     function showUserInfo(){
         app.foursquareApi.getUserInfo().done(function(result){
-            return  app.render("tmpl-FoursquareUserInfo",result.result);
+            console.log(result)
+            if(result.result.meta.code=='200'){
+               return  app.render("tmpl-FoursquareUserInfo",result.result);
+            }
         })
 
     }
