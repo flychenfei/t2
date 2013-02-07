@@ -106,7 +106,7 @@ public class TwitterService {
 	
 	public Map destroyTweet(User user, String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(DESTORY_TWEET, tweet_id));
-		request.addBodyParameter("id", tweet_id);
+		System.out.println(String.format(DESTORY_TWEET, tweet_id));
 		oAuthService.signRequest(getToken(user), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());

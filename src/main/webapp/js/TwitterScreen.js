@@ -44,7 +44,9 @@
             	"click;.destroy" : function(event) {
             		var tweet_id = $(event.target).closest(".tweet-container").attr("tweet_id");
             		app.twitterApi.destroyTweet({tweet_id : tweet_id}).pipe(function(data) {
-            			brite.display("TwitterScreen");
+            			console.log("excute destroy");
+            			console.log(data);
+            			//brite.display("TwitterScreen");
             		})
             	}
             }

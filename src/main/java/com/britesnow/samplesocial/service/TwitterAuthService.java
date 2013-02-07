@@ -74,6 +74,7 @@ public class TwitterAuthService implements AuthService{
                 newSocial = true;
             }
             
+            social.setUser_id(id);
             social.setToken(accessToken.getToken());
             social.setSecret(accessToken.getSecret());
             social.setService(ServiceType.Twitter);
