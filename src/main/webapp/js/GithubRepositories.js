@@ -32,14 +32,22 @@
 				});
 			},
 			"click;.icon-edit":function(event){
-				var repositoryId = $(event.target).closest("span").attr("data-repository-id");
-				var name = $(event.target).closest("span").attr("data-repository-name");
-				var description = $(event.target).closest("span").attr("data-repository-description");
-				var login = $(event.target).closest("span").attr("data-login");
+				var repositoryId = $(event.target).closest("td").attr("data-repository-id");
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				var description = $(event.target).closest("td").attr("data-repository-description");
+				var login = $(event.target).closest("td").attr("data-login");
 				brite.display("GithubRepositoryEdit",$("body"),{id:repositoryId,name:name,description:description,login:login});
 			},
-			"click;.icon-remove":function(event){
-				
+			"click;.commits":function(event){
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				var login = $(event.target).closest("td").attr("data-login");
+				app.githubApi.getCommits({
+					name:name,
+					login:login
+				}).pipe(function(json){
+					alert(json.result.length);
+					brite.display("GithubCommits",$(".tab-content"),{commits:json.result});
+				});
 			}
 		}
 	});

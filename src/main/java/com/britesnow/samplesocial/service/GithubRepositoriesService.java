@@ -30,4 +30,5 @@ public class GithubRepositoriesService {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 	    return repositoryService.editRepository(repo);
 	}
+	
 }

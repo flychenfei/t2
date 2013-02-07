@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.egit.github.core.Repository;
 
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.service.GithubCommitService;
 import com.britesnow.samplesocial.service.GithubRepositoriesService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -19,7 +20,8 @@ public class GithubRepositoriesHandler {
 
 	@Inject
 	private GithubRepositoriesService githubRepositoriesService;
-	
+	@Inject
+	private GithubCommitService githubCommitService;
 	@WebGet("/github/repositories")
 	public WebResponse getRepositories(RequestContext rc,@WebUser User user) throws IOException{
 		return WebResponse.success(githubRepositoriesService.getRepositories(user));
@@ -55,8 +57,24 @@ public class GithubRepositoriesHandler {
 			repo = githubRepositoriesService.editRepository(user, repo);
 			return WebResponse.success(repo);
 		}catch(Exception e){
-			e.printStackTrace();
 			return WebResponse.fail(e.getMessage());
 		}
 	}
+	
+	@WebGet("/github/getCommits")
+	public WebResponse getCommits(@WebUser User user,@WebParam("name") String name,
+			@WebParam("login") String login) {
+		//since the repository edit must need the login and name to generateId,so need these parameters
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = new org.eclipse.egit.github.core.User();
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		try{
+			return WebResponse.success(githubCommitService.getCommits(repo, user));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+	
 }

@@ -106,6 +106,11 @@ var app = app || {};
 	        	var params = opts||{};
 	        	params.method="Post";
 	        	return app.getJsonData(contextPath+"/github/editRepository",params);
+	        },
+	        getCommits:function(opts){
+	        	var params = opts||{};
+	        	params.method="Get";
+	        	return app.getJsonData(contextPath+"/github/getCommits",params);
 	        }
 	    };
 	

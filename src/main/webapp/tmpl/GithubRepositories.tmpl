@@ -11,7 +11,7 @@
 			</tr>
 		  {{#each repositories}}
 			<tr>
-				<td class="span12">
+				<td class="span12" data-repository-id="{{id}}" data-login="{{owner.login}}" data-repository-name="{{name}}" data-repository-description="{{description}}">
 					<span class="title">
 						{{#if private}}
 						<span class="alert alert-waring padding8">Private</span>
@@ -21,10 +21,10 @@
 						<span>
 							Name:{{name}}
 						</span>
-						<span data-repository-id="{{id}}" data-login="{{owner.login}}" data-repository-name="{{name}}" data-repository-description="{{description}}">
+						<span>
 							<i class="icon-edit iconHover"></i>
-							<i class="icon-remove iconHover"></i>
 						</span>
+						<span class="commits">Commits</span>
 					</span>
 				  <div>
 				  	<div><label class="detailsTitle">url</label><span class="detailsContent">{{url}}</span></div>
