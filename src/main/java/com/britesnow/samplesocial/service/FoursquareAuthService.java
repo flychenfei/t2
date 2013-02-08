@@ -1,22 +1,23 @@
 package com.britesnow.samplesocial.service;
 
+import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
+
+import java.util.Map;
+
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.samplesocial.oauth.OauthTokenExpireException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import fi.foyt.foursquare.api.FoursquareApi;
-import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
-
-import java.util.Map;
-
-
-import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 
 @Singleton
@@ -26,7 +27,7 @@ public class FoursquareAuthService implements AuthService {
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private final CloneApi foursquareApi;
-    private String secret,clienId,callback;
+    private String secret,clienId;//callback;
 
     @Inject
     public FoursquareAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map config) {
