@@ -31,11 +31,29 @@ var app = app || {};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/getUserTimeline", param);
 		},
-
+		
 		destroyTweet : function(param) {
 			param = param||{};
 			param.method = "POST";
 			return app.getJsonData(contextPath + "/twitter/destroyTweet", param);
+		},
+		
+		getSuggestions : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getSuggestions", param);
+		},
+		
+		getMentionTimeline : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getMentionTimeline", param);
+		},
+		
+		getRetweets : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getRetweets", param);
 		}
 	}
 })();

@@ -45,7 +45,13 @@ public class TwitterService {
 	public static final String USER_TIMELINE = "https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=%d";
 	
 	public static final String DESTORY_TWEET = "https://api.twitter.com/1.1/statuses/destroy/%s.json";
-
+	
+	public static final String SUGGESTIONS = "https://api.twitter.com/1.1/users/suggestions.json";
+	
+	public static final String MENTION_TIMELINE = "https://api.twitter.com/1.1/statuses/mentions_timeline.json?count=2&since_id=14927799";
+	
+	public static final String RETWEET_OF_ME = "https://api.twitter.com/1.1/statuses/retweets_of_me.json";
+	
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
 		if (socialEn != null) {
@@ -64,6 +70,20 @@ public class TwitterService {
 	
 	public String getTimeline(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, TWITTER_TIMELINE);
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    return response.getBody();
+	}
+	
+	public String getRetweets(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, RETWEET_OF_ME);
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    return response.getBody();
+	}
+	
+	public String getMentionTimeline(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, MENTION_TIMELINE);
 		oAuthService.signRequest(getToken(user), request);
 	    Response response = request.send();
 	    return response.getBody();
@@ -94,6 +114,14 @@ public class TwitterService {
 	    Response response = request.send();
 		return response.getBody();
 	}
+	
+	public String getSuggestions(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, SUGGESTIONS);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
 
 	public Map retweet(User user, String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(RETWEET, tweet_id));
@@ -106,7 +134,7 @@ public class TwitterService {
 	
 	public Map destroyTweet(User user, String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(DESTORY_TWEET, tweet_id));
-		request.addBodyParameter("id", tweet_id);
+		System.out.println(String.format(DESTORY_TWEET, tweet_id));
 		oAuthService.signRequest(getToken(user), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());

@@ -1,0 +1,1155 @@
+[33mcommit 8676685ad7c3cf50daf4e8eb09cfab4ec55a466a[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Fri Feb 8 10:00:51 2013 +0800
+
+    add the suggestions in the timeline
+
+[33mcommit 4dcde98ab95081810c482a53700fb05e3ba0bbfe[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Feb 7 18:40:00 2013 +0800
+
+    +add the twitter OAuth in the top nav
+
+[33mcommit 2d916d645c9802a7a6e2649bd03e398d24162255[m
+Merge: f43afb4 40189a6
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Feb 7 18:31:40 2013 +0800
+
+    Merge branch 'daily_liu_0207' of github.com:LiuXian/sampleSocial into daily_wang_li_liang_liu_yao_0207
+
+[33mcommit f43afb43a60e4cbd49339766f60829bb24991f8d[m
+Merge: 067d255 5992dff
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Feb 7 17:58:25 2013 +0800
+
+    Merge branch 'daily_liang_0207' of github.com:woofgl/sampleSocial into daily_wang_li_liang_liu_yao_0207
+
+[33mcommit 067d255ac0fe83a5526b935ad27c2f23f5d0dc9d[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Thu Feb 7 17:35:04 2013 +0800
+
+    +add function to get repositories' commits
+
+[33mcommit 40189a64d81d3a3bcd315227d715f01f9bb674c8[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Feb 7 17:26:29 2013 +0800
+
+    add the function of destory the tweet
+
+[33mcommit 5992dff2144cd20baa2407d46375c1a5b2c440df[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Feb 7 16:57:55 2013 +0800
+
+    + liveservice and handler for user profile.
+
+[33mcommit 3f613804949f3f909c5a63f0f4cc6f9dd5fa926e[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Feb 7 15:25:17 2013 +0800
+
+    + add live service screen
+
+[33mcommit 1dfc6db460f71c857a16a7a9376be395448c4ef9[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Thu Feb 7 14:41:08 2013 +0800
+
+    +add function to edit repository
+
+[33mcommit 2af198de0c84b918e0bb4aec6d74e927cb431be5[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Feb 7 14:19:17 2013 +0800
+
+    + show timeline tweet of mine
+
+[33mcommit ea0d0d2996df425cf5e63993490ffe2299e735d9[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Feb 7 13:45:16 2013 +0800
+
+    + add the function of adding your favorite tweet
+
+[33mcommit b578047f1d4a1cec142c9a46eef20e06815c6c94[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Feb 7 13:04:52 2013 +0800
+
+    + add the function of retweeting
+
+[33mcommit b08a378fc32e2fce271e00cc8a1fa1aa1b5e3291[m
+Merge: 91bd749 8a6bf14
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Feb 6 17:49:47 2013 +0800
+
+    Merge branch 'daily_yao_liang_0206' of github.com:woofgl/sampleSocial into daily_wang_li_liang_liu_yao_0206
+
+[33mcommit 8a6bf14fd9d50300b4bb12ff3cc7cdc0063a3c9f[m
+Merge: f7d509b 2e14ed9
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 17:39:01 2013 +0800
+
+    Merge branch 'daily_liang_0206' into daily_yao_liang_0206
+
+[33mcommit 2e14ed9dc400e29db3703743866d746d4456be80[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 17:36:04 2013 +0800
+
+    + add show user info
+
+[33mcommit 91bd749b4018684df35a4c89362a5b3ebc94bda2[m
+Merge: 9fd1e37 cb959cf
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Feb 6 17:22:17 2013 +0800
+
+    Merge branch 'daily_liu_0206' of github.com:LiuXian/sampleSocial into daily_liu_li_0206
+
+[33mcommit 9fd1e370bbc7b4bcf8549977861d3be6bf275f56[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Feb 6 17:21:46 2013 +0800
+
+    . try to add upload function to facebook
+
+[33mcommit f7d509ba7b6d34b6220e36d84b8fe963ad1a645e[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Wed Feb 6 17:17:11 2013 +0800
+
+    +addfunction to create repository
+
+[33mcommit d29cc86d9ae48f627b9b8f9f511128268e80a13c[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 17:12:09 2013 +0800
+
+    + add foursquare screen
+
+[33mcommit 9348e01f02c394e9ce2cd0b0d2d86c4a5d672ef0[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Wed Feb 6 16:32:11 2013 +0800
+
+    +add function to get the private repositories
+
+[33mcommit cb959cf67ae6bfe19b8ea8df52f54958299765ba[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Wed Feb 6 16:28:54 2013 +0800
+
+    work on 20130206
+
+[33mcommit 82610f28485370efb3c56efe40b778874720ccaa[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Feb 6 15:58:46 2013 +0800
+
+    . fix webhandle wrong paramter problem
+
+[33mcommit 4b29274d73aefe0cc8d3438c6a856d00db56ee85[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Feb 6 15:55:23 2013 +0800
+
+    . add fetchObjects api
+
+[33mcommit 4ea0817857ddc2053ce1b0c6343ba59abfd4d9f6[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 15:49:02 2013 +0800
+
+    + add foursquare service
+
+[33mcommit 80b22f4cc13844a2c6f7acf20cc0e7e45018270a[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 15:17:10 2013 +0800
+
+    . remove unuse key
+
+[33mcommit 923e099fbd80c9252a6ac1a37c7fac87c5767465[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Feb 6 15:16:54 2013 +0800
+
+    . add foursquare lib to pom
+
+[33mcommit 2a35627885be7222b0251ab87e2eb63f95e8b968[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Feb 6 14:35:56 2013 +0800
+
+    . refactor FacebookService api
+
+[33mcommit 4eabd0f82e177ca39aa8f7b23f29b5629ce6fa2a[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Wed Feb 6 09:56:48 2013 +0800
+
+    .rename the githubservice to githubUserService,same with the githubHandlers
+
+[33mcommit 489247431b4c23f434fe9565fa85ddf709800aea[m
+Merge: ec4f133 d7af977
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Feb 5 21:04:18 2013 +0800
+
+    Merge branch 'daily_liang_0205' into daily_li_yao_liang_0205
+
+[33mcommit ec4f1335c08220ca09fe7ee5766c1df827070ee7[m
+Merge: 3a75872 8279422
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Feb 5 21:03:37 2013 +0800
+
+    Merge branch 'daily_yao_0205' of github.com:flymyao/sampleSocial into daily_li_yao_liang_0205
+
+[33mcommit d7af977b7fb702157a45202996d6627030df0699[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Feb 5 21:00:34 2013 +0800
+
+    + add foursquare oauth support
+
+[33mcommit 1b520e6f67ee835e17fe62e498e4310d654078b4[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Feb 5 20:58:11 2013 +0800
+
+    . update snow to 2.0.1
+
+[33mcommit 8279422184b20fdf77e774fad47a43e7868af5ed[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Tue Feb 5 17:28:15 2013 +0800
+
+    +add function to delete user email and do some validate
+
+[33mcommit 3a75872b6b241ecd543c543ebc6b19adda5ba07f[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Feb 5 17:19:13 2013 +0800
+
+    . add contact feed show function
+
+[33mcommit 91fcad757e630932025e4d5e2e7e185cfe57ae4f[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Feb 5 16:58:59 2013 +0800
+
+    . fix event conflict problem in facebookcontact component
+
+[33mcommit 46b834d3391636d56456a124a58174aa82076a19[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Tue Feb 5 16:23:05 2013 +0800
+
+    .change UI of add email and handle the exception of add Email
+
+[33mcommit f5d3931463bd643389c5443f9fb606ca216283e0[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Feb 5 16:09:02 2013 +0800
+
+    . add Nav to contacts component to show contact feeds
+
+[33mcommit 13c79b8728c3ad50695d952720c2a850416f39db[m
+Merge: 6b9ad7f 5758c84
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 18:07:08 2013 +0800
+
+    Merge branch 'daily_liang_0204' into daily_liang_li_yao_0204
+
+[33mcommit 6b9ad7f19e9b1b1127a21a4d843148f553793a48[m
+Merge: 2061800 f7345f9
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 18:06:27 2013 +0800
+
+    Merge branch 'daily_yao_0204' of github.com:flymyao/sampleSocial into daily_liang_li_yao_0204
+
+[33mcommit f7345f9d29157049c1d9179da3f89c37051e861f[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Mon Feb 4 18:00:06 2013 +0800
+
+    +add function to add user email
+
+[33mcommit 5758c84c639be92b2c01e54070ac4fff34266c96[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 16:36:04 2013 +0800
+
+    - fix one issue of wrong service type
+
+[33mcommit 2061800c543173a053eb1f1834df03e51f52bb7e[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Feb 4 16:23:47 2013 +0800
+
+    . change Facebool contact table column
+
+[33mcommit ba36a9f3b0e4048a944959df4c9e7fbd82c4ed07[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 16:21:18 2013 +0800
+
+    + add live service oauth support
+
+[33mcommit 860d88d46fc6280801c9adfeef3eed110b3ee1d6[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 16:20:39 2013 +0800
+
+    . change input title
+
+[33mcommit b3b975374bd7d1d88befb929f2d39fa6672a6783[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Mon Feb 4 16:02:27 2013 +0800
+
+    .use oauthrequest to get the token,while the OAuthService throw error when got token
+
+[33mcommit 37261c8438b9640631d7cf6795808e2752a38312[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Mon Feb 4 16:00:16 2013 +0800
+
+    .reset the secret of github
+
+[33mcommit ab1f9bcd5cf2daa7dd119d746e1475eccd989725[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Feb 4 14:47:38 2013 +0800
+
+    . add FacebookFriendHandlers
+
+[33mcommit 61a50c7c2dd4a76a122f2079f8bd9dfbd5f1014c[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Feb 4 14:44:43 2013 +0800
+
+    . refactor FacebookFeedHandlers
+
+[33mcommit dfb707782dc95239cc5275be3f16385edae98194[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Feb 4 09:48:52 2013 +0800
+
+    + add jetty plugin
+
+[33mcommit 6f74f114313c17397ad58865c553bc37c8286c93[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Sat Feb 2 17:23:00 2013 +0800
+
+    + add search mail
+
+[33mcommit 3f3f2166dae55e37fe9ac7151aa97542e2dbe9cf[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Sat Feb 2 15:09:51 2013 +0800
+
+    + make input val component support mulpitle field and user define title.
+
+[33mcommit 6529a982844f904d71ef9f85a96afac9842c4e81[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 15:44:33 2013 +0800
+
+    + improve search keywork input.
+
+[33mcommit ebc5af55b36a85ce71197cf2bbc8825645ad1f02[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 13:40:18 2013 +0800
+
+    - fix datatable goto enter not work issue
+
+[33mcommit 6885504da3bc7cbc45377a328a45966718da757d[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 11:48:48 2013 +0800
+
+    - fix liu refactor issue
+
+[33mcommit 537a8613f6776ab781237e802bdd211c96aab431[m
+Merge: cd9f1fb d3f1302
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 17:47:40 2013 +0800
+
+    Merge branch 'daily_li_0201' of github.com:lizhe5/sampleSocial-1 into merge
+
+[33mcommit cd9f1fbebd0246bb8163f1cedc0118f0fe2be032[m
+Merge: c9c3396 e1e9f08
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 17:47:02 2013 +0800
+
+    Merge branch 'daily_yao_0201' of github.com:flymyao/sampleSocial into merge
+
+[33mcommit e1e9f0898fcf16c852a5a299d965397f6cdad2fc[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Fri Feb 1 17:12:45 2013 +0800
+
+    + add get the user email
+
+[33mcommit d3f13026a482c9eff36a643a262913830a2d1bef[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Feb 1 17:04:37 2013 +0800
+
+    . change column in facebook table
+
+[33mcommit 8ceca86803de937b00325d386cde7f4d53d0be68[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Feb 1 16:30:14 2013 +0800
+
+    . fix facebook friend detail page problem
+
+[33mcommit 1ea4dbacd1005204b388d52b8305a5613c7699d5[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Feb 1 16:23:02 2013 +0800
+
+    . add facebook friend search function
+
+[33mcommit c2797218910133b251bb4337a3bb6112debe4b31[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Feb 1 16:21:24 2013 +0800
+
+    . use FQL instead of fetchConnect to get friend list
+
+[33mcommit 9f46e6cf6bf6a48ee69d41b7d2ed5679b45285c1[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Fri Feb 1 12:12:50 2013 +0800
+
+    .change the css of githubRepositories
+
+[33mcommit f915fbcc386431f2f8868e29b9fff002c228d769[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Fri Feb 1 11:35:52 2013 +0800
+
+    .redo the code of yestoday
+
+[33mcommit c9c3396b10e99f8a0d2aede61bddbaf9d5e76981[m
+Merge: 474789b a985ece
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 10:56:27 2013 +0800
+
+    Merge branch 'master' of github.com:BriteSnow/sampleSocial
+
+[33mcommit a985ececbd1ee48c23f9b7ddb555028c88adfb44[m
+Merge: 8df35eb 7f20c56
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Feb 1 10:26:55 2013 +0800
+
+    Merge branch 'daily_liang_0131_2' of github.com:woofgl/sampleSocial into daily_wang_li_liang_liu_yao_0131
+
+[33mcommit 474789b7551df87978addeeb390b377736c9a644[m
+Merge: b355693 8df35eb
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Feb 1 09:52:09 2013 +0800
+
+    Merge branch 'master' of github.com:BriteSnow/sampleSocial
+
+[33mcommit 8df35eb5c240e70847c7cb7af0a198e95b34c43c[m
+Merge: b74ae12 519a3e2
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 17:52:32 2013 +0800
+
+    Merge branch 'daily_liu_0131' of github.com:LiuXian/sampleSocial into daily_liu_li_0131
+
+[33mcommit b74ae12f3d63c5829ac350faad8f33bafaa473c2[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 17:51:35 2013 +0800
+
+    . change facebook server
+
+[33mcommit 519a3e2b700ebd27aa57cb2410ebd02e7e623911[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Jan 31 17:42:55 2013 +0800
+
+    + show some basic user information in the screen
+
+[33mcommit 3dd2f884cfc7acce709d548875bc749eb97998b9[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Jan 31 17:30:35 2013 +0800
+
+    + add function of getting user info from twitter
+
+[33mcommit 7f20c56556a921298692a2112fd28fd81145a810[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 31 17:11:15 2013 +0800
+
+    + add action to add contract and group
+
+[33mcommit cdafe2e376746258737c2332fc72900feeb9701d[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 31 17:10:48 2013 +0800
+
+    - fix add group issue to update new version of brite
+
+[33mcommit 501f03dde360febdb33588d7453584f454c2880d[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 13:46:27 2013 +0800
+
+    . fix facebook friend page undefined problem
+
+[33mcommit 7542e6debf6f3409d382a9b2b27cde3161368895[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 13:44:35 2013 +0800
+
+    . fix publish blank value to facebook problem
+
+[33mcommit c6f0a1acd38d0e22cf57f879185b432a59c43694[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 13:42:29 2013 +0800
+
+    . fix facebookfeed table head align problem
+
+[33mcommit 19f053dbb57479572eeeb271725fa36fbc35c4ee[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 31 11:26:02 2013 +0800
+
+    - fix merge issue.(remove *.rej)
+
+[33mcommit f132341b56a4a4dd1d202c0b44912fe3fe65813e[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 31 11:08:36 2013 +0800
+
+    - fix merge issue.
+
+[33mcommit b3556930188c72989b1003d2e159ae6b79f52012[m
+Merge: 4713e9a 7e53c03
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 31 10:35:25 2013 +0800
+
+    Merge branch 'master' of github.com:BriteSnow/sampleSocial
+
+[33mcommit c281a462e5b239928166095e9e0e8b97de1914ab[m
+Merge: cd325cd e83a1db
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 31 10:34:50 2013 +0800
+
+    Merge branch 'daily_wang_0130' into daily_wang_li_liang_liu_yao_0130
+
+[33mcommit cd325cdaebe7817554bdf13cd249878ef1c39dde[m
+Merge: 6cf6033 687f91e
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 31 10:23:23 2013 +0800
+
+    Merge branch 'daily_liu_0130' of github.com:LiuXian/sampleSocial into daily_liu_li_0130_3
+
+[33mcommit 687f91eadad793df2ee7f00a9bed3396e41ebceb[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Thu Jan 31 10:06:17 2013 +0800
+
+    add the .cfg file
+
+[33mcommit 6cf603321e52958e66f8d7e1eb4c18ae310e075b[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 30 16:04:49 2013 +0800
+
+    . remove FacebookPost
+
+[33mcommit b5a60c80b3d99a86fc58fd95b5dafa0192d6af80[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 30 16:02:52 2013 +0800
+
+    . change FacebookPosts to FacebookFeeds
+
+[33mcommit 3b599970d55cd19cf4361c925ed4697cd05d6f15[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 30 15:38:06 2013 +0800
+
+    . change post list column
+
+[33mcommit 7e53c034fbbf392221a1150507351036ccb72757[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Wed Jan 30 17:43:39 2013 +0800
+
+    the error of get access token
+
+[33mcommit b1d72179b81dc6f84f6a5335460418d52204ebb9[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Tue Jan 29 19:33:58 2013 +0800
+
+    delete the apps
+
+[33mcommit 476e2d310bd88c9460d07d255752bcf07e22395c[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Tue Jan 29 19:21:18 2013 +0800
+
+    Update jcruncher.cfg
+
+[33mcommit ba619a3f024c09001348a93e4f956a6fdc1fa6b7[m
+Author: flymyao <flymyao@gmail.com>
+Date:   Tue Jan 29 19:12:23 2013 +0800
+
+    add the oauth for the github
+
+[33mcommit 4713e9a6af5f0c9c03ddab39933e0384cf696c51[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 30 20:40:32 2013 +0800
+
+    xxx
+
+[33mcommit 76a71713bd655d08245be8de20af345699af36e8[m
+Author: Liu Xian <liuxianmail@gmail.com>
+Date:   Wed Jan 30 19:17:20 2013 +0800
+
+    fix the network issue
+
+[33mcommit fe2e82758f5817bf5e4567b4ebf9d8d27b26dd2d[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 30 17:30:54 2013 +0800
+
+    fix helper issue of github oauth service.
+
+[33mcommit d0932c39ba2c5d09c5649400ed57054652550f22[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 30 14:26:25 2013 +0800
+
+    add result_count for google contact and email for pagning.
+
+[33mcommit e83a1dbdd626cf614eaa15b45ab5bb2b7c1ac607[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 14:18:58 2013 +0800
+
+    . add field fbid in table social_id_entity in .sql
+
+[33mcommit d271a18b62c68b27bfd715d3f845124b3505006b[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 13:49:40 2013 +0800
+
+    . code clean, add SalesForceService to provide service from salesforce.com
+
+[33mcommit 07b28f4cffbf71b37af8791193b169190bcd8cfc[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 11:02:20 2013 +0800
+
+    . add event prevStart, nextEnd, page num for pagination
+
+[33mcommit 11d6c5486a14a4e505d23ba3293001f23abdf134[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 10:42:10 2013 +0800
+
+    - fix bug the salesforce can not work on oauth
+
+[33mcommit 9e6afd0331379e099b3b116e22b9e9f72e5e866d[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 30 10:41:40 2013 +0800
+
+    fix linkedin issue when refactor to oauth helper
+
+[33mcommit 2062021a32529ae51da8db4bb51807347818a975[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 30 10:26:30 2013 +0800
+
+    add mail send
+
+[33mcommit e7e9f7f76452eaae64a69cfd5d6a28cb5a6579e4[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 09:44:51 2013 +0800
+
+    . add scope for facebook auth
+
+[33mcommit 844cd4673af67d1b3bfeb79e3cc1905dbb0960cd[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 30 09:29:35 2013 +0800
+
+    . update to latest brite.snapshot.js (1.1.0-snapshot)
+
+[33mcommit fbbb428b7d49348e22b33e3bd9da884e6df4a235[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 20:05:12 2013 +0800
+
+    (Yao) add the oauth for the github -- resolve conflicts
+
+[33mcommit 5d1933cda60f37b1f1ae61687e28f5684c26baa1[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 19:12:43 2013 +0800
+
+    . add ignore for apps/ in .gitignore
+
+[33mcommit d0b4c09454bc3b324c9f701346490baeff786cd1[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 19:39:59 2013 +0800
+
+    . remove jcruncherEx.jar
+
+[33mcommit 3134c6f9e99400624f981a57136cccc8a5c64d08[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 19:38:17 2013 +0800
+
+    . code clean, use OAuthServiceHelper to provide
+
+[33mcommit 2ea37c8054712a24241723059677ceb717ea34e0[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Tue Jan 29 19:19:30 2013 +0800
+
+    delete the apps
+
+[33mcommit de7d4dcb85ee2765ef5439678637d6f109efab5c[m
+Merge: 6b1eb30 12b44a8
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 19:06:07 2013 +0800
+
+    Merge branch 'daily_liu_0129' of github.com:LiuXian/sampleSocial into daily_wang_li_liang_liu_yao_0129
+
+[33mcommit 12b44a8b28560b723e3a800682394312e1f78eba[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Tue Jan 29 18:59:45 2013 +0800
+
+    change the user of the database
+
+[33mcommit 52c4274fd5b907d1cb04c119f40be97fffa2c23e[m
+Author: LiuXian <liuxianmail@gmail.com>
+Date:   Tue Jan 29 18:20:19 2013 +0800
+
+    add the TwitterAuthService
+
+[33mcommit 6b1eb305636f6d3c85a3d5918a49b55eb4ce3ef4[m
+Merge: d7675e1 b39d3c8
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 29 17:45:11 2013 +0800
+
+    Merge branch 'daily_liang_1129' of github.com:woofgl/sampleSocial into daily_wang_li_liang_liu_yao_0129
+
+[33mcommit b39d3c828b003d6097749fe22375980270f8db79[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Jan 29 17:38:44 2013 +0800
+
+    add replay for mail
+
+[33mcommit 6313797f633d4d599cc11fbd4457c47901ec4ca1[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Jan 29 17:38:30 2013 +0800
+
+    add get mail info for google.
+
+[33mcommit d7675e1ab05d72953845be9bca2401e8ff2299f2[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Jan 29 15:07:19 2013 +0800
+
+    . add facebook permission
+
+[33mcommit bef05de309ad8c4072bd4975f28d6a929d0a1b57[m
+Merge: 1a212d0 a6fb182
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 17:52:08 2013 +0800
+
+    Merge branch 'daily_wang_0128' into daily_wang_li_liang_0128
+
+[33mcommit a6fb1829707361625ce00cc20a5b609f67aa8129[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 17:51:21 2013 +0800
+
+    add limit for query salesforce contacts
+
+[33mcommit 63432ba4fdde832b007069b1434feca558d8224f[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 17:38:28 2013 +0800
+
+    . fix table layout
+
+[33mcommit 0ccdbafabcaa4c4cd75377db942f0647112da508[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 16:48:46 2013 +0800
+
+    . change pagination layout
+
+[33mcommit 1a212d01121083b91119c8d353b42f25726c57e4[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Jan 28 16:41:41 2013 +0800
+
+    . add facebook post function
+
+[33mcommit 338cdac49f93ac76bdac92824def574ea315dd3f[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Jan 28 15:55:37 2013 +0800
+
+    . clean FacebookPosts.js
+
+[33mcommit 76a3dd9b0cfa1b150040f838816b825f8f229088[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 14:31:20 2013 +0800
+
+    . change return value when do list contacts
+
+[33mcommit 27c9938104bfea89eed61540f7cf532ebcb37558[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 28 09:46:48 2013 +0800
+
+    . update jquery to 1.9.0 and brite to 1.1.0
+
+[33mcommit 6c231961dbee99308a34ec29f08e8b2d34399b29[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Jan 25 18:47:28 2013 +0800
+
+    . remove unused variable
+
+[33mcommit 2fb917592ddc2e69611f54b08a0e66801d6c8dff[m
+Merge: fa5cd4e 9ce66a1
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Jan 25 18:41:00 2013 +0800
+
+    Merge branch 'daily_wang_0125' into daily_wang_li_liang_0125
+
+[33mcommit fa5cd4e36780464de3413588966ae0d18683197b[m
+Merge: 028b1a2 590f3e5
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Jan 25 18:39:14 2013 +0800
+
+    Merge branch 'daily_liang_0125' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0125
+
+[33mcommit 9ce66a101434e3ef90a8870f4e5825db4489d07e[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Jan 25 18:13:51 2013 +0800
+
+    add contact update/create/list/delete support
+
+[33mcommit 590f3e564751806272161bdce84d9fae0b515bce[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 25 17:19:22 2013 +0800
+
+    add linkin search jobs
+
+[33mcommit 028b1a27ec351bc231c79504a8aae27ac8c808c2[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Jan 25 17:03:13 2013 +0800
+
+    . add  facebook feed list function
+
+[33mcommit 4ba52f794dfbe4d7e93e185c344ef1c15cd9fe36[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Fri Jan 25 16:24:34 2013 +0800
+
+    . save token date for salesforce oauth
+
+[33mcommit b89cc911519b0ae6dd22a1f214532944e97433ea[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 25 13:52:20 2013 +0800
+
+    add github oauth support
+
+[33mcommit b50486dcea456b2e6a957a18f4e7092372a182c2[m
+Merge: 14b798a 90d5d13
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 24 17:48:54 2013 +0800
+
+    Merge branch 'daily_li_0124' of github.com:lizhe5/sampleSocial-1 into daily_wang_li_liang_0124
+
+[33mcommit 14b798acf04cd2e631b538e80500d366c6779133[m
+Merge: 4a440a7 dd7568c
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 24 17:48:18 2013 +0800
+
+    Merge branch 'daily_liang_0124' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0124
+
+[33mcommit 4a440a7370a5be26546c7fc9da02f2482926c973[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 24 17:44:51 2013 +0800
+
+    . add oauth for salesforce
+
+[33mcommit 90d5d13e314af7eacfa77b61cd8e0890f3085a02[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 24 16:45:37 2013 +0800
+
+    . add facebook posts
+
+[33mcommit dd7568c2f6001b9c4de04b6934f09e01a04fc104[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 24 16:41:37 2013 +0800
+
+    remove unuse import
+
+[33mcommit e6a2de16dc8df206f730284dbc87c2ef4cec124b[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 24 15:31:59 2013 +0800
+
+    add job search support
+
+[33mcommit 8a8f00cb29abc4f0ceb72d50b904784935dfc470[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 24 15:31:46 2013 +0800
+
+    add linkedIn service support
+
+[33mcommit 32db5139c7f582078f7560da127fe75bcecf0852[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 24 13:29:12 2013 +0800
+
+    . add facebook friends search function
+
+[33mcommit c51d30605976e9103146638842907fdf36c9ce5c[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 24 11:38:13 2013 +0800
+
+    refactor js, move api package
+
+[33mcommit df238beb7047a12a9066ab18e9b7d750d7133701[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 24 11:05:18 2013 +0800
+
+    . add facebook contact search function
+
+[33mcommit c395c1866b3ff1195276a86d1784e45023699175[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 23 18:39:31 2013 +0800
+
+    . add new UI layout
+
+[33mcommit 7e570ab143eb9ae5453eb939722a84201a2987e1[m
+Merge: 9714c5d 907e042
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 23 18:30:42 2013 +0800
+
+    Merge branch 'daily_liang_0123' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0123
+
+[33mcommit 9714c5da4ba7505285af27e9c00e1b4bd37a9d2a[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 23 17:12:00 2013 +0800
+
+    . add unit test class
+
+[33mcommit 907e042cf2690be1457d9cafa25bebf806f64f0f[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 23 16:35:43 2013 +0800
+
+    add folder list and delete
+
+[33mcommit 440acb9c5978ae0f62a26c967f2ca784fa51cd20[m
+Merge: ffea0f1 7d44a02
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 22 17:46:15 2013 +0800
+
+    Merge branch 'daily_liang_0122' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0122
+
+[33mcommit 7d44a024d77dd2caf747ce40025ca3e209791f38[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Jan 22 17:44:29 2013 +0800
+
+    make gmails menu as dropdown
+
+[33mcommit ffea0f1fe4a4f8da46cfb5cb68d150bb12ee4378[m
+Merge: 10946c1 f547bfc
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 22 17:29:59 2013 +0800
+
+    Merge branch 'daily_wang_0122' into daily_wang_li_liang_0122
+
+[33mcommit ec8a3bd95a6d190825fd54a786f25475f65a8014[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Jan 22 17:28:40 2013 +0800
+
+    refactor webresponse make it support other parameter
+
+[33mcommit f547bfc57c9d6a9cdb17c28ebca30f6b8620725e[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 22 17:08:34 2013 +0800
+
+    . make sure compile less, template files before packge to .war
+
+[33mcommit 10946c1c359bcebeeff95a08b056d56dee37cd38[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Jan 22 16:42:41 2013 +0800
+
+    . fix friends list remove exist contacts
+
+[33mcommit e192f9ac0e32105a697b582a994aa67409bfd9d1[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Tue Jan 22 16:31:26 2013 +0800
+
+    .change @WebModelHandler to @WebGet
+
+[33mcommit 63e02511148a02b72d3ad6a86f62fa7a21d952aa[m
+Merge: 364d0f8 25ce7d5
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 22 09:37:17 2013 +0800
+
+    Merge branch 'daily_wang_0121' into daily_wang_li_liang_0121
+
+[33mcommit 364d0f862668875e55fdc773367b17e8d90b1e7e[m
+Merge: 6cd6050 3648ce3
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 22 09:35:24 2013 +0800
+
+    Merge branch 'daily_liang_0121' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0121
+
+[33mcommit 25ce7d50cd6613c893c05a490f5083b900c4d295[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 21 18:41:52 2013 +0800
+
+    . change oauthHanlder authorize to REST way
+
+[33mcommit 6cd60505ac12028df54e42444a340e13f1d30395[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Jan 21 15:55:36 2013 +0800
+
+    add operation result after add/delete contact
+
+[33mcommit 04672139656379561675ff24e089dc7a65065abd[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Mon Jan 21 15:41:32 2013 +0800
+
+    . chang WebActionHandler to REST/API
+
+[33mcommit 3648ce3bc72ff035c1142b724767359507d7b7fb[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Mon Jan 21 11:29:22 2013 +0800
+
+    replace @WebActionHandler and @WebModelHandler and @WebPost and @WebGet
+
+[33mcommit f47e3beaa4821fbdf0045d1ad7f31c337b13af81[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Mon Jan 21 10:12:58 2013 +0800
+
+    . add hibernate property hbm2ddl.auto
+
+[33mcommit 6957d1037353c4160f61033c8c42acce6e167c92[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 18 16:51:07 2013 +0800
+
+    fix null point issue
+
+[33mcommit e86c1db9fb35eb7f88ede6c650ab6551147fa374[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 18 14:26:55 2013 +0800
+
+    change contact and gmail url
+
+[33mcommit d645d420f0f588ac35062d6c09dd5d6e883bcc8a[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 18 14:14:45 2013 +0800
+
+    update linkedservice and update sql make it full support oauth 1
+
+[33mcommit 5a3e01d98e988097912ec605c1f14a9a6fb7c251[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Fri Jan 18 13:03:03 2013 +0800
+
+    fix datatable, make it use app.render
+
+[33mcommit 2239f1ed297ff819f6bb899f8c42e9cfd6290a6d[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Jan 18 15:14:45 2013 +0800
+
+    . change handler url to REST type
+
+[33mcommit 4c6381f184ab143258d1f080cdbbc98d5f4e42f8[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Fri Jan 18 12:42:34 2013 +0800
+
+    #3 move facebook key to snow.properties
+
+[33mcommit e5fe4de9af077d2f7184480bbdb896b1be7ab0ed[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 17 17:06:46 2013 +0800
+
+    . change the icon when show dropdown
+
+[33mcommit 875b9dfa30f11d86248836bd70fb1cc885a206a9[m
+Merge: 2631798 920b3bd
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Thu Jan 17 17:02:52 2013 +0800
+
+    Merge branch 'daily_liang_0117' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0117
+
+[33mcommit 920b3bd58ac97eeebc22fba3a076fd5323b948b9[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 17 16:22:12 2013 +0800
+
+    do code clean for js
+
+[33mcommit 59cbed5630f3d0551413378ea87b2696c925e9e9[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Thu Jan 17 16:19:53 2013 +0800
+
+    do code clean for gmail service and google handler
+
+[33mcommit 2631798b1532d316a9e82948018d5b39b6a5d737[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 17 13:59:19 2013 +0800
+
+    . change add facebook friend function style
+
+[33mcommit aba3e1db7c30aab7bda3c3c43b7fdbfe05ceb457[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Thu Jan 17 13:53:32 2013 +0800
+
+    . change delete facebookcontact style
+
+[33mcommit fdce68133249f8f5f54a1bb81499df2d82e7d4ef[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 16 17:30:29 2013 +0800
+
+    . add dropdown for oauth in UI
+
+[33mcommit 1af405df71c04dae094d1f59aab4a0f5621437cc[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 16 17:28:54 2013 +0800
+
+    . remote GenericDao.java
+
+[33mcommit 0c21320cd57a5b099277fd73ec9a2c6f736df3c1[m
+Merge: bcc6409 b3235f8
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Wed Jan 16 17:17:36 2013 +0800
+
+    Merge branch 'daily_li_0116' of github.com:lizhe5/sampleSocial-1 into daily_wang_li_liang_0116
+
+[33mcommit b3235f8857383594639ed90315408d2c3d7cf9cd[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 16 17:07:52 2013 +0800
+
+    . add contactinfo entity
+
+[33mcommit bb546a39f59798ae1978b2d42f0f640331e5478a[m
+Author: lizhe5 <southgate@qq.com>
+Date:   Wed Jan 16 15:58:37 2013 +0800
+
+    . add more columns to detail view
+
+[33mcommit bcc6409485a02ec70710d34bdf49511501253ef9[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Wed Jan 16 15:51:34 2013 +0800
+
+    add groups and contact and group edit.
+
+[33mcommit 1591998104fd5c47d86618c21aba9f998dc80cfd[m
+Merge: 796eeef 4940f36
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 17:56:27 2013 +0800
+
+    Merge branch 'daily_li_0115' of github.com:lizhe5/sampleSocial-1 into daily_wang_li_liang_0115
+
+[33mcommit 796eeef35495f9484cf0bd172a096a5140812cff[m
+Merge: 49396b1 3a7f47d
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 16:45:07 2013 +0800
+
+    Merge branch 'daily_liang_0115' of github.com:woofgl/sampleSocial into daily_wang_li_liang_0115
+
+[33mcommit 4940f36158d6faf6c67bb1ddb9dc3c8e67ee1176[m
+Author: south <south@southtekiMacBook-Pro.local>
+Date:   Tue Jan 15 16:35:47 2013 +0800
+
+    . add contact name and friend name clickable
+
+[33mcommit 650af174e073c28c30f61fb132ee3a7b7902de95[m
+Author: south <south@southtekiMacBook-Pro.local>
+Date:   Tue Jan 15 16:31:28 2013 +0800
+
+    . add friends detail information to Contact view
+
+[33mcommit 1cb356f649f2d29b435ebe5df20dea6fc0ccea97[m
+Author: south <south@southtekiMacBook-Pro.local>
+Date:   Tue Jan 15 16:19:16 2013 +0800
+
+    . rmove DaoRegistry.java
+
+[33mcommit 49396b10f4abea9332dee5acbdff3a89ab630d24[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 15:39:03 2013 +0800
+
+    . use WebReponse Object for web action return object
+
+[33mcommit 3a7f47df06bd3de0b7f285c4e13581d34c32395a[m
+Author: woofgl <woofgl@gmail.com>
+Date:   Tue Jan 15 15:21:23 2013 +0800
+
+    reimplement scrible api for google oauth 2
+
+[33mcommit 58258cde9383e7275fa5acbcf39ac3d70972922a[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 14:10:17 2013 +0800
+
+    . create package for exceptions
+
+[33mcommit c625fb707a2da194ed12935fb9d3cbf188010279[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 14:03:06 2013 +0800
+
+    . create package for web annotations
+
+[33mcommit d47a6ff9ed6e2fb8ae9c42f26565cbfcd83947ca[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 13:41:39 2013 +0800
+
+    . create package for hooks
+
+[33mcommit 4e09848ca2e7166488331649a2fcba4af2bf2a3a[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 11:05:41 2013 +0800
+
+    #2 Fix log4j and slf4j dependency to match the latest of Snow
+
+[33mcommit 55497d0ec5261e09aec220554441062f7e4041ce[m
+Author: wangxuwei <wangxuwei84@gmail.com>
+Date:   Tue Jan 15 10:55:25 2013 +0800
+
+    #1 Remove the copy to war in the pom.xml
+
+[33mcommit 7535f5f28bb2d7444f179e1c1a208aa19088af34[m
+Author: jeremychone <jeremy.chone@gmail.com>
+Date:   Mon Jan 14 12:48:49 2013 -0800
+
+    . initial

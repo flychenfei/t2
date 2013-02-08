@@ -34,6 +34,85 @@
 					</div>
 			        {{/each}}
 				</div>
+				
+				<div class="page-header">
+					<h3>MentionTimeLine</h3>
+				</div>
+		       
+		       <div class="timeline-container">
+			       {{#each mentions}}
+			       <div class="tweet-container" tweet_id="{{id}}">
+						<div class="row-fluid">
+							<div class="span1"><img src={{user.profile_image_url}} /></div>
+							<div class="span11">
+								
+								<div class="row-fluid">
+									<div class="span11">
+										<strong>{{user.name}}</strong>@{{user.screen_name}}
+									</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">{{text}}</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">
+										<span class="retweet"><i class="icon-share-alt"></i>Retweet</span>
+										<span class="favorite"><i class="icon-star"></i>Favorite</span>
+									</div>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+			        {{/each}}
+				</div>
+				
+				
+				<div class="page-header">
+					<h3>Retweets of Me</h3>
+				</div>
+		       
+		       <div class="timeline-container">
+			       {{#each retweets}}
+			       <div class="tweet-container" tweet_id="{{id}}">
+						<div class="row-fluid">
+							<div class="span1"><img src={{user.profile_image_url}} /></div>
+							<div class="span11">
+								
+								<div class="row-fluid">
+									<div class="span11">
+										<strong>{{user.name}}</strong>@{{user.screen_name}}
+									</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">{{text}}</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span11">
+										<span class="retweet"><i class="icon-share-alt"></i>Retweet</span>
+										<span class="favorite"><i class="icon-star"></i>Favorite</span>
+									</div>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+			        {{/each}}
+				</div>
+				
+				
+				<div class="page-header">
+					<h3>Suggestions</h3>
+				</div>
+				 <div class="suggestions-container">
+			       {{#each suggestions}}
+			       <div class="suggestion-container alert alert-success">
+						<div class="name">{{name}}</div>
+						<div class="size">{{size}}</div>
+					</div>
+			        {{/each}}
+				</div>
+				
 			</div>
 		</div>
 	</div>

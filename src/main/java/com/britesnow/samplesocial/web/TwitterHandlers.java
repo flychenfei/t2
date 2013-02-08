@@ -32,6 +32,21 @@ public class TwitterHandlers {
     	return response;
     }
     
+    
+    @WebGet("/twitter/getRetweets")
+    public WebResponse getRetweets(@WebUser User user, RequestContext rc) throws Exception {
+    	String retweets = twitterService.getRetweets(user);
+    	WebResponse response = WebResponse.success(retweets);
+    	return response;
+    }
+    
+    @WebGet("/twitter/getMentionTimeline")
+    public WebResponse getMentionTimeline(@WebUser User user, RequestContext rc) throws Exception {
+    	String timeline = twitterService.getMentionTimeline(user);
+    	WebResponse response = WebResponse.success(timeline);
+    	return response;
+    }
+    
     @WebGet("/twitter/getUserTimeline")
     public WebResponse getUserTimeline(@WebUser User user, RequestContext rc) throws Exception {
     	String timeline = twitterService.getUserTimeline(user);
@@ -59,6 +74,14 @@ public class TwitterHandlers {
     	WebResponse response = WebResponse.success(destroyTweet);
     	return response;
     }
+    
+    @WebGet("/twitter/getSuggestions")
+    public WebResponse getSuggestions(@WebUser User user, RequestContext rc) throws Exception {
+    	String suggestions = twitterService.getSuggestions(user);
+    	WebResponse response = WebResponse.success(suggestions);
+    	return response;
+    }
+    
     
     @WebPost("/twitter/favorite")
     public WebResponse favorite(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
