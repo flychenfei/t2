@@ -1,17 +1,15 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.util.Map;
+
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.LiveService;
-import com.britesnow.samplesocial.service.TwitterService;
 import com.britesnow.snow.web.RequestContext;
-import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import java.util.Map;
 
 @Singleton
 public class LiveHandlers {

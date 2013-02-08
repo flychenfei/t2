@@ -1,19 +1,14 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.snow.util.JsonUtil;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import fi.foyt.foursquare.api.FoursquareApiException;
-import fi.foyt.foursquare.api.Result;
-import fi.foyt.foursquare.api.entities.Checkin;
-import fi.foyt.foursquare.api.entities.CompactUser;
-import fi.foyt.foursquare.api.entities.CompleteUser;
-import fi.foyt.foursquare.api.entities.UserGroup;
+import java.util.Map;
+
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
-import java.util.Map;
+import com.britesnow.snow.util.JsonUtil;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 
 @Singleton
