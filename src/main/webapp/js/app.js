@@ -220,7 +220,15 @@ var app = app || {};
 			param = param||{};
 			param.method = "POST";
 			return app.getJsonData(contextPath + "/twitter/destroyTweet", param);
+		},
+		
+		getSuggestions : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getSuggestions", param);
 		}
+		
+		
     }
 
     app.linkedInApi = {

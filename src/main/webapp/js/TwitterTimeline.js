@@ -8,12 +8,15 @@
         brite.registerView("TwitterTimeline",  {emptyParent:true}, {
             create:function (data, config) {
             	return app.twitterApi.getTimeline().pipe(function(data) {
-            		var timeline = JSON.parse(data.result);
-            		console.log(timeline);
-            		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline});
+            		return app.twitterApi.getSuggestions().pipe(function(suggest) {
+            			var timeline = JSON.parse(data.result);
+            			var suggestions = JSON.parse(suggest.result);
+            			console.log(suggestions);
+                		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline, suggestions : suggestions});
+                        var $e = $($html);
+                        return $e;
+            		})
             		
-                    var $e = $($html);
-                    return $e;
             	});
             },
             postDisplay:function (data, config) {

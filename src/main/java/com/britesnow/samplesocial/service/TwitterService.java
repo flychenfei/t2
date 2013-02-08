@@ -45,6 +45,8 @@ public class TwitterService {
 	public static final String USER_TIMELINE = "https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=%d";
 	
 	public static final String DESTORY_TWEET = "https://api.twitter.com/1.1/statuses/destroy/%s.json";
+	
+	public static final String SUGGESTIONS = "https://api.twitter.com/1.1/users/suggestions.json";
 
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
@@ -89,6 +91,14 @@ public class TwitterService {
 	public String postStatus(User user, String status) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, POST_STATUS);
 		request.addBodyParameter("status", status);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
+	public String getSuggestions(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, SUGGESTIONS);
 		Token accessToken = getToken(user);
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();

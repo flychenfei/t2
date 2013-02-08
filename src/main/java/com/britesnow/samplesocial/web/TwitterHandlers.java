@@ -60,6 +60,14 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getSuggestions")
+    public WebResponse getSuggestions(@WebUser User user, RequestContext rc) throws Exception {
+    	String suggestions = twitterService.getSuggestions(user);
+    	WebResponse response = WebResponse.success(suggestions);
+    	return response;
+    }
+    
+    
     @WebPost("/twitter/favorite")
     public WebResponse favorite(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
     	Map retweet = twitterService.favorite(user,tweet_id);
