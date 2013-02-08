@@ -226,8 +226,13 @@ var app = app || {};
 			param = param||{};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/getSuggestions", param);
-		}
+		},
 		
+		getMentionTimeline : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getMentionTimeline", param);
+		}
 		
     }
 

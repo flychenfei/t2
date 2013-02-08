@@ -9,12 +9,16 @@
             create:function (data, config) {
             	return app.twitterApi.getTimeline().pipe(function(data) {
             		return app.twitterApi.getSuggestions().pipe(function(suggest) {
-            			var timeline = JSON.parse(data.result);
-            			var suggestions = JSON.parse(suggest.result);
-            			console.log(suggestions);
-                		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline, suggestions : suggestions});
-                        var $e = $($html);
-                        return $e;
+            			return app.twitterApi.getMentionTimeline().pipe(function(mention) {
+            				var timeline = JSON.parse(data.result);
+                			var suggestions = JSON.parse(suggest.result);
+                			var mentions = JSON.parse(mention.result);
+                    		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline, suggestions : suggestions, mentions : mentions});
+                            var $e = $($html);
+                            return $e;
+            			})
+            			
+            			
             		})
             		
             	});
