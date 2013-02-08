@@ -31,7 +31,21 @@ public class FacebookFeedHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFeedList(token, "me", "link", pageSize, pageIndex);
+        List ls = facebookService.getFeedList(token, "me", null, pageSize, pageIndex);
+        m.put("result", ls);
+        if (ls != null && pageSize != null && ls.size() == pageSize) {
+            m.put("hasNext", true);
+        }
+        return m;
+    }
+
+    @WebGet("/fb/photos")
+    public Object getFacebookPhotos(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        String token = e.getToken();
+        List ls = facebookService.getFeedList(token, "me", "photo", pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);

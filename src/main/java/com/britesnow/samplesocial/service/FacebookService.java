@@ -78,6 +78,11 @@ public class FacebookService {
         List ls2 = new ArrayList();
         for (int i = 0; i < ls.size(); i++) {
             JsonObject ob = (JsonObject) ls.get(i);
+            if (StringUtils.isNotBlank(type)) {
+                if (!type.equals(ob.get("type"))) {
+                    continue;
+                }
+            }
             Iterator it = ob.keys();
             Map m = new HashMap();
             while (it.hasNext()) {

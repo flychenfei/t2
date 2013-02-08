@@ -1,12 +1,12 @@
 ;(function() {
 	(function($) {
-		brite.registerView("FacebookFeeds", {
+		brite.registerView("FacebookPhotos", {
 			loadTmpl : true,
 			emptyParent : true,
 			parent : ".FacebookScreen-content"
 		}, {
 			create : function(data, config) {
-				var $html = app.render("tmpl-FacebookFeeds");
+				var $html = app.render("tmpl-FacebookPhotos");
 				var $e = $($html);
 				return $e;
 			},
@@ -14,16 +14,19 @@
 				var view = this;
 				var $e = view.$el;
 				view.refreshPostsList.call(view);
+
 			},
 			events : {
 				"click;.postBtn" : function(e) {
 					var view = this;
 					var $e = view.$el;
-					var value = $e.find(".post").val();
-					if (value=="") {return};
-					app.facebookApi.addPost(value).done(function(){
+					var $file = $e.find("input[type='file']");
+					var value = $file[0].files[0];
+					app.facebookApi.publishPhoto({},value).done(function(){
 						view.refreshPostsList.call(view);
-						$e.find(".post").val('');
+						$(".result").show(function() {
+							$(".result").hide(3000);
+						});
 					});
 				},
 			},
@@ -48,7 +51,7 @@
 				}
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.facebookApi.getPosts
+						list : app.facebookApi.getPhotos
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)

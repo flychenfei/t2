@@ -34,6 +34,9 @@
                 else if(menu == "feed"){
                   brite.display("FacebookFeeds");
                 }
+                else if(menu == "photo"){
+                  brite.display("FacebookPhotos");
+                }
               }
             },
 
