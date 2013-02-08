@@ -4,15 +4,15 @@
 			return  app.render("tmpl-GithubScreen")
 		},
 		postDisplay:function(){
-			app.githubApi.showUserInfo().pipe(function(result){
+			/*app.githubApi.showUserInfo().pipe(function(result){
 				var userInfo = JSON.parse(result.result);
 				var emails = JSON.parse(result.emails);
 				brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo,emails:emails});
-			});
-			/*app.githubApi.getRepositories().pipe(function(repositories){
+			});*/
+			app.githubApi.getRepositories().pipe(function(repositories){
 				repositories = repositories.result;
 				brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
-			});*/
+			});
 		},
 		events:{
 			"click;.auth":function(event){
