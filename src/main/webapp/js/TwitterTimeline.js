@@ -10,15 +10,19 @@
             	return app.twitterApi.getTimeline().pipe(function(data) {
             		return app.twitterApi.getSuggestions().pipe(function(suggest) {
             			return app.twitterApi.getMentionTimeline().pipe(function(mention) {
-            				var timeline = JSON.parse(data.result);
-                			var suggestions = JSON.parse(suggest.result);
-                			var mentions = JSON.parse(mention.result);
-                    		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline, suggestions : suggestions, mentions : mentions});
-                            var $e = $($html);
-                            return $e;
+            				return app.twitterApi.getRetweets().pipe(function(retweet) {
+            					var timeline = JSON.parse(data.result);
+                    			var suggestions = JSON.parse(suggest.result);
+                    			var mentions = JSON.parse(mention.result);
+                    			var retweets = JSON.parse(retweet.result);
+                        		var $html = app.render("tmpl-TwitterTimeline", {timeline : timeline, 
+                        			suggestions : suggestions,
+                        			retweets : retweets,
+                        			mentions : mentions});
+                                var $e = $($html);
+                                return $e;
+            				})
             			})
-            			
-            			
             		})
             		
             	});

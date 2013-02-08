@@ -32,6 +32,14 @@ public class TwitterHandlers {
     	return response;
     }
     
+    
+    @WebGet("/twitter/getRetweets")
+    public WebResponse getRetweets(@WebUser User user, RequestContext rc) throws Exception {
+    	String retweets = twitterService.getRetweets(user);
+    	WebResponse response = WebResponse.success(retweets);
+    	return response;
+    }
+    
     @WebGet("/twitter/getMentionTimeline")
     public WebResponse getMentionTimeline(@WebUser User user, RequestContext rc) throws Exception {
     	String timeline = twitterService.getMentionTimeline(user);

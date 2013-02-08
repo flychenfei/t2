@@ -49,7 +49,9 @@ public class TwitterService {
 	public static final String SUGGESTIONS = "https://api.twitter.com/1.1/users/suggestions.json";
 	
 	public static final String MENTION_TIMELINE = "https://api.twitter.com/1.1/statuses/mentions_timeline.json?count=2&since_id=14927799";
-
+	
+	public static final String RETWEET_OF_ME = "https://api.twitter.com/1.1/statuses/retweets_of_me.json";
+	
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
 		if (socialEn != null) {
@@ -68,6 +70,13 @@ public class TwitterService {
 	
 	public String getTimeline(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, TWITTER_TIMELINE);
+		oAuthService.signRequest(getToken(user), request);
+	    Response response = request.send();
+	    return response.getBody();
+	}
+	
+	public String getRetweets(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, RETWEET_OF_ME);
 		oAuthService.signRequest(getToken(user), request);
 	    Response response = request.send();
 	    return response.getBody();

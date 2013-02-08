@@ -232,7 +232,14 @@ var app = app || {};
 			param = param||{};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/getMentionTimeline", param);
+		},
+		
+		getRetweets : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getRetweets", param);
 		}
+		
 		
     }
 
