@@ -35,6 +35,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/github/getCommits",params);
+        },
+        getCommit:function(opts){
+        	var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/github/getCommit",params);
         }
     };
 })();
