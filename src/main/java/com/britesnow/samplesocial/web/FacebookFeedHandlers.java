@@ -55,11 +55,11 @@ public class FacebookFeedHandlers {
 
     @WebPost("/fb/post-add-photo")
     public WebResponse addFacebookPhoto(@WebUser User user, @WebParam("fbid") String fbid,
-                            @WebParam("fileItem") FileItem fileItem) {
+                            @WebParam("file") FileItem file) {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
-            facebookService.publishPhoto(token, e.getFbid(), "", fileItem.getInputStream());
+            facebookService.publishPhoto(token, e.getFbid(), "", file.getInputStream());
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();

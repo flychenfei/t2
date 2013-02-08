@@ -10,7 +10,7 @@
 	        </tbody>
 	      </table>
 	    </div>
-	    
+
 	 <div class="result modal hide ">
   <div class="modal-body">
   <div class="alert alert-success">
@@ -18,7 +18,7 @@
 </div>
   </div>
 </div>    
-	    
+
  <div class="Contact-detail-dialog modal hide ">
  <div class="modal-header">
     <h3>Contact information</h3>
@@ -41,6 +41,7 @@
     <a href="#" >Home</a>
   </li>
   <li data-type='feed'><a href="#" >Feeds</a></li>
+  <li data-type='publish'><a href="#" >Publish</a></li>
 </ul>
 
 <table class="infotable table  table-striped">
@@ -81,11 +82,12 @@
 			<td>{{link}}</td>
 		</tr>
 	</table>
-	
-	<div class="feedForm ">
+	<div class="feedList hide">
+	</div>
+	<div class="feedPublish hide">
 	<form action="/samplesocial/fb/post-add-photo" method="post" ENCTYPE=multipart/form-data>
-	<input type="file" name="fileItem"/>
-	<input type="submit"/>
+	<input type="file" name="file"/>
+	<a href="#" class="btn publishFeed2Friend">Submit</a>
 	</form>
 	</div>
 </script>

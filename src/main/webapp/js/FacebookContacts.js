@@ -60,7 +60,11 @@
 					var $e = view.$el;
 					var $file = $e.find("input[type='file']");
 					var value = $file[0].files[0];
-					app.facebookApi.publishPhoto({},value);
+					app.facebookApi.publishPhoto({},value).done(function(){
+						$(".result").show(function() {
+							$(".result").hide(3000);
+						});
+					});
 				},
 				"btap;.close" : function(e) {
 					var view = this;

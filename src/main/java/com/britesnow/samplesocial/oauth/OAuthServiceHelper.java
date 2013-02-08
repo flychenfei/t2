@@ -15,9 +15,9 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class OAuthServiceHelper {
-    private final Map appconfig;
+    private final Map          appconfig;
 
-    public static final String EMAIL_ENDPOINT = "https://www.googleapis.com/userinfo/email";
+    public static final String EMAIL_ENDPOINT   = "https://www.googleapis.com/userinfo/email";
     public static final String PROFILE_ENDPOINT = "https://www.googleapis.com/oauth2/v1/userinfo";
 
     @Inject
@@ -29,31 +29,31 @@ public class OAuthServiceHelper {
         OAuthService oauthService = null;
         if (serviceType == ServiceType.Google) {
             oauthService = this.getGoogleOAuthService();
-        }else if(serviceType == ServiceType.FaceBook){
+        } else if (serviceType == ServiceType.FaceBook) {
             oauthService = this.getFaceBookOAuthService();
-        }else if(serviceType == ServiceType.LinkedIn){
+        } else if (serviceType == ServiceType.LinkedIn) {
             oauthService = this.getLinkedInOAuthService();
-        }else if(serviceType == ServiceType.SalesForce){
+        } else if (serviceType == ServiceType.SalesForce) {
             oauthService = this.getSalesForceOAuthService();
-        }else if(serviceType == ServiceType.Github){
+        } else if (serviceType == ServiceType.Github) {
             oauthService = this.getGitHubOAuthService();
-        }else if(serviceType == ServiceType.Twitter){
+        } else if (serviceType == ServiceType.Twitter) {
             oauthService = this.getTwitterOAuthService();
-        }else if (serviceType == ServiceType.Live) {
+        } else if (serviceType == ServiceType.Live) {
             oauthService = this.getLiveOauthService();
-        }else if (serviceType == ServiceType.Foursquare) {
+        } else if (serviceType == ServiceType.Foursquare) {
             oauthService = this.getFoursquare();
         }
-        
+
         return oauthService;
     }
 
     private OAuthService getFoursquare() {
         String prefix = "foursquare";
-        String clientId = (String) appconfig.get(prefix+".client_id");
-        String secret = (String) appconfig.get(prefix+".secret");
-        String callback = (String) appconfig.get(prefix+".callback");
-        String scope = (String) appconfig.get(prefix+".scope");
+        String clientId = (String) appconfig.get(prefix + ".client_id");
+        String secret = (String) appconfig.get(prefix + ".secret");
+        String callback = (String) appconfig.get(prefix + ".callback");
+        String scope = (String) appconfig.get(prefix + ".scope");
         ServiceBuilder builder = new ServiceBuilder().provider(Foursquare2Api.class).apiKey(clientId).apiSecret(secret);
         if (callback != null) {
             builder.callback(callback);
@@ -65,26 +65,26 @@ public class OAuthServiceHelper {
     }
 
     private OAuthService getTwitterOAuthService() {
-    	 String prefix = "twitter";
-         String clientId = (String) appconfig.get(prefix+".apiKey");
-         String secret = (String) appconfig.get(prefix+".apiSecret");
-         String callback = (String) appconfig.get(prefix+".callBackUrl");
-         String scope = (String) appconfig.get(prefix+".scope");
-         ServiceBuilder builder = new ServiceBuilder().provider(TwitterApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
-         if (scope != null) {
-             builder.scope(scope);
-         }
-         return builder.build();
-	}
+        String prefix = "twitter";
+        String clientId = (String) appconfig.get(prefix + ".apiKey");
+        String secret = (String) appconfig.get(prefix + ".apiSecret");
+        String callback = (String) appconfig.get(prefix + ".callBackUrl");
+        String scope = (String) appconfig.get(prefix + ".scope");
+        ServiceBuilder builder = new ServiceBuilder().provider(TwitterApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        if (scope != null) {
+            builder.scope(scope);
+        }
+        return builder.build();
+    }
 
-	private OAuthService getGoogleOAuthService(){
+    private OAuthService getGoogleOAuthService() {
         String prefix = "google";
-        String clientId = (String) appconfig.get(prefix+".client_id");
-        String secret = (String) appconfig.get(prefix+".secret");
-        String callback = (String) appconfig.get(prefix+".callback");
-        String scope = (String) appconfig.get(prefix+".scope");
+        String clientId = (String) appconfig.get(prefix + ".client_id");
+        String secret = (String) appconfig.get(prefix + ".secret");
+        String callback = (String) appconfig.get(prefix + ".callback");
+        String scope = (String) appconfig.get(prefix + ".scope");
         ServiceBuilder builder = new ServiceBuilder().provider(GoogleApi20.class).apiKey(clientId).apiSecret(secret);
-        //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
+        // builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
         if (callback != null) {
             builder.callback(callback);
         }
@@ -93,25 +93,25 @@ public class OAuthServiceHelper {
         }
         return builder.build();
     }
-    
-    private OAuthService getFaceBookOAuthService(){
+
+    private OAuthService getFaceBookOAuthService() {
         String prefix = "facebook";
-        String clientId = (String) appconfig.get(prefix+".apiKey");
-        String secret = (String) appconfig.get(prefix+".apiSecret");
-        String callback = (String) appconfig.get(prefix+".callBackUrl");
-        String scope =  "publish_actions";
-        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).scope(scope).callback(callback);
+        String clientId = (String) appconfig.get(prefix + ".apiKey");
+        String secret = (String) appconfig.get(prefix + ".apiSecret");
+        String callback = (String) appconfig.get(prefix + ".callBackUrl");
+        String scope = "publish_actions";
+        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).scope(scope).scope("publish_stream").callback(callback);
         return builder.build();
     }
-    
-    private OAuthService getLinkedInOAuthService(){
+
+    private OAuthService getLinkedInOAuthService() {
         String prefix = "linkedin";
-        String clientId = (String) appconfig.get(prefix+".client_id");
-        String secret = (String) appconfig.get(prefix+".secret");
-        String callback = (String) appconfig.get(prefix+".callback");
-        String scope = (String) appconfig.get(prefix+".scope");
+        String clientId = (String) appconfig.get(prefix + ".client_id");
+        String secret = (String) appconfig.get(prefix + ".secret");
+        String callback = (String) appconfig.get(prefix + ".callback");
+        String scope = (String) appconfig.get(prefix + ".scope");
         ServiceBuilder builder = new ServiceBuilder().provider(LinkedInApi.class).apiKey(clientId).apiSecret(secret);
-        //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
+        // builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
         if (callback != null) {
             builder.callback(callback);
         }
@@ -120,24 +120,24 @@ public class OAuthServiceHelper {
         }
         return builder.build();
     }
-    
-    private OAuthService getSalesForceOAuthService(){
+
+    private OAuthService getSalesForceOAuthService() {
         String prefix = "salesforce";
-        String clientId = (String) appconfig.get(prefix+".apiKey");
-        String secret = (String) appconfig.get(prefix+".apiSecret");
-        String callback = (String) appconfig.get(prefix+".callbackUrl");
+        String clientId = (String) appconfig.get(prefix + ".apiKey");
+        String secret = (String) appconfig.get(prefix + ".apiSecret");
+        String callback = (String) appconfig.get(prefix + ".callbackUrl");
         ServiceBuilder builder = new ServiceBuilder().provider(SalesForceApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
         return builder.build();
     }
-    
-    private OAuthService getGitHubOAuthService(){
+
+    private OAuthService getGitHubOAuthService() {
         String prefix = "github";
-        String clientId = (String) appconfig.get(prefix+".client_id");
-        String secret = (String) appconfig.get(prefix+".secret");
-        String callback = (String) appconfig.get(prefix+".callback");
-        String scope = (String) appconfig.get(prefix+".scope");
+        String clientId = (String) appconfig.get(prefix + ".client_id");
+        String secret = (String) appconfig.get(prefix + ".secret");
+        String callback = (String) appconfig.get(prefix + ".callback");
+        String scope = (String) appconfig.get(prefix + ".scope");
         ServiceBuilder builder = new ServiceBuilder().provider(GitHubApi.class).apiKey(clientId).apiSecret(secret);
-        //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
+        // builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
         if (callback != null) {
             builder.callback(callback);
         }
@@ -149,12 +149,12 @@ public class OAuthServiceHelper {
 
     public OAuthService getLiveOauthService() {
         String prefix = "live";
-        String clientId = (String) appconfig.get(prefix+".apiKey");
-        String secret = (String) appconfig.get(prefix+".apiSecret");
-        String callback = (String) appconfig.get(prefix+".callBackUrl");
-        String scope = (String) appconfig.get(prefix+".scope");
+        String clientId = (String) appconfig.get(prefix + ".apiKey");
+        String secret = (String) appconfig.get(prefix + ".apiSecret");
+        String callback = (String) appconfig.get(prefix + ".callBackUrl");
+        String scope = (String) appconfig.get(prefix + ".scope");
         ServiceBuilder builder = new ServiceBuilder().provider(LiveApi.class).apiKey(clientId).apiSecret(secret);
-        //builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
+        // builder.grantType(OAuthConstants.GRANT_TYPE_AUTHORIZATION_CODE);
         if (callback != null) {
             builder.callback(callback);
         }
