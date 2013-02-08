@@ -34,7 +34,7 @@
 				if(menu=="UserInformation"){
 					app.githubApi.showUserInfo().pipe(function(result){
 						var userInfo = JSON.parse(result.result);
-						var emails = result.emails.split(",");
+						var emails = JSON.parse(result.emails);
 						brite.display("GithubUserInfo",$(".tab-content"),{userInfo:userInfo,emails:emails});
 					});
 				}else if(menu=="Repositories"){

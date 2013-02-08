@@ -1,0 +1,24 @@
+<script id="tmpl-GithubCommit" type="text/html">
+  <div class="container githubCommit">
+		<table class="table">
+			<thead>
+				<tr class="header">
+					<th>
+					{{data.commit.message}}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each data.files}}
+				<tr>
+					<td class="content">
+						<div class="meta">{{filename}}</div>
+						<div>{{additions}} additions & {{changes}} changes & {{deletions}} deletions</div>
+						<div><pre>{{patch}}</pre></div>
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</script>

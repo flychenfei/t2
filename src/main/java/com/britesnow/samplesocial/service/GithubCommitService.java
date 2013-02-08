@@ -20,4 +20,9 @@ public class GithubCommitService {
 		CommitService commitService = new CommitService(githubAuthService.createClient(user));
 		return commitService.getCommits(repository);
 	}
+	
+	public RepositoryCommit getCommit(Repository repository,User user,String sha) throws IOException{
+		CommitService commitService = new CommitService(githubAuthService.createClient(user));
+		return commitService.getCommit(repository, sha);
+	}
 }

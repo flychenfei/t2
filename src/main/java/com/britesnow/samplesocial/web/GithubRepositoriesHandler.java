@@ -77,4 +77,18 @@ public class GithubRepositoriesHandler {
 		}
 	}
 	
+	@WebGet("/github/getCommit")
+	public WebResponse getCommit(@WebUser User user,@WebParam("name") String name,
+			@WebParam("login") String login,@WebParam("sha") String sha) {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = new org.eclipse.egit.github.core.User();
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		try{
+			return WebResponse.success(githubCommitService.getCommit(repo, user,sha));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
 }

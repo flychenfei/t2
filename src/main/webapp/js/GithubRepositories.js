@@ -46,7 +46,7 @@
 					login:login
 				}).pipe(function(json){
 					alert(json.result.length);
-					brite.display("GithubCommits",$(".tab-content"),{commits:json.result});
+					brite.display("GithubCommits",$(".tab-content"),{commits:json.result,name:name,login:login});
 				});
 			}
 		}
