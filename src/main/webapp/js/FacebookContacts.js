@@ -14,7 +14,7 @@
 				var view = this;
 				var $e = view.$el;
 				view.refreshContactsList.call(view);
-				
+
 			},
 			events : {
 				"click;img,.contactDetail" : function(e) {
@@ -33,20 +33,34 @@
 							var type = $(this).attr("data-type");
 							if(type == "info"){
 								$(".Contact-detail-dialog").find(".infotable").show();
-								$(".Contact-detail-dialog").find(".feedForm").show();
+								$(".Contact-detail-dialog").find(".feedList").hide();
+								$(".Contact-detail-dialog").find(".feedPublish").hide();
 							}
 							if(type == "feed"){
 								$(".Contact-detail-dialog").find(".infotable").hide();
-								$(".Contact-detail-dialog").find(".feedForm").hide();
+								$(".Contact-detail-dialog").find(".feedList").show();
+								$(".Contact-detail-dialog").find(".feedPublish").hide();
+							}
+							if(type == "publish"){
+								$(".Contact-detail-dialog").find(".infotable").hide();
+								$(".Contact-detail-dialog").find(".feedList").hide();
+								$(".Contact-detail-dialog").find(".feedPublish").show();
 							}
 						});
 
-					// app.getFacebookFriendDetail(d).done(function(data) {
+					// app.facebookApi.getFriendDetail(d).done(function(data) {
 						// var $html = app.render("tmpl-FacebookContact-detail", data.result);
 						// $(".Contact-detail").find(".modal-body").html($html);
 						// $(".Contact-detail").show();
 // 
 					// })
+				},
+				"btap;.publishFeed2Friend" : function(e) {
+					var view = this;
+					var $e = view.$el;
+					var $file = $e.find("input[type='file']");
+					var value = $file[0].files[0];
+					app.facebookApi.publishPhoto({},value);
 				},
 				"btap;.close" : function(e) {
 					var view = this;
@@ -58,7 +72,7 @@
 					var view = this;
 					view.refreshContactsList.call(view);
 				},
-				
+
 				"keyup":function(e){
 					if(e.which == 13){
 	                    var view = this;
@@ -71,7 +85,7 @@
 				"DELETE_FBCONTACT" : function(event, extraData) {
 					var view = this;
 					if (extraData && extraData.objId) {
-						app.deleteFBContact(extraData.objId).done(function(extradata) {
+						app.facebookApi.deleteContact(extraData.objId).done(function(extradata) {
 							if (extradata && extradata.result) {
 								setTimeout((function() {
 									view.refreshContactsList.call(view);
@@ -95,7 +109,7 @@
 				};
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.getFBContacts
+						list : app.facebookApi.getContacts
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)

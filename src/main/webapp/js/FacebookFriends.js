@@ -25,8 +25,7 @@
 					var d = {
 						fbid : id
 					};
-					app.getFacebookFriendDetail(d).done(function(data) {
-						console.log(data)
+					app.facebookApi.getFriendDetail(d).done(function(data) {
 						var $html = app.render("tmpl-FacebookFriend-detail", data.result);
 						$(".Friend-detail").find(".modal-body").html($html);
 						$(".Friend-detail").show();
@@ -43,7 +42,7 @@
 					var view = this;
 					view.refreshFriendsList.call(view);
 				},
-				
+
 				"keyup":function(e){
 					if(e.which == 13){
 	                    var view = this;
@@ -56,7 +55,7 @@
 				"ADD_FBCONTACT" : function(event, extraData) {
 					var view = this;
 					if (extraData && extraData.objId) {
-						app.addFacebookContact(null, extraData.objId).done(function(extradata) {
+						app.facebookApi.addContact(null, extraData.objId).done(function(extradata) {
 							if (extradata && extradata.result) {
 								setTimeout((function() {
 									view.refreshFriendsList.call(view);
@@ -86,7 +85,7 @@
 				}
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.getFBFriends
+						list : app.facebookApi.getFriends
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)

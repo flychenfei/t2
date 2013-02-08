@@ -14,7 +14,7 @@
 				var view = this;
 				var $e = view.$el;
 				view.refreshPostsList.call(view);
-				
+
 			},
 			events : {
 				"click;.postBtn" : function(e) {
@@ -22,7 +22,7 @@
 					var $e = view.$el;
 					var value = $e.find(".post").val();
 					if (value=="") {return};
-					app.addPost(value).done(function(){
+					app.facebookApi.addPost(value).done(function(){
 						view.refreshPostsList.call(view);
 						$e.find(".post").val('');
 					});
@@ -30,7 +30,7 @@
 			},
 
 			docEvents : {
-				
+
 			},
 
 			daoEvents : {
@@ -49,7 +49,7 @@
 				}
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.getFBPosts
+						list : app.facebookApi.getPosts
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)
