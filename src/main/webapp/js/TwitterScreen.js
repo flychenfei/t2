@@ -7,12 +7,10 @@
     (function ($) {
         brite.registerView("TwitterScreen",  {parent:".MainScreen-main", emptyParent:true}, {
             create:function (data, config) {
-            	return app.twitterApi.getUserInfo().pipe(function(data) {
-            		return app.twitterApi.getUserTimeline().pipe(function(timeline) {
-            			var $html = app.render("tmpl-TwitterScreen", {user : data.result, timeline : JSON.parse(timeline.result)});
-                        var $e = $($html);
-                        return $e;
-            		})	
+            	return $.when(app.twitterApi.getUserInfo(),app.twitterApi.getUserTimeline()).pipe(function(data,timeline) {
+        			var $html = app.render("tmpl-TwitterScreen", {user : data.result, timeline : JSON.parse(timeline.result)});
+                    var $e = $($html);
+                    return $e;
             	});
             },
             postDisplay:function (data, config) {
