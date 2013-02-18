@@ -16,6 +16,11 @@ var app = app || {};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/getRetweetById", param);
 		},
+		getStatusById : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getStatusById", param);
+		},
 		postStatus : function(param) {
 			param = param||{};
 			param.method = "POST";

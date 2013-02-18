@@ -120,6 +120,16 @@ public class TwitterService {
 		return response.getBody();
 	}
 	
+	//GET statuses/show/:id
+	public Map getStatusById(User user, String tweet_id) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(STATUS_BY_ID, tweet_id));
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+	    Map map = JsonUtil.toMapAndList(response.getBody());
+		return map;
+	}
+	
 	public String postStatus(User user, String status) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, POST_STATUS);
 		request.addBodyParameter("status", status);

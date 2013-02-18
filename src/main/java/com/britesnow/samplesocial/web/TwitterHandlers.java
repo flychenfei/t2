@@ -76,6 +76,14 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getStatusById")
+    public WebResponse getStatusById(@WebUser User user,@WebParam("status_id")String status_id) {
+    	System.out.println("status_id:" + status_id);
+    	Map status = twitterService.getStatusById(user,status_id);
+    	WebResponse response = WebResponse.success(status);
+    	return response;
+    }
+    
     @WebPost("/twitter/destroyTweet")
     public WebResponse destroyTweet(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
     	Map destroyTweet = twitterService.destroyTweet(user,tweet_id);

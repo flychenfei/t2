@@ -4,7 +4,6 @@ var app = app || {};
 
 	w.render = function(templateName, data) {
 		var tmpl = Handlebars.templates[templateName];
-		console.log(Handlebars);
 		if (tmpl) {
 			return tmpl(data);
 		} else {
