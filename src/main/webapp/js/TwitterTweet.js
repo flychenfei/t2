@@ -14,7 +14,6 @@
         	 "click;.getRetweetById" : function() {
          		var tweet_id = $(".tweet_id").val();
          		if(tweet_id.length > 0 ) {
-         			console.log("tweet_id" + tweet_id);
          			app.twitterApi.getRetweetById({tweet_id : tweet_id}).pipe(function(data) {
          				var tweets = JSON.parse(data.result);
          				var $html = app.render("tweets-template", {tweets : tweets});
@@ -27,7 +26,6 @@
          	"click;.getStatusById" : function() {
          		var status_id = $(".status_id").val();
          		if(status_id.length > 0 ) {
-         			console.log("status_id" + status_id);
          			app.twitterApi.getStatusById({status_id : status_id}).pipe(function(data) {
          				var status = data.result;
          				console.log("this is in the method getRetweet");
@@ -35,6 +33,18 @@
          				var $html = app.render("status-template", status);
          	            var $e = $($html);
          	            $(".status-content-container").html($e);
+         			})
+         		}
+         	},
+         	
+         	"click;.searchTweets" : function() {
+         		var query = $(".query").val();
+         		if(query.length > 0 ) {
+         			app.twitterApi.searchTweets({query : query}).pipe(function(data) {
+         				var tweets = data.result.statuses;
+         				var $html = app.render("tweets-template", {tweets : tweets});
+         	            var $e = $($html);
+         	            $(".search-result-container").html($e);
          			})
          		}
          	}

@@ -33,8 +33,6 @@ public class TwitterService {
 	public static final String USER_TWITTER_ID = "https://api.twitter.com/1.1/account/verify_credentials.json";
 	public static final String USER_INFO = "https://api.twitter.com/1.1/users/show.json?user_id=%d";
 	
-	public static final String DESTORY_TWEET = "https://api.twitter.com/1.1/statuses/destroy/%s.json";
-	
 	//Timelines
 	public static final String MENTION_TIMELINE = "https://api.twitter.com/1.1/statuses/mentions_timeline.json?count=2&since_id=14927799";
 	public static final String USER_TIMELINE = "https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=%d";
@@ -44,8 +42,12 @@ public class TwitterService {
 	//Tweets
 	public static final String RETWEET_BY_ID = "https://api.twitter.com/1.1/statuses/retweets/%s.json";
 	public static final String STATUS_BY_ID = "https://api.twitter.com/1.1/statuses/show.json?id=%s";
-	public static final String RETWEET = "https://api.twitter.com/1.1/statuses/retweet/%s.json";
+	public static final String DESTORY_TWEET = "https://api.twitter.com/1.1/statuses/destroy/%s.json";
 	public static final String POST_STATUS = "https://api.twitter.com/1.1/statuses/update.json";
+	public static final String RETWEET = "https://api.twitter.com/1.1/statuses/retweet/%s.json";
+	
+	//Search
+	public static final String SEARECH_TWEETS = "https://api.twitter.com/1.1/search/tweets.json?q=%s";
 	
 	//Favorites
 	public static final String FAVORITE = "https://api.twitter.com/1.1/favorites/create.json";
@@ -157,6 +159,16 @@ public class TwitterService {
 	    return map;
 	}
 	
+	//Search
+	//GET search/tweets
+	public Map searchTweets(User user, String query) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(SEARECH_TWEETS, query));
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+	    Map map = JsonUtil.toMapAndList(response.getBody());
+		return map;
+	}
 
 	//Suggested Users
 	public String getSuggestions(User user) {

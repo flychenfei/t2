@@ -31,6 +31,11 @@ var app = app || {};
 			param.method = "POST";
 			return app.getJsonData(contextPath + "/twitter/retweet", param);
 		},
+		searchTweets : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/searchTweets", param);
+		},
 		favorite : function(param) {
 			param = param||{};
 			param.method = "POST";
