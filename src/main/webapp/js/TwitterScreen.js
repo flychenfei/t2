@@ -28,6 +28,10 @@
             		if($(event.target).closest("li").hasClass("timeline")) {
             			brite.display("TwitterTimeline", $tabcontent);
             		}
+            		if($(event.target).closest("li").hasClass("tweets")) {
+            			brite.display("TwitterTweet", $tabcontent);
+            		}
+            		
             	},
             	
             	"click;.go" : function() {

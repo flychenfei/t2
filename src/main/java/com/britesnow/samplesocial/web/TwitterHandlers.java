@@ -68,6 +68,13 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getRetweetById")
+    public WebResponse getRetweetById(@WebUser User user,@WebParam("tweet_id")String tweet_id) {
+    	String retweet = twitterService.getRetweetById(user,tweet_id);
+    	WebResponse response = WebResponse.success(retweet);
+    	return response;
+    }
+    
     @WebPost("/twitter/destroyTweet")
     public WebResponse destroyTweet(@WebUser User user,@WebParam("tweet_id")String tweet_id, RequestContext rc) throws Exception {
     	Map destroyTweet = twitterService.destroyTweet(user,tweet_id);
