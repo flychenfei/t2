@@ -2,11 +2,17 @@ package com.britesnow.samplesocial.oauth;
 
 import java.util.Map;
 
-import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.*;
+import org.scribe.builder.api.DropBoxApi;
+import org.scribe.builder.api.FacebookApi;
+import org.scribe.builder.api.Foursquare2Api;
+import org.scribe.builder.api.LinkedInApi;
+import org.scribe.builder.api.LiveApi;
+import org.scribe.builder.api.TwitterApi;
+import org.scribe.model.SignatureType;
 import org.scribe.oauth.OAuthService;
 
+import com.britesnow.samplesocial.oauth.api.GitHubApi;
 import com.britesnow.samplesocial.oauth.api.GoogleApi20;
 import com.britesnow.samplesocial.oauth.api.SalesForceApi;
 import com.britesnow.snow.web.binding.ApplicationProperties;
@@ -43,6 +49,8 @@ public class OAuthServiceHelper {
             oauthService = this.getLiveOauthService();
         } else if (serviceType == ServiceType.Foursquare) {
             oauthService = this.getFoursquare();
+        } else if (serviceType == ServiceType.Dropbox) {
+            oauthService = this.getDropbox();
         }
 
         return oauthService;
@@ -161,6 +169,19 @@ public class OAuthServiceHelper {
         if (scope != null) {
             builder.scope(scope);
         }
+        return builder.build();
+    }
+    
+    public OAuthService getDropbox() {
+        String prefix = "dropbox";
+        String clientId = (String) appconfig.get(prefix + ".app_key");
+        String secret = (String) appconfig.get(prefix + ".app_secret");
+        String callback = (String) appconfig.get(prefix + ".callBackUrl");
+        ServiceBuilder builder = new ServiceBuilder().provider(DropBoxApi.class).apiKey(clientId).apiSecret(secret);
+        if (callback != null) {
+            builder.callback(callback);
+        }
+        builder.signatureType(SignatureType.Header);
         return builder.build();
     }
 }

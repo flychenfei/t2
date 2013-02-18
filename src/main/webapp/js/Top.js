@@ -40,6 +40,8 @@
                         brite.display("FoursquareScreen");
             		}else if(menu == "live"){
                         brite.display("LiveScreen");
+            		}else if(menu == "dropbox"){
+                        brite.display("DropboxScreen");
             		}else if(menu == "oauth"){
             		  var list = [
             		    {name:"linkedin",label:"Connect to LinkedIn"},

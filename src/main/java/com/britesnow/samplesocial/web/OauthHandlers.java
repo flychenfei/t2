@@ -7,11 +7,21 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.scribe.model.Token;
+
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
-import com.britesnow.samplesocial.service.*;
+import com.britesnow.samplesocial.service.DropboxAuthService;
+import com.britesnow.samplesocial.service.FacebookAuthService;
+import com.britesnow.samplesocial.service.FoursquareAuthService;
+import com.britesnow.samplesocial.service.GithubAuthService;
+import com.britesnow.samplesocial.service.GoogleAuthService;
+import com.britesnow.samplesocial.service.LinkedInAuthService;
+import com.britesnow.samplesocial.service.LiveAuthService;
+import com.britesnow.samplesocial.service.SalesForceAuthService;
+import com.britesnow.samplesocial.service.TwitterAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -39,7 +49,8 @@ public class OauthHandlers {
     private LiveAuthService liveAuthService;
     @Inject
     private FoursquareAuthService foursquareAuthService;
-
+    @Inject
+    private DropboxAuthService dropboxAuthService;
     @Inject
     private SocialIdEntityDao   socialIdEntityDao;
 
@@ -62,6 +73,8 @@ public class OauthHandlers {
             url = liveAuthService.getAuthorizationUrl();
         }else if (service == ServiceType.Foursquare) {
             url = foursquareAuthService.getAuthorizationUrl();
+        }else if (service == ServiceType.Dropbox) {
+            url = dropboxAuthService.getAuthorizationUrl();
         }
         
         rc.getRes().sendRedirect(url);
@@ -149,6 +162,13 @@ public class OauthHandlers {
 
     }
 
+    @WebModelHandler(startsWith="/dropbox_callback")
+    public void dropboxCallback(@WebUser User user, RequestContext rc, @WebParam("oauth_token") String oauth_token,
+    		@WebParam("oauth_token_secret") String oauth_token_secret) throws Exception {
+      System.out.println(oauth_token+"..."+oauth_token_secret);
+      Token authToken = new Token(oauth_token,oauth_token_secret);
+      dropboxAuthService.getAccessToken(authToken);
+    }
 
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) throws Exception {
