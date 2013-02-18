@@ -39,7 +39,8 @@ public class OauthHandlers {
     private LiveAuthService liveAuthService;
     @Inject
     private FoursquareAuthService foursquareAuthService;
-
+    @Inject
+    private DropboxAuthService dropboxAuthService;
     @Inject
     private SocialIdEntityDao   socialIdEntityDao;
 
@@ -62,6 +63,8 @@ public class OauthHandlers {
             url = liveAuthService.getAuthorizationUrl();
         }else if (service == ServiceType.Foursquare) {
             url = foursquareAuthService.getAuthorizationUrl();
+        }else if (service == ServiceType.Dropbox) {
+            url = dropboxAuthService.getAuthorizationUrl();
         }
         
         rc.getRes().sendRedirect(url);

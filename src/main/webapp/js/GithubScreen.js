@@ -1,7 +1,7 @@
 (function(){
 	brite.registerView("GithubScreen",{parent:".MainScreen-main",emptyParent:true},{
 		create:function(data,config){
-			return  app.render("tmpl-GithubScreen")
+			return  app.render("tmpl-GithubScreen");
 		},
 		postDisplay:function(){
 			/*app.githubApi.showUserInfo().pipe(function(result){

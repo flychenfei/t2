@@ -8,5 +8,6 @@ public enum ServiceType {
     Github,
     Google,
     Live,
-    Foursquare;
+    Foursquare,
+    Dropbox;
 }
