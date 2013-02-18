@@ -11,6 +11,11 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/twitter/getTimeline", param);
 		},
+		getRetweetById : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getRetweetById", param);
+		},
 		postStatus : function(param) {
 			param = param||{};
 			param.method = "POST";

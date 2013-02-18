@@ -43,6 +43,7 @@ public class TwitterService {
 	
 	//Tweets
 	public static final String RETWEET_BY_ID = "https://api.twitter.com/1.1/statuses/retweets/%s.json";
+	public static final String STATUS_BY_ID = "https://api.twitter.com/1.1/statuses/show.json?id=%s";
 	public static final String RETWEET = "https://api.twitter.com/1.1/statuses/retweet/%s.json";
 	public static final String POST_STATUS = "https://api.twitter.com/1.1/statuses/update.json";
 	

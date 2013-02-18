@@ -13,8 +13,34 @@
 					<button class="btn getRetweetById" type="button">Get!</button>
 				</div>
 				
+				<div class="tweet-list-container">
+					
+				</div>
 			</div>
 		</div>
 	</div>
 	
+</script>
+
+<script id="tweets-template" type="text/html">
+	<div class="tweet-list">
+	   {{#each tweets}}
+	   <div class="tweet-container" tweet_id="{{id}}">
+			<div class="row-fluid">
+				<div class="span1"><img src={{user.profile_image_url}} /></div>
+				<div class="span11">
+					
+					<div class="row-fluid">
+						<div class="span11">
+							<strong>{{user.name}}</strong>@{{user.screen_name}}
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span11">{{text}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	    {{/each}}
+	</div>
 </script>

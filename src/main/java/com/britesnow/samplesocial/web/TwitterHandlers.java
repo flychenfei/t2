@@ -70,6 +70,7 @@ public class TwitterHandlers {
     
     @WebGet("/twitter/getRetweetById")
     public WebResponse getRetweetById(@WebUser User user,@WebParam("tweet_id")String tweet_id) {
+    	System.out.println("tweet_id:" + tweet_id);
     	String retweet = twitterService.getRetweetById(user,tweet_id);
     	WebResponse response = WebResponse.success(retweet);
     	return response;
