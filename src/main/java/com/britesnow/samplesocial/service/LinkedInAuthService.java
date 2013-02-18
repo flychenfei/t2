@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.britesnow.samplesocial.oauth.OauthException;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -53,10 +54,11 @@ public class LinkedInAuthService implements AuthService {
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
         SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
-        if (socialId != null) {
-            socialId.setValid(true);
+        if (socialId != null && System.currentTimeMillis() - socialId.getTokenDate().getTime() >0) {
+            return socialId;
         }
-        return socialId;
+        //if result is null, need redo auth
+        throw new OauthException(getAuthorizationUrl());
     }
 
     public String getAuthorizationUrl() {
