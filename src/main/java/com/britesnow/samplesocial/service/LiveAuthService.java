@@ -38,7 +38,7 @@ public class LiveAuthService implements AuthService {
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
         SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
-        if (socialId != null && System.currentTimeMillis() - socialId.getTokenDate().getTime() >0) {
+        if (socialId != null && socialId.getTokenDate().getTime() - System.currentTimeMillis()  >0) {
             return socialId;
         }
         //if result is null, need redo auth
