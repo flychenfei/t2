@@ -52,6 +52,7 @@ public class TwitterService {
 	//Direct Messages
 	public static final String DIRECT_MSG = "https://api.twitter.com/1.1/direct_messages.json?count=5";
 	public static final String SHOW_MSG = "https://api.twitter.com/1.1/direct_messages/show.json?id=%s";
+	public static final String SEND_MSG = "https://api.twitter.com/1.1/direct_messages/sent.json";
 	
 	//Favorites
 	public static final String FAVORITE = "https://api.twitter.com/1.1/favorites/create.json";
@@ -178,6 +179,15 @@ public class TwitterService {
 	//GET direct_messages
 	public String getDirectMsg(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, DIRECT_MSG);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
+	//GET direct_messages/sent
+	public String getSendMsg(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, SEND_MSG);
 		Token accessToken = getToken(user);
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();

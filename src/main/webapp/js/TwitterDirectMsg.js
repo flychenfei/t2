@@ -11,7 +11,6 @@
          
          events:{
         	 "click;.getDirectMsg" : function() {
-        		 console.log("getDirectMsg clicked");
       			app.twitterApi.getDirectMsg().pipe(function(data) {
       				var messages = JSON.parse(data.result);
       				var $html = app.render("message-template", {messages : messages});
@@ -30,6 +29,15 @@
          	            $(".message-container").html($e);
          			})
          		}
+         	},
+         	
+         	"click;.getSendMsg" : function() {
+         		app.twitterApi.getSendMsg().pipe(function(data) {
+      				var messages = JSON.parse(data.result);
+      				var $html = app.render("message-template", {messages : messages});
+      	            var $e = $($html);
+      	            $(".send-messages-container").html($e);
+      			})
          	}
          	
          }

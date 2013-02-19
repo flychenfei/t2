@@ -106,6 +106,13 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getSendMsg")
+    public WebResponse showMsg(@WebUser User user) {
+    	String tweets = twitterService.getSendMsg(user);
+    	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
     @WebGet("/twitter/showMsg")
     public WebResponse showMsg(@WebUser User user, @WebParam("msg_id")String msg_id) {
     	System.out.println("msg_id:" + msg_id);
