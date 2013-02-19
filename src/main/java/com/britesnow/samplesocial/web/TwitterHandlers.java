@@ -121,6 +121,16 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebPost("/twitter/sendMsg")
+    public WebResponse sendMsg(@WebUser User user, @WebParam("screen_name")String screen_name, 
+    		@WebParam("text")String text) {
+    	System.out.println("screen_name:" + screen_name);
+    	System.out.println("text:" + text);
+    	Map message = twitterService.sendMsg(user, screen_name, text);
+    	WebResponse response = WebResponse.success(message);
+    	return response;
+    }
+    
     @WebGet("/twitter/getSuggestions")
     public WebResponse getSuggestions(@WebUser User user, RequestContext rc) throws Exception {
     	String suggestions = twitterService.getSuggestions(user);
