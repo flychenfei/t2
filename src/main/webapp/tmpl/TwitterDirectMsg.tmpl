@@ -1,0 +1,40 @@
+<script id="tmpl-TwitterDirectMsg" type="text/html">
+
+	<div class="TwitterDirectMsg">
+		<div class="row-fluid">
+			<div class="span12">
+				
+				<div class="page-header">
+					<h3>GET direct_messages</h3>
+				</div>
+				
+				<button class="btn getDirectMsg" type="button">Get Ditect Messages!</button>
+				
+				<div class="direct-messages-container"></div>
+				
+			</div>
+		</div>
+	</div>
+	
+</script>
+
+<script id="message-template" type="text/html">
+	<div class="message-list">
+	   {{#each messages}}
+	   <div class="tweet-container" message_id="{{id}}">
+			<div class="row-fluid">
+				<div class="span1">@{{sender_screen_name}}</div>
+				<div class="span11">
+					
+					<div class="row-fluid">
+						<div class="span11">{{created_at}}</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span11"><strong>{{text}}</strong></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	    {{/each}}
+	</div>
+</script>

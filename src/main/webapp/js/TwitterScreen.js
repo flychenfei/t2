@@ -31,6 +31,9 @@
             		if($(event.target).closest("li").hasClass("tweets")) {
             			brite.display("TwitterTweet", $tabcontent);
             		}
+            		if($(event.target).closest("li").hasClass("directMsg")) {
+            			brite.display("TwitterDirectMsg", $tabcontent);
+            		}
             		
             	},
             	

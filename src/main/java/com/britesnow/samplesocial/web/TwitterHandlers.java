@@ -99,6 +99,13 @@ public class TwitterHandlers {
     	return response;
     }
     
+    @WebGet("/twitter/getDirectMsg")
+    public WebResponse getSampleStatus(@WebUser User user) {
+    	String tweets = twitterService.getDirectMsg(user);
+    	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
     @WebGet("/twitter/getSuggestions")
     public WebResponse getSuggestions(@WebUser User user, RequestContext rc) throws Exception {
     	String suggestions = twitterService.getSuggestions(user);

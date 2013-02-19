@@ -49,6 +49,9 @@ public class TwitterService {
 	//Search
 	public static final String SEARECH_TWEETS = "https://api.twitter.com/1.1/search/tweets.json?q=%s";
 	
+	//Direct Messages
+	public static final String DIRECT_MSG = "https://api.twitter.com/1.1/direct_messages.json?count=5";
+	
 	//Favorites
 	public static final String FAVORITE = "https://api.twitter.com/1.1/favorites/create.json";
 	
@@ -169,7 +172,17 @@ public class TwitterService {
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 		return map;
 	}
-
+	
+	//Direct Messages
+	//GET direct_messages
+	public String getDirectMsg(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, DIRECT_MSG);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
 	//Suggested Users
 	public String getSuggestions(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, SUGGESTIONS);
