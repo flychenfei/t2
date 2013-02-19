@@ -3,11 +3,17 @@
 
     brite.registerView("GoogleContacts",{parent:".GoogleScreen-content",emptyParent:true},{
         create: function (data, config) {
+            if(data && data.search) {
+                this.search = data.search;
+            }else{
+                this.search = app.googleApi.getContacts;
+            }
             return app.render("tmpl-GoogleContacts");
         },
 
         postDisplay: function (data, config) {
-            showContacts();
+            var view = this;
+            showContacts.call(view);
         },
 
         events: {
@@ -72,8 +78,9 @@
     }
 
     function showContacts() {
+        var view = this;
         brite.display("DataTable", ".contacts-container", {
-            dataProvider: {list: app.googleApi.getContacts},
+            dataProvider: {list: view.search},
             rowAttrs: function (obj) {
                 return " etag='{0}'".format(obj.etag)
             },

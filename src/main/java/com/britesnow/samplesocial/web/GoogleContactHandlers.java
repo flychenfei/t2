@@ -50,6 +50,20 @@ public class GoogleContactHandlers {
 
         return WebResponse.success(infos).setResultCount(pair.getSecond());
     }
+    @WebGet("/gcontact/search")
+    public WebResponse searchContacts(@WebUser User user, @WebParam("contactName") String contactName,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) throws Exception {
+        Pair<List<ContactEntry>, Integer> pair;
+        pair = gContactService.searchContactResults(user, contactName, pageIndex * pageSize + 1, pageSize);
+        List<ContactEntry> list = pair.getFirst();
+        List<ContactInfo> infos = new ArrayList<ContactInfo>();
+        for (ContactEntry contact : list) {
+            infos.add(ContactInfo.from(contact));
+        }
+
+        return WebResponse.success(infos).setResultCount(pair.getSecond());
+    }
 
     @WebGet("/ggroup/list")
     public Object getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
