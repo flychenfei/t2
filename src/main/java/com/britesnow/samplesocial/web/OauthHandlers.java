@@ -12,6 +12,7 @@ import org.scribe.model.Token;
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.DropboxAuthService;
 import com.britesnow.samplesocial.service.FacebookAuthService;
@@ -164,10 +165,13 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/dropbox_callback")
     public void dropboxCallback(@WebUser User user, RequestContext rc, @WebParam("oauth_token") String oauth_token,
-    		@WebParam("oauth_token_secret") String oauth_token_secret) throws Exception {
-      System.out.println(oauth_token+"..."+oauth_token_secret);
-      Token authToken = new Token(oauth_token,oauth_token_secret);
-      dropboxAuthService.getAccessToken(authToken);
+    		@WebParam("not_approved") Boolean not_approved) throws Exception {
+    	if(not_approved==null||!not_approved){
+	      System.out.println(oauth_token+"..."+not_approved);
+	      Token authToken = dropboxAuthService.getTokenByAuthToken(oauth_token);
+	      dropboxAuthService.updateAccessToken(authToken,user);
+    	}else
+    	 throw new OauthException(dropboxAuthService.getAuthorizationUrl());
     }
 
     @WebModelHandler(startsWith="/salesforce_callback")
