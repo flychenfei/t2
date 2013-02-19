@@ -18,10 +18,10 @@
 						console.log(account);
 						brite.display("DropboxAccountInfo",$(".tab-content"),{account:account.result});
 					});
-				}else if(menu=="Repositories"){
-					app.githubApi.getRepositories().pipe(function(repositories){
-						repositories = repositories.result;
-						brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+				}else if(menu=="files"){
+					app.dropboxApi.getMetadata().pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
 					});
 				}
 			}

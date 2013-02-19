@@ -7,8 +7,9 @@ import org.scribe.model.Verb;
 
 import com.britesnow.snow.util.JsonUtil;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-
+@Singleton
 public class DropboxAccountService {
 	
 	private static String ACCOUNTINFO = "https://api.dropbox.com/1/account/info";
