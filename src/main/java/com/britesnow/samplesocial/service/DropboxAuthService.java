@@ -81,6 +81,21 @@ public class DropboxAuthService implements AuthService{
         return tokenHandler(access_token);
     }
     
+    public void setAuthorizationHeader(OAuthRequest request,Long userId){
+    	SocialIdEntity soId =getSocialIdEntity(userId);
+    	StringBuffer requestHeader = new StringBuffer("OAuth ");
+    	requestHeader.append("oauth_version=\"1.0\",")
+    				 .append("oauth_signature_method=\"PLAINTEXT\",")
+    	             .append("oauth_consumer_key=\"")
+    	             .append(configMap.get(DROPBOX+".app_key"))
+	             	 .append("\",oauth_token=\""+soId.getToken()+"\",")
+	             	 .append(" oauth_signature=\"")
+	             	 .append(configMap.get(DROPBOX+".app_secret"))
+	             	 .append("&").append(soId.getSecret()).append("\"");
+    	request.addHeader("Authorization", 
+    			requestHeader.toString());
+    }
+    
 	public void updateAccessToken(Token authToken, User user) {
 		try {
 			Token accessToken = getAccessToken(authToken);
