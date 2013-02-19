@@ -51,6 +51,18 @@ public class GContactService {
         }
         myQuery.setStartIndex(startIndex);
         myQuery.setMaxResults(count);
+        ContactFeed resultFeed = getContactsService(user).query(myQuery, ContactFeed.class);
+        int total = resultFeed.getTotalResults();
+        return new Pair<List<ContactEntry>, Integer>(resultFeed.getEntries(), total);
+    }
+    public Pair<List<ContactEntry>,Integer> searchContactResults(User user, String contactName, int startIndex, int count) throws ServiceException, IOException {
+        URL feedUrl = new URL(BASE_CONTACTS_URL);
+        ContactQuery myQuery = new ContactQuery(feedUrl);
+        if (contactName != null) {
+            myQuery.setFullTextQuery(contactName);
+        }
+        myQuery.setStartIndex(startIndex);
+        myQuery.setMaxResults(count);
 //       myQuery.setGroup(String.format(BASE_GROUP_URL + "/" + groupId).replace("full","base"));
 //        myQuery.setGroup("https://www.google.com/m8/feeds/groups/woofgl%40gmail.com/base/6");
         ContactFeed resultFeed = getContactsService(user).query(myQuery, ContactFeed.class);

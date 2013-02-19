@@ -66,6 +66,11 @@ var app = app || {};
             var params = opts||{};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmail/search", params);
+        },
+        searchContact: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gcontact/search", params);
         }
 	};
 })();

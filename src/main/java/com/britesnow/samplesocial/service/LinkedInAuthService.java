@@ -54,7 +54,7 @@ public class LinkedInAuthService implements AuthService {
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
         SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
-        if (socialId != null && System.currentTimeMillis() - socialId.getTokenDate().getTime() >0) {
+        if (socialId != null && socialId.getTokenDate().getTime() >= System.currentTimeMillis()) {
             return socialId;
         }
         //if result is null, need redo auth

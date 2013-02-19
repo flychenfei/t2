@@ -39,7 +39,8 @@
                         {name:"sendMail",label:"Send Mail"},
                         {name:"createGroup",label:"Create Group"},
                         {name:"createContact",label:"Create Contact"},
-                        {name:"searchEmail",label:"Search Email"}
+                        {name:"searchEmail",label:"Search Email"},
+                        {name:"searchContact",label:"Search Contact"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -81,6 +82,22 @@
                                            opts = opts||[];
                                             $.extend(opts, params)
                                            return app.googleApi.searchEmails(opts)
+                                       }
+                                    });
+                                }});
+                            break;
+                        case "searchContact":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Search Contact',
+                                fields: [
+                                    {label:"Name", name:'contactName', mandatory:true}
+                                ],
+                                callback: function (params) {
+                                    brite.display("GoogleContacts",".mails-container",{
+                                       search: function(opts){
+                                           opts = opts||[];
+                                            $.extend(opts, params)
+                                           return app.googleApi.searchContact(opts)
                                        }
                                     });
                                 }});
