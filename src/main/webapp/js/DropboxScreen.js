@@ -5,15 +5,25 @@
 		},
 		events:{
 			"click;.btn":function(event){
-			/*	 var params = {mehotd:"Get"};
-				params.oauth_consumer_key = "4cc6msigipo5b67";
-				params.oauth_signature="x6qtympv9ibikzm";
-				params.oauth_version = "1.0";
-				params.oauth_timestamp=1361166735;
-				app.getJsonData("https://api.dropbox.com/1/oauth/request_token",params).pipe(function(json){
-					console.log(json);
-				});*/
 				app.oauth.authorize("Dropbox");
+			},
+			"click;.nav-tabs li":function(event){
+				this.$el.find("li").removeClass("active");
+				var $li = $(event.currentTarget);
+				$li.addClass("active");
+				var menu = $li.attr("data-nav");
+				$(".tab-content").html("<div class=\"alert alert-info\">Tring to load data,Please wait...</div>");
+				if(menu=="accountInfo"){
+					app.dropboxApi.getAccountInfo().pipe(function(account){
+						console.log(account);
+						brite.display("DropboxAccountInfo",$(".tab-content"),{account:account.result});
+					});
+				}else if(menu=="Repositories"){
+					app.githubApi.getRepositories().pipe(function(repositories){
+						repositories = repositories.result;
+						brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+					});
+				}
 			}
 		}
 	});

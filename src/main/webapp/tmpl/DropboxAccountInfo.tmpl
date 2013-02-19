@@ -1,0 +1,14 @@
+<script id="tmpl-DropboxAccountInfo" type="text/html">
+	<div class="container">
+		<table class="table table-striped">
+			<tr><td>username</td><td>{{account.display_name}}</td></tr>
+			<tr><td>uid</td><td>{{account.uid}}</td></tr>
+			<tr><td>country</td><td>{{account.country}}</td></tr>
+			<tr><td>email</td><td>{{account.email}}</td></tr>
+			<tr><td>referral link</td><td>{{account.referral_link}}</td></tr>
+			<tr><td>shared</td><td>{{account.quota_info.shared}}</td></tr>
+			<tr><td>quota</td><td>{{account.quota_info.quota}}</td></tr>
+			<tr><td>normal</td><td>{{account.quota_info.normal}}</td></tr>
+		</table>
+	</div>
+</script>

@@ -119,20 +119,4 @@ public class DropboxAuthService implements AuthService{
     	return new Token(oauth_token,oauth_token_secret);
     }
     
-    public static void main(String[] args){
-    	OAuthRequest request = new OAuthRequest(Verb.POST,REQUEST_TOKEN);
-    	StringBuffer requestHeader = new StringBuffer("OAuth ");
-    	requestHeader.append("oauth_version=\"1.0\",")
-    				 .append("oauth_signature_method=\"PLAINTEXT\",")
-    	             .append("oauth_consumer_key=\"")
-    	             .append("ulvnx4aushyzhe3")
-	             	 .append("\", oauth_signature=\"")
-	             	 .append("jupanq7xdsht8md")
-	             	 .append("&\"");
-    	
-    	request.addHeader("Authorization", 
-    			requestHeader.toString());
-    	String auth_token = request.send().getBody();
-    	System.out.println(auth_token.split("&")[0]);
-    }
 }
