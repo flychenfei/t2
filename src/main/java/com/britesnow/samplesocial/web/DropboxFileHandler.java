@@ -18,6 +18,7 @@ public class DropboxFileHandler {
 	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user){
 		if(path==null)
 			path="";
+		dropboxFileService.getThumbnails(path, user.getId());
 		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId()));
 	}
 	

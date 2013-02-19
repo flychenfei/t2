@@ -1,9 +1,9 @@
 <script id="tmpl-DropboxFiles" type="text/html">
-	<div class="container">
+	<div class="container dropfiles">
 		<span>{{filename metadata.path}}}</span>
 		<table class="table table-striped">
 			{{#each metadata.contents}}
-			<tr><td>{{filename path}}</td></tr>
+			<tr><td><div class="sprite_web s_web_{{icon}}_32" />{{filename path}}</td></tr>
 			{{/each}}
 		</table>
 	</div>
