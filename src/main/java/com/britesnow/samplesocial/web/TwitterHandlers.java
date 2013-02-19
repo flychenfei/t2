@@ -92,10 +92,42 @@ public class TwitterHandlers {
     }
     
     @WebGet("/twitter/searchTweets")
-    public WebResponse searchTweets(@WebUser User user,@WebParam("query")String query) {
+    public WebResponse searchTweets(@WebUser User user, @WebParam("query")String query) {
     	System.out.println("query:" + query);
     	Map tweets = twitterService.searchTweets(user, query);
     	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
+    @WebGet("/twitter/getDirectMsg")
+    public WebResponse getSampleStatus(@WebUser User user) {
+    	String tweets = twitterService.getDirectMsg(user);
+    	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
+    @WebGet("/twitter/getSendMsg")
+    public WebResponse showMsg(@WebUser User user) {
+    	String tweets = twitterService.getSendMsg(user);
+    	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
+    @WebGet("/twitter/showMsg")
+    public WebResponse showMsg(@WebUser User user, @WebParam("msg_id")String msg_id) {
+    	System.out.println("msg_id:" + msg_id);
+    	String tweets = twitterService.showMsg(user, msg_id);
+    	WebResponse response = WebResponse.success(tweets);
+    	return response;
+    }
+    
+    @WebPost("/twitter/sendMsg")
+    public WebResponse sendMsg(@WebUser User user, @WebParam("screen_name")String screen_name, 
+    		@WebParam("text")String text) {
+    	System.out.println("screen_name:" + screen_name);
+    	System.out.println("text:" + text);
+    	Map message = twitterService.sendMsg(user, screen_name, text);
+    	WebResponse response = WebResponse.success(message);
     	return response;
     }
     

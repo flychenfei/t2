@@ -36,6 +36,26 @@ var app = app || {};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/searchTweets", param);
 		},
+		getDirectMsg : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getDirectMsg", param);
+		},
+		getSendMsg : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/getSendMsg", param);
+		},
+		showMsg : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/showMsg", param);
+		},
+		sendMsg : function(param) {
+			param = param||{};
+			param.method = "POST";
+			return app.getJsonData(contextPath + "/twitter/sendMsg", param);
+		},
 		favorite : function(param) {
 			param = param||{};
 			param.method = "POST";

@@ -49,6 +49,12 @@ public class TwitterService {
 	//Search
 	public static final String SEARECH_TWEETS = "https://api.twitter.com/1.1/search/tweets.json?q=%s";
 	
+	//Direct Messages
+	public static final String DIRECT_MSG = "https://api.twitter.com/1.1/direct_messages.json?count=5";
+	public static final String SHOW_MSG = "https://api.twitter.com/1.1/direct_messages/show.json?id=%s";
+	public static final String GET_SEND_MSG = "https://api.twitter.com/1.1/direct_messages/sent.json";
+	public static final String SEND_MSG = "https://api.twitter.com/1.1/direct_messages/new.json";
+	
 	//Favorites
 	public static final String FAVORITE = "https://api.twitter.com/1.1/favorites/create.json";
 	
@@ -169,7 +175,48 @@ public class TwitterService {
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 		return map;
 	}
-
+	
+	//Direct Messages
+	//GET direct_messages
+	public String getDirectMsg(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, DIRECT_MSG);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
+	//GET direct_messages/sent
+	public String getSendMsg(User user) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, GET_SEND_MSG);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
+	//GET direct_messages/show
+	public String showMsg(User user,String msg_id) {
+		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(SHOW_MSG, msg_id));
+		System.out.println("msg_id:" + String.format(SHOW_MSG, msg_id));
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+	    Response response = request.send();
+		return response.getBody();
+	}
+	
+	//POST direct_messages
+	public Map sendMsg(User user,String screen_name, String text) {
+		OAuthRequest request = new OAuthRequest(Verb.POST, SEND_MSG);
+		request.addBodyParameter("screen_name", screen_name);
+		request.addBodyParameter("text", text);
+		Token accessToken = getToken(user);
+		oAuthService.signRequest(accessToken, request);
+		Response response = request.send();
+	    Map map = JsonUtil.toMapAndList(response.getBody());
+	    return map;
+	}
+	
 	//Suggested Users
 	public String getSuggestions(User user) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, SUGGESTIONS);
