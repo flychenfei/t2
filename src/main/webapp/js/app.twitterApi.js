@@ -41,6 +41,11 @@ var app = app || {};
 			param.method = "GET";
 			return app.getJsonData(contextPath + "/twitter/getDirectMsg", param);
 		},
+		showMsg : function(param) {
+			param = param||{};
+			param.method = "GET";
+			return app.getJsonData(contextPath + "/twitter/showMsg", param);
+		},
 		favorite : function(param) {
 			param = param||{};
 			param.method = "POST";
