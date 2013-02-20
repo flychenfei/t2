@@ -7,8 +7,7 @@
 			"click;.pointer":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
 				var isDir = $(event.target).closest("tr").attr("data-dir");
-				if("true"==isDir)
-					$(".loading").toggleClass("hide");
+				$(".loading").toggleClass("hide");
 				app.dropboxApi.getMetadata({path:path}).pipe(function(metadata){
 					metadata = metadata.result;
 					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
@@ -20,11 +19,16 @@
 })();
 
 (function(){
-	Handlebars.registerHelper('filename', function(filename) {
+	Handlebars.registerHelper('filepath', function(filename) {
 		if(filename=="/")
 			return new Handlebars.SafeString("Dropbox");
 		return new Handlebars.SafeString(
 				filename.substring(1)
+		  );
+		});
+	Handlebars.registerHelper('filename', function(filename) {
+		return new Handlebars.SafeString(
+				filename.substring(filename.lastIndexOf("/")+1)
 		  );
 		});
 })();
