@@ -16,7 +16,7 @@ public class WebExceptionProcessor {
     @Inject
     private JsonRenderer jsonRenderer;
     @WebExceptionCatcher
-    public void processOauthException(OauthException e, WebExceptionContext wec, RequestContext rc) throws IOException {
+    public void processOauthException(OauthException e, WebExceptionContext wec, RequestContext rc)  {
         //log.warn(e.getMessage(), e);
         rc.getWebModel().put("oauthUrl", e.getOauthUrl());
         rc.getWebModel().put("OAUTH_FAILED", true);
@@ -35,7 +35,7 @@ public class WebExceptionProcessor {
     }
 
     @WebExceptionCatcher
-    public void processJsonAuthException(JsonAuthException e, WebExceptionContext wec, RequestContext rc) throws IOException {
+    public void processJsonAuthException(JsonAuthException e, WebExceptionContext wec, RequestContext rc)  {
 
             rc.getWebModel().put("AUTH_FAILED", true);
             jsonRenderer.render(rc.getWebModel(), rc.getWriter());

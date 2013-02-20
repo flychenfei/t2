@@ -49,7 +49,7 @@ public class LiveAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
-    public boolean updateAccessToken(String verifierCode, long userId) {
+    public void updateAccessToken(String verifierCode, long userId) {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
@@ -83,9 +83,10 @@ public class LiveAuthService implements AuthService {
             } else {
                 socialIdEntityDao.update(social);
             }
-            return true;
+        }else{
+            throw new OauthException(getAuthorizationUrl());
         }
-        throw new OauthException(getAuthorizationUrl());
+
 
     }
 

@@ -62,7 +62,7 @@ public class TwitterAuthService implements AuthService{
         return socialId;
     }
     
-    public boolean updateAccessToken(String requestTok, String verifierCode, Long id) throws Exception {
+    public void updateAccessToken(String requestTok, String verifierCode, Long id) throws Exception {
     	Token requestToken = tokenCache.get(requestTok);
     	Verifier verifier = new Verifier(verifierCode);
     	Token accessToken = oAuthService.getAccessToken(requestToken, verifier);
@@ -83,7 +83,6 @@ public class TwitterAuthService implements AuthService{
             } else {
                 socialIdEntityDao.update(social);
             }
-            return true;
         } else {
         	throw new OauthException(getAuthorizationUrl());
         }

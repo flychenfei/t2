@@ -31,7 +31,7 @@ public class ObjectResolver {
     }
 
     @WebParamResolver(annotatedWith = CookieParam.class)
-    public String resolveCookie(AnnotationMap annotationMap, Class paramType, RequestContext rc) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public String resolveCookie(AnnotationMap annotationMap, Class paramType, RequestContext rc)  {
         CookieParam cookie = annotationMap.get(CookieParam.class);
         String key = cookie.value();
         return rc.getCookie(key);
