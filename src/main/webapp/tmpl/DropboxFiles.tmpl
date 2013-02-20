@@ -4,7 +4,7 @@
 		<span class="filepath">{{filename metadata.path}}</span>
 		<table class="table table-striped">
 			{{#each metadata.contents}}
-			<tr data-path="{{path}}">
+			<tr data-path="{{path}}" data-dir="{{is_dir}}">
 				<td>
 					<div>
 						<div class="sprite_web s_web_{{icon}}_32 pointer space" />
