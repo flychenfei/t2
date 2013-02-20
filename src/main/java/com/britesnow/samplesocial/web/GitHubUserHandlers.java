@@ -29,19 +29,19 @@ public class GitHubUserHandlers {
 	
 	
 	@WebGet("/github/userInfo")
-	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) throws IOException{
+	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) {
 		String userInfo = githubUserService.getUserInfo(user);
 		return WebResponse.success(userInfo).set("emails", githubUserService.getEmails(user));
 	}
 	
 	@WebPost("/github/addEmail")
-	public WebResponse addEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
+	public WebResponse addEmail(@WebParam("email") String email,@WebUser User user) {
 		String status = githubUserService.addEmail(email, user);
 		return WebResponse.success(status).set("email", email).set("addSuccess", status.startsWith("adding"));
 	}
 	
 	@WebPost("/github/deleteEmail")
-	public WebResponse deleteEmail(@WebParam("email") String email,@WebUser User user) throws IOException{
+	public WebResponse deleteEmail(@WebParam("email") String email,@WebUser User user) {
 		String status = githubUserService.deleteEmail(email, user);
 		return WebResponse.success(status).set("deleteSuccess", status.contains("successfully"));
 	}

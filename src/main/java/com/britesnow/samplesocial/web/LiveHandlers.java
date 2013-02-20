@@ -17,7 +17,7 @@ public class LiveHandlers {
     private LiveService liveService;
 
     @WebGet("/live/getUserInfo")
-    public WebResponse getUserInfo(@WebUser User user, RequestContext rc) throws Exception {
+    public WebResponse getUserInfo(@WebUser User user, RequestContext rc)  {
         if (user != null) {
             Map userInfo = liveService.getUserInfo(user.getId());
             WebResponse response = WebResponse.success(userInfo);
