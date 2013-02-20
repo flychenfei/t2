@@ -32,7 +32,7 @@ public class DropboxFileHandler {
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")
-	public void  getFile(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
+	public void getFile(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
 		path = path.substring("/dropbox/getFile".length());
 		InputStream in = dropboxFileService.getFile(path, user.getId());
 		HttpServletResponse res = rc.getRes();
@@ -43,7 +43,6 @@ public class DropboxFileHandler {
 		int length = 0;
 		byte[] data = new byte[10240];
 		while((length=in.read(data))!=-1){
-			System.out.println(new String(data,0,length));
 			out.write(data, 0, length);
 		}
 		in.close();
