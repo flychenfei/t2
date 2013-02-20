@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import org.scribe.model.OAuthRequest;
@@ -16,6 +17,7 @@ public class DropboxFileService {
 	
 	private static String METADATA = "https://api.dropbox.com/1/metadata/dropbox";
 	private static String THUMBNAILS = "https://api-content.dropbox.com/1/thumbnails/dropbox";
+	private static String FILES = "https://api-content.dropbox.com/1/files/dropbox";
 	public Map getMetadata(String path,Long userId){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
@@ -28,5 +30,12 @@ public class DropboxFileService {
 		OAuthRequest request = new OAuthRequest(Verb.GET,THUMBNAILS+"/Photos/Sample Album/Boston City Flow.jpg");
 		dropboxAuthService.setAuthorizationHeader(request, userId);
     	//System.out.println(request.send().getBody());
+	}
+	
+	public InputStream getFile(String path,Long userId){
+		System.out.println(FILES+path);
+		OAuthRequest request = new OAuthRequest(Verb.GET,FILES+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+		return request.send().getStream();
 	}
 }

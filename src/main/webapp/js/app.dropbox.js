@@ -10,6 +10,11 @@ var app = app || {};
 			var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/dropbox/getMetadata",params);
+		},
+		getFile:function(opts){
+			var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/dropbox/getFile",params);
 		}
     };
 })();

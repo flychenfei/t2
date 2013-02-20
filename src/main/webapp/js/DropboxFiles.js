@@ -13,6 +13,14 @@
 					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
 					$(".loading").toggleClass("hide");
 				});
+			},
+			"click;.download":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				
+				$.ajax("dropbox/getFile",{type:"Get",data:{path:path}});
+				/*app.dropboxApi.getFile({path:path}).pipe(function(){
+					
+				});*/
 			}
 		}
 	});
