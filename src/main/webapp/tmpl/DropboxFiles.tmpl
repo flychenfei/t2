@@ -13,6 +13,7 @@
 				<th>Modified</th>
 				<th>Operation</th>
 			</tr>
+			
 			{{#each metadata.contents}}
 			<tr data-path="{{path}}" data-dir="{{is_dir}}">
 				<td>
@@ -32,5 +33,12 @@
 			</tr>
 			{{/each}}
 		</table>
+		
+		{{#isEmpty metadata.contents}}
+		<div class="emptyfolder">
+			<img src="https://dt8kf6553cww8.cloudfront.net/static/images/add_files_300-vflQxZMgf.jpg" alt="">
+			<h3>This Folder is empty.</h3>
+		</div>
+		{{/isEmpty}}
 	</div>
 </script>

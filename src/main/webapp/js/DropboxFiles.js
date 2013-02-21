@@ -7,7 +7,8 @@
 			$("img[data-thumb='true']").each(function(e,index){
 				$(this).attr("src",contextPath+"/dropbox/thumbnails"+$(this).closest("tr").attr("data-path"));
 			});
-			$(".loading").toggleClass("hide");
+			if(!$(".loading").hasClass("hide"))
+				$(".loading").addClass("hide");
 		},
 		events:{
 			"click;.pointer":function(event){
@@ -63,4 +64,10 @@
 		var dateTimeObject = new Date(date);
 		return new Handlebars.SafeString(dateTimeObject.toLocaleString());
 		});
+	Handlebars.registerHelper('isEmpty', function(list,options) {
+		 if(list.length==0)
+			 return options.fn(this);
+		 return options.inverse(this);
+	});
+	
 })();
