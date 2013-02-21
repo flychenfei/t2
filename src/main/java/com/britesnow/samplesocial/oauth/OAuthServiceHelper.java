@@ -78,7 +78,11 @@ public class OAuthServiceHelper {
         String secret = (String) appconfig.get(prefix + ".apiSecret");
         String callback = (String) appconfig.get(prefix + ".callBackUrl");
         String scope = (String) appconfig.get(prefix + ".scope");
-        ServiceBuilder builder = new ServiceBuilder().provider(TwitterApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        ServiceBuilder builder = new ServiceBuilder().provider(TwitterApi.class).apiKey(clientId).apiSecret(secret);
+        if (callback != null) {
+            builder.callback(callback);
+        }
+
         if (scope != null) {
             builder.scope(scope);
         }
