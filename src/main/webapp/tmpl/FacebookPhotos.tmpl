@@ -1,10 +1,24 @@
 <script id="tmpl-FacebookPhotos" type="text/html">
 <div class="FacebookPhotos">
-<div class="form-search" >
-	<div><input type="file" name="file"/></div>
-	<div><input type="text" name="msg"/></div>
-  <button type="submit" class="btn postBtn">Post Photo</button>
-</div>
+<table class="table table-striped">
+			<tr>
+				<td colspan="2">
+					<div class="well form-search">
+						<label>Message:</label>
+						<input type="text" name="msg" class="input-block-level emailInput"   placeholder="Upload message"/>
+					</div>
+					<div class="well form-search">
+						<label>Choose photo to upload:</label>
+						<input name="file" type="file" class="input-block-level emailInput" placeholder="Upload file"/>
+					</div>
+					<div>
+						<button type="submit" class="btn postBtn btn-primary">Post Photo</button>
+					</div>
+				</td>
+			</tr>
+		</table>
+
+
 	  <div class="Posts-tableListContain">
 	  <table class="table table-striped">
 	        <tbody class="listItem">
