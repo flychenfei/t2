@@ -51,7 +51,8 @@
             		    {name:"twitter",label:"Connect to Twitter"},
             		    {name:"facebook",label:"Connect to Facebook"},
             		    {name:"foursquare",label:"Connect to FourSquare"},
-            		    {name:"live",label:"Connect to Live"}
+            		    {name:"live",label:"Connect to Live"},
+            		    {name:"yahoo",label:"Connect to Yahoo"}
             		  ];
             		  brite.display("Dropdown",null,{$target:$li,list:list});
             		  $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -92,6 +93,9 @@
                           break;
                       case "foursquare":
                           app.oauth.authorize("Foursquare");
+                          break;
+                      case "yahoo":
+                          app.oauth.authorize("Yahoo");
                           break;
                       default:
                   }

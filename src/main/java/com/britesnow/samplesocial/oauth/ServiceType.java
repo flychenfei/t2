@@ -9,5 +9,6 @@ public enum ServiceType {
     Google,
     Live,
     Foursquare,
-    Dropbox;
+    Dropbox,
+    Yahoo;
 }

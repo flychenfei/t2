@@ -3,12 +3,7 @@ package com.britesnow.samplesocial.oauth;
 import java.util.Map;
 
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.DropBoxApi;
-import org.scribe.builder.api.FacebookApi;
-import org.scribe.builder.api.Foursquare2Api;
-import org.scribe.builder.api.LinkedInApi;
-import org.scribe.builder.api.LiveApi;
-import org.scribe.builder.api.TwitterApi;
+import org.scribe.builder.api.*;
 import org.scribe.model.SignatureType;
 import org.scribe.oauth.OAuthService;
 
@@ -51,9 +46,24 @@ public class OAuthServiceHelper {
             oauthService = this.getFoursquare();
         } else if (serviceType == ServiceType.Dropbox) {
             oauthService = this.getDropbox();
+        } else if (serviceType == ServiceType.Yahoo) {
+            oauthService = this.getYahoo();
         }
 
         return oauthService;
+    }
+
+    private OAuthService getYahoo() {
+        String prefix = "yahoo";
+        String clientId = (String) appconfig.get(prefix + ".app_key");
+        String secret = (String) appconfig.get(prefix + ".app_secret");
+        String callback = (String) appconfig.get(prefix + ".oauth_callback");
+        ServiceBuilder builder = new ServiceBuilder().provider(YahooApi.class).apiKey(clientId).apiSecret(secret);
+        if (callback != null) {
+            builder.callback(callback);
+        }
+        builder.signatureType(SignatureType.Header);
+        return builder.build();
     }
 
     private OAuthService getFoursquare() {
