@@ -22,7 +22,10 @@
 					var $e = view.$el;
 					var $file = $e.find("input[type='file']");
 					var value = $file[0].files[0];
-					app.facebookApi.publishPhoto({},value).done(function(){
+					var $msg = $e.find("input[name='msg']");
+					app.facebookApi.publishPhoto({
+						msg : $msg.val()
+					}, value).done(function() {
 						view.refreshPostsList.call(view);
 						$(".result").show(function() {
 							$(".result").hide(3000);
@@ -43,12 +46,14 @@
 				if (!$e) {
 					return;
 				};
-				function fixNull(v){
+				function fixNull(v) {
 					if (v) {
 						return v;
 					};
-					return  "";
+					return "";
 				}
+
+
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
 						list : app.facebookApi.getPhotos
@@ -59,17 +64,17 @@
 					columnDef : [{
 						text : "News",
 						render : function(obj) {
-							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story)+" "+fixNull(obj.message) + "</a>"
+							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story) + " " + fixNull(obj.message) + "</a>"
 						},
 						attrs : "style='width: 400px'"
 
-					},{
+					}, {
 						text : "Type",
 						render : function(obj) {
 							return fixNull(obj.type);
 						},
 						attrs : "style='width: 200px'"
-					},{
+					}, {
 						text : "Created time",
 						render : function(obj) {
 							return fixNull(obj.created_time);
