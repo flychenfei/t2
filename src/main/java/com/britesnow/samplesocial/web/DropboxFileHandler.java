@@ -14,6 +14,7 @@ import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebPath;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -63,5 +64,10 @@ public class DropboxFileHandler {
 		}
 		in.close();
 		out.close();
+	}
+	
+	@WebPost("/dropbox/createFolder")
+	public WebResponse createFolder(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.createFolder(path, user.getId()));
 	}
 }

@@ -15,6 +15,11 @@ var app = app || {};
 			var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/dropbox/getFile",params);
+		},
+		createFolder:function(opts){
+			var params = opts||{};
+			params.method = "Post";
+			return app.getJsonData(contextPath+"/dropbox/createFolder",params);
 		}
     };
 })();

@@ -7,6 +7,7 @@
 			$("img[data-thumb='true']").each(function(e,index){
 				$(this).attr("src",contextPath+"/dropbox/thumbnails"+$(this).closest("tr").attr("data-path"));
 			});
+			$(".loading").toggleClass("hide");
 		},
 		events:{
 			"click;.pointer":function(event){
@@ -16,7 +17,6 @@
 				app.dropboxApi.getMetadata({path:path}).pipe(function(metadata){
 					metadata = metadata.result;
 					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
-					$(".loading").toggleClass("hide");
 				});
 			},
 			"click;.download":function(event){
@@ -24,7 +24,8 @@
 				$.ajax("dropbox/getFile",{type:"Get",data:{path:path}});
 			},
 			"click;.s_web_folder_add":function(event){
-				
+				var path = $(event.target).closest("span").attr("data-path");
+				brite.display("DropboxDialog",$("body"),{path:path});
 			}
 		}
 	});
