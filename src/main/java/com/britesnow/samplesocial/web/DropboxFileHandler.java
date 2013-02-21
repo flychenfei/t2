@@ -70,4 +70,9 @@ public class DropboxFileHandler {
 	public WebResponse createFolder(@WebParam("path") String path,@WebUser User user){
 		return WebResponse.success(dropboxFileService.createFolder(path, user.getId()));
 	}
+	
+	@WebPost("/dropbox/delete")
+	public WebResponse delete(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.delete(path, user.getId()));
+	}
 }

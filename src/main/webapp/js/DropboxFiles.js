@@ -26,6 +26,16 @@
 			"click;.s_web_folder_add":function(event){
 				var path = $(event.target).closest("span").attr("data-path");
 				brite.display("DropboxDialog",$("body"),{path:path});
+			},
+			"click;.delete":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				$(".loading").toggleClass("hide");
+				app.dropboxApi.delete({path:path}).pipe(function(json){
+					app.dropboxApi.getMetadata({path:path.substring(0,path.lastIndexOf("/"))}).pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
+					});
+				});
 			}
 		}
 	});

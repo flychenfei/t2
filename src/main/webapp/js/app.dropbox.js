@@ -20,6 +20,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method = "Post";
 			return app.getJsonData(contextPath+"/dropbox/createFolder",params);
+		},
+		delete:function(opts){
+			var params = opts||{};
+			params.method = "Post";
+			return app.getJsonData(contextPath+"/dropbox/delete",params);
 		}
     };
 })();
