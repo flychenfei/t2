@@ -26,10 +26,10 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public void getThumbnails(String path,Long userId){
-		OAuthRequest request = new OAuthRequest(Verb.GET,THUMBNAILS+"/Photos/Sample Album/Boston City Flow.jpg");
+	public InputStream getThumbnails(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.GET,THUMBNAILS+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
-    	//System.out.println(request.send().getBody());
+    	return request.send().getStream();
 	}
 	
 	public InputStream getFile(String path,Long userId){

@@ -49,4 +49,22 @@ public class DropboxFileHandler {
 		out.close();
 	}
 	
+	@WebResourceHandler(matches="/dropbox/thumbnails/.*")
+	public void getThumbnails(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
+		path = path.substring("/dropbox/thumbnails".length());
+		System.out.println(path);
+		InputStream in = dropboxFileService.getThumbnails(path, user.getId());
+		HttpServletResponse res = rc.getRes();
+		//res.addHeader("Content-Disposition", "attachment;filename="+path.substring(path.lastIndexOf("/")+1));
+		//res.addHeader("Content-Length", "" + in.available());
+		OutputStream out = res.getOutputStream();
+		res.setContentType("image/jpeg");
+		int length = 0;
+		byte[] data = new byte[10240];
+		while((length=in.read(data))!=-1){
+			out.write(data, 0, length);
+		}
+		in.close();
+		out.close();
+	}
 }

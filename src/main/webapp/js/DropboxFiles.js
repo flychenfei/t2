@@ -3,6 +3,11 @@
 		create:function(data,config){
 			return app.render("tmpl-DropboxFiles",{metadata:data.metadata});
 		},
+		postDisplay:function(){
+			$("img[data-thumb='true']").each(function(e,index){
+				$(this).attr("src",contextPath+"/dropbox/thumbnails"+$(this).closest("tr").attr("data-path"));
+			});
+		},
 		events:{
 			"click;.pointer":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
