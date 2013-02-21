@@ -2,7 +2,17 @@
 	<div class="container dropfiles">
 		<div class="sprite sprite_web s_web_dropbox_32 space pointer"></div>
 		<span class="filepath">{{filepath metadata.path}}</span>
+		<span >
+			<img alt="New folder" class="sprite sprite_web s_web_folder_add "
+						 src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
+		</span>
 		<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Size</th>
+				<th>Modified</th>
+				<th>Operation</th>
+			</tr>
 			{{#each metadata.contents}}
 			<tr data-path="{{path}}" data-dir="{{is_dir}}">
 				<td>
@@ -11,6 +21,8 @@
 						<span class="filename pointer">{{filename path}}</span>
 					</div>
 				</td>
+				<td>{{filesize size}}</td>
+				<td>{{localDate modified}}</td>
 				<td>
 					<span class="download">
 						<a href="dropbox/getFile{{path}}">download</a>

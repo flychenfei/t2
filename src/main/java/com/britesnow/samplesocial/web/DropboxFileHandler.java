@@ -24,11 +24,10 @@ public class DropboxFileHandler {
 	private DropboxFileService dropboxFileService;
 	
 	@WebGet("/dropbox/getMetadata")
-	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user){
+	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user,RequestContext rc){
 		if(path==null)
 			path="";
-		dropboxFileService.getThumbnails(path, user.getId());
-		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId()));
+		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),rc.getReq().getLocale()));
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")
@@ -55,8 +54,6 @@ public class DropboxFileHandler {
 		System.out.println(path);
 		InputStream in = dropboxFileService.getThumbnails(path, user.getId());
 		HttpServletResponse res = rc.getRes();
-		//res.addHeader("Content-Disposition", "attachment;filename="+path.substring(path.lastIndexOf("/")+1));
-		//res.addHeader("Content-Length", "" + in.available());
 		OutputStream out = res.getOutputStream();
 		res.setContentType("image/jpeg");
 		int length = 0;

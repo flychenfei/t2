@@ -21,11 +21,10 @@
 			},
 			"click;.download":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
-				
 				$.ajax("dropbox/getFile",{type:"Get",data:{path:path}});
-				/*app.dropboxApi.getFile({path:path}).pipe(function(){
-					
-				});*/
+			},
+			"click;.s_web_folder_add":function(event){
+				
 			}
 		}
 	});
@@ -43,5 +42,14 @@
 		return new Handlebars.SafeString(
 				filename.substring(filename.lastIndexOf("/")+1)
 		  );
+		});
+	Handlebars.registerHelper('filesize', function(size) {
+		if(size=="0 bytes")
+			return new Handlebars.SafeString("--");
+		return new Handlebars.SafeString(size);
+		});
+	Handlebars.registerHelper('localDate', function(date) {
+		var dateTimeObject = new Date(date);
+		return new Handlebars.SafeString(dateTimeObject.toLocaleString());
 		});
 })();
