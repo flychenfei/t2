@@ -2,18 +2,43 @@
 	<div class="container dropfiles">
 		<div class="sprite sprite_web s_web_dropbox_32 space pointer"></div>
 		<span class="filepath">{{filepath metadata.path}}</span>
+		<span class="commonoperation" data-path="{{metadata.path}}">
+			<img alt="New folder" class="sprite sprite_web s_web_folder_add "
+						 src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
+		</span>
 		<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Size</th>
+				<th>Modified</th>
+				<th>Operation</th>
+			</tr>
+			
 			{{#each metadata.contents}}
 			<tr data-path="{{path}}" data-dir="{{is_dir}}">
 				<td>
 					<div>
-						<div class="sprite_web s_web_{{icon}}_32 pointer space" />
+						<img class="sprite_web s_web_{{icon}}_32 pointer space" data-thumb="{{thumb_exists}}" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
 						<span class="filename pointer">{{filename path}}</span>
 					</div>
 				</td>
-				<td><span class="download"><a href="dropbox/getFile{{path}}">download</a></span></td>
+				<td>{{filesize size}}</td>
+				<td>{{localDate modified}}</td>
+				<td>
+					<span class="download">
+						<a href="dropbox/getFile{{path}}">download</a>
+						<a href="#" class="delete">delete</a>
+					</span>
+				</td>
 			</tr>
 			{{/each}}
 		</table>
+		
+		{{#isEmpty metadata.contents}}
+		<div class="emptyfolder">
+			<img src="https://dt8kf6553cww8.cloudfront.net/static/images/add_files_300-vflQxZMgf.jpg" alt="">
+			<h3>This Folder is empty.</h3>
+		</div>
+		{{/isEmpty}}
 	</div>
 </script>

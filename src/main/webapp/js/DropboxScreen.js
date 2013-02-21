@@ -3,6 +3,12 @@
 		create:function(data,config){
 			return app.render("tmpl-DropboxScreen");
 		},
+		postDisplay:function(){
+			app.dropboxApi.getAccountInfo().pipe(function(account){
+				console.log(account);
+				brite.display("DropboxAccountInfo",$(".tab-content"),{account:account.result});
+			});
+		},
 		events:{
 			"click;.btn":function(event){
 				app.oauth.authorize("Dropbox");

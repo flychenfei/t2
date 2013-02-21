@@ -14,6 +14,7 @@ import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebPath;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -24,11 +25,10 @@ public class DropboxFileHandler {
 	private DropboxFileService dropboxFileService;
 	
 	@WebGet("/dropbox/getMetadata")
-	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user){
+	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user,RequestContext rc){
 		if(path==null)
 			path="";
-		dropboxFileService.getThumbnails(path, user.getId());
-		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId()));
+		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),rc.getReq().getLocale()));
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")
@@ -49,4 +49,30 @@ public class DropboxFileHandler {
 		out.close();
 	}
 	
+	@WebResourceHandler(matches="/dropbox/thumbnails/.*")
+	public void getThumbnails(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
+		path = path.substring("/dropbox/thumbnails".length());
+		System.out.println(path);
+		InputStream in = dropboxFileService.getThumbnails(path, user.getId());
+		HttpServletResponse res = rc.getRes();
+		OutputStream out = res.getOutputStream();
+		res.setContentType("image/jpeg");
+		int length = 0;
+		byte[] data = new byte[10240];
+		while((length=in.read(data))!=-1){
+			out.write(data, 0, length);
+		}
+		in.close();
+		out.close();
+	}
+	
+	@WebPost("/dropbox/createFolder")
+	public WebResponse createFolder(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.createFolder(path, user.getId()));
+	}
+	
+	@WebPost("/dropbox/delete")
+	public WebResponse delete(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.delete(path, user.getId()));
+	}
 }
