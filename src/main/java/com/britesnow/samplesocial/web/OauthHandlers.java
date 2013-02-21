@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.britesnow.samplesocial.service.*;
 import org.scribe.model.Token;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
@@ -14,15 +15,6 @@ import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
-import com.britesnow.samplesocial.service.DropboxAuthService;
-import com.britesnow.samplesocial.service.FacebookAuthService;
-import com.britesnow.samplesocial.service.FoursquareAuthService;
-import com.britesnow.samplesocial.service.GithubAuthService;
-import com.britesnow.samplesocial.service.GoogleAuthService;
-import com.britesnow.samplesocial.service.LinkedInAuthService;
-import com.britesnow.samplesocial.service.LiveAuthService;
-import com.britesnow.samplesocial.service.SalesForceAuthService;
-import com.britesnow.samplesocial.service.TwitterAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -53,6 +45,8 @@ public class OauthHandlers {
     @Inject
     private DropboxAuthService dropboxAuthService;
     @Inject
+    private YahooAuthService yahooAuthService;
+    @Inject
     private SocialIdEntityDao   socialIdEntityDao;
 
     @WebGet("/authorize")
@@ -76,6 +70,8 @@ public class OauthHandlers {
             url = foursquareAuthService.getAuthorizationUrl();
         }else if (service == ServiceType.Dropbox) {
             url = dropboxAuthService.getAuthorizationUrl();
+        }else if (service == ServiceType.Yahoo) {
+            url = yahooAuthService.getAuthorizationUrl();
         }
         
         rc.getRes().sendRedirect(url);
@@ -200,6 +196,16 @@ public class OauthHandlers {
             s.setToken(tokens[0]);
             s.setTokenDate(tokenDate);
             socialIdEntityDao.update(s);
+        }
+    }
+
+    @WebModelHandler(startsWith="/yahoo_callback")
+    public void yahooCallback(RequestContext rc,@WebUser User user,  @WebParam("oauth_token") String reqToken,
+                                 @WebParam("oauth_verifier") String code) throws Exception {
+        if (user!=null && code != null) {
+            yahooAuthService.updateAccessToken(reqToken, code, user.getId());
+        }else{
+            rc.getRes().sendRedirect(yahooAuthService.getAuthorizationUrl());
         }
     }
 
