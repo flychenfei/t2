@@ -10,6 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class ObjectResolver {
@@ -18,16 +20,21 @@ public class ObjectResolver {
         WebObject webObject = annotationMap.get(WebObject.class);
         Class clazz = paramType;
         String prefix = webObject.prefix();
-        Object obj = clazz.newInstance();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
+        if (clazz.getClass().getName().equals("java.util.Map")) {
+            return rc.getParamMap(prefix);
+        }else{
+            Object obj = clazz.newInstance();
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
                 String name = field.getName();
                 String value = rc.getParam(prefix + name);
                 if (value != null && !value.trim().equals("")) {
                     BeanUtils.setProperty(obj, name, value);
                 }
+            }
+            return obj;
         }
-        return obj;
+
     }
 
     @WebParamResolver(annotatedWith = CookieParam.class)
