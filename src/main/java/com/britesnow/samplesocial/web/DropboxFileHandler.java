@@ -3,11 +3,17 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.util.JSONUtils;
+
+import org.apache.commons.fileupload.FileItem;
+
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.DropboxFileService;
+import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -15,6 +21,7 @@ import com.britesnow.snow.web.param.annotation.WebPath;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
+import com.dropbox.client2.exception.DropboxException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -75,4 +82,13 @@ public class DropboxFileHandler {
 	public WebResponse delete(@WebParam("path") String path,@WebUser User user){
 		return WebResponse.success(dropboxFileService.delete(path, user.getId()));
 	}
+	
+	@WebPost("/dropbox/upload")
+	public WebResponse upload(@WebParam("data") String path, @WebParam("file") FileItem file,@WebUser User user) throws IOException, DropboxException{
+		path = (String) JsonUtil.toMapAndList(path).get("path")+file.getName();
+		System.out.println(path);
+		System.out.println(file.getName());
+		return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
+	}
+	
 }

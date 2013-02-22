@@ -8,11 +8,19 @@
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
 			</div>
 			<div class="dialogBody" data-path="{{path}}">
+				{{#equal type "folder"}}
 				<input type="text" name="folder" class="input-block-level"  placeholder="folder name"/>
 				<div class="dialogBtns">
 					<button class="btn btn-primary save">Save</button>
 					<button class="btn btn-primary cancel">Cancel</button>
 			 </div>
+			 {{else}}
+			 <input type="file" name="file" class="input-block-level"  placeholder="folder name"/>
+				<div class="dialogBtns">
+					<button class="btn btn-primary upload">Upload</button>
+					<button class="btn btn-primary cancel">Cancel</button>
+			 </div>
+			 {{/equal}}
 			</div>
 		</div>
 	</div>
