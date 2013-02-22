@@ -29,10 +29,12 @@ public class DropboxFileHandler {
 	private DropboxFileService dropboxFileService;
 	
 	@WebGet("/dropbox/getMetadata")
-	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user,RequestContext rc){
+	public WebResponse getFileMetadata(@WebParam("path") String path,@WebParam("include_deleted") Boolean includeDeleted,@WebUser User user,RequestContext rc){
 		if(path==null)
 			path="";
-		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),rc.getReq().getLocale()));
+		if(includeDeleted==null)
+			includeDeleted = false;
+		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),includeDeleted,rc.getReq().getLocale()));
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")

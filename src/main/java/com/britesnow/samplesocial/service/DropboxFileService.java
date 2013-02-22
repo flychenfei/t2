@@ -34,10 +34,11 @@ public class DropboxFileService {
 	@SuppressWarnings("unused")
 	private static String FILESPUT = "https://api-content.dropbox.com/1/files_put/dropbox";
 	private static String SHARE = "https://api.dropbox.com/1/shares/dropbox";
-	public Map getMetadata(String path,Long userId,Locale locale){
+	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
 		request.addQuerystringParameter("locale", locale.toString());
+		request.addQuerystringParameter("include_deleted", includeDeleted+"");
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}

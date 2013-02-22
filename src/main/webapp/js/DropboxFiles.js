@@ -43,6 +43,13 @@
 				app.dropboxApi.share({path:path}).pipe(function(json){
 					alert("The share link is:"+json.result.url);
 				});
+			},
+			"click;.s_web_show-deleted":function(event){//show deleted files
+				var path = $(event.target).closest("span").attr("data-path");
+				app.dropboxApi.getMetadata({path:path,include_deleted:true}).pipe(function(metadata){
+					metadata = metadata.result;
+					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
+				});
 			}
 		}
 	});
