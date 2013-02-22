@@ -37,6 +37,12 @@
 						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
 					});
 				});
+			},
+			"click;.share":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				app.dropboxApi.share({path:path}).pipe(function(json){
+					alert("The share link is:"+json.result.url);
+				});
 			}
 		}
 	});

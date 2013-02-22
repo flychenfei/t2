@@ -3,11 +3,8 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.util.JSONUtils;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -91,4 +88,8 @@ public class DropboxFileHandler {
 		return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
 	}
 	
+	@WebGet("/dropbox/share")
+	public WebResponse share(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.share(path,user.getId()));
+	}
 }

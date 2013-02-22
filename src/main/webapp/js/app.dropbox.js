@@ -25,6 +25,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method = "Post";
 			return app.getJsonData(contextPath+"/dropbox/delete",params);
+		},
+		share:function(opts){
+			var params = opts||{};
+			params.method = "Get";
+			return app.getJsonData(contextPath+"/dropbox/share",params);
 		}
     };
 })();

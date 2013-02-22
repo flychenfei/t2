@@ -31,7 +31,9 @@ public class DropboxFileService {
 	private static String FILES = "https://api-content.dropbox.com/1/files/dropbox";
 	private static String CREATEFOLDER = "https://api.dropbox.com/1/fileops/create_folder";
 	private static String DELETE = "https://api.dropbox.com/1/fileops/delete";
+	@SuppressWarnings("unused")
 	private static String FILESPUT = "https://api-content.dropbox.com/1/files_put/dropbox";
+	private static String SHARE = "https://api.dropbox.com/1/shares/dropbox";
 	public Map getMetadata(String path,Long userId,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
@@ -99,5 +101,13 @@ public class DropboxFileService {
 			System.out.println(new String(data,0,length));
 		}*/
     	return null;
+	}
+	
+	public Map share(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,SHARE+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+    	String metadata = request.send().getBody();
+    	System.out.println(metadata);
+    	return JsonUtil.toMapAndList(metadata);
 	}
 }
