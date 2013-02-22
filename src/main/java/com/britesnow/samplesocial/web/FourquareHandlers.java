@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.web;
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FoursquareService;
+import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -10,10 +11,9 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import fi.foyt.foursquare.api.Result;
-import fi.foyt.foursquare.api.entities.Checkin;
-import fi.foyt.foursquare.api.entities.CompactUser;
-import fi.foyt.foursquare.api.entities.CompleteUser;
-import fi.foyt.foursquare.api.entities.UserGroup;
+import fi.foyt.foursquare.api.entities.*;
+
+import java.util.Map;
 
 
 @Singleton
@@ -59,6 +59,36 @@ public class FourquareHandlers {
         if (user != null) {
             long afterTime = System.currentTimeMillis() - 4 * 1000*60*60;
             Result<Checkin[]> result = foursquareService.recentCheckins(user.getId(), ll, limit, afterTime);
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
+    @WebGet("/foursquare/venuesCategories")
+    public WebResponse venuesCategories(@WebUser User user, RequestContext rc) throws Exception {
+        if (user != null) {
+            Result<Category[]> result = foursquareService.venuesCategories(user.getId());
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
+    @WebGet("/foursquare/venuesCategories")
+    public WebResponse venuesTrending(@WebUser User user, RequestContext rc, @WebParam("ll") String ll,
+                                      @WebParam("limit") Integer limit,@WebParam("after") Integer radius) throws Exception {
+        if (user != null) {
+            Result<CompactVenue[]> result = foursquareService.venuesTrending(user.getId(), ll, limit, radius);
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+    @WebGet("/foursquare/venuesSearch")
+    public WebResponse venuesSearch(@WebUser User user, RequestContext rc, @WebObject(prefix = "venues") Map venues) throws Exception {
+        if (user != null) {
+            Result<VenuesSearchResult> result = foursquareService.venuesSearch(user.getId(), venues);
             return WebResponse.success(result);
         }else {
             return WebResponse.fail();
