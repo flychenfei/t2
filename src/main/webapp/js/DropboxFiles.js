@@ -1,7 +1,7 @@
 (function(){
 	brite.registerView("DropboxFiles",{emptyParent:true},{
 		create:function(data,config){
-			return app.render("tmpl-DropboxFiles",{metadata:data.metadata});
+			return app.render("tmpl-DropboxFiles",{metadata:data.metadata,showDeleted:data.showDeleted});
 		},
 		postDisplay:function(){
 			$("img[data-thumb='true']").each(function(e,index){
@@ -48,11 +48,14 @@
 					alert("The share link is:"+json.result.url);
 				});
 			},
-			"click;.s_web_show-deleted":function(event){//show deleted files
+			"click;.s_web_show-deleted,.s_web_hide-deleted":function(event){//show deleted files
+				$(".loading").toggleClass("hide");
 				var path = $(event.target).closest("span").attr("data-path");
-				app.dropboxApi.getMetadata({path:path,include_deleted:true}).pipe(function(metadata){
+				var showDeleted = $(event.target).hasClass("s_web_show-deleted");
+				app.dropboxApi.getMetadata({path:path,include_deleted:showDeleted}).pipe(function(metadata){
 					metadata = metadata.result;
-					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
+					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:showDeleted});
+					
 				});
 			}
 		}
