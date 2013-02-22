@@ -26,7 +26,11 @@
 			},
 			"click;.s_web_folder_add":function(event){
 				var path = $(event.target).closest("span").attr("data-path");
-				brite.display("DropboxDialog",$("body"),{path:path});
+				brite.display("DropboxDialog",$("body"),{path:path,type:"folder"});
+			},
+			"click;.upload":function(event){
+				var path = $(event.target).closest("span").attr("data-path");
+				brite.display("DropboxDialog",$("body"),{path:path,type:"upload"});
 			},
 			"click;.delete":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");

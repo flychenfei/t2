@@ -1,7 +1,7 @@
 (function(){
 	brite.registerView("DropboxDialog",{emptyParent:false},{
 		create:function(data,config){
-			return app.render("tmpl-DropboxDialog",{path:data.path});
+			return app.render("tmpl-DropboxDialog",{path:data.path,type:data.type});
 		},
 		events:{
 			"click;.dialogCloseBtn":function(event){
