@@ -62,18 +62,12 @@
 						return " etag='{0}'".format(obj.etag)
 					},
 					columnDef : [{
-						text : "News",
+						text : "Photo",
 						render : function(obj) {
-							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story) + " " + fixNull(obj.message) + "</a>"
+							return "<img src='"+obj.picture+"'/>"
 						},
 						attrs : "style='width: 400px'"
 
-					}, {
-						text : "Type",
-						render : function(obj) {
-							return fixNull(obj.type);
-						},
-						attrs : "style='width: 200px'"
 					}, {
 						text : "Created time",
 						render : function(obj) {

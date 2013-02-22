@@ -31,7 +31,7 @@ public class FacebookFeedHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFeedList(token, "me", null, pageSize, pageIndex);
+        List ls = facebookService.getObjectList(token, "feed", "me", null, null, pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);
@@ -45,7 +45,7 @@ public class FacebookFeedHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getFeedList(token, "me", "photo", pageSize, pageIndex);
+        List ls = facebookService.getPhotoList(token, "me", pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);
@@ -73,7 +73,7 @@ public class FacebookFeedHandlers {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
-            facebookService.publishPhoto(token, e.getFbid(), data, file.getInputStream());
+            facebookService.publishPhoto(token, "me", data, file.getInputStream());
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();

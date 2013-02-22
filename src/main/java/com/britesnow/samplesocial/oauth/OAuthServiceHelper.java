@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.oauth;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.*;
 import org.scribe.model.SignatureType;
@@ -121,8 +122,11 @@ public class OAuthServiceHelper {
         String clientId = (String) appconfig.get(prefix + ".apiKey");
         String secret = (String) appconfig.get(prefix + ".apiSecret");
         String callback = (String) appconfig.get(prefix + ".callBackUrl");
-        String scope = "publish_actions";
-        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).scope(scope).scope("publish_stream").callback(callback);
+        String scope = (String) appconfig.get(prefix + ".scope");
+        ServiceBuilder builder = new ServiceBuilder().provider(FacebookApi.class).apiKey(clientId).apiSecret(secret).callback(callback);
+        if (StringUtils.isNotBlank(scope)) {
+            builder.scope(scope);
+        }
         return builder.build();
     }
 
@@ -185,7 +189,7 @@ public class OAuthServiceHelper {
         }
         return builder.build();
     }
-    
+
     public OAuthService getDropbox() {
         String prefix = "dropbox";
         String clientId = (String) appconfig.get(prefix + ".app_key");

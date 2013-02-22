@@ -15,6 +15,7 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.Facebook;
 import com.restfb.Parameter;
+import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
 import com.restfb.types.Page;
@@ -72,14 +73,15 @@ public class FacebookService {
         return fetchObjectsResults;
     }
 
-    public List getFeedList(String accessToken, String userId, String type, Integer limit, Integer offset) {
-        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/feed", JsonObject.class, Parameter.with("type", type), Parameter.with("limit", 25), Parameter.with("offset", 0));
+    public List getObjectList(String accessToken, String userId, String object, String type, String typeValue,
+                            Integer limit, Integer offset) {
+        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/" + object, JsonObject.class, Parameter.with(type, typeValue), Parameter.with("limit", limit), Parameter.with("offset", offset));
         List ls = myFeed.getData();
         List ls2 = new ArrayList();
         for (int i = 0; i < ls.size(); i++) {
             JsonObject ob = (JsonObject) ls.get(i);
             if (StringUtils.isNotBlank(type)) {
-                if (!type.equals(ob.get("type"))) {
+                if (!type.equals(ob.get(type))) {
                     continue;
                 }
             }
@@ -93,6 +95,24 @@ public class FacebookService {
                 }
             }
             ls2.add(m);
+        }
+        return ls2;
+    }
+
+    public List getPhotoList(String accessToken, String userId, Integer limit, Integer offset) {
+        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/albums", JsonObject.class, Parameter.with("fields", "photos"), Parameter.with("limit", limit), Parameter.with("offset", offset));
+        List ls = myFeed.getData();
+        List ls2 = new ArrayList();
+        for (int i = 0; i < ls.size(); i++) {
+            JsonObject ob = (JsonObject) ls.get(i);
+            JsonObject m = (JsonObject) ob.get("photos");
+            JsonArray aa = (JsonArray) m.get("data");
+            for (int j = 0; j < aa.length(); j++) {
+                JsonObject mm = (JsonObject) aa.get(j);
+                Map mmm = new HashMap();
+                mmm.put("picture", mm.get("picture"));
+                ls2.add(mmm);
+            }
         }
         return ls2;
     }
