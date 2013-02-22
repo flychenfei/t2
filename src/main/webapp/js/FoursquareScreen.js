@@ -28,12 +28,45 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "userInfo"){
                   brite.display("FoursquareUserInfo");
+                }else if(menu == "userFriends"){
+                    brite.display("FoursquareUserFriends");
+                }else if(menu == "venuesCategories"){
+                    brite.display("FoursquareVenuesCategories");
+                }else if(menu == "search"){
+                    var list = [
+                        {name:"venuesTrending",label:"Venues Trending"},
+                        {name:"recentCheckins",label:"Recent Checkins"},
+                        {name:"venuesSearch",label:"Venues Search"}
+                    ];
+                    brite.display("Dropdown",null,{$target:$li,list:list});
+                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
                 }
               }
             },
 
             docEvents:{
+                "DO_ON_DROPDOWN_CLOSE":function(){
+                    var view = this;
+                    var $e = view.$el;
+                    var $li = $e.find("li[data-nav='actions']");
+                    $li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+                },
+                "DO_ON_DROP_DOWN_CLICK":function(event, name) {
+                    switch (name) {
+                        case "venuesTrending":
+                            brite.display("FoursquareVenuesTrending");
+                            break;
+                        case "recentCheckins":
+                            brite.display("FoursquareRecentCheckins");
+                            break;
 
+                        case "VenuesSearch":
+                            brite.display("FoursquareVenuesSearch");
+                            break;
+
+                        default:
+                    }
+                }
             },
 
             daoEvents:{
