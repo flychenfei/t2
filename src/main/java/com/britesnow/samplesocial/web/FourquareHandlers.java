@@ -75,7 +75,7 @@ public class FourquareHandlers {
         }
     }
 
-    @WebGet("/foursquare/venuesCategories")
+    @WebGet("/foursquare/venuesTrending")
     public WebResponse venuesTrending(@WebUser User user, RequestContext rc, @WebParam("ll") String ll,
                                       @WebParam("limit") Integer limit,@WebParam("after") Integer radius) throws Exception {
         if (user != null) {
