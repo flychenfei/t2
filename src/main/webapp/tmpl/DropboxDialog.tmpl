@@ -22,13 +22,16 @@
 					<button class="btn btn-primary cancel">Cancel</button>
 			 </div>
 			 {{else}}
+			 {{#equal data.type "sharelink"}}
 			 <input type="text" name="sharelink" class="input-block-level" value="{{data.sharelink}}"/>
 			 {{else}}
-			 {{#equal data.type "restore"}}
 			 	{{#each data.revisions}}
-			 	<div><input type="radio" name="revision" value="{{rev}}"/>{{path}}--revision:{{revision}}</div>
+			 	<div><input type="radio" name="revision" value="{{rev}}" data-path="{{path}}"/>{{path}}--revision:{{revision}}</div>
 			 	{{/each}}
-			 	<button></button>
+			 	<div class="dialogBtns">
+					<button class="btn btn-primary restore">Restore</button>
+					<button class="btn btn-primary cancel">Cancel</button>
+			 </div>
 			 {{/equal}}
 			 {{/equal}}
 			 {{/equal}}

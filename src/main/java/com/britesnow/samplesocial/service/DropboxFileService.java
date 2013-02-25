@@ -95,6 +95,7 @@ public class DropboxFileService {
 	public Map restore(String path,String rev,Long userId){
 		OAuthRequest request = new OAuthRequest(Verb.POST,RESTORE+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
+		System.out.println(rev);
 		request.addBodyParameter("rev", rev);
     	String metadata = request.send().getBody();
     	System.out.println(metadata);

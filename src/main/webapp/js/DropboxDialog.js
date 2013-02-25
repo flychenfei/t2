@@ -27,7 +27,8 @@
 					});
 				});
 			},
-			"click;.upload":function(){var path = $(event.target).closest(".dialogBody").attr("data-path");
+			"click;.upload":function(){
+				var path = $(event.target).closest(".dialogBody").attr("data-path");
 				var uploadBtn = $(event.target);
 				var view = this;
 				if($(uploadBtn).hasClass("disabled"))
@@ -42,6 +43,19 @@
 						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
 					});
 				});
+			},
+			"click;.restore":function(event){
+				var version = $(":input[name='revision']:checked");
+				var rev = $(version).val();
+				var path=$(version).attr("data-path");
+				var parentPath = path.substring(0,path.lastIndexOf("/"));
+				app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
+					var parentPath = $("span.commonoperation").attr("data-path");
+					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
+					});
+				})
 			}
 		}
 	});
