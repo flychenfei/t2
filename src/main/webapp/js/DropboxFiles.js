@@ -26,11 +26,11 @@
 			},
 			"click;.s_web_folder_add":function(event){
 				var path = $(event.target).closest("span").attr("data-path");
-				brite.display("DropboxDialog",$("body"),{path:path,type:"folder"});
+				brite.display("DropboxDialog",$("body"),{path:path,type:"folder",displayName:'Create Folder'});
 			},
 			"click;.upload":function(event){
 				var path = $(event.target).closest("span").attr("data-path");
-				brite.display("DropboxDialog",$("body"),{path:path,type:"upload"});
+				brite.display("DropboxDialog",$("body"),{path:path,type:"upload",displayName:'Upload File'});
 			},
 			"click;.delete":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
@@ -45,7 +45,7 @@
 			"click;.share":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
 				app.dropboxApi.share({path:path}).pipe(function(json){
-					alert("The share link is:"+json.result.url);
+					brite.display("DropboxDialog",$("body"),{type:"sharelink",sharelink:json.result.url,displayName:'Share Link'});
 				});
 			},
 			"click;.s_web_show-deleted,.s_web_hide-deleted":function(event){//show deleted files
@@ -57,6 +57,20 @@
 					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:showDeleted});
 					
 				});
+			},
+			"click;.restore":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				var rev = $(event.target).closest("tr").attr("data-rev");
+				app.dropboxApi.getRevisions({path:path}).pipe(function(json){
+					brite.display("DropboxDialog",$("body"),{revisions:JSON.parse(json.result),type:'restore',displayName:'Restore File'});
+				});
+				/*app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
+					var parentPath = $("span.commonoperation").attr("data-path");
+					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
+					});
+				});*/
 			}
 		}
 	});

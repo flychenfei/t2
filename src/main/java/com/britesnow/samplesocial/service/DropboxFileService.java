@@ -31,9 +31,10 @@ public class DropboxFileService {
 	private static String FILES = "https://api-content.dropbox.com/1/files/dropbox";
 	private static String CREATEFOLDER = "https://api.dropbox.com/1/fileops/create_folder";
 	private static String DELETE = "https://api.dropbox.com/1/fileops/delete";
-	@SuppressWarnings("unused")
-	private static String FILESPUT = "https://api-content.dropbox.com/1/files_put/dropbox";
 	private static String SHARE = "https://api.dropbox.com/1/shares/dropbox";
+	private static String RESTORE = "https://api.dropbox.com/1/restore/dropbox";
+	private static String REVISIONS="https://api.dropbox.com/1/revisions/dropbox";
+	
 	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
@@ -88,7 +89,24 @@ public class DropboxFileService {
 		OAuthRequest request = new OAuthRequest(Verb.POST,SHARE+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
     	String metadata = request.send().getBody();
+    	return JsonUtil.toMapAndList(metadata);
+	}
+	
+	public Map restore(String path,String rev,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,RESTORE+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+		request.addBodyParameter("rev", rev);
+    	String metadata = request.send().getBody();
     	System.out.println(metadata);
     	return JsonUtil.toMapAndList(metadata);
 	}
+	
+	public String getRevisions(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.GET,REVISIONS+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+    	String revisions = request.send().getBody();
+    	System.out.println(revisions);
+    	return revisions;
+	}
+	
 }

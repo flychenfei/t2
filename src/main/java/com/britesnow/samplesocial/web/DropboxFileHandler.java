@@ -94,4 +94,16 @@ public class DropboxFileHandler {
 	public WebResponse share(@WebParam("path") String path,@WebUser User user){
 		return WebResponse.success(dropboxFileService.share(path,user.getId()));
 	}
+	
+	@WebPost("/dropbox/restore")
+	public WebResponse restore(@WebParam("path") String path,@WebParam("rev")String rev,@WebUser User user){
+		path = path.startsWith("/")?path:("/"+path);
+		return WebResponse.success(dropboxFileService.restore(path,rev,user.getId()));
+	}
+	
+	@WebGet("/dropbox/revisions")
+	public WebResponse getRevisions(@WebParam("path") String path,@WebUser User user){
+		path = path.startsWith("/")?path:("/"+path);
+		return WebResponse.success(dropboxFileService.getRevisions(path,user.getId()));
+	}
 }

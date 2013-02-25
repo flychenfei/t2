@@ -13,6 +13,7 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
+import com.dropbox.client2.session.AppKeyPair;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -61,6 +62,11 @@ public class DropboxAuthService implements AuthService{
     	authTokenMap.put(authToken.getToken(), authToken);
         return AUTHORIZE+"oauth_token="+authToken.getToken()+
         		"&oauth_callback="+configMap.get(DROPBOX+".oauth_callback");
+    }
+    
+    public AppKeyPair getAppKeyPair(){
+    	return new AppKeyPair(configMap.get(DROPBOX+".app_key").toString()
+    			,configMap.get(DROPBOX+".app_secret").toString());
     }
     
     public Token getAccessToken(Token authToken){

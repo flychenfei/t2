@@ -30,6 +30,16 @@ var app = app || {};
 			var params = opts||{};
 			params.method = "Get";
 			return app.getJsonData(contextPath+"/dropbox/share",params);
+		},
+		restore:function(opts){
+			var params = opts||{};
+			params.method = "Post";
+			return app.getJsonData(contextPath+"/dropbox/restore",params);
+		},
+		getRevisions:function(opts){
+			var params = opts||{};
+			params.method = "Get";
+			return app.getJsonData(contextPath+"/dropbox/revisions",params);
 		}
     };
 })();
