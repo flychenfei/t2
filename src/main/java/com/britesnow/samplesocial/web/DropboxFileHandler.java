@@ -3,11 +3,8 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.util.JSONUtils;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -32,10 +29,12 @@ public class DropboxFileHandler {
 	private DropboxFileService dropboxFileService;
 	
 	@WebGet("/dropbox/getMetadata")
-	public WebResponse getFileMetadata(@WebParam("path") String path,@WebUser User user,RequestContext rc){
+	public WebResponse getFileMetadata(@WebParam("path") String path,@WebParam("include_deleted") Boolean includeDeleted,@WebUser User user,RequestContext rc){
 		if(path==null)
 			path="";
-		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),rc.getReq().getLocale()));
+		if(includeDeleted==null)
+			includeDeleted = false;
+		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),includeDeleted,rc.getReq().getLocale()));
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")
@@ -91,4 +90,8 @@ public class DropboxFileHandler {
 		return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
 	}
 	
+	@WebGet("/dropbox/share")
+	public WebResponse share(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.share(path,user.getId()));
+	}
 }

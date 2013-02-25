@@ -3,8 +3,12 @@
 		<div class="sprite sprite_web s_web_dropbox_32 space pointer"></div>
 		<span class="filepath">{{filepath metadata.path}}</span>
 		<span class="commonoperation" data-path="{{metadata.path}}">
+			<img alt="Upload" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"
+					 class="sprite sprite_web s_web_upload_16 upload">
 			<img alt="New folder" class="sprite sprite_web s_web_folder_add "
 						 src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
+			<img alt="Show deleted files" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"
+			 class="sprite sprite_web {{#if showDeleted}}s_web_hide-deleted{{else}}s_web_show-deleted{{/if}}">
 		</span>
 		<table class="table table-striped">
 			<tr>
@@ -25,9 +29,10 @@
 				<td>{{filesize size}}</td>
 				<td>{{localDate modified}}</td>
 				<td>
-					<span class="download">
+					<span>
 						<a href="dropbox/getFile{{path}}">download</a>
 						<a href="#" class="delete">delete</a>
+						<a href="#" class="share">Share</a>
 					</span>
 				</td>
 			</tr>
