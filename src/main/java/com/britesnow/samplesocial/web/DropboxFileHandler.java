@@ -43,7 +43,6 @@ public class DropboxFileHandler {
 		InputStream in = dropboxFileService.getFile(path, user.getId());
 		HttpServletResponse res = rc.getRes();
 		res.addHeader("Content-Disposition", "attachment;filename="+path.substring(path.lastIndexOf("/")+1));
-		res.addHeader("Content-Length", "" + in.available());
 		OutputStream out = res.getOutputStream();
 		res.setContentType("application/octet-stream");
 		int length = 0;
