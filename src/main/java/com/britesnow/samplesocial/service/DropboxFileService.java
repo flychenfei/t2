@@ -7,15 +7,15 @@ import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 import org.scribe.model.OAuthRequest;
-import org.scribe.model.Token;
 import org.scribe.model.Verb;
 
+import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.snow.util.JsonUtil;
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.DropboxAPI.Entry;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.Session.AccessType;
 import com.dropbox.client2.session.WebAuthSession;
 import com.google.inject.Inject;
@@ -75,33 +75,13 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public Map upload(FileItem item,String path,Long userId) throws IOException, DropboxException{
+	public Entry upload(FileItem item,String path,Long userId) throws IOException, DropboxException{
 		WebAuthSession session = new WebAuthSession(new AppKeyPair("ulvnx4aushyzhe3", "jupanq7xdsht8md"),AccessType.DROPBOX);
-		Token authToken = new Token("ulvnx4aushyzhe3", "jupanq7xdsht8md");
-		Token accessToken = dropboxAuthService.getAccessToken(authToken);
-		session.setAccessTokenPair(new AccessTokenPair(accessToken.getToken(),accessToken.getSecret()));
-		DropboxAPI<Session> dropboxApi = new DropboxAPI<Session>(session);
-		dropboxApi.putFile(path, item.getInputStream(), item.getSize(), null, null);
-		/*OAuthRequest request = new OAuthRequest(Verb.POST,FILESPUT+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
-		URL url = new URL(FILESPUT+path);
-		HttpURLConnection con = (HttpURLConnection)url.openConnection();
-		con.setRequestProperty("Authorization", dropboxAuthService.getHeader(userId));
-		con.setRequestProperty("Content-Length",item.getSize()+"");
-		con.setDoOutput(true);
-		OutputStream out = con.getOutputStream();
-		InputStream in = item.getInputStream();
-		int length = 0;
-		byte[] data = new byte[10240];
-		while((length=in.read(data))!=-1){
-			out.write(data, 0, length);
-		}
-		in.close();
-		in = con.getInputStream();
-		while((length=in.read(data))!=-1){
-			System.out.println(new String(data,0,length));
-		}*/
-    	return null;
+	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity(userId);
+	    AccessTokenPair accessPair = new AccessTokenPair(soId.getToken(),soId.getSecret());
+	    session.setAccessTokenPair(accessPair);
+	    DropboxAPI<WebAuthSession> dropboxApi= new DropboxAPI<WebAuthSession>(session);
+    	return dropboxApi.putFile(path, item.getInputStream(),item.getSize(), null, null);
 	}
 	
 	public Map share(String path,Long userId){

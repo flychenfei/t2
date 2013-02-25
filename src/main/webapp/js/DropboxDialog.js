@@ -27,11 +27,20 @@
 					});
 				});
 			},
-			"click;.upload":function(){
-				var path = $(event.target).closest(".dialogBody").attr("data-path");
+			"click;.upload":function(){var path = $(event.target).closest(".dialogBody").attr("data-path");
+				var uploadBtn = $(event.target);
+				var view = this;
+				if($(uploadBtn).hasClass("disabled"))
+					return false;
+				$(uploadBtn).toggleClass("disabled");
 				console.log($(":input[type='file']")[0].files[0]);
 				app.ajaxPost(contextPath+"/dropbox/upload",{path:path},$(":input[type='file']")[0].files[0]).done(function(){
-					alert("success");
+					$(".loading").toggleClass("hide");
+					view.$el.remove();
+					app.dropboxApi.getMetadata({path:path}).pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
+					});
 				});
 			}
 		}

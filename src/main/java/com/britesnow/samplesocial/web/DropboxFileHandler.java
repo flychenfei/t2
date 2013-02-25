@@ -83,10 +83,11 @@ public class DropboxFileHandler {
 	}
 	
 	@WebPost("/dropbox/upload")
-	public WebResponse upload(@WebParam("data") String path, @WebParam("file") FileItem file,@WebUser User user) throws IOException, DropboxException{
-		path = (String) JsonUtil.toMapAndList(path).get("path")+file.getName();
-		System.out.println(path);
-		System.out.println(file.getName());
+	public WebResponse upload(@WebParam("data") String data, @WebParam("file") FileItem file,@WebUser User user) throws IOException, DropboxException{
+		String path = (String) JsonUtil.toMapAndList(data).get("path");
+		if(!path.endsWith("/"))
+			path=path+"/";
+		path +=file.getName();
 		return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
 	}
 	
