@@ -54,7 +54,22 @@
                 "DO_ON_DROP_DOWN_CLICK":function(event, name) {
                     switch (name) {
                         case "venuesTrending":
-                            brite.display("FoursquareVenuesTrending");
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Venues Trending',
+                                fields: [
+                                    {label:"LL", name:'ll', mandatory:false},
+                                    {label:"Limit", name:"limit", mandatory:false},
+                                    {label:"After", name:"after", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareVenuesTrending",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.venuesTrending(opts);
+                                        }
+                                    });
+                                }});
                             break;
                         case "recentCheckins":
                             brite.display("FoursquareRecentCheckins");

@@ -29,6 +29,11 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/foursquare/venuesSearch", param);
+        },
+        venuesTrending: function (param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/foursquare/venuesTrending", param);
         }
     };
 })();

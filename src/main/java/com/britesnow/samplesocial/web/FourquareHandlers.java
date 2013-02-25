@@ -69,10 +69,11 @@ public class FourquareHandlers {
     public WebResponse venuesCategories(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
             Result<Category[]> result = foursquareService.venuesCategories(user.getId());
-            return WebResponse.success(result);
-        }else {
-            return WebResponse.fail();
+            if(result.getMeta().getCode()==200){
+                return WebResponse.success(result.getResult());
+            }
         }
+        return WebResponse.fail();
     }
 
     @WebGet("/foursquare/venuesTrending")
