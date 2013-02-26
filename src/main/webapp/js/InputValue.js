@@ -41,8 +41,6 @@
                 var input;
                 var check = true;
                 $.each(this.model.fields, function(idx, val){
-                     console.log(idx);
-                    console.log(val);
                     if (check) {
                         input = $e.find("input[name='{0}']".format(val.name));
                         if (val.mandatory && input.val() == "") {

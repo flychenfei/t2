@@ -52,7 +52,12 @@ public class FourquareHandlers {
                                   @WebParam("name") String name) throws Exception {
         if (user != null) {
             Result<CompactUser[]> result = foursquareService.userSearch(user.getId(), phone, email, twitter, twitterSource, fbid, name);
-            return WebResponse.success(result);
+            if (result.getMeta().getCode() == 200) {
+                return WebResponse.success(result.getResult());
+            }else{
+                return WebResponse.fail();
+            }
+
         }else {
             return WebResponse.fail();
         }
