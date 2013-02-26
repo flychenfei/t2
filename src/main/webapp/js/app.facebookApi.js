@@ -50,6 +50,12 @@ var app = app || {};
 			};
 			return app.getJsonData(contextPath + "/fb/photos", $.extend(params, opts || {}));
 		},
+		getNotes : function(opts) {
+			var params = {
+				method : "Get"
+			};
+			return app.getJsonData(contextPath + "/fb/notes", $.extend(params, opts || {}));
+		},
 		publishPhoto : function(data,fileElement) {
 			return app.ajaxPost(contextPath + "/fb/post-add-photo", data,fileElement);
 		}

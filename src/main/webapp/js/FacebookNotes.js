@@ -56,7 +56,7 @@
 
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.facebookApi.getPhotos
+						list : app.facebookApi.getNotes
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)
