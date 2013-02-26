@@ -64,13 +64,6 @@
 				app.dropboxApi.getRevisions({path:path}).pipe(function(json){
 					brite.display("DropboxDialog",$("body"),{revisions:JSON.parse(json.result),type:'restore',displayName:'Restore File'});
 				});
-				/*app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
-					var parentPath = $("span.commonoperation").attr("data-path");
-					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
-						metadata = metadata.result;
-						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
-					});
-				});*/
 			}
 		}
 	});

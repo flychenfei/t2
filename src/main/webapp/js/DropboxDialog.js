@@ -56,15 +56,21 @@
 				});
 			},
 			"click;.restore":function(event){
+				var restoreBtn = $(event.target);
+				if($(restoreBtn).hasClass("disabled"))
+					return false;
+				$(restoreBtn).toggleClass("disabled");
 				var version = $(":input[name='revision']:checked");
+				var view = this;
 				var rev = $(version).val();
 				var path=$(version).attr("data-path");
 				var parentPath = path.substring(0,path.lastIndexOf("/"));
 				app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
+					view.$el.remove();
 					var parentPath = $("span.commonoperation").attr("data-path");
-					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
+					app.dropboxApi.getMetadata({path:parentPath,include_deleted:true}).pipe(function(metadata){
 						metadata = metadata.result;
-						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:true});
 					});
 				})
 			}
