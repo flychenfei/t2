@@ -39,11 +39,11 @@
                     attrs: "style='width: 5%;cursor: pointer'"
                 },
                 {
-                    text: "Icom",
+                    text: "Icon",
                     render: function (obj) {
                         return "<img src={0} />".format(obj.icon);
                     },
-                    attrs: "style='width: 10%'"
+                    attrs: "style='width: 5%'"
 
                 },
                 {
