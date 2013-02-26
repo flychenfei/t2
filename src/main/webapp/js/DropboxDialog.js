@@ -3,6 +3,17 @@
 		create:function(data,config){
 			return app.render("tmpl-DropboxDialog",{data:data});
 		},
+		postDisplay:function(){
+			//when restore file,default select the recent version 
+			var currentVersion = $(":radio[name='revision']").get(0);
+			var recentVersion = $(":radio[name='revision']").get(1);
+			if(currentVersion){
+				$(currentVersion).attr("disabled","disabled");
+			}
+			if(recentVersion){
+				$(recentVersion).attr("checked","checked");
+			}
+		},
 		events:{
 			"click;.dialogCloseBtn":function(event){
 				this.$el.remove();

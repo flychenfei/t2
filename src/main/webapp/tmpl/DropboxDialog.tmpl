@@ -1,5 +1,5 @@
 <script id="tmpl-DropboxDialog" type="text/html">
- <div class="dropbox">
+ <div class="dropbox dropfiles">
 	  <div class="dialogBackground">
 		</div>
 		<div class="dialogContent">
@@ -26,7 +26,19 @@
 			 <input type="text" name="sharelink" class="input-block-level" value="{{data.sharelink}}"/>
 			 {{else}}
 			 	{{#each data.revisions}}
-			 	<div><input type="radio" name="revision" value="{{rev}}" data-path="{{path}}"/>{{path}}--revision:{{revision}}</div>
+			 	<div class="revitem">
+			 		<input type="radio" name="revision" value="{{rev}}" data-path="{{path}}"/>
+			 		<img class="sprite_web s_web_{{icon}}_32 pointer space" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
+			 		{{filename path}}revision:{{revision}}
+			 		<span>
+				 		{{#if is_deleted}}
+				 		Deleted
+				 		{{else}}
+				 		Added
+				 		{{/if}}
+				 		--{{localDate modified}}
+			 		</span>
+			 	</div>
 			 	{{/each}}
 			 	<div class="dialogBtns">
 					<button class="btn btn-primary restore">Restore</button>
