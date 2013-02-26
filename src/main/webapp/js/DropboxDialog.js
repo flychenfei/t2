@@ -73,6 +73,16 @@
 						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:true});
 					});
 				})
+			},
+			"click;.folderitem":function(event){
+				var folderitem = $(event.target).closest("div");
+				if(!$(folderitem).hasClass("selected"))
+					$(folderitem).addClass("selected").siblings("div").removeClass("selected");
+			},
+			"click;.copy":function(event){
+				var srcPath = $(event.target).closest(".dialogBody").attr("data-path");
+				var distPath = $("div.selected:eq(0)").attr("data-path");
+				alert(srcPath+"\n"+distPath);
 			}
 		}
 	});

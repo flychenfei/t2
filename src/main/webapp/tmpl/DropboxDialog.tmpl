@@ -25,25 +25,49 @@
 			 {{#equal data.type "sharelink"}}
 			 <input type="text" name="sharelink" class="input-block-level" value="{{data.sharelink}}"/>
 			 {{else}}
-			 	{{#each data.revisions}}
-			 	<div class="revitem">
-			 		<input type="radio" name="revision" value="{{rev}}" data-path="{{path}}"/>
-			 		<img class="sprite_web s_web_{{icon}}_32 pointer space" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
-			 		{{filename path}}revision:{{revision}}
-			 		<span>
-				 		{{#if is_deleted}}
-				 		Deleted
-				 		{{else}}
-				 		Added
-				 		{{/if}}
-				 		--{{localDate modified}}
-			 		</span>
-			 	</div>
-			 	{{/each}}
-			 	<div class="dialogBtns">
-					<button class="btn btn-primary restore">Restore</button>
-					<button class="btn btn-primary cancel">Cancel</button>
-			 </div>
+			  	{{#equal data.type "restore"}}
+				 	{{#each data.revisions}}
+				 	<div class="revitem">
+				 		<input type="radio" name="revision" value="{{rev}}" data-path="{{path}}"/>
+				 		<img class="sprite_web s_web_{{icon}}_32 pointer space" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
+				 		{{filename path}}revision:{{revision}}
+				 		<span>
+					 		{{#if is_deleted}}
+					 		Deleted
+					 		{{else}}
+					 		Added
+					 		{{/if}}
+					 		--{{localDate modified}}
+				 		</span>
+				 	</div>
+				 	{{/each}}
+				 	<div class="dialogBtns">
+						<button class="btn btn-primary restore">Restore</button>
+						<button class="btn btn-primary cancel">Cancel</button>
+				 </div>
+			 	 {{else}}
+					 {{#equal data.type "copy"}}
+					 	<div class="folderitem" data-path="/">
+					 		<img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" 
+							alt="" class="sprite sprite_web s_web_dropbox space pointer"/>
+					 		<span>dropbox</span>
+					 	</div>
+					 	{{#each data.metadata.contents}}
+							{{#if is_dir}}
+							<div class="folderitem" data-path="{{path}}">
+							<img src="https://dt8kf6553cww8.cloudfront.net/static/images/icons/icon_spacer-vflN3BYt2.gif" 
+							alt="" class="sprite sprite_web  s_web_folder link-img"/>
+							
+							<span>{{filename path}}</span>
+							</div>
+							{{/if}}
+						{{/each}}
+					 	<div class="dialogBtns">
+							<button class="btn btn-primary copy">Copy</button>
+							<button class="btn btn-primary cancel">Cancel</button>
+				 		</div>
+					 {{/equal}}
+				 {{/equal}}
 			 {{/equal}}
 			 {{/equal}}
 			 {{/equal}}
