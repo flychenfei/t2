@@ -34,6 +34,7 @@
                     brite.display("FoursquareVenuesCategories");
                 }else if(menu == "search"){
                     var list = [
+                        {name:"searchUser",label:"User Search"},
                         {name:"venuesTrending",label:"Venues Trending"},
                         {name:"recentCheckins",label:"Recent Checkins"},
                         {name:"venuesSearch",label:"Venues Search"}
@@ -77,6 +78,28 @@
 
                         case "VenuesSearch":
                             brite.display("FoursquareVenuesSearch");
+                            break;
+                        case "searchUser":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Search User',
+                                fields: [
+                                    {label:"Name", name:'name', mandatory:false},
+                                    {label:"Phone", name:'phone', mandatory:false},
+                                    {label:"Email", name:"email", mandatory:false},
+                                    {label:"FBID", name:"fbid", mandatory:false},
+                                    {label:"Twitter", name:"twitter", mandatory:false},
+                                    {label:"TwitterSource", name:"twitterSource", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareSearchUser",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.searchUser(opts);
+                                        }
+                                    });
+                                }});
+                            break;
                             break;
 
                         default:
