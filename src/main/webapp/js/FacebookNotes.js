@@ -13,7 +13,7 @@
 			postDisplay : function(data, config) {
 				var view = this;
 				var $e = view.$el;
-				view.refreshPostsList.call(view);
+				view.refreshNotesList.call(view);
 
 			},
 			events : {
@@ -23,10 +23,10 @@
 					var $file = $e.find("input[type='file']");
 					var value = $file[0].files[0];
 					var $msg = $e.find("input[name='msg']");
-					app.facebookApi.publishPhoto({
+					app.facebookApi.addNote({
 						msg : $msg.val()
 					}, value).done(function() {
-						view.refreshPostsList.call(view);
+						view.refreshNotesList.call(view);
 						$(".result").show(function() {
 							$(".result").hide(3000);
 						});
@@ -40,7 +40,7 @@
 
 			daoEvents : {
 			},
-			refreshPostsList : function() {
+			refreshNotesList : function() {
 				var view = this;
 				var $e = view.$el;
 				if (!$e) {
@@ -64,7 +64,7 @@
 					columnDef : [{
 						text : "Photo",
 						render : function(obj) {
-							return "<img src='"+obj.picture+"'/>"
+							return "<img src='" + obj.picture + "'/>"
 						},
 						attrs : "style='width: 400px'"
 
@@ -76,7 +76,7 @@
 						attrs : "style='width: 300px'"
 					}],
 					opts : {
-						htmlIfEmpty : "Not news found",
+						htmlIfEmpty : "Not note found",
 						withPaging : true,
 						withCmdEdit : false,
 						withCmdDelete : false
