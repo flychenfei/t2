@@ -25,7 +25,11 @@ public class FourquareHandlers {
     public WebResponse getFriends(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
             Result<UserGroup> result = foursquareService.getFriends(user.getId());
-            return WebResponse.success(result);
+            if(result.getMeta().getCode() == 200) {
+                return WebResponse.success(result.getResult());
+            }{
+                return WebResponse.fail();
+            }
         }else {
             return WebResponse.fail();
         }

@@ -6,7 +6,8 @@ var app = app || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/foursquare/getUserInfo", param);
         },
-        getFriends: function () {
+        getFriends: function (param) {
+            var param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/foursquare/getUserFriends", param);
         },
