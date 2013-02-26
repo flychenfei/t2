@@ -80,9 +80,16 @@
 					$(folderitem).addClass("selected").siblings("div").removeClass("selected");
 			},
 			"click;.copy":function(event){
-				var srcPath = $(event.target).closest(".dialogBody").attr("data-path");
-				var distPath = $("div.selected:eq(0)").attr("data-path");
-				alert(srcPath+"\n"+distPath);
+				var copyBtn = $(event.target);
+				if($(copyBtn).hasClass("disabled"))
+					return false;
+				$(copyBtn).addClass("disabled");
+				var view = this;
+				var fromPath = $(event.target).closest(".dialogBody").attr("data-path");
+				var toPath = $("div.selected:eq(0)").attr("data-path");
+				app.dropboxApi.copy({fromPath:fromPath,toPath:toPath}).pipe(function(){
+					view.$el.remove();
+				});
 			}
 		}
 	});
