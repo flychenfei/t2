@@ -26,13 +26,17 @@
 						<span class="filename pointer">{{filename path}}</span>
 					</div>
 				</td>
-				<td>{{filesize size}}</td>
+				<td>{{filesize size is_deleted}}</td>
 				<td>{{localDate modified}}</td>
 				<td>
 					<span>
 						<a href="dropbox/getFile{{path}}">download</a>
-						<a href="#" class="delete">delete</a>
-						<a href="#" class="share">Share</a>
+						{{#if is_deleted}}
+						{{else}}
+						<a href="javascript:void(0)" class="delete">delete</a>
+						{{/if}}
+						<a href="javascript:void(0)" class="share">Share</a>
+						<a href="javascript:void(0)" class="copy">copy</a>
 						{{#if is_deleted}}
 						<a href="javascript:void(0)" class="restore">restore</a>
 						{{/if}}

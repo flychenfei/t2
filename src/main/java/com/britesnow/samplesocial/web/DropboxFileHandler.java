@@ -106,4 +106,9 @@ public class DropboxFileHandler {
 		path = path.startsWith("/")?path:("/"+path);
 		return WebResponse.success(dropboxFileService.getRevisions(path,user.getId()));
 	}
+	
+	@WebPost("/dropbox/copy")
+	public WebResponse copy(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
+		return WebResponse.success(dropboxFileService.copy(fromPath,toPath,user.getId()));
+	}
 }

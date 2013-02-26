@@ -48,6 +48,7 @@
             		    {name:"google",label:"Connect to Google"},
             		    {name:"salesforce",label:"Connect to SalesForce"},
             		    {name:"github",label:"Connect to Github"},
+            		    {name:"dropbox",label:"Connect to Dropbox"},
             		    {name:"twitter",label:"Connect to Twitter"},
             		    {name:"facebook",label:"Connect to Facebook"},
             		    {name:"foursquare",label:"Connect to FourSquare"},
@@ -84,6 +85,9 @@
                           break;
                       case "github":
                           app.oauth.authorize('Github');
+                          break;
+                      case "dropbox":
+                          app.oauth.authorize('Dropbox');
                           break;
                       case "twitter":
                           app.oauth.authorize('Twitter');

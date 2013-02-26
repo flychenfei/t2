@@ -64,13 +64,12 @@
 				app.dropboxApi.getRevisions({path:path}).pipe(function(json){
 					brite.display("DropboxDialog",$("body"),{revisions:JSON.parse(json.result),type:'restore',displayName:'Restore File'});
 				});
-				/*app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
-					var parentPath = $("span.commonoperation").attr("data-path");
-					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
-						metadata = metadata.result;
-						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
-					});
-				});*/
+			},
+			"click;.copy":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				app.dropboxApi.getMetadata({path:"/"}).pipe(function(metadata){
+					brite.display("DropboxDialog",$("body"),{metadata:metadata.result,path:path,type:'copy',displayName:'Copy'});
+				});
 			}
 		}
 	});
@@ -89,7 +88,9 @@
 				filename.substring(filename.lastIndexOf("/")+1)
 		  );
 		});
-	Handlebars.registerHelper('filesize', function(size) {
+	Handlebars.registerHelper('filesize', function(size,deleted) {
+		if(deleted)
+			return new Handlebars.SafeString("Deleted");
 		if(size=="0 bytes")
 			return new Handlebars.SafeString("--");
 		return new Handlebars.SafeString(size);

@@ -3,6 +3,17 @@
 		create:function(data,config){
 			return app.render("tmpl-DropboxDialog",{data:data});
 		},
+		postDisplay:function(){
+			//when restore file,default select the recent version 
+			var currentVersion = $(":radio[name='revision']").get(0);
+			var recentVersion = $(":radio[name='revision']").get(1);
+			if(currentVersion){
+				$(currentVersion).attr("disabled","disabled");
+			}
+			if(recentVersion){
+				$(recentVersion).attr("checked","checked");
+			}
+		},
 		events:{
 			"click;.dialogCloseBtn":function(event){
 				this.$el.remove();
@@ -45,17 +56,45 @@
 				});
 			},
 			"click;.restore":function(event){
+				var restoreBtn = $(event.target);
+				if($(restoreBtn).hasClass("disabled"))
+					return false;
+				$(restoreBtn).toggleClass("disabled");
 				var version = $(":input[name='revision']:checked");
+				var view = this;
 				var rev = $(version).val();
 				var path=$(version).attr("data-path");
 				var parentPath = path.substring(0,path.lastIndexOf("/"));
 				app.dropboxApi.restore({path:path,rev:rev}).pipe(function(metadata){
+					view.$el.remove();
 					var parentPath = $("span.commonoperation").attr("data-path");
-					app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
+					app.dropboxApi.getMetadata({path:parentPath,include_deleted:true}).pipe(function(metadata){
 						metadata = metadata.result;
-						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:false});
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata,showDeleted:true});
 					});
 				})
+			},
+			"click;.folderitem":function(event){
+				var folderitem = $(event.target).closest("div");
+				if(!$(folderitem).hasClass("selected"))
+					$(folderitem).addClass("selected").siblings("div").removeClass("selected");
+			},
+			"click;.copy":function(event){
+				var copyBtn = $(event.target);
+				if($(copyBtn).hasClass("disabled"))
+					return false;
+				$(copyBtn).addClass("disabled");
+				var view = this;
+				var fromPath = $(event.target).closest(".dialogBody").attr("data-path");
+				var toPath = $("div.selected:eq(0)").attr("data-path");
+				app.dropboxApi.copy({fromPath:fromPath,toPath:toPath}).pipe(function(json){
+					if(json.result.error){
+						alert(json.result.error);
+						$(copyBtn).removeClass("disabled");
+						return false;
+					}
+					view.$el.remove();
+				});
 			}
 		}
 	});
