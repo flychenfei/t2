@@ -87,7 +87,12 @@
 				var view = this;
 				var fromPath = $(event.target).closest(".dialogBody").attr("data-path");
 				var toPath = $("div.selected:eq(0)").attr("data-path");
-				app.dropboxApi.copy({fromPath:fromPath,toPath:toPath}).pipe(function(){
+				app.dropboxApi.copy({fromPath:fromPath,toPath:toPath}).pipe(function(json){
+					if(json.result.error){
+						alert(json.result.error);
+						$(copyBtn).removeClass("disabled");
+						return false;
+					}
 					view.$el.remove();
 				});
 			}
