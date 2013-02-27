@@ -1,15 +1,25 @@
 <script id="tmpl-DropboxFiles" type="text/html">
 	<div class="container dropfiles">
+		{{#if metadata.search}}
+		<span class="searchtitle">Search-{{metadata.contents.length}} results</span>
+		<div class="input-append commonoperation" data-path="{{metadata.path}}">
+	 		<input type="text" name="search" class="input-block-level searchbox" placeholder="Search dropbox"/>
+	 		<button type="button" class="btn search">Search</button>
+		</div>
+		{{else}}
 		<div class="sprite sprite_web s_web_dropbox_32 space pointer"></div>
 		<span class="filepath">{{filepath metadata.path}}</span>
-		<span class="commonoperation" data-path="{{metadata.path}}">
+		<div class="input-append commonoperation" data-path="{{metadata.path}}">
 			<img alt="Upload" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"
 					 class="sprite sprite_web s_web_upload_16 upload">
 			<img alt="New folder" class="sprite sprite_web s_web_folder_add "
 						 src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"/>
 			<img alt="Show deleted files" src="https://www.dropbox.com/static/images/icons/icon_spacer.gif"
 			 class="sprite sprite_web {{#if showDeleted}}s_web_hide-deleted{{else}}s_web_show-deleted{{/if}}">
-		</span>
+	 		<input type="text" name="search" class="input-block-level searchbox" placeholder="Search dropbox"/>
+	 		<button type="button" class="btn search">Search</button>
+		</div>
+		{{/if}}
 		<table class="table table-striped">
 			<tr>
 				<th>Name</th>
