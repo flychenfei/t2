@@ -82,11 +82,12 @@ public class FacebookFeedHandlers {
     }
 
     @WebPost("/fb/note-add")
-    public WebResponse addFacebookNote(@WebUser User user, @WebParam("value") String value) {
+    public WebResponse addFacebookNote(@WebUser User user, @WebParam("subject") String subject,
+                            @WebParam("msg") String msg) {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
-            facebookService.publishNote(token, e.getFbid(), value);
+            facebookService.publishNote(token, "me", subject, msg);
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();
