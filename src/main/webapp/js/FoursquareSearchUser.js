@@ -64,7 +64,7 @@
                 {
                     text: "photo",
                     render: function (obj) {
-                        return "<img src= '{0}' />".format(obj.photo);
+                        return "<img src= '{0}' withd='100px'/>".format(obj.photo);
                     },
                     attrs: "style='width: 30%'"
                 },
