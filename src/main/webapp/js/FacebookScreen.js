@@ -36,6 +36,8 @@
                 }
                 else if(menu == "photo"){
                   brite.display("FacebookPhotos");
+                } else if(menu == "note"){
+                  brite.display("FacebookNotes");
                 }
               }
             },

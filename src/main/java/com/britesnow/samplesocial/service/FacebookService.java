@@ -18,6 +18,7 @@ import com.restfb.Parameter;
 import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
+import com.restfb.types.Note;
 import com.restfb.types.Page;
 import com.restfb.types.User;
 
@@ -122,21 +123,9 @@ public class FacebookService {
     }
 
     public List getNotesList(String accessToken, String userId, Integer limit, Integer offset) {
-        Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/albums", JsonObject.class, Parameter.with("fields", "notes"), Parameter.with("limit", limit), Parameter.with("offset", offset));
+        Connection<Note> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/notes", Note.class);
         List ls = myFeed.getData();
-        List ls2 = new ArrayList();
-        for (int i = 0; i < ls.size(); i++) {
-            JsonObject ob = (JsonObject) ls.get(i);
-            JsonObject m = (JsonObject) ob.get("notes");
-            JsonArray aa = (JsonArray) m.get("data");
-            for (int j = 0; j < aa.length(); j++) {
-                JsonObject mm = (JsonObject) aa.get(j);
-                Map mmm = new HashMap();
-                mmm.put("picture", mm.get("note"));
-                ls2.add(mmm);
-            }
-        }
-        return ls2;
+        return ls;
     }
 
     public static class FqlUser {
