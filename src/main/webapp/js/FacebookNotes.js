@@ -20,12 +20,12 @@
 				"click;.postBtn" : function(e) {
 					var view = this;
 					var $e = view.$el;
-					var $file = $e.find("input[type='file']");
-					var value = $file[0].files[0];
+					var $subject = $e.find("input[name='subject']");
 					var $msg = $e.find("input[name='msg']");
 					app.facebookApi.addNote({
-						msg : $msg.val()
-					}, value).done(function() {
+						msg : $msg.val(),
+						subject:$subject.val()
+					}).done(function() {
 						view.refreshNotesList.call(view);
 						$(".result").show(function() {
 							$(".result").hide(3000);
@@ -61,19 +61,24 @@
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)
 					},
-					columnDef : [{
-						text : "Photo",
+					columnDef : [ {
+						text : "Subject",
 						render : function(obj) {
-							return "<img src='" + obj.picture + "'/>"
+							return obj.subject;
+						},
+						attrs : "style='width: 200px'"
+					}, {
+						text : "Message",
+						render : function(obj) {
+							return obj.message;
 						},
 						attrs : "style='width: 400px'"
-
 					}, {
 						text : "Created time",
 						render : function(obj) {
-							return fixNull(obj.created_time);
+							return fixNull(obj.createdTime);
 						},
-						attrs : "style='width: 300px'"
+						attrs : "style='width: 200px'"
 					}],
 					opts : {
 						htmlIfEmpty : "Not note found",

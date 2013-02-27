@@ -59,8 +59,9 @@ public class FacebookService {
         return publish(accessToken, "feed", userId, message);
     }
 
-    public String publishNote(String accessToken, String userId, String note) {
-        return publish(accessToken, "note", userId, note);
+    public String publishNote(String accessToken, String userId, String subject, String note) {
+        FacebookType publishMessageResponse = new DefaultFacebookClient(accessToken).publish(userId + "/notes", FacebookType.class, Parameter.with("subject", subject), Parameter.with("message", note));
+        return publishMessageResponse.getId();
     }
 
     public String publishPhoto(String accessToken, String userId, String message, InputStream is) {

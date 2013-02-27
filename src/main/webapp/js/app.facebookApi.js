@@ -60,10 +60,7 @@ var app = app || {};
 			return app.ajaxPost(contextPath + "/fb/post-add-photo", data,fileElement);
 		},
 		addNote : function(value) {
-			var params = {
-				"value" : value
-			};
-			return app.getJsonData(contextPath + "/fb/note-add", params);
+			return app.getJsonData(contextPath + "/fb/note-add", value);
 		}
 	}
 })();
