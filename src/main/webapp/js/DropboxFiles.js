@@ -68,7 +68,13 @@
 			"click;.copy":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
 				app.dropboxApi.getMetadata({path:"/"}).pipe(function(metadata){
-					brite.display("DropboxDialog",$("body"),{metadata:metadata.result,path:path,type:'copy',displayName:'Copy'});
+					brite.display("DropboxDialog",$("body"),{metadata:metadata.result,path:path,type:'copy',displayName:'Copy to...'});
+				});
+			},
+			"click;.move":function(event){
+				var path = $(event.target).closest("tr").attr("data-path");
+				app.dropboxApi.getMetadata({path:"/"}).pipe(function(metadata){
+					brite.display("DropboxDialog",$("body"),{metadata:metadata.result,path:path,type:'move',displayName:'Move to...'});
 				});
 			}
 		}

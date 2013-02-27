@@ -45,6 +45,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method = "Post";
 			return app.getJsonData(contextPath+"/dropbox/copy",params);
+		},
+		move:function(opts){
+			var params = opts||{};
+			params.method = "Post";
+			return app.getJsonData(contextPath+"/dropbox/move",params);
 		}
     };
 })();

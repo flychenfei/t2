@@ -35,6 +35,7 @@ public class DropboxFileService {
 	private static String RESTORE = "https://api.dropbox.com/1/restore/dropbox";
 	private static String REVISIONS="https://api.dropbox.com/1/revisions/dropbox";
 	private static String COPY = "https://api.dropbox.com/1/fileops/copy";
+	private static String MOVE = "https://api.dropbox.com/1/fileops/move";
 	
 	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
@@ -120,4 +121,13 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(copyResult);
 	}
 	
+	public Map move(String fromPath,String toPath,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,MOVE);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+		request.addBodyParameter("root", "dropbox");
+		request.addBodyParameter("from_path", fromPath);
+		request.addBodyParameter("to_path", toPath+fromPath);
+    	String copyResult = request.send().getBody();
+    	return JsonUtil.toMapAndList(copyResult);
+	}
 }

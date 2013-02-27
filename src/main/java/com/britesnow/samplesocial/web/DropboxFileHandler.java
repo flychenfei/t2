@@ -111,4 +111,9 @@ public class DropboxFileHandler {
 	public WebResponse copy(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
 		return WebResponse.success(dropboxFileService.copy(fromPath,toPath,user.getId()));
 	}
+	
+	@WebPost("/dropbox/move")
+	public WebResponse move(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
+		return WebResponse.success(dropboxFileService.move(fromPath,toPath,user.getId()));
+	}
 }

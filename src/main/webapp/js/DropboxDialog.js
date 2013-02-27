@@ -114,6 +114,23 @@
 				var subFolder = $(expandIco).closest("div").next();
 				$(expandIco).toggleClass("s_web_bullet_plus").toggleClass("s_web_bullet_minus");
 				$(subFolder).remove();
+			},
+			"click;.move":function(event){
+				var moveBtn = $(event.target);
+				if($(moveBtn).hasClass("disabled"))
+					return false;
+				$(moveBtn).addClass("disabled");
+				var view = this;
+				var fromPath = $(event.target).closest(".dialogBody").attr("data-path");
+				var toPath = $("div.selected:eq(0)").attr("data-path");
+				app.dropboxApi.move({fromPath:fromPath,toPath:toPath}).pipe(function(json){
+					if(json.result.error){
+						alert(json.result.error);
+						$(moveBtn).removeClass("disabled");
+						return false;
+					}
+					view.$el.remove();
+				});
 			}
 		}
 	});
