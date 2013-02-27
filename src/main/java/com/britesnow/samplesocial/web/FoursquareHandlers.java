@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 @Singleton
-public class FourquareHandlers {
+public class FoursquareHandlers {
     @Inject
     private FoursquareService foursquareService;
 
@@ -90,15 +90,27 @@ public class FourquareHandlers {
                                       @WebParam("limit") Integer limit,@WebParam("after") Integer radius) throws Exception {
         if (user != null) {
             Result<CompactVenue[]> result = foursquareService.venuesTrending(user.getId(), ll, limit, radius);
-            return WebResponse.success(result);
-        }else {
-            return WebResponse.fail();
+            if (result.getMeta().getCode() == 200) {
+                return WebResponse.success(result.getResult());
+            }
         }
+
+        return WebResponse.fail();
     }
     @WebGet("/foursquare/venuesSearch")
     public WebResponse venuesSearch(@WebUser User user, RequestContext rc, @WebObject(prefix = "venues") Map venues) throws Exception {
         if (user != null) {
             Result<VenuesSearchResult> result = foursquareService.venuesSearch(user.getId(), venues);
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
+    @WebGet("/foursquare/venuesExplore")
+    public WebResponse venuesExplore(@WebUser User user, RequestContext rc, String ll, Integer limit) throws Exception {
+        if (user != null) {
+            Result<Recommended> result = foursquareService.venuesExplore(user.getId(), ll, limit);
             return WebResponse.success(result);
         }else {
             return WebResponse.fail();
