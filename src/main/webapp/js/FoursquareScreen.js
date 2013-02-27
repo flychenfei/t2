@@ -37,7 +37,8 @@
                         {name:"searchUser",label:"User Search"},
                         {name:"venuesTrending",label:"Venues Trending"},
                         {name:"recentCheckins",label:"Recent Checkins"},
-                        {name:"venuesSearch",label:"Venues Search"}
+                        {name:"venuesSearch",label:"Venues Search"},
+                        {name:"venuesExplore",label:"Venues Explore"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -73,11 +74,46 @@
                                 }});
                             break;
                         case "recentCheckins":
-                            brite.display("FoursquareRecentCheckins");
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Venues Trending',
+                                fields: [
+                                    {label:"LL", name:'ll', mandatory:false},
+                                    {label:"Limit", name:"limit", mandatory:false},
+                                    {label:"After", name:"after", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareRecentCheckins",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.recentCheckins(opts);
+                                        }
+                                    });
+                                }});
                             break;
 
-                        case "VenuesSearch":
-                            brite.display("FoursquareVenuesSearch");
+                        case "venuesSearch":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Search VenuesSearch',
+                                fields: [
+                                    {label:"Near", name:'near', mandatory:false},
+                                    {label:"Limit", name:'limit', mandatory:false},
+                                    {label:"Intent", name:'intent', mandatory:false},
+                                    {label:"CategoryId", name:'categoryId', mandatory:false},
+                                    {label:"Url", name:'url', mandatory:false},
+                                    {label:"ProviderId", name:'providerId', mandatory:false},
+                                    {label:"LinkedId", name:'LinkedId', mandatory:false},
+                                    {label:"Query", name:"query", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareVenuesSearch",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.venuesSearch(opts);
+                                        }
+                                    });
+                                }});
                             break;
                         case "searchUser":
                             brite.display("InputValue", ".MainScreen", {
@@ -99,7 +135,23 @@
                                         }
                                     });
                                 }});
-                            break;
+                            break;;
+                        case "venuesExplore":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Search User',
+                                fields: [
+                                    {label:"LL", name:'ll', mandatory:false},
+                                    {label:"Limit", name:"limit", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareVenuesExplore",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.searchUser(opts);
+                                        }
+                                    });
+                                }});
                             break;
 
                         default:
