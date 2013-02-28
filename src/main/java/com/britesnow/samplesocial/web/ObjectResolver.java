@@ -20,20 +20,17 @@ public class ObjectResolver {
         WebObject webObject = annotationMap.get(WebObject.class);
         Class clazz = paramType;
         String prefix = webObject.prefix();
-        if (clazz.getClass().getName().equals("java.util.Map")) {
-            return rc.getParamMap(prefix);
-        }else{
-            Object obj = clazz.newInstance();
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                String name = field.getName();
-                String value = rc.getParam(prefix + name);
-                if (value != null && !value.trim().equals("")) {
-                    BeanUtils.setProperty(obj, name, value);
-                }
+        Object obj = clazz.newInstance();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            String name = field.getName();
+            String value = rc.getParam(prefix + name);
+            if (value != null && !value.trim().equals("")) {
+                BeanUtils.setProperty(obj, name, value);
             }
-            return obj;
         }
+        return obj;
+
 
     }
 
