@@ -75,7 +75,7 @@
                             break;
                         case "recentCheckins":
                             brite.display("InputValue", ".MainScreen", {
-                                title: 'Venues Trending',
+                                title: 'Recent Checkins',
                                 fields: [
                                     {label:"LL", name:'ll', mandatory:false},
                                     {label:"Limit", name:"limit", mandatory:false},
@@ -96,14 +96,15 @@
                             brite.display("InputValue", ".MainScreen", {
                                 title: 'Search VenuesSearch',
                                 fields: [
-                                    {label:"Near", name:'near', mandatory:false},
-                                    {label:"Limit", name:'limit', mandatory:false},
-                                    {label:"Intent", name:'intent', mandatory:false},
-                                    {label:"CategoryId", name:'categoryId', mandatory:false},
-                                    {label:"Url", name:'url', mandatory:false},
-                                    {label:"ProviderId", name:'providerId', mandatory:false},
-                                    {label:"LinkedId", name:'LinkedId', mandatory:false},
-                                    {label:"Query", name:"query", mandatory:false}
+                                    {label:"Near", name:'venues.near', mandatory:false},
+                                    {label:"Ll", name:'venues.ll', mandatory:false},
+                                    {label:"Limit", name:'venues.limit', mandatory:false},
+                                    {label:"Intent", name:'venues.intent', mandatory:false},
+                                    {label:"CategoryId", name:'venues.categoryId', mandatory:false},
+                                    {label:"Url", name:'venues.url', mandatory:false},
+                                    {label:"ProviderId", name:'venues.providerId', mandatory:false},
+                                    {label:"LinkedId", name:'venues.LinkedId', mandatory:false},
+                                    {label:"Query", name:"venues.query", mandatory:false}
                                 ],
                                 callback: function (params) {
                                     brite.display("FoursquareVenuesSearch",".FoursquareScreen-content",{

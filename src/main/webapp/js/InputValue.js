@@ -48,7 +48,11 @@
                             input.closest("div").addClass("error").find("span").html("Please enter value.");
                             check = false;
                         } else {
-                            result[val.name] = input.val();
+                            //remove empty value
+                            var fieldVal = input.val();
+                            if(fieldVal !== ""){
+                               result[val.name] = fieldVal;
+                            }
                         }
                     }
                 });

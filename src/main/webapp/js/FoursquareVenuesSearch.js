@@ -58,13 +58,6 @@
                     attrs: "style='width: 10%'"
                 },
                 {
-                    text: "Url",
-                    render: function (obj) {
-                        return "<href a='{0}'>{0}</href>".format(obj.url);
-                    },
-                    attrs: "style='width: 10%'"
-                },
-                {
                     text: "Location",
                     render: function (obj) {
                         return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
