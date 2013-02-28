@@ -98,10 +98,11 @@ public class FoursquareHandlers {
         return WebResponse.fail();
     }
     @WebGet("/foursquare/venuesSearch")
-    public WebResponse venuesSearch(@WebUser User user, RequestContext rc, @WebObject(prefix = "venues") Map venues) throws Exception {
+    public WebResponse venuesSearch(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
+            Map venues = rc.getParamMap("venues.");
             Result<VenuesSearchResult> result = foursquareService.venuesSearch(user.getId(), venues);
-            return WebResponse.success(result);
+            return WebResponse.success(result.getResult().getVenues());
         }else {
             return WebResponse.fail();
         }
