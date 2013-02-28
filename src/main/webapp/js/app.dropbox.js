@@ -55,6 +55,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method = "Get";
 			return app.getJsonData(contextPath+"/dropbox/search",params);
+		},
+		getMedia:function(opts){
+			var params = opts||{};
+			params.method = "Get";
+			return app.getJsonData(contextPath+"/dropbox/getMedia",params);
 		}
     };
 })();

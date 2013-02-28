@@ -14,11 +14,19 @@
 			"click;.pointer":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");
 				var isDir = $(event.target).closest("tr").attr("data-dir");
-				$(".loading").toggleClass("hide");
-				app.dropboxApi.getMetadata({path:path}).pipe(function(metadata){
-					metadata = metadata.result;
-					brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
-				});
+				$(".loading").removeClass("hide");
+				$(".loading").addClass("hide");
+				if(isDir)//if dir,show the files under this folder
+					app.dropboxApi.getMetadata({path:path}).pipe(function(metadata){
+						metadata = metadata.result;
+						brite.display("DropboxFiles",$(".tab-content"),{metadata:metadata});
+					});
+				else//if file,show the file content
+					app.dropboxApi.getMedia({path:path}).pipe(function(media){
+						media = media.result;
+						window.open(media.url,"","height=400,width=600")
+					});
+					
 			},
 			"click;.download":function(event){
 				var path = $(event.target).closest("tr").attr("data-path");

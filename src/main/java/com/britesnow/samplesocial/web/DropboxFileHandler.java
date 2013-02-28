@@ -124,4 +124,14 @@ public class DropboxFileHandler {
 			includeDeleted = false;
 		return WebResponse.success(dropboxFileService.search(path, query, user.getId(), includeDeleted));
 	}
+	
+	@WebGet("/dropbox/getMedia")
+	public WebResponse getMedia(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.getMedia(path, user.getId()));
+	}
+	
+	@WebGet("/dropbox/getDelta")
+	public WebResponse getDelta(@WebParam("path") String path,@WebUser User user){
+		return WebResponse.success(dropboxFileService.getDelta(path, user.getId()));
+	}
 }

@@ -37,6 +37,9 @@ public class DropboxFileService {
 	private static String COPY = "https://api.dropbox.com/1/fileops/copy";
 	private static String MOVE = "https://api.dropbox.com/1/fileops/move";
 	private static String SEARCH = "https://api.dropbox.com/1/search/dropbox";
+	private static String MEDIA = "https://api.dropbox.com/1/media/dropbox";
+	private static String COPYREF = "https://api.dropbox.com/1/copy_ref/dropbox";
+	private static String DELTA = "https://api.dropbox.com/1/delta";
 	
 	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
@@ -74,7 +77,6 @@ public class DropboxFileService {
 		request.addBodyParameter("path", path);
 		request.addBodyParameter("root", "dropbox");
     	String metadata = request.send().getBody();
-    	System.out.println(metadata);
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
@@ -97,10 +99,8 @@ public class DropboxFileService {
 	public Map restore(String path,String rev,Long userId){
 		OAuthRequest request = new OAuthRequest(Verb.POST,RESTORE+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
-		System.out.println(rev);
 		request.addBodyParameter("rev", rev);
     	String metadata = request.send().getBody();
-    	System.out.println(metadata);
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
@@ -108,7 +108,6 @@ public class DropboxFileService {
 		OAuthRequest request = new OAuthRequest(Verb.GET,REVISIONS+path);
 		dropboxAuthService.setAuthorizationHeader(request, userId);
     	String revisions = request.send().getBody();
-    	System.out.println(revisions);
     	return revisions;
 	}
 	
@@ -138,7 +137,29 @@ public class DropboxFileService {
 		request.addQuerystringParameter("include_deleted", includeDeleted+"");
 		request.addQuerystringParameter("query", query);
     	String searchResult = request.send().getBody();
-    	System.out.println(searchResult);
     	return searchResult;
 	}
+	
+	public Map getMedia(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,MEDIA+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+    	String media = request.send().getBody();
+    	return JsonUtil.toMapAndList(media);
+    	
+	}
+	
+	public Map getCopyref(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,COPYREF+path);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+    	String media = request.send().getBody();
+    	return JsonUtil.toMapAndList(media);
+	}
+	
+	public Map getDelta(String path,Long userId){
+		OAuthRequest request = new OAuthRequest(Verb.POST,DELTA);
+		dropboxAuthService.setAuthorizationHeader(request, userId);
+    	String delta = request.send().getBody();
+    	return JsonUtil.toMapAndList(delta);
+	}
+	
 }
