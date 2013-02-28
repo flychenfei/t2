@@ -42,7 +42,7 @@
                     text: "Category",
                     render: function (obj) {
                         if(obj.categories && obj.categories.length > 0){
-                            return obj.categories.name;
+                            return obj.categories[0].name;
                         }else{
                             return "";
                         }
@@ -62,14 +62,13 @@
                     render: function (obj) {
                         return "<href a='{0}'>{0}</href>".format(obj.url);
                     },
-                    attrs: "style='width: 10%'"
+                    attrs: "style='width: 25%'"
                 },
                 {
                     text: "Location",
                     render: function (obj) {
                         return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
-                    },
-                    attrs: "style='width: 30%'"
+                    }
                 }
             ],
             opts: {
