@@ -31,7 +31,7 @@ public class FacebookFeedHandlers {
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
-        List ls = facebookService.getObjectList(token, "feed", "me", null, null, pageSize, pageIndex);
+        List ls = facebookService.getObjectList(token, "me", "feed", null, null, pageSize, pageIndex);
         m.put("result", ls);
         if (ls != null && pageSize != null && ls.size() == pageSize) {
             m.put("hasNext", true);

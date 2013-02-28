@@ -17,6 +17,7 @@ import com.restfb.Facebook;
 import com.restfb.Parameter;
 import com.restfb.json.JsonArray;
 import com.restfb.json.JsonObject;
+import com.restfb.types.Event;
 import com.restfb.types.FacebookType;
 import com.restfb.types.Note;
 import com.restfb.types.Page;
@@ -48,25 +49,6 @@ public class FacebookService {
         }
         List<FqlUser> users = new DefaultFacebookClient(accessToken).executeQuery(fql, FqlUser.class);
         return users;
-    }
-
-    public String publish(String accessToken, String type, String userId, String message) {
-        FacebookType publishMessageResponse = new DefaultFacebookClient(accessToken).publish(userId + "/" + type, FacebookType.class, Parameter.with("message", message));
-        return publishMessageResponse.getId();
-    }
-
-    public String publishFeed(String accessToken, String userId, String message) {
-        return publish(accessToken, "feed", userId, message);
-    }
-
-    public String publishNote(String accessToken, String userId, String subject, String note) {
-        FacebookType publishMessageResponse = new DefaultFacebookClient(accessToken).publish(userId + "/notes", FacebookType.class, Parameter.with("subject", subject), Parameter.with("message", note));
-        return publishMessageResponse.getId();
-    }
-
-    public String publishPhoto(String accessToken, String userId, String message, InputStream is) {
-        FacebookType publishPhotoResponse = new DefaultFacebookClient(accessToken).publish(userId + "/photos", FacebookType.class, BinaryAttachment.with("userId", is), Parameter.with("message", message));
-        return publishPhotoResponse.getId();
     }
 
     public boolean deleteObject(String accessToken, String messageId) {
@@ -124,9 +106,39 @@ public class FacebookService {
     }
 
     public List getNotesList(String accessToken, String userId, Integer limit, Integer offset) {
-        Connection<Note> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/notes", Note.class);
-        List ls = myFeed.getData();
+        Connection<Note> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/notes", Note.class);
+        List ls = result.getData();
         return ls;
+    }
+
+    public List getEventsList(String accessToken, String userId, Integer limit, Integer offset) {
+        Connection<Event> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/events", Event.class);
+        List ls = result.getData();
+        return ls;
+    }
+
+    public String publish(String accessToken, String type, String userId, String message) {
+        FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/" + type, FacebookType.class, Parameter.with("message", message));
+        return result.getId();
+    }
+
+    public String publishFeed(String accessToken, String userId, String message) {
+        return publish(accessToken, "feed", userId, message);
+    }
+
+    public String publishNote(String accessToken, String userId, String subject, String note) {
+        FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/notes", FacebookType.class, Parameter.with("subject", subject), Parameter.with("message", note));
+        return result.getId();
+    }
+
+    public String publishPhoto(String accessToken, String userId, String message, InputStream is) {
+        FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/photos", FacebookType.class, BinaryAttachment.with("userId", is), Parameter.with("message", message));
+        return result.getId();
+    }
+
+    public String publishEvent(String accessToken, String userId, String name, String startTime) {
+        FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/events", FacebookType.class, Parameter.with("name", name), Parameter.with("start_time", startTime));
+        return result.getId();
     }
 
     public static class FqlUser {
