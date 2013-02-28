@@ -10,9 +10,6 @@
 			});
 		},
 		events:{
-			"click;.btn":function(event){
-				app.oauth.authorize("Dropbox");
-			},
 			"click;.nav-tabs li":function(event){
 				this.$el.find("li").removeClass("active");
 				var $li = $(event.currentTarget);

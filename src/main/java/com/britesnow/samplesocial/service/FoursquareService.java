@@ -47,5 +47,16 @@ public class FoursquareService {
     public Result<VenuesSearchResult> venuesSearch(Long userId, Map param) throws FoursquareApiException {
         return oAuthService.getApi(userId).venuesSearch(param);
     }
+    public Result<Recommended> venuesExplore(Long userId, String ll, int limit) throws FoursquareApiException {
+
+        double llAcc = 10000;
+        double alt = 0;
+        int radius = 250;
+        String section = "food";
+        String query="";
+        String basic="";
+        Double altacc=0d;
+        return oAuthService.getApi(userId).venuesExplore(ll, llAcc, alt, altacc, radius, section, query, limit, basic);
+    }
 
 }

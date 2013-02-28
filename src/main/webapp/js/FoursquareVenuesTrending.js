@@ -30,7 +30,6 @@
         var view = this;
         return brite.display("DataTable", ".FoursquareVenuesTrending", {
             dataProvider: {list: view.search},
-            onDone: function(obj){obj.result = obj.result||[]},
             columnDef: [
                 {
                     text: "#",
@@ -40,46 +39,37 @@
                     attrs: "style='width: 5%;cursor: pointer'"
                 },
                 {
-                    text: "First Name",
+                    text: "Category",
                     render: function (obj) {
-                        return obj.firstName;
+                        if(obj.categories && obj.categories.length > 0){
+                            return obj.categories.name;
+                        }else{
+                            return "";
+                        }
                     },
                     attrs: "style='width: 15%'"
 
                 },
                 {
-                    text: "Last Name",
+                    text: "Name",
                     render: function (obj) {
-                        return obj.lastName
+                        return obj.name
                     },
                     attrs: "style='width: 10%'"
                 },
                 {
-                    text: "Home City",
+                    text: "Url",
                     render: function (obj) {
-                        return obj.homeCity
+                        return "<href a='{0}'>{0}</href>".format(obj.url);
                     },
                     attrs: "style='width: 10%'"
                 },
                 {
-                    text: "photo",
+                    text: "Location",
                     render: function (obj) {
-                        return "<img src= '{0}' />".format(obj.photo);
+                        return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
                     },
                     attrs: "style='width: 30%'"
-                },
-                {
-                    text: "Gender",
-                    render: function (obj) {
-                        return obj.gender;
-                    },
-                    attrs: "style='width: 10%'"
-                },
-                {
-                    text: "Relationship",
-                    render: function (obj) {
-                        return obj.relationship;
-                    }
                 }
             ],
             opts: {

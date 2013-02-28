@@ -74,10 +74,12 @@
 					});
 				})
 			},
-			"click;.folderitem":function(event){
+			"click;.link-img,.foldername":function(event){
 				var folderitem = $(event.target).closest("div");
-				if(!$(folderitem).hasClass("selected"))
-					$(folderitem).addClass("selected").siblings("div").removeClass("selected");
+				if(!$(folderitem).hasClass("selected")){
+					$(".folderitem").removeClass("selected");
+					$(folderitem).addClass("selected");
+				}
 			},
 			"click;.copy":function(event){
 				var copyBtn = $(event.target);
@@ -91,6 +93,40 @@
 					if(json.result.error){
 						alert(json.result.error);
 						$(copyBtn).removeClass("disabled");
+						return false;
+					}
+					view.$el.remove();
+				});
+			},
+			"click;.s_web_bullet_plus":function(event){
+				var expandIco = $(event.target);
+				$(expandIco).attr("src","https://www.dropbox.com/static/images/icons/ajax-loading-small.gif");
+				var parentPath = $(expandIco).closest("div").attr("data-path");
+				app.dropboxApi.getMetadata({path:parentPath}).pipe(function(metadata){
+					metadata = metadata.result;
+					brite.display("DropboxSubFolder",$(expandIco).closest("div.itemDiv"),{metadata:metadata});
+					$(expandIco).attr("src","https://www.dropbox.com/static/images/icons/icon_spacer.gif");
+					$(expandIco).toggleClass("s_web_bullet_plus").toggleClass("s_web_bullet_minus");
+				});
+			},
+			"click;.s_web_bullet_minus":function(event){
+				var expandIco = $(event.target);
+				var subFolder = $(expandIco).closest("div").next();
+				$(expandIco).toggleClass("s_web_bullet_plus").toggleClass("s_web_bullet_minus");
+				$(subFolder).remove();
+			},
+			"click;.move":function(event){
+				var moveBtn = $(event.target);
+				if($(moveBtn).hasClass("disabled"))
+					return false;
+				$(moveBtn).addClass("disabled");
+				var view = this;
+				var fromPath = $(event.target).closest(".dialogBody").attr("data-path");
+				var toPath = $("div.selected:eq(0)").attr("data-path");
+				app.dropboxApi.move({fromPath:fromPath,toPath:toPath}).pipe(function(json){
+					if(json.result.error){
+						alert(json.result.error);
+						$(moveBtn).removeClass("disabled");
 						return false;
 					}
 					view.$el.remove();

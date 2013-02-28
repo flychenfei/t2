@@ -111,4 +111,17 @@ public class DropboxFileHandler {
 	public WebResponse copy(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
 		return WebResponse.success(dropboxFileService.copy(fromPath,toPath,user.getId()));
 	}
+	
+	@WebPost("/dropbox/move")
+	public WebResponse move(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
+		return WebResponse.success(dropboxFileService.move(fromPath,toPath,user.getId()));
+	}
+	
+	@WebGet("/dropbox/search")
+	public WebResponse search(@WebParam("query") String query,@WebParam("path") String path,
+			@WebParam("include_deleted") Boolean includeDeleted,@WebUser User user){
+		if(includeDeleted==null)
+			includeDeleted = false;
+		return WebResponse.success(dropboxFileService.search(path, query, user.getId(), includeDeleted));
+	}
 }
