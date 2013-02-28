@@ -67,6 +67,20 @@ public class FacebookFeedHandlers {
         return m;
     }
 
+    @WebGet("/fb/events")
+    public Object getFacebookEvents(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        String token = e.getToken();
+        List ls = facebookService.getEventsList(token, "me", pageSize, pageIndex);
+        m.put("result", ls);
+        if (ls != null && pageSize != null && ls.size() == pageSize) {
+            m.put("hasNext", true);
+        }
+        return m;
+    }
+
     @WebPost("/fb/post-add")
     public WebResponse addFacebookPost(@WebUser User user, @WebParam("value") String value) {
         try {
@@ -103,6 +117,21 @@ public class FacebookFeedHandlers {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
             facebookService.publishPhoto(token, "me", data, file.getInputStream());
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
+
+    @WebPost("/fb/event-add")
+    public WebResponse addFacebookEvent(@WebUser User user, @WebParam("name") String name,
+                            @WebParam("start_time") String start_time) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.publishNote(token, "me", name, start_time);
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();
