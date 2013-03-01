@@ -139,7 +139,7 @@
                             break;;
                         case "venuesExplore":
                             brite.display("InputValue", ".MainScreen", {
-                                title: 'Search User',
+                                title: 'Venues Explore',
                                 fields: [
                                     {label:"LL", name:'ll', mandatory:false},
                                     {label:"Limit", name:"limit", mandatory:false}
@@ -149,7 +149,7 @@
                                         search: function(opts){
                                             opts = opts||[];
                                             $.extend(opts, params);
-                                            return app.foursquareApi.searchUser(opts);
+                                            return app.foursquareApi.venuesExplore(opts);
                                         }
                                     });
                                 }});

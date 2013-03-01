@@ -109,13 +109,15 @@ public class FoursquareHandlers {
     }
 
     @WebGet("/foursquare/venuesExplore")
-    public WebResponse venuesExplore(@WebUser User user, RequestContext rc, String ll, Integer limit) throws Exception {
+    public WebResponse venuesExplore(@WebUser User user, RequestContext rc, @WebParam("ll") String ll, @WebParam("limit") Integer limit) throws Exception {
         if (user != null) {
             Result<Recommended> result = foursquareService.venuesExplore(user.getId(), ll, limit);
-            return WebResponse.success(result);
-        }else {
-            return WebResponse.fail();
+            if (result.getMeta().getCode() == 200) {
+                return WebResponse.success(result.getResult());
+            }
         }
+
+        return WebResponse.fail();
     }
 
 }
