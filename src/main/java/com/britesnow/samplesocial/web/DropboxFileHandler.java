@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -87,7 +88,19 @@ public class DropboxFileHandler {
 		if(!path.endsWith("/"))
 			path=path+"/";
 		path +=file.getName();
-		return WebResponse.success(dropboxFileService.put(file, path, user.getId()));
+		if(file.getSize()<150*1024*1024)
+			return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
+		else{
+			Long offset = 0L;
+			String uploadId = null;
+			int chunk = 50*1024*1024;//every time upload size
+			Map result = dropboxFileService.chunkedUpload(file,uploadId,offset,chunk, user.getId());
+			while((offset=Long.parseLong(result.get("offset").toString()))<file.getSize()){
+				uploadId = result.get("upload_id").toString();
+				result = dropboxFileService.chunkedUpload(file, uploadId,offset,chunk, user.getId());
+			}
+			return WebResponse.success(dropboxFileService.commitChunkedUpload(path,uploadId,user.getId()));		
+		}
 	}
 	
 	@WebGet("/dropbox/share")
