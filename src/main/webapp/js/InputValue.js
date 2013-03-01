@@ -24,7 +24,6 @@
             postDisplay:function (data, config) {
                 var view = this;
                 var $e = view.$el;
-                var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
             },
 
