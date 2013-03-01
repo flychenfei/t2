@@ -6,6 +6,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.entity.InputStreamEntity;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
@@ -13,10 +19,12 @@ import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.snow.util.JsonUtil;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.Entry;
+import com.dropbox.client2.RESTUtility;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.dropbox.client2.session.Session.ProxyInfo;
 import com.dropbox.client2.session.WebAuthSession;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -40,6 +48,7 @@ public class DropboxFileService {
 	private static String MEDIA = "https://api.dropbox.com/1/media/dropbox";
 	private static String COPYREF = "https://api.dropbox.com/1/copy_ref/dropbox";
 	private static String DELTA = "https://api.dropbox.com/1/delta";
+	private static String CHUNKEDUPLOAD = "https://api-content.dropbox.com/1/chunked_upload";
 	
 	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
@@ -160,6 +169,37 @@ public class DropboxFileService {
 		dropboxAuthService.setAuthorizationHeader(request, userId);
     	String delta = request.send().getBody();
     	return JsonUtil.toMapAndList(delta);
+	}
+	
+	public Object put(FileItem item,String path,Long userId) throws IOException, DropboxException{
+		WebAuthSession session = dropboxAuthService.getWebAuthSession();
+		HttpPut req = new HttpPut(CHUNKEDUPLOAD);
+	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity(userId);
+	    AccessTokenPair accessPair = new AccessTokenPair(soId.getToken(),soId.getSecret());
+	    session.setAccessTokenPair(accessPair);
+		session.sign(req);
+		InputStreamEntity ise = new InputStreamEntity(item.getInputStream(),item.getSize());
+		ise.setContentEncoding("application/octet-stream");
+		ise.setChunked(false);
+		req.setEntity(ise);
+		HttpClient client = session.getHttpClient();
+		ProxyInfo proxyInfo = session.getProxyInfo();
+		if (proxyInfo != null && proxyInfo.host != null
+				&& !proxyInfo.host.equals("")) {
+			HttpHost proxy;
+			if (proxyInfo.port < 0) {
+				proxy = new HttpHost(proxyInfo.host);
+			} else {
+				proxy = new HttpHost(proxyInfo.host, proxyInfo.port);
+			}
+			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+					proxy);
+		} else {
+			client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+		}
+
+		HttpResponse rep = client.execute(req);
+    	return RESTUtility.parseAsJSON(rep);
 	}
 	
 }

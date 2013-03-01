@@ -14,6 +14,8 @@ import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.dropbox.client2.session.AppKeyPair;
+import com.dropbox.client2.session.WebAuthSession;
+import com.dropbox.client2.session.Session.AccessType;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -102,6 +104,10 @@ public class DropboxAuthService implements AuthService{
     			requestHeader.toString());
     }
     
+    public WebAuthSession getWebAuthSession(){
+    	return new WebAuthSession(new AppKeyPair(
+    			configMap.get(DROPBOX+".app_key").toString(),configMap.get(DROPBOX+".app_secret").toString()), AccessType.DROPBOX);
+    }
     public String getHeader(Long userId){
     	SocialIdEntity soId =getSocialIdEntity(userId);
     	StringBuffer requestHeader = new StringBuffer("OAuth ");

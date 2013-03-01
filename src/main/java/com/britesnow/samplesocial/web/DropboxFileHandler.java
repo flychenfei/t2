@@ -87,7 +87,7 @@ public class DropboxFileHandler {
 		if(!path.endsWith("/"))
 			path=path+"/";
 		path +=file.getName();
-		return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
+		return WebResponse.success(dropboxFileService.put(file, path, user.getId()));
 	}
 	
 	@WebGet("/dropbox/share")
