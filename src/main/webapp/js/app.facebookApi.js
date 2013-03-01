@@ -56,6 +56,12 @@ var app = app || {};
 			};
 			return app.getJsonData(contextPath + "/fb/notes", $.extend(params, opts || {}));
 		},
+		getEvents : function(opts) {
+			var params = {
+				method : "Get"
+			};
+			return app.getJsonData(contextPath + "/fb/events", $.extend(params, opts || {}));
+		},
 		publishPhoto : function(data,fileElement) {
 			return app.ajaxPost(contextPath + "/fb/post-add-photo", data,fileElement);
 		},

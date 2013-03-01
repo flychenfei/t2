@@ -13,20 +13,20 @@
 			postDisplay : function(data, config) {
 				var view = this;
 				var $e = view.$el;
-				view.refreshNotesList.call(view);
+				view.refreshEventsList.call(view);
 
 			},
 			events : {
 				"click;.postBtn" : function(e) {
 					var view = this;
 					var $e = view.$el;
-					var $subject = $e.find("input[name='subject']");
-					var $msg = $e.find("input[name='msg']");
+					var name = $e.find("input[name='name']");
+					var start_time = $e.find("input[name='start_time']");
 					app.facebookApi.addNote({
-						msg : $msg.val(),
-						subject:$subject.val()
+						name : name.val(),
+						start_time:start_time.val()
 					}).done(function() {
-						view.refreshNotesList.call(view);
+						view.refreshEventsList.call(view);
 						$(".result").show(function() {
 							$(".result").hide(3000);
 						});
@@ -40,7 +40,7 @@
 
 			daoEvents : {
 			},
-			refreshNotesList : function() {
+			refreshEventsList : function() {
 				var view = this;
 				var $e = view.$el;
 				if (!$e) {
