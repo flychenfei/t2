@@ -38,6 +38,8 @@
                   brite.display("FacebookPhotos");
                 } else if(menu == "note"){
                   brite.display("FacebookNotes");
+                } else if(menu == "event"){
+                  brite.display("FacebookEvents");
                 }
               }
             },

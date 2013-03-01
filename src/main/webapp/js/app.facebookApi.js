@@ -67,6 +67,9 @@ var app = app || {};
 		},
 		addNote : function(value) {
 			return app.getJsonData(contextPath + "/fb/note-add", value);
+		},
+		addEvent : function(value) {
+			return app.getJsonData(contextPath + "/fb/event-add", value);
 		}
 	}
 })();

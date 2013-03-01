@@ -131,7 +131,7 @@ public class FacebookFeedHandlers {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
             String token = e.getToken();
-            facebookService.publishNote(token, "me", name, start_time);
+            facebookService.publishEvent(token, "me", name, start_time);
             return WebResponse.success(true);
         } catch (Exception e) {
             e.printStackTrace();

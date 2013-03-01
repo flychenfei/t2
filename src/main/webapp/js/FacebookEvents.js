@@ -22,7 +22,7 @@
 					var $e = view.$el;
 					var name = $e.find("input[name='name']");
 					var start_time = $e.find("input[name='start_time']");
-					app.facebookApi.addNote({
+					app.facebookApi.addEvent({
 						name : name.val(),
 						start_time:start_time.val()
 					}).done(function() {
@@ -52,36 +52,28 @@
 					};
 					return "";
 				}
-
-
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
-						list : app.facebookApi.getNotes
+						list : app.facebookApi.getEvents
 					},
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)
 					},
 					columnDef : [ {
-						text : "Subject",
+						text : "Name",
 						render : function(obj) {
-							return obj.subject;
-						},
-						attrs : "style='width: 200px'"
-					}, {
-						text : "Message",
-						render : function(obj) {
-							return obj.message;
+							return obj.name;
 						},
 						attrs : "style='width: 400px'"
 					}, {
-						text : "Created time",
+						text : "Start time",
 						render : function(obj) {
-							return fixNull(obj.createdTime);
+							return fixNull(obj.start_time);
 						},
 						attrs : "style='width: 200px'"
 					}],
 					opts : {
-						htmlIfEmpty : "Not note found",
+						htmlIfEmpty : "Not event found",
 						withPaging : true,
 						withCmdEdit : false,
 						withCmdDelete : false
