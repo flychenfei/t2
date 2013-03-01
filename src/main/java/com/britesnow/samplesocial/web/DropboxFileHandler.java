@@ -58,7 +58,6 @@ public class DropboxFileHandler {
 	@WebResourceHandler(matches="/dropbox/thumbnails/.*")
 	public void getThumbnails(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
 		path = path.substring("/dropbox/thumbnails".length());
-		System.out.println(path);
 		InputStream in = dropboxFileService.getThumbnails(path, user.getId());
 		HttpServletResponse res = rc.getRes();
 		OutputStream out = res.getOutputStream();
@@ -90,7 +89,7 @@ public class DropboxFileHandler {
 		path +=file.getName();
 		if(file.getSize()<150*1024*1024)
 			return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
-		else{
+		else{//when file size more than 150mb,use chunked_upload
 			Long offset = 0L;
 			String uploadId = null;
 			int chunk = 50*1024*1024;//every time upload size

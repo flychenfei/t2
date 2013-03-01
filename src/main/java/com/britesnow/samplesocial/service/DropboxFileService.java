@@ -91,7 +91,7 @@ public class DropboxFileService {
 	}
 	
 	public Entry upload(FileItem item,String path,Long userId) throws IOException, DropboxException{
-		WebAuthSession session = new WebAuthSession(new AppKeyPair("ulvnx4aushyzhe3", "jupanq7xdsht8md"),AccessType.DROPBOX);
+		WebAuthSession session = dropboxAuthService.getWebAuthSession();
 	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity(userId);
 	    AccessTokenPair accessPair = new AccessTokenPair(soId.getToken(),soId.getSecret());
 	    session.setAccessTokenPair(accessPair);
