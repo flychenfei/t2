@@ -50,6 +50,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/github/events",params);
+        },
+        getContents:function(opts){
+        	var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/github/getContents",params);
         }
     };
 })();

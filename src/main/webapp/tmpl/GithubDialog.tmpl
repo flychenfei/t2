@@ -10,8 +10,19 @@
 			<div class="dialogBody">
 				{{#equal data.type "showRepoDetails"}}
 				<div>
+					<div class="files">
+						{{#each data.files}}
+							{{#equal type "dir"}}
+							<div><i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
+							{{else}}
+							<div><i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
+							{{/equal}}
+						{{/each}}
+					</div>
+					{{#notEqual data.readme.content ""}}
  					<span>readme.md</span>
- 					<div><pre>{{data.content.content}}</pre></div>				
+ 					<div><pre>{{data.readme.content}}</pre></div>
+ 					{{/notEqual}}				
 				</div>
 				<div class="dialogBtns">
 					<img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>

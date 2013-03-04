@@ -52,4 +52,13 @@ public class GithubRepositoriesService {
 			m.put("content", new String(EncodingUtils.fromBase64(content)));
 		return m;
 	}
+	
+	//list files or get file content
+	public String getContents(User user,String repo,String path) throws IOException{
+		OAuthRequest request = githubAuthService.createRequest(Verb.GET,
+				PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
+				"/contents"+"?access_token="+githubAuthService.getToken(user).getToken());
+		Response response = request.send();
+		return response.getBody();
+	}
 }

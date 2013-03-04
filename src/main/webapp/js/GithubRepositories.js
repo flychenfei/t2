@@ -56,14 +56,19 @@
 			},
 			"click;.reponame":function(event){
 				var repo = $(event.target).attr("data-repo");
-				app.githubApi.getReadme({repo:repo}).pipe(function(json){
-					console.log(json);
-					brite.display("GithubDialog",$("body"),{
-						layout:{width:600,height:400},
-						content:json.result,
-						type:"showRepoDetails",
-						title:repo
-				    });
+				app.githubApi.getContents({repo:repo}).pipe(function(files){
+					files = JSON.parse(files.result);
+					app.githubApi.getReadme({repo:repo}).pipe(function(readme){
+						if(!readme.result.content)
+							readme.result.content = "";
+						brite.display("GithubDialog",$("body"),{
+							layout:{width:600,height:400},
+							readme:readme.result,
+							files:files,
+							type:"showRepoDetails",
+							title:repo
+					    });
+					});
 				});
 			}
 		}
