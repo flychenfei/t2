@@ -15,6 +15,11 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/companys", param);
+        },
+        searchPeoples : function(param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/searchPeople", param);
         }
 	};
 })();
