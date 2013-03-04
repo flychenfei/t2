@@ -4,13 +4,18 @@
 			<tr>
 				<td colspan="2">
 					<div class="well form-search">
-						<label>Message:</label>
-						<input type="text" name="msg" class="input-block-level emailInput"   placeholder="Upload message"/>
-					</div>
-					<div class="well form-search">
-						<label>Choose photo to upload:</label>
-						<input name="file" type="file" class="input-block-level emailInput" placeholder="Upload file"/>
-					</div>
+					 <div class="control-group">
+					    <label>Choose photo to upload:</label>
+					    <div class="controls">
+					      <input name="file" type="file" class="input-block-level fileInput" placeholder="Upload file"/>
+					    </div>
+					  </div>
+						<div class="control-group">
+					    <label>Message:</label>
+					    <div class="controls">
+					   	  <textarea rows="4" name="msg" class="msgInput"   placeholder="input message"></textarea>
+					    </div>
+					  </div>
 					<div>
 						<button type="submit" class="btn postBtn btn-primary">Post Photo</button>
 					</div>
