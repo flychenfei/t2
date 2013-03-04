@@ -41,4 +41,13 @@ public class LinkedInHandlers {
         resp.set("result_count", result.get("numResults"));
         return resp;
     }
+    @WebGet("/linkedin/searchPeople")
+    public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
+                                  @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {
+        Map result = linkedService.searchPeople(user, pageIndex, pageSize, keywork);
+        Map peoples = (Map) result.get("people");
+        WebResponse resp = WebResponse.success(peoples.get("values"));
+        resp.set("result_count", result.get("numResults"));
+        return resp;
+    }
 }
