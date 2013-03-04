@@ -30,7 +30,8 @@
                 }else if(menu == "search"){
                     var list = [
                         {name:"searchJobs",label:"Search Jobs"},
-                        {name:"searchCompany",label:"Search Company"}
+                        {name:"searchCompany",label:"Search Company"},
+                        {name:"searchPeople",label:"Search People"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -57,6 +58,10 @@
                         case "searchCompany":
                             brite.display("InputValue", ".MainScreen",{title:'Search Company',callback:function(keywork){
                                 showCompanys(keywork);
+                            }});
+                        case "searchPeople":
+                            brite.display("InputValue", ".MainScreen",{title:'Search People',callback:function(keywork){
+                                showPeoples(keywork);
                             }});
                         default:
                     }
@@ -178,6 +183,45 @@
                 ],
                 opts: {
                     htmlIfEmpty: "Not Companys found",
+                    withPaging: true,
+                    withCmdDelete:false
+                }
+            });
+        }
+
+        function showPeoples(keywork) {
+            var view = this;
+            brite.display("DataTable", ".LinkedInScreen-content",{
+                dataProvider: {list: function(params){
+                    params.keywork = keywork.name;
+                   return app.linkedInApi.searchPeoples(params);
+                }},
+                columnDef: [
+                    {
+                        text: "#",
+                        render: function (obj, idx) {
+                            return idx + 1
+                        },
+                        attrs: "style='width: 5%'"
+                    },
+                    {
+                        text: "First Name",
+                        render: function (obj) {
+                            return obj.firstName;
+                        },
+                        attrs: "style='width: 30%'"
+
+                    },
+                    {
+                        text: "Last Name",
+                        render: function (obj) {
+                            return obj.lastName;
+                        }
+
+                    }
+                ],
+                opts: {
+                    htmlIfEmpty: "Not Peoples found",
                     withPaging: true,
                     withCmdDelete:false
                 }
