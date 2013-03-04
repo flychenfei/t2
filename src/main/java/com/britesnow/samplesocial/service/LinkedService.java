@@ -25,6 +25,7 @@ public class LinkedService {
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
+    public static final String PEOPLE_SEARCH_ENDPOINT = "http://api.linkedin.com/v1/people-search?keywords=%s";
 
     private OAuthService oAuthService;
 
@@ -79,6 +80,16 @@ public class LinkedService {
             keywork = "inc";
         }
         OAuthRequest request = createRequest(Verb.GET, String.format(COMPANY_ENDPOINT, keywork));
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response resp = request.send();
+        return JsonUtil.toMapAndList(resp.getBody());
+    }
+    public Map searchPeople(User user, Integer pageIndex, Integer pageSize, String keywork) {
+        if (keywork == null) {
+            keywork = "self";
+        }
+        OAuthRequest request = createRequest(Verb.GET, String.format(PEOPLE_SEARCH_ENDPOINT, keywork));
         addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
