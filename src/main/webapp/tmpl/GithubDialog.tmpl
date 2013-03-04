@@ -1,0 +1,24 @@
+<script id="tmpl-GithubDialog" type="text/html">
+  <div class="github">
+	  <div class="dialogBackground">
+		</div>
+		<div class="dialogContent" width="{{data.layout.width}}" height="{{data.layout.height}}">
+			<div class="dialogHead">
+				<span class="dialogTitle">{{data.title}}</span>
+				<span class="close dialogBtns dialogCloseBtn">&times;</span>
+			</div>
+			<div class="dialogBody">
+				{{#equal data.type "showRepoDetails"}}
+				<div>
+ 					<span>readme.md</span>
+ 					<div><pre>{{data.content.content}}</pre></div>				
+				</div>
+				<div class="dialogBtns">
+					<img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+					<button class="btn btn-primary cancel">Cancel</button>
+			 </div>
+			 {{/equal}}
+			</div>
+		</div>
+	</div>
+</script>

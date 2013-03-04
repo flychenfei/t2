@@ -48,6 +48,18 @@
 					alert(json.result.length);
 					brite.display("GithubCommits",$(".tab-content"),{commits:json.result,name:name,login:login});
 				});
+			},
+			"click;.reponame":function(event){
+				var repo = $(event.target).attr("data-repo");
+				app.githubApi.getReadme({repo:repo}).pipe(function(json){
+					console.log(json);
+					brite.display("GithubDialog",$("body"),{
+						layout:{width:600,height:400},
+						content:json.result,
+						type:"showRepoDetails",
+						title:repo
+				    });
+				});
 			}
 		}
 	});

@@ -101,4 +101,10 @@ public class GithubRepositoriesHandler {
 			return WebResponse.fail(e.getMessage());
 		}
 	}
+	
+	@WebGet("/github/getReadme")
+	public WebResponse getReadme(@WebUser User user,@WebParam("repo") String repo) throws IOException{
+		return WebResponse.success(githubRepositoriesService.getReadme(user, repo));
+		
+	}
 }
