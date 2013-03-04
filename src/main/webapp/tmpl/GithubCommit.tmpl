@@ -12,7 +12,7 @@
 				{{#each data.files}}
 				<tr>
 					<td class="content">
-						<div class="meta">{{filename}}</div>
+						<div class="meta">{{this.filename}}</div>
 						<div>{{additions}} additions & {{changes}} changes & {{deletions}} deletions</div>
 						<div><pre>{{patch}}</pre></div>
 					</td>

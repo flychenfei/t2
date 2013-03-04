@@ -34,6 +34,10 @@ public class GithubUserService {
 	    return response.getBody();
 	}
 	
+	public org.eclipse.egit.github.core.User getGithubUser(User user) throws IOException{
+		UserService service = new UserService(githubAuthService.createClient(user));
+		return service.getUser();
+	}
 	
 	public String  getEmails(User user){
 		OAuthRequest request = githubAuthService.createRequest(Verb.GET, PREFIX+EMAILS);
