@@ -17,7 +17,6 @@ public class GithubCommitService {
 	@Inject
 	private YaoGithubAuthService githubAuthService;
 	
-	
 	public List<RepositoryCommit> getCommits(Repository repository,User user) throws IOException{
 		CommitService commitService = new CommitService(githubAuthService.createClient(user));
 		return commitService.getCommits(repository);

@@ -91,12 +91,12 @@ public class GithubRepositoriesHandler {
 	
 	@WebGet("/github/compareCommits")
 	public WebResponse compareCommits(@WebUser User user,@WebParam("name") String name,
-			@WebParam("login") String login,@WebParam("base") String base,@WebParam("head") String head) throws IOException {
+			@WebParam("base") String base,@WebParam("head") String head){
+		try{
 		Repository repo = new Repository();
 		repo.setOwner(githubUserService.getGithubUser(user));
 		repo.setName(name);
-		try{
-			return WebResponse.success(githubCommitService.compareCommits(repo,user,base,head));
+		return WebResponse.success(githubCommitService.compareCommits(repo,user,base,head));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
