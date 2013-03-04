@@ -49,6 +49,11 @@
 					brite.display("GithubCommits",$(".tab-content"),{commits:json.result,name:name,login:login});
 				});
 			},
+			"click;.events":function(event){
+				app.githubApi.getPublicEvents().pipe(function(json){
+					console.log(json);
+				});
+			},
 			"click;.reponame":function(event){
 				var repo = $(event.target).attr("data-repo");
 				app.githubApi.getReadme({repo:repo}).pipe(function(json){

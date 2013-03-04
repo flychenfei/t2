@@ -45,6 +45,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/github/getReadme",params);
+        },
+        getPublicEvents:function(opts){
+        	var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/github/events",params);
         }
     };
 })();
