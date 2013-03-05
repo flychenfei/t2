@@ -119,5 +119,16 @@ public class FoursquareHandlers {
 
         return WebResponse.fail();
     }
+    @WebGet("/foursquare/specialSearch")
+    public WebResponse specialSearch(@WebUser User user, RequestContext rc, @WebParam("ll") String ll, @WebParam("limit") Integer limit) throws Exception {
+        if (user != null) {
+            Result<SpecialGroup> result = foursquareService.specialSearch(user.getId(), ll, limit);
+            if (result.getMeta().getCode() == 200) {
+                return WebResponse.success(result.getResult());
+            }
+        }
+
+        return WebResponse.fail();
+    }
 
 }

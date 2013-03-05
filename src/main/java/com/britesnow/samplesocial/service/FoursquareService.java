@@ -61,5 +61,15 @@ public class FoursquareService {
         Double altacc=0d;
         return oAuthService.getApi(userId).venuesExplore(ll, llAcc, alt, altacc, radius, section, query, limit, basic);
     }
+    public Result<SpecialGroup> specialSearch(Long userId, String ll, Integer limit) throws FoursquareApiException {
+
+        double llAcc = 10000;
+        double alt = 0;
+        if (limit == null) {
+            limit = 10;
+        }
+        Double altacc=0d;
+        return oAuthService.getApi(userId).specialsSearch(ll, llAcc, alt, altacc, limit);
+    }
 
 }
