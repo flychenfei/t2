@@ -15,13 +15,25 @@
 				var path=$(current).closest("span.filename").attr("data-path");
 				var repo = $(current).closest("div.files").attr("data-repo");
 				var readme = {content:""};
-				app.githubApi.getContents({repo:repo,path:path}).pipe(function(files){
-					files = JSON.parse(files.result);
-					brite.display("GithubFiles",$("#filecontent"),{
-						files:files,
-						readme:readme,
-						repo:repo
-					});
+				var isDir = $(current).closest("span.filename").attr("data-type")=="dir"?true:false;
+				app.githubApi.getContents({repo:repo,path:path}).pipe(function(json){
+					var result = json.result;
+					if(isDir){
+						brite.display("GithubFiles",$("#filecontent"),{
+							files:JSON.parse(result),
+							readme:readme,
+							repo:repo,
+							isDir:true
+						});
+					}else{
+						brite.display("GithubFiles",$("#filecontent"),{
+							file:result,
+							readme:readme,
+							repo:repo,
+							isDir:false,
+							filename:"heheh"
+						});
+					}
 				});
 			}
 		}

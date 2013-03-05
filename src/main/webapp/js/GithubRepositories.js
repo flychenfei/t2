@@ -62,7 +62,7 @@
 						if(!readme.result.content)
 							readme.result.content = "";
 						brite.display("GithubDialog",$("body"),{
-							layout:{width:'600px',height:'auto'},
+							layout:{width:'80%',height:'75%',left:'10%',top:'15%'},
 							readme:readme.result,
 							files:files,
 							type:"showRepoDetails",

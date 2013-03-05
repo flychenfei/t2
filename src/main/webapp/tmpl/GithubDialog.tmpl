@@ -2,24 +2,28 @@
   <div class="github">
 	  <div class="dialogBackground">
 		</div>
-		<div class="dialogContent" style="width:{{data.layout.width}};height:{{data.layout.height}}">
+		<div class="dialogContent" style="left:{{data.layout.left}};top:{{data.layout.top}};width:{{data.layout.width}};height:{{data.layout.height}}">
 			<div class="dialogHead">
 				<span class="dialogTitle">{{data.title}}</span>
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
 			</div>
 			<div class="dialogBody">
 				{{#equal data.type "showRepoDetails"}}
-				<div id="filecontent">
+				<div id="filecontent" style="height:100%;">
 					<div class="files" data-repo="{{data.repo}}">
 						{{#each data.files}}
 							{{#equal type "dir"}}
 							<div>
-								<span data-path="{{path}}" class="filename">
+								<span data-path="{{path}}" data-type="{{type}}" class="filename">
 								  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
 								</span>
 							</div>
 							{{else}}
-							<div><i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
+							<div>
+								<span data-path="{{path}}" data-type="{{type}}" class="filename">
+									<i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+								</span>
+							</div>
 							{{/equal}}
 						{{/each}}
 					</div>
@@ -28,10 +32,6 @@
  					<div><pre>{{data.readme.content}}</pre></div>
  					{{/notEqual}}				
 				</div>
-				<div class="dialogBtns">
-					<img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
-					<button class="btn btn-primary cancel">Cancel</button>
-			 </div>
 			 {{/equal}}
 			</div>
 		</div>
@@ -39,21 +39,30 @@
 </script>
 
 <script id="tmpl-GithubFiles" type="text/html">
+	{{#if data.isDir}}
 	<div class="files" data-repo="{{data.repo}}">
-	{{#each data.files}}
-		{{#equal type "dir"}}
-		<div>
-			<span data-path="{{path}}" class="filename">
-			  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
-			</span>
-		</div>
-		{{else}}
-		<div><i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
-		{{/equal}}
-	{{/each}}
+		{{#each data.files}}
+			{{#equal type "dir"}}
+			<div>
+				<span data-path="{{path}}" data-type="{{type}}" class="filename">
+				  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+				</span>
+			</div>
+			{{else}}
+			<div>
+				<span data-path="{{path}}" data-type="{{type}}" class="filename">
+					<i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+				</span>
+			</div>
+			{{/equal}}
+		{{/each}}
 	</div>
 	{{#notEqual data.readme.content ""}}
 	 <span>readme.md</span>
 	 <div><pre>{{data.readme.content}}</pre></div>
-	{{/notEqual}}		
+	{{/notEqual}}	
+	{{else}}
+	<span>{{data.filename}}</span>
+	<div class="code"><pre>{{data.file.content}}</pre></div>
+	{{/if}}	
 </script>
