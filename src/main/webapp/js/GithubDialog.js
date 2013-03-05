@@ -14,8 +14,14 @@
 				var current = $(event.target);
 				var path=$(current).closest("span.filename").attr("data-path");
 				var repo = $(current).closest("div.files").attr("data-repo");
+				var readme = {content:""};
 				app.githubApi.getContents({repo:repo,path:path}).pipe(function(files){
-					console.log(files);
+					files = JSON.parse(files.result);
+					brite.display("GithubFiles",$("#filecontent"),{
+						files:files,
+						readme:readme,
+						repo:repo
+					});
 				});
 			}
 		}

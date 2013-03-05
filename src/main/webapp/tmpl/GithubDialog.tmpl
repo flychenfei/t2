@@ -9,7 +9,7 @@
 			</div>
 			<div class="dialogBody">
 				{{#equal data.type "showRepoDetails"}}
-				<div>
+				<div id="filecontent">
 					<div class="files" data-repo="{{data.repo}}">
 						{{#each data.files}}
 							{{#equal type "dir"}}
