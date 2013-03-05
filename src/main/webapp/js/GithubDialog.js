@@ -31,7 +31,7 @@
 							readme:readme,
 							repo:repo,
 							isDir:false,
-							filename:"heheh"
+							filename:result.name
 						});
 					}
 				});
