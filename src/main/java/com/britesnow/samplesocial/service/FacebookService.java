@@ -117,6 +117,12 @@ public class FacebookService {
         return ls;
     }
 
+    public List getQuestionsList(String accessToken, String userId, Integer limit, Integer offset) {
+        Connection<JsonObject> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/questions", JsonObject.class);
+        List ls = result.getData();
+        return ls;
+    }
+    
     public String publish(String accessToken, String type, String userId, String message) {
         FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/" + type, FacebookType.class, Parameter.with("message", message));
         return result.getId();

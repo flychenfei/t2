@@ -81,6 +81,20 @@ public class FacebookFeedHandlers {
         return m;
     }
 
+    @WebGet("/fb/question")
+    public Object getFacebookQuestions(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
+                            RequestContext rc) {
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        String token = e.getToken();
+        List ls = facebookService.getQuestionsList(token, "me", pageSize, pageIndex);
+        m.put("result", ls);
+        if (ls != null && pageSize != null && ls.size() == pageSize) {
+            m.put("hasNext", true);
+        }
+        return m;
+    }
+
     @WebPost("/fb/post-add")
     public WebResponse addFacebookPost(@WebUser User user, @WebParam("value") String value) {
         try {
