@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class LinkedService {
+public class LinkedInService {
     @Inject
     private LinkedInAuthService authService;
 
@@ -30,7 +30,7 @@ public class LinkedService {
     private OAuthService oAuthService;
 
     @Inject
-    public LinkedService(OAuthServiceHelper oauthServiceFactory) {
+    public LinkedInService(OAuthServiceHelper oauthServiceFactory) {
         oAuthService = oauthServiceFactory.getOauthService(ServiceType.LinkedIn);
     }
 
@@ -95,4 +95,5 @@ public class LinkedService {
         Response resp = request.send();
         return JsonUtil.toMapAndList(resp.getBody());
     }
+
 }
