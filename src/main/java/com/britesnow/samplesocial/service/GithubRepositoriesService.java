@@ -54,8 +54,7 @@ public class GithubRepositoriesService {
 	}
 	
 	//list files or get file content
-	public String getContents(User user,String repo,String path) throws IOException{
-		System.out.println(path+".........");
+	public Object getContents(User user,String repo,String path) throws IOException{
 		if(path==null)
 			path="";
 		if(path.startsWith("/"))
@@ -64,6 +63,13 @@ public class GithubRepositoriesService {
 				PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
 				"/contents"+path+"?access_token="+githubAuthService.getToken(user).getToken());
 		Response response = request.send();
-		return response.getBody();
+		String result = response.getBody();
+		if(result.startsWith("["))
+			return result;
+		else{
+			Map m = JsonUtil.toMapAndList(result);
+			m.put("content", new String(EncodingUtils.fromBase64((String)m.get("content"))));
+			return m;
+		}
 	}
 }
