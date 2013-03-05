@@ -109,7 +109,7 @@ public class GithubRepositoriesHandler {
 	}
 	
 	@WebGet("/github/getContents")
-	public WebResponse getContents(@WebUser User user,@WebParam("repo") String repo) throws IOException{
-		return WebResponse.success(githubRepositoriesService.getContents(user, repo,""));
+	public WebResponse getContents(@WebUser User user,@WebParam("repo") String repo,@WebParam("path")String path) throws IOException{
+		return WebResponse.success(githubRepositoriesService.getContents(user, repo,path));
 	}
 }

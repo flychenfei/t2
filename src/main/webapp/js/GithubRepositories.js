@@ -62,11 +62,12 @@
 						if(!readme.result.content)
 							readme.result.content = "";
 						brite.display("GithubDialog",$("body"),{
-							layout:{width:600,height:400},
+							layout:{width:'600px',height:'auto'},
 							readme:readme.result,
 							files:files,
 							type:"showRepoDetails",
-							title:repo
+							title:repo,
+							repo:repo
 					    });
 					});
 				});

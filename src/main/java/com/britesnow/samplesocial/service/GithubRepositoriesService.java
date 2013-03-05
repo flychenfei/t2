@@ -55,9 +55,14 @@ public class GithubRepositoriesService {
 	
 	//list files or get file content
 	public String getContents(User user,String repo,String path) throws IOException{
+		System.out.println(path+".........");
+		if(path==null)
+			path="";
+		if(path.startsWith("/"))
+			path = "/"+path;
 		OAuthRequest request = githubAuthService.createRequest(Verb.GET,
 				PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
-				"/contents"+"?access_token="+githubAuthService.getToken(user).getToken());
+				"/contents"+path+"?access_token="+githubAuthService.getToken(user).getToken());
 		Response response = request.send();
 		return response.getBody();
 	}

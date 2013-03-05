@@ -2,7 +2,7 @@
   <div class="github">
 	  <div class="dialogBackground">
 		</div>
-		<div class="dialogContent" width="{{data.layout.width}}" height="{{data.layout.height}}">
+		<div class="dialogContent" style="width:{{data.layout.width}};height:{{data.layout.height}}">
 			<div class="dialogHead">
 				<span class="dialogTitle">{{data.title}}</span>
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
@@ -10,10 +10,14 @@
 			<div class="dialogBody">
 				{{#equal data.type "showRepoDetails"}}
 				<div>
-					<div class="files">
+					<div class="files" data-repo="{{data.repo}}">
 						{{#each data.files}}
 							{{#equal type "dir"}}
-							<div><i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
+							<div>
+								<span data-path="{{path}}" class="filename">
+								  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+								</span>
+							</div>
 							{{else}}
 							<div><i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
 							{{/equal}}
@@ -32,4 +36,24 @@
 			</div>
 		</div>
 	</div>
+</script>
+
+<script id="tmpl-GithubFiles" type="text/html">
+	<div class="files" data-repo="{{data.repo}}">
+	{{#each data.files}}
+		{{#equal type "dir"}}
+		<div>
+			<span data-path="{{path}}" class="filename">
+			  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+			</span>
+		</div>
+		{{else}}
+		<div><i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a></div>
+		{{/equal}}
+	{{/each}}
+	</div>
+	{{#notEqual data.readme.content ""}}
+	 <span>readme.md</span>
+	 <div><pre>{{data.readme.content}}</pre></div>
+	{{/notEqual}}		
 </script>
