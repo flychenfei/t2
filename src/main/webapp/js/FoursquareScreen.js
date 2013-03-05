@@ -38,7 +38,8 @@
                         {name:"venuesTrending",label:"Venues Trending"},
                         {name:"recentCheckins",label:"Recent Checkins"},
                         {name:"venuesSearch",label:"Venues Search"},
-                        {name:"venuesExplore",label:"Venues Explore"}
+                        {name:"venuesExplore",label:"Venues Explore"},
+                        {name:"specialsSearch",label:"Specials Search"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
@@ -136,7 +137,7 @@
                                         }
                                     });
                                 }});
-                            break;;
+                            break;
                         case "venuesExplore":
                             brite.display("InputValue", ".MainScreen", {
                                 title: 'Venues Explore',
@@ -150,6 +151,23 @@
                                             opts = opts||[];
                                             $.extend(opts, params);
                                             return app.foursquareApi.venuesExplore(opts);
+                                        }
+                                    });
+                                }});
+                            break;
+                        case "specialsSearch":
+                            brite.display("InputValue", ".MainScreen", {
+                                title: 'Specials Search',
+                                fields: [
+                                    {label:"LL", name:'ll', mandatory:false},
+                                    {label:"Limit", name:"limit", mandatory:false}
+                                ],
+                                callback: function (params) {
+                                    brite.display("FoursquareSpecialSearch",".FoursquareScreen-content",{
+                                        search: function(opts){
+                                            opts = opts||[];
+                                            $.extend(opts, params);
+                                            return app.foursquareApi.specialSearch(opts);
                                         }
                                     });
                                 }});
