@@ -109,6 +109,11 @@ public class GithubRepositoriesService {
 		}
 	}
 	
+	public String getArchiveLink(User user,String repo,String archiveFormat,String ref) throws IOException{
+		return 	PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
+				"/"+archiveFormat+"/"+ref+"?access_token="+githubAuthService.getToken(user).getToken();
+	}
+	
 	/**
 	 * List downloads for a repository
 	 * @param user

@@ -161,7 +161,8 @@ public class GithubRepositoriesHandler {
 	 */
 	@WebGet("/github/getReadme")
 	public WebResponse getReadme(@WebUser User user,@WebParam("repo") String repo) throws IOException{
-		return WebResponse.success(githubRepositoriesService.getReadme(user, repo));
+		return WebResponse.success(githubRepositoriesService.getReadme(user, repo))
+				.set("archiveLink", githubRepositoriesService.getArchiveLink(user, repo, "zipball", "master"));
 		
 	}
 	
@@ -192,4 +193,5 @@ public class GithubRepositoriesHandler {
 		repository.setName(repo);
 		return WebResponse.success(githubRepositoriesService.getDownloads(user, repository));
 	}
+	
 }
