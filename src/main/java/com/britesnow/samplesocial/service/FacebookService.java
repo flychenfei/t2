@@ -121,6 +121,13 @@ public class FacebookService {
     public List getEventsList(String accessToken, String userId, Integer limit, Integer offset) {
         Connection<Event> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/events", Event.class);
         List ls = result.getData();
+        for (int i = 0; i < ls.size(); i++) {
+            Event e = (Event) ls.get(i);
+            Map m = new HashMap();
+            m.put("name", e.getName());
+            m.put("start_time", e.getStartTime().toString());
+            ls.set(i, m);
+        }
         return ls;
     }
 
