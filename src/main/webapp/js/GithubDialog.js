@@ -35,6 +35,11 @@
 						});
 					}
 				});
+			},
+			"click;.download":function(event){
+				app.githubApi.getDownloads({repo:"ContactApp"}).pipe(function(json){
+					console.log(json)
+				});
 			}
 		}
 	})

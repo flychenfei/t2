@@ -58,16 +58,17 @@
 				var repo = $(event.target).attr("data-repo");
 				app.githubApi.getContents({repo:repo}).pipe(function(files){
 					files = JSON.parse(files.result);
-					app.githubApi.getReadme({repo:repo}).pipe(function(readme){
-						if(!readme.result.content)
-							readme.result.content = "";
+					app.githubApi.getReadme({repo:repo}).pipe(function(json){
+						if(!json.result.content)
+							json.result.content = "";
 						brite.display("GithubDialog",$("body"),{
 							layout:{width:'80%',height:'75%',left:'10%',top:'15%'},
-							readme:readme.result,
+							readme:json.result,
 							files:files,
 							type:"showRepoDetails",
 							title:repo,
-							repo:repo
+							repo:repo,
+							archiveLink:json.archiveLink
 					    });
 					});
 				});

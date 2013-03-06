@@ -5,6 +5,7 @@
 		<div class="dialogContent" style="left:{{data.layout.left}};top:{{data.layout.top}};width:{{data.layout.width}};height:{{data.layout.height}}">
 			<div class="dialogHead">
 				<span class="dialogTitle">{{data.title}}</span>
+				<span class="download"><a href="{{data.archiveLink}}">download Repository</a></span>
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
 			</div>
 			<div class="dialogBody">
@@ -16,6 +17,7 @@
 							<div>
 								<span data-path="{{path}}" data-type="{{type}}" class="filename">
 								  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+								  <i class="download icon-download"></i>
 								</span>
 							</div>
 							{{else}}
