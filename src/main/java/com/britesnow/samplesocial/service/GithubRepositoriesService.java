@@ -26,21 +26,48 @@ public class GithubRepositoriesService {
 	@Inject
 	private GithubUserService githubUserService;
 	
+	/**
+	 * get all repositories
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
 	public List<Repository> getRepositories(User user) throws IOException {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 	    return repositoryService.getRepositories();
 	}
 	
+	/**
+	 * create a new repository
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
 	public Repository createRepository(User user,Repository repo) throws IOException {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 	    return repositoryService.createRepository(repo);
 	}
 	
+	/**
+	 * edit repository for description
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
 	public Repository editRepository(User user,Repository repo) throws IOException {
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 	    return repositoryService.editRepository(repo);
 	}
 	
+	/**
+	 * get content of readme for repository
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
 	public Map getReadme(User user,String repo) throws IOException{
 		OAuthRequest request = githubAuthService.createRequest(Verb.GET,
 				PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
@@ -53,7 +80,14 @@ public class GithubRepositoriesService {
 		return m;
 	}
 	
-	//list files or get file content
+	/**
+	 * list files or get file content
+	 * @param user
+	 * @param repo
+	 * @param path the path of file or folder
+	 * @return
+	 * @throws IOException
+	 */
 	public Object getContents(User user,String repo,String path) throws IOException{
 		if(path==null)
 			path="";
