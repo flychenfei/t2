@@ -35,6 +35,11 @@
 						});
 					}
 				});
+			},
+			"click;.download":function(event){
+				app.githubApi.getDownloads({repo:"sampleTaskmanager"}).pipe(function(json){
+					console.log(json)
+				});
 			}
 		}
 	})

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.util.EncodingUtils;
 import org.scribe.model.OAuthRequest;
@@ -105,5 +107,17 @@ public class GithubRepositoriesService {
 			m.put("content", new String(EncodingUtils.fromBase64((String)m.get("content"))));
 			return m;
 		}
+	}
+	
+	/**
+	 * List downloads for a repository
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Download> getDownloads(User user,Repository repo) throws IOException{
+		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
+		return downloadService.getDownloads(repo);
 	}
 }

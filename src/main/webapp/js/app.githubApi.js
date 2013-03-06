@@ -55,6 +55,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Get";
         	return app.getJsonData(contextPath+"/github/getContents",params);
+        },
+        getDownloads:function(opts){
+        	var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/github/getDownloads",params);
         }
     };
 })();

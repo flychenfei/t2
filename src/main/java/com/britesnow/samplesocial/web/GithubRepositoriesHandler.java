@@ -177,4 +177,19 @@ public class GithubRepositoriesHandler {
 	public WebResponse getContents(@WebUser User user,@WebParam("repo") String repo,@WebParam("path")String path) throws IOException{
 		return WebResponse.success(githubRepositoriesService.getContents(user, repo,path));
 	}
+	
+	/**
+	 * List downloads for a repository
+	 * @param user
+	 * @param repo name of repository
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getDownloads")
+	public WebResponse getDownloads(@WebUser User user,@WebParam("repo") String repo) throws IOException{
+		Repository repository = new Repository();
+		repository.setOwner(githubUserService.getGithubUser(user));
+		repository.setName(repo);
+		return WebResponse.success(githubRepositoriesService.getDownloads(user, repository));
+	}
 }
