@@ -14,7 +14,12 @@ public class FoursquareService {
     @Inject
 	private FoursquareAuthService oAuthService;
 
-
+    /**
+     * get user friends
+     * @param userId user id
+     * @return  userGroup result.
+     * @throws FoursquareApiException
+     */
     public Result<UserGroup> getFriends(Long userId) throws FoursquareApiException {
         return oAuthService.getApi(userId).usersFriends(null);
     }
@@ -70,6 +75,10 @@ public class FoursquareService {
         }
         Double altacc=0d;
         return oAuthService.getApi(userId).specialsSearch(ll, llAcc, alt, altacc, limit);
+    }
+
+    public Result<Badges> usersBadges(Long userId) throws FoursquareApiException {
+       return oAuthService.getApi(userId).usersBadges(null);
     }
 
 }
