@@ -45,6 +45,11 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/foursquare/specialSearch", param);
+        },
+        usersBadges: function (param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/foursquare/usersBadges", param);
         }
     };
 })();

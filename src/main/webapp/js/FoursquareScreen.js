@@ -30,6 +30,8 @@
                   brite.display("FoursquareUserInfo");
                 }else if(menu == "userFriends"){
                     brite.display("FoursquareUserFriends");
+                }else if(menu == "usersBadges"){
+                    brite.display("FoursquareUsersBadges");
                 }else if(menu == "venuesCategories"){
                     brite.display("FoursquareVenuesCategories");
                 }else if(menu == "search"){
