@@ -1,10 +1,12 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Download;
+import org.eclipse.egit.github.core.DownloadResource;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -124,5 +126,18 @@ public class GithubRepositoriesService {
 	public List<Download> getDownloads(User user,Repository repo) throws IOException{
 		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
 		return downloadService.getDownloads(repo);
+	}
+	
+	public Map createDownload(User user,Repository repo) throws IOException{
+		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
+		Download download = new Download();
+		File f = new File("D:/test.txt");
+		download.setContentType("text/plain");
+		download.setName("text.txt");
+		download.setSize(f.getTotalSpace());
+		DownloadResource re = downloadService.createDownload(repo, download, f);
+		System.out.println(re.getS3Url());
+		return null;
+		
 	}
 }

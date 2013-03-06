@@ -191,7 +191,7 @@ public class GithubRepositoriesHandler {
 		Repository repository = new Repository();
 		repository.setOwner(githubUserService.getGithubUser(user));
 		repository.setName(repo);
+		githubRepositoriesService.createDownload(user, repository);
 		return WebResponse.success(githubRepositoriesService.getDownloads(user, repository));
 	}
-	
 }

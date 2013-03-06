@@ -37,7 +37,7 @@
 				});
 			},
 			"click;.download":function(event){
-				app.githubApi.getDownloads({repo:"sampleTaskmanager"}).pipe(function(json){
+				app.githubApi.getDownloads({repo:"ContactApp"}).pipe(function(json){
 					console.log(json)
 				});
 			}
