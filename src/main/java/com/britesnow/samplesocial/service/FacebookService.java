@@ -106,7 +106,7 @@ public class FacebookService {
     }
 
     public List getNotesList(String accessToken, String userId, Integer limit, Integer offset) {
-        Connection<Note> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/notes", Note.class);
+        Connection<Note> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/notes", Note.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
         List ls = result.getData();
         for (int i = 0; i < ls.size(); i++) {
             Note note = (Note) ls.get(i);
@@ -119,7 +119,7 @@ public class FacebookService {
     }
 
     public List getEventsList(String accessToken, String userId, Integer limit, Integer offset) {
-        Connection<Event> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/events", Event.class);
+        Connection<Event> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/events", Event.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
         List ls = result.getData();
         for (int i = 0; i < ls.size(); i++) {
             Event e = (Event) ls.get(i);
@@ -132,7 +132,7 @@ public class FacebookService {
     }
 
     public List getQuestionsList(String accessToken, String userId, Integer limit, Integer offset) {
-        Connection<JsonObject> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/questions", JsonObject.class);
+        Connection<JsonObject> result = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/questions", JsonObject.class, Parameter.with("limit", limit), Parameter.with("offset", offset));
         List ls = result.getData();
         return ls;
     }
