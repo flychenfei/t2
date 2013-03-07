@@ -1,4 +1,4 @@
-(function(){
+;(function(){
 	brite.registerView("GithubRepositories",{emptyParent:true},{
 		create:function(data,config){
 			return app.render("tmpl-GithubRepositories",{repositories:data.repositories});
@@ -75,12 +75,16 @@
 			},
 			"click;.createdownload":function(event){
 				var name = $(event.target).closest("td").attr("data-repository-name");
-				brite.display("GithubDialog",$("body"),{
-					layout:{width:'50%',height:'75%',left:'25%',top:'15%'},
-					type:"createDownload",
-					title:name,
-					repo:name
-			    });
+				app.githubApi.getDownloads({repo:name}).pipe(function(json){
+					var downloads = json.result;
+					brite.display("GithubDialog",$("body"),{
+						layout:{width:'50%',height:'auto',left:'25%',top:'15%'},
+						type:"createDownload",
+						title:name,
+						repo:name,
+						downloads:downloads
+				    });
+				});
 			}
 		}
 	});

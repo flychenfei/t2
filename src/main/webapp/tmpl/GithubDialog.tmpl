@@ -37,8 +37,15 @@
 			 {{else}}
 				 {{#equal data.type "createDownload"}}
 				 <div>
+				 	<div class="downloaditems">
+				 		{{#each data.downloads}}
+				 			<div class="downloaditem"><a href="{{htmlUrl}}">{{name}}</a><span>{{downloadCount}}</span></div>
+				 		{{/each}}
+				 	</div>	
 						<input type="file" name="download" data-repo="{{data.repo}}"/>
-						<button class="btn btn-primary createdownloadbtn">Create</button>
+						<div class="dialogBtns">
+							<button class="btn btn-primary createdownloadbtn">Create</button>
+						</div>
 				 </div>
 				 {{/equal}}
 			 {{/equal}}
@@ -74,4 +81,9 @@
 	<span>{{data.filename}}</span>
 	<div class="code"><pre>{{data.file.content}}</pre></div>
 	{{/if}}	
+</script>
+<script id="tmpl-GithubDownloads" type="text/html">
+	{{#each data.downloads}}
+	<div class="downloaditem"><a href="{{htmlUrl}}">{{name}}</a><span>{{downloadCount}}</span></div>
+	{{/each}}
 </script>

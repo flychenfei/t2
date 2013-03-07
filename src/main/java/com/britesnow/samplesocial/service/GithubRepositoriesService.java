@@ -141,7 +141,6 @@ public class GithubRepositoriesService {
 		download.setContentType("application/octet-stream");
 		download.setName(item.getName());
 		DownloadResource re = downloadService.createDownload(repo, download, item.getInputStream(),item.getSize());
-		System.out.println(re.getS3Url());
 		return re;
 	}
 }

@@ -36,15 +36,15 @@
 					}
 				});
 			},
-			"click;.download":function(event){
-				app.githubApi.getDownloads({repo:"ContactApp"}).pipe(function(json){
-					console.log(json)
-				});
-			},
 			"click;.createdownloadbtn":function(event){
 				var repo = $(":input[name='download']").attr("data-repo");
-				alert(repo);
 				app.ajaxPost(contextPath+"/github/createDownload",{repo:repo},$(":input[type='file']")[0].files[0]).done(function(){
+					app.githubApi.getDownloads({repo:repo}).pipe(function(json){
+						var downloads = json.result;
+						brite.display("GithubDownloads",$(".downloaditems"),{
+							downloads:downloads
+					    });
+					});
 				});
 			}
 		}
