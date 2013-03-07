@@ -196,6 +196,14 @@ public class GithubRepositoriesHandler {
 		return WebResponse.success(githubRepositoriesService.getDownloads(user, repository));
 	}
 	
+	/**
+	 * Create a download
+	 * @param user
+	 * @param data
+	 * @param item
+	 * @return
+	 * @throws IOException
+	 */
 	@WebPost("/github/createDownload")
 	public WebResponse createDownload(@WebUser User user,@WebParam("data") String data,
 			@WebParam("file") FileItem item) throws IOException{
@@ -206,5 +214,22 @@ public class GithubRepositoriesHandler {
 		repository.setName(repo);
 		System.out.println(repository.generateId());
 		return WebResponse.success(githubRepositoriesService.createDownload(user, repository,item));
+	}
+	
+	/**
+	 * Delete a download
+	 * @param user
+	 * @param repoId
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/deleteDownload")
+	public WebResponse deleteDownload(@WebUser User user,@WebParam("repo") String repo,
+			@WebParam("repoId") String repoId) throws IOException{
+		Repository repository = new Repository();
+		repository.setOwner(githubUserService.getGithubUser(user));
+		repository.setName(repo);
+		githubRepositoriesService.deleteDownload(user, repository,Integer.parseInt(repoId));
+		return WebResponse.success();
 	}
 }

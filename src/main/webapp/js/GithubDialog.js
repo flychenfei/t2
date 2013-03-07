@@ -46,6 +46,14 @@
 					    });
 					});
 				});
+			},
+			"click;.delete":function(event){
+				var deleteBtn = $(event.target);
+				var repo = $(deleteBtn).closest(".downloaditems").attr("data-repo");
+				var repoId = $(deleteBtn).attr("data-repoId");
+				app.githubApi.deleteDownload({repo:repo,repoId:repoId}).pipe(function(json){
+					$(deleteBtn).parent().hide("slow");
+				});
 			}
 		}
 	})

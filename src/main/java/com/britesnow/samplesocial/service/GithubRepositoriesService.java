@@ -111,6 +111,15 @@ public class GithubRepositoriesService {
 		}
 	}
 	
+	/**
+	 * get archiveLink of a repository
+	 * @param user
+	 * @param repo
+	 * @param archiveFormat
+	 * @param ref
+	 * @return
+	 * @throws IOException
+	 */
 	public String getArchiveLink(User user,String repo,String archiveFormat,String ref) throws IOException{
 		return 	PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
 				"/"+archiveFormat+"/"+ref+"?access_token="+githubAuthService.getToken(user).getToken();
@@ -142,5 +151,17 @@ public class GithubRepositoriesService {
 		download.setName(item.getName());
 		DownloadResource re = downloadService.createDownload(repo, download, item.getInputStream(),item.getSize());
 		return re;
+	}
+	
+	/**
+	 * Delete a download
+	 * @param user
+	 * @param repo
+	 * @param repoId
+	 * @throws IOException
+	 */
+	public void deleteDownload(User user,Repository repo,int repoId) throws IOException{
+		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
+		downloadService.deleteDownload(repo, repoId);
 	}
 }

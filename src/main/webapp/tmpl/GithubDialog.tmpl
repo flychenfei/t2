@@ -37,9 +37,13 @@
 			 {{else}}
 				 {{#equal data.type "createDownload"}}
 				 <div>
-				 	<div class="downloaditems">
+				 	<div class="downloaditems" data-repo="{{data.repo}}">
 				 		{{#each data.downloads}}
-				 			<div class="downloaditem"><a href="{{htmlUrl}}">{{name}}</a><span>{{downloadCount}}</span></div>
+				 			<div class="downloaditem">
+				 				<a href="{{htmlUrl}}">{{name}}</a>
+				 				<span>{{downloadCount}}</span>
+				 				<a href="javascript:void(0)" class="delete" data-repoId="{{id}}">Delete</a>
+				 			</div>
 				 		{{/each}}
 				 	</div>	
 						<input type="file" name="download" data-repo="{{data.repo}}"/>
@@ -84,6 +88,10 @@
 </script>
 <script id="tmpl-GithubDownloads" type="text/html">
 	{{#each data.downloads}}
-	<div class="downloaditem"><a href="{{htmlUrl}}">{{name}}</a><span>{{downloadCount}}</span></div>
+	<div class="downloaditem">
+		<a href="{{htmlUrl}}">{{name}}</a>
+		<span>{{downloadCount}}</span>
+		<a href="javascript:void(0)" class="delete" data-repoId="{{id}}">Delete</a>
+	</div>
 	{{/each}}
 </script>
