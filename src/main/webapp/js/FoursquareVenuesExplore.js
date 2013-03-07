@@ -47,30 +47,23 @@
                 },
                 {
                     text: "Category",
-                    render: function (data) {
-                        var obj = data.venue;
-                        if(obj.categories && obj.categories.length > 0){
-                            return obj.categories[0].name;
-                        }else{
-                            return "";
-                        }
+                    render: function (obj) {
+                            return obj.category;
                     },
                     attrs: "style='width: 15%'"
 
                 },
                 {
                     text: "Name",
-                    render: function (data) {
-                        var obj = data.venue;
+                    render: function (obj) {
                         return obj.name
                     },
                     attrs: "style='width: 10%'"
                 },
                 {
                     text: "Location",
-                    render: function (data) {
-                        var obj = data.venue;
-                        return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
+                    render: function (obj) {
+                        return obj.location;
                     },
                     attrs: "style='width: 30%'"
                 }

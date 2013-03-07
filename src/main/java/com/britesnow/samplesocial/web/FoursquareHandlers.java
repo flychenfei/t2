@@ -166,7 +166,14 @@ public class FoursquareHandlers {
         if (user != null) {
             Result<Recommended> result = foursquareService.venuesExplore(user.getId(), ll, limit);
             if (result.getMeta().getCode() == 200) {
-                return WebResponse.success(result.getResult());
+                List<Map> dtos = new ArrayList<Map>();
+                for (RecommendationGroup group : result.getResult().getGroups()) {
+                    for (Recommendation recommendation : group.getItems()) {
+                        Map dto = convertCompactVenue(recommendation.getVenue());
+                        dtos.add(dto);
+                    }
+                }
+                return WebResponse.success(dtos);
             }
         }
 
