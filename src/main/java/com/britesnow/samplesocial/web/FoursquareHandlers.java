@@ -13,6 +13,9 @@ import com.google.inject.Singleton;
 import fi.foyt.foursquare.api.Result;
 import fi.foyt.foursquare.api.entities.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -91,12 +94,31 @@ public class FoursquareHandlers {
         if (user != null) {
             Result<CompactVenue[]> result = foursquareService.venuesTrending(user.getId(), ll, limit, radius);
             if (result.getMeta().getCode() == 200) {
-                return WebResponse.success(result.getResult());
+                return WebResponse.success(convert2CompactVenue(result.getResult()));
             }
         }
 
         return WebResponse.fail();
     }
+
+    private List convert2CompactVenue(CompactVenue[] result) {
+        List<Map> list = new ArrayList<Map>();
+        for (CompactVenue compactVenue : result) {
+            Map map = new HashMap();
+            Category[] cgs = compactVenue.getCategories();
+            if (cgs != null && cgs.length > 0) {
+                map.put("category", cgs[0].getName());
+            } else {
+                map.put("category", "");
+            }
+            map.put("name", compactVenue.getName());
+            map.put("url", compactVenue.getUrl());
+            map.put("location", compactVenue.getLocation());
+            list.add(map);
+        }
+        return list;
+    }
+
     @WebGet("/foursquare/venuesSearch")
     public WebResponse venuesSearch(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
