@@ -167,6 +167,20 @@ public class FacebookFeedHandlers {
         return null;
     }
 
+    @WebPost("/fb/delete-photo")
+    public WebResponse deleteFacebookPhoto(@WebUser User user, @WebParam("messageId") String messageId) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.deletePhoto(token, messageId);
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
+
     @WebPost("/fb/event-add")
     public WebResponse addFacebookEvent(@WebUser User user, @WebParam("name") String name,
                             @WebParam("start_time") String start_time) {

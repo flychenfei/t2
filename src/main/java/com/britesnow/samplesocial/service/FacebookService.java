@@ -166,6 +166,11 @@ public class FacebookService {
         return result.getId();
     }
 
+    public boolean deletePhoto(String accessToken, String messageId) {
+        boolean result = new DefaultFacebookClient(accessToken).deleteObject(messageId);
+        return result;
+    }
+
     public String publishEvent(String accessToken, String userId, String name, String startTime) {
         FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/events", FacebookType.class, Parameter.with("name", name), Parameter.with("start_time", startTime));
         return result.getId();
