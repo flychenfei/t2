@@ -109,6 +109,20 @@ public class FacebookFeedHandlers {
         return null;
     }
 
+    @WebPost("/fb/post-delete")
+    public WebResponse deleteFacebookPost(@WebUser User user, @WebParam("messageId") String messageId) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.deleteFeed(token, messageId);
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
+
     @WebPost("/fb/note-add")
     public WebResponse addFacebookNote(@WebUser User user, @WebParam("subject") String subject,
                             @WebParam("msg") String msg) {

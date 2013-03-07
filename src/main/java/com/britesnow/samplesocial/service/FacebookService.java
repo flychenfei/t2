@@ -146,6 +146,11 @@ public class FacebookService {
         return publish(accessToken, "feed", userId, message);
     }
 
+    public boolean deleteFeed(String accessToken, String messageId) {
+        boolean result = new DefaultFacebookClient(accessToken).deleteObject(messageId);
+        return result;
+    }
+
     public String publishNote(String accessToken, String userId, String subject, String note) {
         FacebookType result = new DefaultFacebookClient(accessToken).publish(userId + "/notes", FacebookType.class, Parameter.with("subject", subject), Parameter.with("message", note));
         return result.getId();
