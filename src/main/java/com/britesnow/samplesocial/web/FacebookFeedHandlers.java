@@ -195,4 +195,18 @@ public class FacebookFeedHandlers {
         }
         return null;
     }
+
+    @WebPost("/fb/delete-event")
+    public WebResponse deleteFacebookEvent(@WebUser User user, @WebParam("messageId") String messageId) {
+        try {
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            String token = e.getToken();
+            facebookService.deleteEvent(token, messageId);
+            return WebResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            WebResponse.fail(e);
+        }
+        return null;
+    }
 }

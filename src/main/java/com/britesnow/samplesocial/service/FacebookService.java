@@ -176,6 +176,11 @@ public class FacebookService {
         return result.getId();
     }
 
+    public boolean deleteEvent(String accessToken, String messageId) {
+        boolean result = new DefaultFacebookClient(accessToken).deleteObject(messageId);
+        return result;
+    }
+
     public static class FqlUser {
         @Facebook("uid")
         String id;
