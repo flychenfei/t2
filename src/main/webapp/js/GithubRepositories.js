@@ -72,6 +72,15 @@
 					    });
 					});
 				});
+			},
+			"click;.createdownload":function(event){
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				brite.display("GithubDialog",$("body"),{
+					layout:{width:'50%',height:'75%',left:'25%',top:'15%'},
+					type:"createDownload",
+					title:name,
+					repo:name
+			    });
 			}
 		}
 	});

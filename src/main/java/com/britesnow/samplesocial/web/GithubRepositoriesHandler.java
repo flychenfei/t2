@@ -2,12 +2,14 @@ package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
 
+import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Repository;
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.GithubCommitService;
 import com.britesnow.samplesocial.service.GithubRepositoriesService;
 import com.britesnow.samplesocial.service.GithubUserService;
+import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -191,7 +193,18 @@ public class GithubRepositoriesHandler {
 		Repository repository = new Repository();
 		repository.setOwner(githubUserService.getGithubUser(user));
 		repository.setName(repo);
-		githubRepositoriesService.createDownload(user, repository);
 		return WebResponse.success(githubRepositoriesService.getDownloads(user, repository));
+	}
+	
+	@WebPost("/github/createDownload")
+	public WebResponse createDownload(@WebUser User user,@WebParam("data") String data,
+			@WebParam("file") FileItem item) throws IOException{
+		String repo = JsonUtil.toMapAndList(data).get("repo").toString();
+		System.out.println(repo);
+		Repository repository = new Repository();
+		repository.setOwner(githubUserService.getGithubUser(user));
+		repository.setName(repo);
+		System.out.println(repository.generateId());
+		return WebResponse.success(githubRepositoriesService.createDownload(user, repository,item));
 	}
 }

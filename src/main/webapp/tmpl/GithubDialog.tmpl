@@ -34,6 +34,13 @@
  					<div><pre>{{data.readme.content}}</pre></div>
  					{{/notEqual}}				
 				</div>
+			 {{else}}
+				 {{#equal data.type "createDownload"}}
+				 <div>
+						<input type="file" name="download" data-repo="{{data.repo}}"/>
+						<button class="btn btn-primary createdownloadbtn">Create</button>
+				 </div>
+				 {{/equal}}
 			 {{/equal}}
 			</div>
 		</div>

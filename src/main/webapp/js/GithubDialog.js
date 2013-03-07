@@ -40,6 +40,12 @@
 				app.githubApi.getDownloads({repo:"ContactApp"}).pipe(function(json){
 					console.log(json)
 				});
+			},
+			"click;.createdownloadbtn":function(event){
+				var repo = $(":input[name='download']").attr("data-repo");
+				alert(repo);
+				app.ajaxPost(contextPath+"/github/createDownload",{repo:repo},$(":input[type='file']")[0].files[0]).done(function(){
+				});
 			}
 		}
 	})

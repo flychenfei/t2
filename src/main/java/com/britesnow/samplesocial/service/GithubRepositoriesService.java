@@ -1,10 +1,10 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.DownloadResource;
 import org.eclipse.egit.github.core.Repository;
@@ -128,16 +128,20 @@ public class GithubRepositoriesService {
 		return downloadService.getDownloads(repo);
 	}
 	
-	public Map createDownload(User user,Repository repo) throws IOException{
+	/**
+	 * create a download for repository
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	public DownloadResource createDownload(User user,Repository repo,FileItem item) throws IOException{
 		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
 		Download download = new Download();
-		File f = new File("D:/test.txt");
-		download.setContentType("text/plain");
-		download.setName("text.txt");
-		download.setSize(f.getTotalSpace());
-		DownloadResource re = downloadService.createDownload(repo, download, f);
+		download.setContentType("application/octet-stream");
+		download.setName(item.getName());
+		DownloadResource re = downloadService.createDownload(repo, download, item.getInputStream(),item.getSize());
 		System.out.println(re.getS3Url());
-		return null;
-		
+		return re;
 	}
 }
