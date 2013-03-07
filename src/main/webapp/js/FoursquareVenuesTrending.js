@@ -63,7 +63,7 @@
                 {
                     text: "Location",
                     render: function (obj) {
-                        return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
+                        return obj.location;
                     }
                 }
             ],

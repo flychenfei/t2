@@ -41,11 +41,7 @@
                 {
                     text: "Category",
                     render: function (obj) {
-                        if(obj.categories && obj.categories.length > 0){
-                            return obj.categories[0].name;
-                        }else{
-                            return "";
-                        }
+                            return obj.category;
                     },
                     attrs: "style='width: 15%'"
 
@@ -60,7 +56,7 @@
                 {
                     text: "Location",
                     render: function (obj) {
-                        return "{address},{crossStreet},{city},{country}, {postalCode}".format(obj.location);
+                        return obj.location;
                     },
                     attrs: "style='width: 30%'"
                 }

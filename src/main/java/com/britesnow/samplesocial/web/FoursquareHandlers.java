@@ -3,7 +3,6 @@ package com.britesnow.samplesocial.web;
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FoursquareService;
-import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -94,29 +93,61 @@ public class FoursquareHandlers {
         if (user != null) {
             Result<CompactVenue[]> result = foursquareService.venuesTrending(user.getId(), ll, limit, radius);
             if (result.getMeta().getCode() == 200) {
-                return WebResponse.success(convert2CompactVenue(result.getResult()));
+                return WebResponse.success(convertCompactVenues(result.getResult()));
             }
         }
 
         return WebResponse.fail();
     }
 
-    private List convert2CompactVenue(CompactVenue[] result) {
+    /**
+     * convert compact venues array to map list
+     * @param result  compact venues array
+     * @return list of map
+     */
+    private List convertCompactVenues(CompactVenue[] result) {
         List<Map> list = new ArrayList<Map>();
         for (CompactVenue compactVenue : result) {
-            Map map = new HashMap();
-            Category[] cgs = compactVenue.getCategories();
-            if (cgs != null && cgs.length > 0) {
-                map.put("category", cgs[0].getName());
-            } else {
-                map.put("category", "");
-            }
-            map.put("name", compactVenue.getName());
-            map.put("url", compactVenue.getUrl());
-            map.put("location", compactVenue.getLocation());
+            Map map = convertCompactVenue(compactVenue);
             list.add(map);
         }
         return list;
+    }
+
+    private Map convertCompactVenue(CompactVenue compactVenue) {
+        Map map = new HashMap();
+        Category[] cgs = compactVenue.getCategories();
+        if (cgs != null && cgs.length > 0) {
+            map.put("category", cgs[0].getName());
+        } else {
+            map.put("category", "");
+        }
+        map.put("name", compactVenue.getName());
+        map.put("url", compactVenue.getUrl());
+        map.put("location", buildLocation(compactVenue.getLocation()));
+        return map;
+    }
+
+    private String buildLocation(Location location) {
+        StringBuilder builder = new StringBuilder();
+        //"{address},{crossStreet},{city},{country}, {postalCode}"
+        if (location.getAddress() != null) {
+            builder.append(location.getAddress()).append(",");
+        }
+        if (location.getCrossStreet() != null) {
+            builder.append(location.getCrossStreet()).append(",");
+        }
+        if (location.getCity() != null) {
+            builder.append(location.getCity()).append(",");
+        }
+        if (location.getCountry() != null) {
+            builder.append(location.getCountry()).append(",");
+        }
+        if (location.getPostalCode() != null) {
+            builder.append(location.getPostalCode());
+        }
+        return builder.toString();
+
     }
 
     @WebGet("/foursquare/venuesSearch")
@@ -124,7 +155,7 @@ public class FoursquareHandlers {
         if (user != null) {
             Map venues = rc.getParamMap("venues.");
             Result<VenuesSearchResult> result = foursquareService.venuesSearch(user.getId(), venues);
-            return WebResponse.success(result.getResult().getVenues());
+            return WebResponse.success(convertCompactVenues(result.getResult().getVenues()));
         }else {
             return WebResponse.fail();
         }
