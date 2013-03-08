@@ -38,6 +38,12 @@ var app = app || {};
 			};
 			return app.getJsonData(contextPath + "/fb/contact-delete", params);
 		},
+		deleteEvent : function(id) {
+			var params = {
+				"id" : id
+			};
+			return app.getJsonData(contextPath + "/fb/delete-event", params);
+		},
 		getPosts : function(opts) {
 			var params = {
 				method : "Get"

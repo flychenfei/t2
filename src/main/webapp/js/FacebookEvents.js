@@ -24,7 +24,7 @@
 					var start_time = $e.find("input[name='start_time']");
 					app.facebookApi.addEvent({
 						name : name.val(),
-						start_time:start_time.val()
+						start_time : start_time.val()
 					}).done(function() {
 						view.refreshEventsList.call(view);
 						$(".result").show(function() {
@@ -35,7 +35,21 @@
 			},
 
 			docEvents : {
-
+				"DELETE_FBEVENT" : function(event, extraData) {
+					var view = this;
+					if (extraData && extraData.objId) {
+						app.facebookApi.deleteEvent(extraData.objId).done(function(extradata) {
+							if (extradata && extradata.result) {
+								setTimeout((function() {
+									view.refreshEventsList.call(view);
+									$(".result").show(function() {
+										$(".result").hide(3000);
+									});
+								}), 100);
+							}
+						});
+					}
+				}
 			},
 
 			daoEvents : {
@@ -52,6 +66,8 @@
 					};
 					return "";
 				}
+
+
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
 						list : app.facebookApi.getEvents
@@ -59,7 +75,7 @@
 					rowAttrs : function(obj) {
 						return " etag='{0}'".format(obj.etag)
 					},
-					columnDef : [ {
+					columnDef : [{
 						text : "Name",
 						render : function(obj) {
 							return obj.name;
@@ -76,7 +92,8 @@
 						htmlIfEmpty : "Not event found",
 						withPaging : true,
 						withCmdEdit : false,
-						withCmdDelete : false
+						withCmdDelete : true,
+						cmdDelete : "DELETE_FBEVENT"
 					}
 				});
 			}
