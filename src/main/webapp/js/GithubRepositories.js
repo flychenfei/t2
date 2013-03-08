@@ -36,7 +36,17 @@
 				var name = $(event.target).closest("td").attr("data-repository-name");
 				var description = $(event.target).closest("td").attr("data-repository-description");
 				var login = $(event.target).closest("td").attr("data-login");
-				brite.display("GithubRepositoryEdit",$("body"),{id:repositoryId,name:name,description:description,login:login});
+				brite.display("GithubRepositoryEdit",$("body"),{
+					id:repositoryId,
+					name:name,
+					description:description,
+					login:login,
+					layout:{
+						left:'20%',
+						height:'auto'
+						
+					}
+				});
 			},
 			"click;.commits":function(event){
 				var name = $(event.target).closest("td").attr("data-repository-name");
