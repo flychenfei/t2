@@ -8,6 +8,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.DownloadResource;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.util.EncodingUtils;
@@ -187,5 +188,18 @@ public class GithubRepositoriesService {
 	public Repository CreateFork(User user,Repository repo) throws IOException{
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 		return repositoryService.forkRepository(repo);
+	}
+	
+	/**
+	 * Search repositories
+	 * @param user
+	 * @param query
+	 * @param startPage
+	 * @return
+	 * @throws IOException
+	 */
+	public List<SearchRepository> searchRepositories(User user,String query,int startPage) throws IOException{
+		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
+		return repositoryService.searchRepositories(query, startPage);
 	}
 }
