@@ -51,6 +51,11 @@ public class LinkedInAuthService implements AuthService {
                 });
     }
 
+    /**
+     * get linkedin socialid entity by user id.
+     * @param userId   user id
+     * @return linkedin socialid entity
+     */
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
         SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
@@ -61,13 +66,23 @@ public class LinkedInAuthService implements AuthService {
         throw new OauthException(getAuthorizationUrl());
     }
 
+    /**
+     * get authorization url and put in cache
+     * @return url for authorization
+     */
     public String getAuthorizationUrl() {
         Token reqToken = oAuthService.getRequestToken();
         tokenCache.put(reqToken.getToken(), reqToken);
         return oAuthService.getAuthorizationUrl(reqToken);
     }
 
-    public boolean updateAccessToken(String requestToken, String verifierCode, long userId)  {
+    /**
+     * update access token to database
+     * @param requestToken requestToken
+     * @param verifierCode verifierCode
+     * @param userId  user id
+     */
+    public void updateAccessToken(String requestToken, String verifierCode, long userId)  {
         try {
             Verifier verifier = new Verifier(verifierCode);
             Token reqToken = tokenCache.get(requestToken);
@@ -106,12 +121,11 @@ public class LinkedInAuthService implements AuthService {
                     socialIdEntityDao.update(social);
                 }
 
-                return true;
+            }else{
+                throw new OauthException(getAuthorizationUrl());
             }
         } catch (ExecutionException e) {
             e.printStackTrace();
-            return false;
         }
-        return false;
     }
 }
