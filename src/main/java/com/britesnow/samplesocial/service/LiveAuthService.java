@@ -49,6 +49,11 @@ public class LiveAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
+    /**
+     * update access token to database
+     * @param verifierCode  verifier code that server return.
+     * @param userId user id
+     */
     public void updateAccessToken(String verifierCode, long userId) {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
@@ -90,6 +95,13 @@ public class LiveAuthService implements AuthService {
 
     }
 
+    /**
+     * create request by user id, verb(get, post), and url
+     * @param userId  user id
+     * @param verb  http method, get, put, delelte post
+     * @param url  url
+     * @return  oauthrequest have sign
+     */
     public OAuthRequest createRequest(Long userId, Verb verb, String url) {
         SocialIdEntity soid = getSocialIdEntity(userId);
 

@@ -42,6 +42,13 @@ public class LinkedInService {
         throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
     }
 
+    /**
+     * get user connections   by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  user map
+     */
     public Map getConnections(User user, Integer pageIndex, Integer pageSize) {
 
         OAuthRequest request = createRequest(Verb.GET, CONNECTION_ENDPOINT);
@@ -65,6 +72,14 @@ public class LinkedInService {
         request.addQuerystringParameter("count", String.valueOf(pageSize));
     }
 
+    /**
+     * search jobs by auth user
+     * @param user   user have auth
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @param keywork    keywork to search
+     * @return  job map
+     */
     public Map searchJobs(User user, Integer pageIndex, Integer pageSize, String keywork) {
         if (keywork == null) {
             keywork = "hibernate";
@@ -75,6 +90,15 @@ public class LinkedInService {
         Response resp = request.send();
         return JsonUtil.toMapAndList(resp.getBody());
     }
+
+    /**
+     * search compan by auth user
+     * @param user   user have auth
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @param keywork    key work to search
+     * @return   company map
+     */
     public Map searchCompany(User user, Integer pageIndex, Integer pageSize, String keywork) {
         if (keywork == null) {
             keywork = "inc";
@@ -85,6 +109,15 @@ public class LinkedInService {
         Response resp = request.send();
         return JsonUtil.toMapAndList(resp.getBody());
     }
+
+    /**
+     * search people  by auth user
+     * @param user   auth user
+     * @param pageIndex  page index
+     * @param pageSize   page side
+     * @param keywork   keywork to search
+     * @return   people map
+     */
     public Map searchPeople(User user, Integer pageIndex, Integer pageSize, String keywork) {
         if (keywork == null) {
             keywork = "self";

@@ -41,6 +41,15 @@ public class GMailService {
     @Inject
     GoogleAuthService authService;
 
+    /**
+     * list mails
+     * @param user oauth user
+     * @param folderName   foldr name
+     * @param start   start
+     * @param count   count
+     * @return  pare of couf and messages
+     * @throws Exception
+     */
     public Pair<Integer, Message[]> listMails(User user, String folderName, int start, int count) throws Exception {
         IMAPStore imap = getImapStore(user);
 
@@ -77,7 +86,12 @@ public class GMailService {
         return new Pair<Integer, Message[]>(0, new Message[0]);
     }
 
-
+    /**
+     * list folder
+     * @param user
+     * @return
+     * @throws Exception
+     */
     public Folder[] listFolders(User user) throws Exception {
         IMAPStore imap = getImapStore(user);
         return imap.getDefaultFolder().list();
@@ -87,6 +101,13 @@ public class GMailService {
         return imap.getFolder(folderName);
     }
 
+    /**
+     * get mail detail
+     * @param user
+     * @param emailId
+     * @return
+     * @throws Exception
+     */
     public MailInfo getEmail(User user, int emailId) throws Exception {
         IMAPStore imap = getImapStore(user);
         Folder inbox = imap.getFolder("INBOX");
@@ -100,6 +121,12 @@ public class GMailService {
         return info;
     }
 
+    /**
+     * delete mail
+     * @param user
+     * @param emailId
+     * @throws Exception
+     */
     public void deleteEmail(User user, int emailId) throws Exception {
         IMAPStore imap = getImapStore(user);
         Folder inbox = imap.getFolder("INBOX");
@@ -108,6 +135,14 @@ public class GMailService {
         Message msg = inbox.getMessage(emailId);
         msg.setFlag(Flags.Flag.DELETED, true);
     }
+
+    /**
+     * delete folder
+     * @param user
+     * @param folderName
+     * @return  delete ok or not
+     * @throws Exception
+     */
     public boolean deleteFolder(User user, String folderName) throws Exception {
         IMAPStore imap = getImapStore(user);
         Folder folder = imap.getFolder(folderName);
@@ -117,6 +152,16 @@ public class GMailService {
         return folder.delete(true);
     }
 
+    /**
+     * search mail
+     * @param user  auth user
+     * @param subject search object
+     * @param from    search from
+     * @param pageSize  page size
+     * @param pageIndex  page index
+     * @return   pair of count and mail info.
+     * @throws Exception
+     */
     public Pair<List<MailInfo>, Integer> search(User user, String subject, String from, int pageSize, int pageIndex) throws Exception {
         Folder inbox = null;
         List<MailInfo> infos = new ArrayList<MailInfo>();
@@ -162,6 +207,15 @@ public class GMailService {
         return new Pair<List<MailInfo>, Integer>(infos, count);
     }
 
+    /**
+     * sent mail
+     * @param user  auth user
+     * @param subject  mail subject
+     * @param content  mail content
+     * @param to  mail to
+     * @return  mail ok or not
+     * @throws Exception
+     */
     public boolean sendMail(User user, String subject, String content, String to) throws Exception {
         SocialIdEntity idEntity = authService.getSocialIdEntity(user.getId());
         if (idEntity != null) {

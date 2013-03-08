@@ -35,7 +35,16 @@ public class GoogleContactHandlers {
     @Inject
     private GoogleAuthService googleAuthService;
 
-
+    /**
+     * get contacts info
+     * @param user   auth user
+     * @param groupId  group id
+     * @param pageSize   page size
+     * @param pageIndex  page size
+     * @param rc
+     * @return
+     * @throws Exception
+     */
     @WebGet("/gcontact/list")
     public WebResponse getContacts(@WebUser User user, @WebParam("groupId") String groupId,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
@@ -50,6 +59,17 @@ public class GoogleContactHandlers {
 
         return WebResponse.success(infos).setResultCount(pair.getSecond());
     }
+
+    /**
+     * search contact
+     * @param user   usedr
+     * @param contactName  contact name
+     * @param pageSize   page size
+     * @param pageIndex page index
+     * @param rc
+     * @return
+     * @throws Exception
+     */
     @WebGet("/gcontact/search")
     public WebResponse searchContacts(@WebUser User user, @WebParam("contactName") String contactName,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
