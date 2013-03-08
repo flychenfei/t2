@@ -44,6 +44,12 @@ var app = app || {};
 			};
 			return app.getJsonData(contextPath + "/fb/delete-event", params);
 		},
+		deleteFeed : function(id) {
+			var params = {
+				"id" : id
+			};
+			return app.getJsonData(contextPath + "/fb/post-delete", params);
+		},
 		getPosts : function(opts) {
 			var params = {
 				method : "Get"

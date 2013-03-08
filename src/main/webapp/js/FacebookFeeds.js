@@ -20,8 +20,10 @@
 					var view = this;
 					var $e = view.$el;
 					var value = $e.find(".post").val();
-					if (value=="") {return};
-					app.facebookApi.addPost(value).done(function(){
+					if (value == "") {
+						return
+					};
+					app.facebookApi.addPost(value).done(function() {
 						view.refreshPostsList.call(view);
 						$e.find(".post").val('');
 					});
@@ -29,7 +31,21 @@
 			},
 
 			docEvents : {
-
+				"DELETE_FBFEED" : function(event, extraData) {
+					var view = this;
+					if (extraData && extraData.objId) {
+						app.facebookApi.deleteFeed(extraData.objId).done(function(extradata) {
+							if (extradata && extradata.result) {
+								setTimeout((function() {
+									view.refreshPostsList.call(view);
+									$(".result").show(function() {
+										$(".result").hide(3000);
+									});
+								}), 100);
+							}
+						});
+					}
+				}
 			},
 
 			daoEvents : {
@@ -40,12 +56,14 @@
 				if (!$e) {
 					return;
 				};
-				function fixNull(v){
+				function fixNull(v) {
 					if (v) {
 						return v;
 					};
-					return  "";
+					return "";
 				}
+
+
 				brite.display("DataTable", ".listItem", {
 					dataProvider : {
 						list : app.facebookApi.getPosts
@@ -56,17 +74,17 @@
 					columnDef : [{
 						text : "News",
 						render : function(obj) {
-							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story)+" "+fixNull(obj.message) + "</a>"
+							return "<a href='#'  data-value='" + obj.fbid + "'>" + fixNull(obj.story) + " " + fixNull(obj.message) + "</a>"
 						},
 						attrs : "style='width: 400px'"
 
-					},{
+					}, {
 						text : "Type",
 						render : function(obj) {
 							return fixNull(obj.type);
 						},
 						attrs : "style='width: 200px'"
-					},{
+					}, {
 						text : "Created time",
 						render : function(obj) {
 							return fixNull(obj.created_time);
@@ -77,11 +95,12 @@
 						htmlIfEmpty : "Not news found",
 						withPaging : true,
 						withCmdEdit : false,
-						withCmdDelete : false
+						withCmdDelete : true,
+						cmdDelete : "DELETE_FBFEED"
 					}
 				});
 			}
 		});
 	})(jQuery);
 
-})();
+})(); 
