@@ -88,10 +88,13 @@
 			},
 			"click;.forks":function(event){
 				var name = $(event.target).closest("td").attr("data-repository-name");
-				app.githubApi.getForks({repo:name}).pipe(function(repositories){
-					console.log(repositories);
-					repositories = repositories.result;
-					brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+				app.githubApi.getForks({repo:name}).pipe(function(forks){
+					forks = forks.result;
+					if(forks.length==0){
+						alert("there has no fork for repository : "+name);
+						return false;
+					}
+					brite.display("GithubRepositories",$(".tab-content"),{repositories:forks});
 				});
 			}
 		}

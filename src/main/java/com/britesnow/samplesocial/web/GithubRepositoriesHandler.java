@@ -250,7 +250,7 @@ public class GithubRepositoriesHandler {
 	}
 	
 	/**
-	 * List forks
+	 * Create a fork
 	 * @param user
 	 * @param repo
 	 * @return
