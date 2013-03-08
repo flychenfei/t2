@@ -245,6 +245,26 @@ public class GithubRepositoriesHandler {
 		Repository repository = new Repository();
 		repository.setOwner(githubUserService.getGithubUser(user));
 		repository.setName(repo);
+		githubRepositoriesService.CreateFork(user, repository);
+		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
+	}
+	
+	/**
+	 * List forks
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/createFork")
+	public WebResponse createFork(@WebUser User user,@WebParam("login") String login,
+			@WebParam("repo")String repo) throws IOException{
+		Repository repository = new Repository();
+		org.eclipse.egit.github.core.User githubUser = new org.eclipse.egit.github.core.User();
+		githubUser.setLogin(login);
+		repository.setOwner(githubUser);
+		repository.setName(repo);
+		githubRepositoriesService.CreateFork(user, repository);
 		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
 	}
 }

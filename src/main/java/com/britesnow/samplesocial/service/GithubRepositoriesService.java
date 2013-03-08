@@ -174,7 +174,18 @@ public class GithubRepositoriesService {
 	 */
 	public List<Repository> getForks(User user,Repository repo) throws IOException{
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
-		System.out.println(repositoryService.getForks(repo).size());
 		return repositoryService.getForks(repo);
+	}
+	
+	/**
+	 * Create a fork
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	public Repository CreateFork(User user,Repository repo) throws IOException{
+		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
+		return repositoryService.forkRepository(repo);
 	}
 }
