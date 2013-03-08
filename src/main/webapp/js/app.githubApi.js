@@ -65,6 +65,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Post";
         	return app.getJsonData(contextPath+"/github/deleteDownload",params);
+        },
+        getForks:function(opts){
+        	var params = opts||{};
+        	params.method="Get";
+        	return app.getJsonData(contextPath+"/github/getForks",params);
         }
     };
 })();

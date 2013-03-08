@@ -164,4 +164,17 @@ public class GithubRepositoriesService {
 		DownloadService downloadService = new DownloadService(githubAuthService.createClient(user));
 		downloadService.deleteDownload(repo, repoId);
 	}
+	
+	/**
+	 * List forks
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Repository> getForks(User user,Repository repo) throws IOException{
+		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
+		System.out.println(repositoryService.getForks(repo).size());
+		return repositoryService.getForks(repo);
+	}
 }

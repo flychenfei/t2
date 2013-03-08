@@ -232,4 +232,19 @@ public class GithubRepositoriesHandler {
 		githubRepositoriesService.deleteDownload(user, repository,Integer.parseInt(repoId));
 		return WebResponse.success();
 	}
+	
+	/**
+	 * List forks
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getForks")
+	public WebResponse getForks(@WebUser User user,@WebParam("repo") String repo) throws IOException{
+		Repository repository = new Repository();
+		repository.setOwner(githubUserService.getGithubUser(user));
+		repository.setName(repo);
+		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
+	}
 }

@@ -85,6 +85,14 @@
 						downloads:downloads
 				    });
 				});
+			},
+			"click;.forks":function(event){
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				app.githubApi.getForks({repo:name}).pipe(function(repositories){
+					console.log(repositories);
+					repositories = repositories.result;
+					brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+				});
 			}
 		}
 	});
