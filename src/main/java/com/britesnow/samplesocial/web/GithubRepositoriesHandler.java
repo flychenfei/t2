@@ -232,4 +232,39 @@ public class GithubRepositoriesHandler {
 		githubRepositoriesService.deleteDownload(user, repository,Integer.parseInt(repoId));
 		return WebResponse.success();
 	}
+	
+	/**
+	 * List forks
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getForks")
+	public WebResponse getForks(@WebUser User user,@WebParam("repo") String repo) throws IOException{
+		Repository repository = new Repository();
+		repository.setOwner(githubUserService.getGithubUser(user));
+		repository.setName(repo);
+		githubRepositoriesService.CreateFork(user, repository);
+		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
+	}
+	
+	/**
+	 * Create a fork
+	 * @param user
+	 * @param repo
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/createFork")
+	public WebResponse createFork(@WebUser User user,@WebParam("login") String login,
+			@WebParam("repo")String repo) throws IOException{
+		Repository repository = new Repository();
+		org.eclipse.egit.github.core.User githubUser = new org.eclipse.egit.github.core.User();
+		githubUser.setLogin(login);
+		repository.setOwner(githubUser);
+		repository.setName(repo);
+		githubRepositoriesService.CreateFork(user, repository);
+		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
+	}
 }

@@ -1,7 +1,13 @@
 (function(){
 	brite.registerView("GithubRepositoryEdit",{emptyParent:false},{
 		create:function(data,config){
-			return app.render("tmpl-GithubRepositoryEdit",{id:data.id,name:data.name,description:data.description,login:data.login});
+			return app.render("tmpl-GithubRepositoryEdit",{
+				id:data.id,
+				name:data.name,
+				description:data.description,
+				login:data.login,
+				layout:data.layout
+				});
 		},
 		events:{
 			"click;.dialogCloseBtn":function(event){
