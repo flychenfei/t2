@@ -9,6 +9,7 @@ import org.scribe.oauth.OAuthService;
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
@@ -32,9 +33,18 @@ public class SalesForceAuthService implements AuthService {
 
     @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        return socialIdEntityDao.getSocialdentity(userId, serivce);
+    	
+    	SocialIdEntity socialId= socialIdEntityDao.getSocialdentity(userId, serivce);
+		if (socialId != null) {
+	        return socialId;
+	     }
+	     throw new OauthException(getAuthorizationUrl());
     }
-
+    
+    public SocialIdEntity getSocialIdEntityIgnoreAuth(Long userId){
+    	return socialIdEntityDao.getSocialdentity(userId, serivce);
+    }
+    
     public String getAuthorizationUrl() {
         String authorizationUrl = oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
         return authorizationUrl;

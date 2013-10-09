@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.samplesocial.service.SalesForceService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -23,12 +24,14 @@ public class SFContactWebHandlers {
     private SocialIdEntityDao socialIdEntityDao;
     @Inject
     private SalesForceService salesforceService;
+    @Inject
+    private SalesForceAuthService salesForceAuthService;
     
     @WebGet("/salesforce/listContacts")
     public Map listSFContacts(@WebModel Map m,
                                @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,RequestContext rc) {
         User user = rc.getUser(User.class);
-        String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
+        String token = salesForceAuthService.getSocialIdEntity(user.getId()).getToken();
         if(pageIndex == null){
             pageIndex = 0;
         }
