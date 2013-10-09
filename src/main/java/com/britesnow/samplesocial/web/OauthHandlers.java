@@ -80,7 +80,6 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/callback_fb")
     public void fbCallback(@WebModel Map m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
-        System.out.println("--->" + tokens[0]);
         SocialIdEntity s =   facebookAuthService.getSocialIdEntity(user.getId());
         String[] strArr =tokens[2].split("&expires=");
         String expire = strArr[1];
@@ -141,7 +140,6 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
-        System.out.println(code);
         if (user!=null && code != null) {
             githubAuthService.updateAccessToken(code, user.getId());
         }else{
@@ -163,7 +161,6 @@ public class OauthHandlers {
     public void dropboxCallback(@WebUser User user, RequestContext rc, @WebParam("oauth_token") String oauth_token,
     		@WebParam("not_approved") Boolean not_approved)  {
     	if(not_approved==null||!not_approved){
-	      System.out.println(oauth_token+"..."+not_approved);
 	      Token authToken = dropboxAuthService.getTokenByAuthToken(oauth_token);
 	      dropboxAuthService.updateAccessToken(authToken,user);
     	}else
@@ -173,7 +170,7 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) {
         String[] tokens = salesForceAuthService.getAccessToken(code);
-        SocialIdEntity s =   salesForceAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity s =   salesForceAuthService.getSocialIdEntityIgnoreAuth(user.getId());
         Pattern expirePattern = Pattern.compile("\"issued_at\":\\s*\"(\\S*?)\"");
         Matcher matcher = expirePattern.matcher(tokens[2]);
         String expire = null;
