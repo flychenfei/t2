@@ -9,7 +9,6 @@ import com.britesnow.snow.web.renderer.JsonRenderer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import java.io.IOException;
 
 @Singleton
 public class WebExceptionProcessor {
