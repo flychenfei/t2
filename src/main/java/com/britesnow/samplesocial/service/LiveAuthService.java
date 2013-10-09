@@ -6,6 +6,7 @@ import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.util.JsonUtil;
+import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.scribe.model.OAuthRequest;
@@ -29,10 +30,12 @@ public class LiveAuthService implements AuthService {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
-
+    private Map configMap;
+    
     @Inject
-    public LiveAuthService(OAuthServiceHelper oauthServiceHelper) {
+    public LiveAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Live);
+        this.configMap = configMap;
     }
 
     @Override
@@ -72,6 +75,8 @@ public class LiveAuthService implements AuthService {
             Response response = request.send();
             Map profile = JsonUtil.toMapAndList(response.getBody());
             String email = (String) ((Map) profile.get("emails")).get("account");
+            String prefix = "live";
+            String secret = configMap.get(prefix+".apiSecret").toString();
             SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
             boolean newSocial = false;
             if (social == null) {
@@ -83,6 +88,7 @@ public class LiveAuthService implements AuthService {
             social.setToken(accessToken.getToken());
             social.setService(ServiceType.Live);
             social.setEmail(email);
+            social.setEmail(secret);
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {
@@ -104,9 +110,9 @@ public class LiveAuthService implements AuthService {
      */
     public OAuthRequest createRequest(Long userId, Verb verb, String url) {
         SocialIdEntity soid = getSocialIdEntity(userId);
-
+        String secret = configMap.get("live.apiSecret").toString();
         OAuthRequest request = new OAuthRequest(verb, url);
-        oAuthService.signRequest(new Token(soid.getToken(), null), request);
+        oAuthService.signRequest(new Token(soid.getToken(), secret), request);
         return request;
     }
 }
