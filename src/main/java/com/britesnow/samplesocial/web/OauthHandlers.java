@@ -140,7 +140,7 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
-        if (user!=null && code != null) {
+    	if (user!=null && code != null) {
             githubAuthService.updateAccessToken(code, user.getId());
         }else{
             rc.getRes().sendRedirect(githubAuthService.getAuthorizationUrl());

@@ -14,7 +14,6 @@ import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;

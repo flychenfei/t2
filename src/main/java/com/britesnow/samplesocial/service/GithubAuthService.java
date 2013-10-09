@@ -58,10 +58,20 @@ public class GithubAuthService implements AuthService {
     	request.addBodyParameter("client_id", configMap.get(prefix+".client_id").toString());
     	request.addBodyParameter("client_secret",  configMap.get(prefix+".secret").toString());
     	String tokenString = request.send().getBody();
-    	String token = tokenString.substring(13,tokenString.indexOf("&token_type="));
+    	String token="";
+    	String[] tokenArray = tokenString.split("&");
+    	for(String s:tokenArray){
+    		if(s.startsWith("access_token")){
+    			token = s.substring(13);
+    		}
+    	}
     	Token accessToken  = new Token(token, configMap.get(prefix+".secret").toString());
-//    	Verifier verifier = new Verifier(verifierCode);
-//        Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
+    	OAuthRequest requestAccessToken = new OAuthRequest(Verb.GET,"https://api.github.com/user");
+    	requestAccessToken.addQuerystringParameter("access_token", token);
+    	//String accessTokenString = requestAccessToken.send().getBody();
+
+    	//    	Verifier verifier = new Verifier(verifierCode);
+        //        Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
     	
         if (accessToken.getToken() != null) {
             //get userinfo
@@ -69,7 +79,7 @@ public class GithubAuthService implements AuthService {
             client.setOAuth2Token(accessToken.getToken());
             UserService userService = new UserService(client);
             User ghUser = userService.getUser();
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Google);
+            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Github);
             boolean newSocial = false;
             if (social == null) {
                 social = new SocialIdEntity();
@@ -79,6 +89,7 @@ public class GithubAuthService implements AuthService {
             social.setUser_id(userId);
             social.setToken(accessToken.getToken());
             social.setService(ServiceType.Github);
+            social.setSecret( configMap.get(prefix+".secret").toString());
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {
