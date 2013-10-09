@@ -1,6 +1,6 @@
 var brite = brite || {};
 
-brite.version = "1.1.0";
+brite.version = "1.1.2-SNAPSHOT";
 
 // ---------------------- //
 // ------ brite ------ //
@@ -1789,7 +1789,6 @@ var brite = brite || {};
 			return dao;
 		} else {
 			var er = "Cannot find the DAO for objectType: " + objectType;
-			brite.log.error(er);
 			throw er;
 		}
 	};
@@ -1953,15 +1952,18 @@ var brite = brite || {};
 
 		var $receiver = dic[objectType];
 
-		// if the $receiver does not exist, create it.
-		// Note: Need to check the parent, because, if the data action is remove, jQuery will remove the node 
-		//       to its root, preventing other to add
-		if (!$receiver || $receiver.parent().length !== 1) {
+		if (!$receiver) {
 			dic[objectType] = $receiver = $("<div class='" + objectType + "'></div>");
 			$receiversRoot.append($receiver);
 		}
 		// trigger with the event.type == action
 		$receiver.trigger(evt);
+		
+		// in the case of a "remove" event, we need to check if the $receiver did not get removed, 
+		// otherwise, we need to add it back.
+	  if(evt.type === "remove" && $receiversRoot.find("."+objectType).size() == 0 && $receiver){
+ $receiversRoot.append($receiver);
+ }
 
 		// trigger _ALL_ action in case there are some events registered for all event
 		evt.type = _ALL_;
@@ -2159,8 +2161,11 @@ var brite = brite || {};
 					result = {
 						type : $sObj.attr("data-entity"),
 						id : $sObj.attr("data-entity-id"),
-						name: $sObj.attr("data-entity-name"),
 						$el : $sObj
+					}
+					var name = $sObj.attr("data-entity-name");
+					if (typeof name !== "undefined"){
+						result.name = name;
 					}
 				}
 			}
@@ -2355,9 +2360,17 @@ brite.event = brite.event || {};
       function handleEnd(event){
         clearAll();
         if (event.target === origTarget && !_dragging){
-          // we take the pageX and pageY of the start event (because in touch, touchend does not have pageX and pageY)
-          brite.event.fixTouchEvent(startEvent);
-          triggerCustomEvent(elem, event,{type:"btap",pageX: startEvent.pageX,pageY: startEvent.pageY});
+        	// use event.eventPhase because we should ignore bubbling event when triggering this meta event
+        	var ep = event.eventPhase;
+	        var pass = (elem === origTarget && ep === 2) || (elem !== origTarget && ep === 3);
+	        if (pass && !event.originalEvent.b_processed){
+	          // we take the pageX and pageY of the start event (because in touch, touchend does not have pageX and pageY)
+	          brite.event.fixTouchEvent(startEvent);
+	          triggerCustomEvent(elem, event,{type:"btap",pageX: startEvent.pageX,pageY: startEvent.pageY});
+	          // flag this originalEvent as processed
+	          // Note: this allow to prevent multiple triggering without having to use the stopPropagation
+	          event.originalEvent.b_processed = true;
+         }
         }
       }
       
