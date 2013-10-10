@@ -1,8 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 
+import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
+
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
+import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.service.GMailService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
@@ -16,6 +19,14 @@ import com.google.inject.Singleton;
 
 import javax.mail.Folder;
 import javax.mail.Message;
+
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +36,7 @@ import java.util.Map;
 public class GoogleEmailHandlers {
     @Inject
     GMailService gMailService;
+    private OAuthService oAuthService;
 
     @WebGet("/gmail/folders")
     public WebResponse listFolders(@WebUser User user) throws Exception {
@@ -53,7 +65,8 @@ public class GoogleEmailHandlers {
     public WebResponse listEmails(@WebUser User user,
                            @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
-        Pair<Integer, Message[]> pair = gMailService.listMails(user, "inbox", pageSize*pageIndex+1, pageSize);
+        
+    	Pair<Integer, Message[]> pair = gMailService.listMails(user, "inbox", pageSize*pageIndex+1, pageSize);
         List<MailInfo> mailInfos = new ArrayList<MailInfo>();
 
         for (Message message : pair.getSecond()) {

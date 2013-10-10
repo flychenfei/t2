@@ -57,6 +57,7 @@ public class GoogleAuthService implements AuthService {
     }
 
     public void updateAccessToken(String verifierCode, long userId) {
+    	
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
@@ -71,8 +72,10 @@ public class GoogleAuthService implements AuthService {
             //get userinfo
             OAuthRequest request = new OAuthRequest(Verb.GET, OAuthServiceHelper.PROFILE_ENDPOINT);
             oAuthService.signRequest(accessToken, request);
+            
             Response response = request.send();
             Map profile = JsonUtil.toMapAndList(response.getBody());
+            
             //todo extract userinfo
             SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Google);
             boolean newSocial = false;
