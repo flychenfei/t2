@@ -111,11 +111,13 @@
 	});
 	
 	Handlebars.registerHelper('date', function(dateObj) {
-		 var year = parseInt(dateObj.year)+1900;
-		 var month = parseInt(dateObj.month)+1;
-		 var date = dateObj.date;
-		 return new Handlebars.SafeString(
-			year+"-"+month+"-"+date
-		 );
-		});
+		if(dateObj){
+			var year = parseInt(dateObj.year)+1900;
+		 	var month = parseInt(dateObj.month)+1;
+		 	var date = dateObj.date;
+		 	return new Handlebars.SafeString(
+				year+"-"+month+"-"+date
+			);
+		}
+	});
 })();

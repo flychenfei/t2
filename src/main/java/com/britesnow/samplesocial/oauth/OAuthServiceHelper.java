@@ -19,8 +19,8 @@ import com.google.inject.Singleton;
 public class OAuthServiceHelper {
     private final Map          appconfig;
 
-    public static final String EMAIL_ENDPOINT   = "https://www.googleapis.com/userinfo/email";
-    public static final String PROFILE_ENDPOINT = "https://www.googleapis.com/oauth2/v1/userinfo";
+    public static final String EMAIL_ENDPOINT   = "https://mail.google.com/mail/feed/atom/";
+    public static final String PROFILE_ENDPOINT = "https://www.googleapis.com/oauth2/v3/userinfo";
 
     @Inject
     public OAuthServiceHelper(@ApplicationProperties Map appConfig) {
