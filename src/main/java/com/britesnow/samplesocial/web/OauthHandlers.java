@@ -149,7 +149,7 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/googleCallback")
     public void googleCallback(@WebUser User user, RequestContext rc, @WebParam("code") String code) throws Exception {
-        if (user != null && code != null) {
+    	if (user != null && code != null) {
             googleAuthService.updateAccessToken(code, user.getId());
         } else {
             rc.getRes().sendRedirect(googleAuthService.getAuthorizationUrl());
