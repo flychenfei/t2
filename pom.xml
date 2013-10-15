@@ -48,9 +48,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
             <configuration>
-                <webAppConfig>
+                <webApp>
                     <contextPath>/samplesocial</contextPath>
-                </webAppConfig>
+                </webApp>
             </configuration>
         </plugin>
     </plugins>
