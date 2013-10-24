@@ -49,10 +49,11 @@ public class TwitterService {
 	//Search
 	public static final String SEARECH_TWEETS = "https://api.twitter.com/1.1/search/tweets.json?q=%s";
 	
+	
 	//Direct Messages
 	public static final String DIRECT_MSG = "https://api.twitter.com/1.1/direct_messages.json?count=5";
-	public static final String SHOW_MSG = "https://api.twitter.com/1.1/direct_messages/show.json?id=%s";
 	public static final String GET_SEND_MSG = "https://api.twitter.com/1.1/direct_messages/sent.json";
+	public static final String SHOW_MSG = "https://api.twitter.com/1.1/direct_messages/show.json?id=%s";
 	public static final String SEND_MSG = "https://api.twitter.com/1.1/direct_messages/new.json";
 	
 	//Favorites
@@ -60,8 +61,6 @@ public class TwitterService {
 	
 	//Suggested Users
 	public static final String SUGGESTIONS = "https://api.twitter.com/1.1/users/suggestions.json";
-	
-	
 	
 	private Token getToken(User user) {
 		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
