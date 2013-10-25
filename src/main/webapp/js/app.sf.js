@@ -22,4 +22,9 @@ var app = app || {};
 		params.id = id;
 		return app.getJsonData(contextPath+"/salesforce/deleteContact",params);
 	}
+	app.sf.saveCavnasApp = function(opts){
+		var params = {method:"Post"};
+		params.objJson = JSON.stringify(opts);
+		return app.getJsonData(contextPath+"/salesforce/saveCavnasApp",params);
+	}
 })(jQuery);

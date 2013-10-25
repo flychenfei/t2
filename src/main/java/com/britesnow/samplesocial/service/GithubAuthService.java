@@ -3,7 +3,6 @@ package com.britesnow.samplesocial.service;
 import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

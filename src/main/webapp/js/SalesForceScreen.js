@@ -28,6 +28,8 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "contacts"){
                   brite.display("SalesForceContacts");
+                }else if(menu="canvasApp"){
+                  brite.display("SalesForceMDCanvasAppInfo");
                 }
               }
             },

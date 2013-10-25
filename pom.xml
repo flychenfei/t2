@@ -146,6 +146,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <version>2.1.5</version>
     </dependency>
     <!--/github api -->
+
+    <!--salesforce api -->
+    <dependency>
+      <groupId>com.force.api</groupId>
+      <artifactId>force-metadata-api</artifactId>
+      <version>29.0.0</version>
+    </dependency>
+    <!--/salesforce api -->
     
     <!-- Logging -->
     <dependency>
