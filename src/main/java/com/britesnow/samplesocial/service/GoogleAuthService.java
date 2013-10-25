@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.service;
 import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.OauthTokenExpireException;
@@ -31,6 +33,8 @@ public class GoogleAuthService implements AuthService {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
+    @Inject
+    private OAuthManager oAuthManager;
 
     @Inject
     public GoogleAuthService(OAuthServiceHelper oauthServiceHelper) {
@@ -88,6 +92,13 @@ public class GoogleAuthService implements AuthService {
             social.setToken(accessToken.getToken());
             social.setService(ServiceType.Google);
             social.setTokenDate(new Date(expireDate));
+            
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", userId+"");
+            map.put("access_token", accessToken.getToken());
+            map.put("email", (String) profile.get("email"));
+            oAuthManager.setInfo(ServiceType.Google, map);
+            
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {

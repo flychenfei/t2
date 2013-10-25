@@ -10,6 +10,7 @@ import org.scribe.model.Verb;
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
@@ -24,6 +25,8 @@ public class DropboxAuthService implements AuthService{
 
 	@Inject
 	private SocialIdEntityDao socialIdEntityDao;
+	@Inject
+    private OAuthManager oAuthManager;
 	
 	@Inject
 	@ApplicationProperties
@@ -134,6 +137,13 @@ public class DropboxAuthService implements AuthService{
 			soId.setSecret(accessToken.getSecret());
 			soId.setUser_id(user.getId());
 			soId.setService(ServiceType.Dropbox);
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", user.getId()+"");
+            map.put("access_token", accessToken.getToken());
+            map.put("secret", accessToken.getSecret());
+            oAuthManager.setInfo(ServiceType.Dropbox, map);
+			
 			if (soId.getId() != null)
 				socialIdEntityDao.update(soId);
 			else

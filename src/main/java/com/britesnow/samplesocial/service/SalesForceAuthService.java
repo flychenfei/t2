@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.scribe.model.Token;
@@ -8,6 +9,7 @@ import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -25,6 +27,8 @@ public class SalesForceAuthService implements AuthService {
     private ServiceType       serivce     = ServiceType.SalesForce;
     private Token             EMPTY_TOKEN = null;
     private OAuthService      oAuthService;
+    @Inject
+    private OAuthManager oAuthManager;
 
     @Inject
     public SalesForceAuthService(OAuthServiceHelper oauthServiceHelper) {
@@ -53,6 +57,12 @@ public class SalesForceAuthService implements AuthService {
     public String[] getAccessToken(String code) {
         Verifier verifier = new Verifier(code);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
+        
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("access_token", accessToken.getToken());
+        map.put("secret", accessToken.getSecret());
+        oAuthManager.setInfo(ServiceType.Dropbox, map);
+        
         return new String[] { accessToken.getToken(), accessToken.getSecret(), accessToken.getRawResponse() };
     }
 

@@ -1,12 +1,14 @@
 package com.britesnow.samplesocial.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
@@ -34,6 +36,8 @@ public class LinkedInAuthService implements AuthService {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
+    @Inject
+    private OAuthManager oAuthManager;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -115,6 +119,14 @@ public class LinkedInAuthService implements AuthService {
                 social.setSecret(accessToken.getSecret());
                 social.setService(ServiceType.LinkedIn);
                 social.setTokenDate(new Date(expireDate));
+                
+                HashMap<String, String> managerMap = new HashMap<String, String>();
+                managerMap.put("userId", userId+"");
+                managerMap.put("access_token", accessToken.getToken());
+                managerMap.put("secret", accessToken.getSecret());
+                managerMap.put("email", (String) map.get("emailAddress"));
+                oAuthManager.setInfo(ServiceType.LinkedIn, managerMap);
+                
                 if (newSocial) {
                     socialIdEntityDao.save(social);
                 } else {

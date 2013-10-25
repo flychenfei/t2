@@ -3,6 +3,8 @@ package com.britesnow.samplesocial.service;
 import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.User;
@@ -15,6 +17,7 @@ import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -30,6 +33,8 @@ public class GithubAuthService implements AuthService {
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private Map configMap;
+    @Inject
+    private OAuthManager oAuthManager;
     
     @Inject
     public GithubAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
@@ -90,6 +95,13 @@ public class GithubAuthService implements AuthService {
             social.setToken(accessToken.getToken());
             social.setService(ServiceType.Github);
             social.setSecret( configMap.get(prefix+".secret").toString());
+            
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", userId+"");
+            map.put("access_token", accessToken.getToken());
+            map.put("secret", configMap.get(prefix+".secret").toString());
+            oAuthManager.setInfo(ServiceType.Github, map);
+            
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {

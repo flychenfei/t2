@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -17,6 +18,7 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +33,8 @@ public class LiveAuthService implements AuthService {
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private Map configMap;
+    @Inject
+    private OAuthManager oAuthManager;
     
     @Inject
     public LiveAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
@@ -89,6 +93,14 @@ public class LiveAuthService implements AuthService {
             social.setService(ServiceType.Live);
             social.setEmail(email);
             social.setEmail(secret);
+            
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", userId+"");
+            map.put("access_token", accessToken.getToken());
+            map.put("secret", accessToken.getSecret());
+            map.put("email", email);
+            oAuthManager.setInfo(ServiceType.Live, map);
+            
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {

@@ -1,8 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.manager.OAuthManager;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.GithubUserService;
 import com.britesnow.samplesocial.service.YaoGithubAuthService;
 import com.britesnow.snow.web.RequestContext;
@@ -18,7 +21,8 @@ public class GitHubUserHandlers {
 
 	@Inject
 	private YaoGithubAuthService yaoGithubAuthService;
-	
+	@Inject
+    private OAuthManager oAuthManager;
 	
 	@Inject
 	private GithubUserService githubUserService;

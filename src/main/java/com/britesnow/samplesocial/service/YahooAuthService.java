@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -14,6 +15,7 @@ import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -26,6 +28,8 @@ public class YahooAuthService implements AuthService {
     @Inject
     private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
+    @Inject
+    private OAuthManager oAuthManager;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -92,6 +96,13 @@ public class YahooAuthService implements AuthService {
                 social.setSecret(accessToken.getSecret());
                 social.setService(ServiceType.Yahoo);
                 social.setTokenDate(new Date(expireDate));
+                
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("userId", userId+"");
+                map.put("access_token", accessToken.getToken());
+                map.put("secret", accessToken.getSecret());
+                oAuthManager.setInfo(ServiceType.Yahoo, map);
+                
                 if (newSocial) {
                     socialIdEntityDao.save(social);
                 } else {

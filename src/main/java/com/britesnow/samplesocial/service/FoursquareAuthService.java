@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.scribe.model.Token;
@@ -10,6 +11,7 @@ import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -28,6 +30,8 @@ public class FoursquareAuthService implements AuthService {
     private OAuthService oAuthService;
     private final CloneApi foursquareApi;
     private String secret,clienId;//callback;
+    @Inject
+    private OAuthManager oAuthManager;
 
     @Inject
     public FoursquareAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map config) {
@@ -67,6 +71,13 @@ public class FoursquareAuthService implements AuthService {
             social.setUser_id(userId);
             social.setToken(accessToken.getToken());
             social.setService(ServiceType.Foursquare);
+
+            HashMap<String, String> managerMap = new HashMap<String, String>();
+            managerMap.put("userId", userId+"");
+            managerMap.put("access_token", accessToken.getToken());
+            managerMap.put("secret", accessToken.getSecret());
+            oAuthManager.setInfo(ServiceType.Foursquare, managerMap);
+            
             if (newSocial) {
                 socialIdEntityDao.save(social);
             } else {
