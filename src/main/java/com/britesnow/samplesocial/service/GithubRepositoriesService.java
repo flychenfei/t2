@@ -27,7 +27,7 @@ public class GithubRepositoriesService {
 	private static String PREFIX = "https://api.github.com";
 	
 	@Inject
-	private YaoGithubAuthService githubAuthService;
+	private GithubAuthService githubAuthService;
 	@Inject
 	private GithubUserService githubUserService;
 	

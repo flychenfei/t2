@@ -112,4 +112,22 @@ public class GithubAuthService implements AuthService {
         throw new OauthException(getAuthorizationUrl());
 
     }
+
+    public GitHubClient createClient(com.britesnow.samplesocial.entity.User user){
+		GitHubClient client = new GitHubClient();
+		client.setOAuth2Token(getToken(user).getToken());
+		client.setUserAgent("GitHubJava/2.1.0");
+		return client;
+    }
+
+    public Token getToken(com.britesnow.samplesocial.entity.User user) {
+		SocialIdEntity soId = getSocialIdEntity((long) user.getId());
+		return new Token(soId.getToken(), soId.getSecret());
+	}
+
+    public OAuthRequest createRequest(Verb verb, String url) {
+		OAuthRequest request = new OAuthRequest(verb, url);
+		 request.addHeader("x-li-format","json");
+		return request;
+	}
 }

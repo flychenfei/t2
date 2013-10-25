@@ -1,13 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
-import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GithubUserService;
-import com.britesnow.samplesocial.service.YaoGithubAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -20,7 +18,7 @@ import com.google.inject.Singleton;
 public class GitHubUserHandlers {
 
 	@Inject
-	private YaoGithubAuthService yaoGithubAuthService;
+	private GithubAuthService githubAuthService;
 	@Inject
     private OAuthManager oAuthManager;
 	
@@ -28,7 +26,7 @@ public class GitHubUserHandlers {
 	private GithubUserService githubUserService;
 	@WebGet("/github/connects")
 	public void auth(RequestContext rc) throws IOException{
-		  rc.getRes().sendRedirect(yaoGithubAuthService.getAuthorizationUrl());
+		  rc.getRes().sendRedirect(githubAuthService.getAuthorizationUrl());
 	}
 	
 	

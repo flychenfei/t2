@@ -22,7 +22,7 @@ public class GithubUserService {
 	private static String EMAILS = "/user/emails";
 	
 	@Inject
-	private YaoGithubAuthService githubAuthService;
+	private GithubAuthService githubAuthService;
 
 	public String showUserInfoUrl(User user){
 		return USER_INFO+"?access_token="+githubAuthService.getToken(user).getToken();

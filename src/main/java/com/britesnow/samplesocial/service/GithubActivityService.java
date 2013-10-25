@@ -13,7 +13,7 @@ import com.google.inject.Singleton;
 public class GithubActivityService {
 	
 	@Inject
-	private YaoGithubAuthService githubAuthService;
+	private GithubAuthService githubAuthService;
 	
 	private EventService getEventService(User user){
 		return new EventService(githubAuthService.createClient(user));
