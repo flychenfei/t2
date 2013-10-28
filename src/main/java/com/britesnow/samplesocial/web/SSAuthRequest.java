@@ -1,10 +1,11 @@
 package com.britesnow.samplesocial.web;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
-import com.britesnow.samplesocial.dao.UserDao;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.snow.util.ObjectUtil;
 import com.britesnow.snow.web.RequestContext;
@@ -22,13 +23,11 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class SSAuthRequest implements AuthRequest {
-    @Inject
-    private UserDao           userDao;
-    @Inject
-    private FacebookAuthService facebookAuthService;
     
     @Inject
-    private SocialIdEntityDao socialIdEntityDao;
+    private FacebookAuthService facebookAuthService;
+    @Inject
+    private OAuthManager oAuthManager;
     
     @Override
     public AuthToken authRequest(RequestContext rc) {
@@ -45,8 +44,9 @@ public class SSAuthRequest implements AuthRequest {
 
         if (userIdStr != null && userToken != null) {
             // get the User from the DAO
-            Long userId = ObjectUtil.getValue(userIdStr, Long.class, null);
-            User user = userDao.get(userId);
+           // Long userId = ObjectUtil.getValue(userIdStr, Long.class, null);
+           // User user = userDao.get(userId);
+            User user =  oAuthManager.getUserInfo("webuser");
             if (user == null) {
                 // if session timeout, need login again.
                 return null;
@@ -55,7 +55,6 @@ public class SSAuthRequest implements AuthRequest {
             // Build the expectedUserToken from the user info
             // For this example, simplistic userToken (sha1(username,password))
             String expectedUserToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
-
             if (Objects.equal(expectedUserToken, userToken)) {
                 // if valid, then, we create the AuthTocken with our User object
                 AuthToken<User> authToken = new AuthToken<User>();
@@ -97,19 +96,14 @@ public class SSAuthRequest implements AuthRequest {
     @WebActionHandler
     public Object login(@WebParam("userId") Long userId, @WebParam("username") String username,
                             @WebParam("password") String password, RequestContext rc) {
-        User user = userDao.getUser(username);
-
-        if (user == null) {
-            user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            userDao.save(user);
-            return user;
-        } else if (authentication(user, password)) {
-            setUserToSession(rc, user);
-            return user;
-        }
-        return "null";
+    	long id = 2;
+    	User user = new User();
+    	user.setId(id);
+    	user.setUsername(username);
+        user.setPassword(password);
+        setUserToSession(rc, user);
+    	oAuthManager.setUserInfo("webuser", user);
+    	return user;
     }
 
     // --------- Private Helpers --------- //

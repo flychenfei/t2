@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.CurrentRequestContextHolder;
 import com.google.inject.Inject;
@@ -20,7 +21,7 @@ public class OAuthManager {
     	return currentRequestContextHolder.getCurrentRequestContext().getReq().getSession();
     	
     }
-    public Map<String, String> getInfo(ServiceType serviceType){
+	public Map<String, String> getInfo(ServiceType serviceType){
     	HttpSession session = getSession();
     	return (Map)session.getAttribute(serviceType.toString());
     }
@@ -30,5 +31,15 @@ public class OAuthManager {
     	String token_date = dateFormat.format(new Date());
     	map.put("token_date", token_date);
     	session.setAttribute(serviceType.toString(), map);
+    }
+    
+    public User getUserInfo(String user){
+    	HttpSession session = getSession();
+    	return (User) session.getAttribute(user);
+    }
+    public void setUserInfo(String userkey,User user){
+    	HttpSession session = getSession();
+    	
+    	session.setAttribute(userkey, user);
     }
 }

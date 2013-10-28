@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +14,7 @@ import org.scribe.model.Token;
 import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.RequestContext;
@@ -46,8 +48,10 @@ public class OauthHandlers {
     private DropboxAuthService dropboxAuthService;
     @Inject
     private YahooAuthService yahooAuthService;
+   // @Inject
+   // private SocialIdEntityDao   socialIdEntityDao;
     @Inject
-    private SocialIdEntityDao   socialIdEntityDao;
+    private OAuthManager oAuthManager;
 
     @WebGet("/authorize")
     public void authorize(@WebModel Map m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
@@ -93,11 +97,17 @@ public class OauthHandlers {
             s.setToken(tokens[0]);
             s.setService(ServiceType.FaceBook);
             s.setTokenDate(tokenDate);
-            socialIdEntityDao.save(s);
+            //socialIdEntityDao.save(s);
+            
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", user.getId()+"");
+            map.put("access_token", tokens[0]);
+            oAuthManager.setInfo(ServiceType.FaceBook, map);
+            
         }else{
             s.setTokenDate(tokenDate);
             s.setToken(tokens[0]);
-            socialIdEntityDao.update(s);
+            //socialIdEntityDao.update(s);
         }
     }
     
@@ -188,11 +198,17 @@ public class OauthHandlers {
             s.setToken(tokens[0]);
             s.setService(ServiceType.SalesForce);
             s.setTokenDate(tokenDate);
-            socialIdEntityDao.save(s);
+            
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userId", user.getId()+"");
+            map.put("access_token", tokens[0]);
+            oAuthManager.setInfo(ServiceType.SalesForce, map);
+            
+            //socialIdEntityDao.save(s);
         }else{
             s.setToken(tokens[0]);
             s.setTokenDate(tokenDate);
-            socialIdEntityDao.update(s);
+           // socialIdEntityDao.update(s);
         }
     }
 
