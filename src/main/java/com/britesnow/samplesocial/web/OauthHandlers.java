@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import com.britesnow.samplesocial.service.*;
 import org.scribe.model.Token;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
@@ -54,7 +53,7 @@ public class OauthHandlers {
     private OAuthManager oAuthManager;
 
     @WebGet("/authorize")
-    public void authorize(@WebModel Map m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
+    public void authorize(@WebModel Map<?, ?> m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
         String url = "";
         if (service == ServiceType.FaceBook) {
             url = facebookAuthService.getAuthorizationUrl();
@@ -82,7 +81,7 @@ public class OauthHandlers {
     }
 
     @WebModelHandler(startsWith="/callback_fb")
-    public void fbCallback(@WebModel Map m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
+    public void fbCallback(@WebModel Map<?, ?> m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
         SocialIdEntity s =   facebookAuthService.getSocialIdEntity(user.getId());
         String[] strArr =tokens[2].split("&expires=");
