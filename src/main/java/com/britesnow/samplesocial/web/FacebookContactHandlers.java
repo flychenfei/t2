@@ -1,9 +1,7 @@
 package com.britesnow.samplesocial.web;
 
-import java.util.List;
 import java.util.Map;
 
-import com.britesnow.samplesocial.entity.Contact;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FacebookAuthService;
@@ -25,19 +23,15 @@ public class FacebookContactHandlers {
     private FacebookAuthService facebookAuthService;
 
     @WebGet("/fb/contacts")
-    public Object getFacebookContacts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
+    public Object getFacebookContacts(@WebModel Map<String, ?> m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        List ls = null;
-        m.put("result", ls);
-        if (ls != null && pageSize != null && ls.size() == pageSize) {
-            m.put("hasNext", true);
-        }
+        m.put("result", null);
         return m;
     }
 
     @WebGet("/fb/friend-detail")
-    public Object getFacebookFriendDetail(@WebModel Map m, @WebUser User user, @WebParam("fbid") String fbid,
+    public Object getFacebookFriendDetail(@WebModel Map<String, com.restfb.types.User> m, @WebUser User user, @WebParam("fbid") String fbid,
                             RequestContext rc) {
         SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
         String token = e.getToken();
@@ -51,9 +45,7 @@ public class FacebookContactHandlers {
                             @WebParam("fbid") String fbid) {
         try {
             SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
-            String token = e.getToken();
-            Contact c = null;
-            return WebResponse.success(c);
+            return WebResponse.success(e);
         } catch (Exception e) {
             e.printStackTrace();
             WebResponse.fail(e);
