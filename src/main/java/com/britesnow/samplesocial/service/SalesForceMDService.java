@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import net.sf.json.JSONObject;
@@ -18,11 +20,16 @@ import org.scribe.model.Verb;
 
 import com.britesnow.snow.util.JsonUtil;
 import com.google.inject.Singleton;
+import com.sforce.soap.metadata.AsyncRequestState;
 import com.sforce.soap.metadata.AsyncResult;
 import com.sforce.soap.metadata.ConnectedApp;
 import com.sforce.soap.metadata.DeployOptions;
 import com.sforce.soap.metadata.DeployResult;
 import com.sforce.soap.metadata.MetadataConnection;
+import com.sforce.soap.metadata.PackageTypeMembers;
+import com.sforce.soap.metadata.RetrieveMessage;
+import com.sforce.soap.metadata.RetrieveRequest;
+import com.sforce.soap.metadata.RetrieveResult;
 import com.sforce.ws.ConnectorConfig;
 
 @Singleton
@@ -41,7 +48,11 @@ public class SalesForceMDService {
         try {
             metadataConnection = new MetadataConnection(config);
             
-            File file = new File("/Users/friping/Desktop/test.zip");
+            byte[] bs = getCustomAppsAndProfiles(metadataConnection);
+            Map<String, String> apps = unZip(bs,"unpackaged/applications/");
+            Map<String, String> profiles = unZip(bs,"unpackaged/profiles/");
+            
+            File file = new File("/Users/friping/Desktop/test1.zip");
             FileOutputStream fos = new FileOutputStream(file);
             ZipOutputStream out1 = new ZipOutputStream(fos);
             
@@ -71,6 +82,20 @@ public class SalesForceMDService {
                 
             }
             
+            if(apps.size() > 0){
+                builder.append("<types>\n");
+                builder.append("<members>*</members>\n");
+                builder.append("<name>CustomApplication</name>\n");
+                builder.append("</types>\n");
+            }
+            
+            if(profiles.size() > 0){
+                builder.append("<types>\n");
+                builder.append("<members>*</members>\n");
+                builder.append("<name>Profile</name>\n");
+                builder.append("</types>\n");
+            }
+            
             builder.append("<version>29.0</version>\n");
             builder.append("</Package>\n");
             
@@ -95,13 +120,50 @@ public class SalesForceMDService {
             zipFile(out, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page", pageInfo);
             zipFile(out, "unpackaged/tabs/"+connectedApp.getFullName()+"_tab.tab", tab);
             zipFile(out, "unpackaged/connectedApps/"+connectedApp.getFullName()+".connectedApp", generateAppXml(connectedApp));
+            for(Iterator<String> ite = apps.keySet().iterator(); ite.hasNext();){
+                String key = ite.next();
+                String value = apps.get(key);
+                String t = "</tab>";
+                int endIndex = value.lastIndexOf(t) + t.length();
+                value = value.substring(0,endIndex) + "\n\t<tab>"+connectedApp.getFullName()+"_tab</tab>\n" + value.substring(endIndex+1);
+                zipFile(out, key, value);
+            }
+            for(Iterator<String> ite = profiles.keySet().iterator(); ite.hasNext();){
+                String key = ite.next();
+                String value = profiles.get(key);
+                String t = "</applicationVisibilities>";
+                int endIndex = value.lastIndexOf(t) + t.length();
+                value = value.substring(0,endIndex) + "\n\t<tabVisibilities><tab>"+connectedApp.getFullName()+"_tab</tab><visibility>DefaultOn</visibility></tabVisibilities>\n" + value.substring(endIndex+1);
+                zipFile(out, key, value);
+            }
+            
             out.close();
+            
+            
             
             zipFile(out1, "unpackaged/package.xml", builder.toString());
             zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page-meta.xml", page);
             zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page", pageInfo);
             zipFile(out1, "unpackaged/tabs/"+connectedApp.getFullName()+"_tab.tab", tab);
             zipFile(out1, "unpackaged/connectedApps/"+connectedApp.getFullName()+".connectedApp", generateAppXml(connectedApp));
+            
+            for(Iterator<String> ite = apps.keySet().iterator(); ite.hasNext();){
+                String key = ite.next();
+                String value = apps.get(key);
+                String t = "</tab>";
+                int endIndex = value.lastIndexOf(t) + t.length();
+                value = value.substring(0,endIndex) + "\n\t<tab>"+connectedApp.getFullName()+"_tab</tab>\n" + value.substring(endIndex+1);
+                zipFile(out1, key, value);
+            }
+            for(Iterator<String> ite = profiles.keySet().iterator(); ite.hasNext();){
+                String key = ite.next();
+                String value = profiles.get(key);
+                String t = "</applicationVisibilities>";
+                int endIndex = value.lastIndexOf(t) + t.length();
+                value = value.substring(0,endIndex) + "\n\t<tabVisibilities><tab>"+connectedApp.getFullName()+"_tab</tab><visibility>DefaultOn</visibility></tabVisibilities>\n" + value.substring(endIndex+1);
+                zipFile(out1, key, value);
+            }
+            
             out1.close();
             fos.close();
             
@@ -118,51 +180,8 @@ public class SalesForceMDService {
             
             byteStream.close();
             
-//            
-//            
-//            RetrieveRequest retrieveRequest = new RetrieveRequest();
-//            retrieveRequest.setApiVersion(new Double(VERSION));
-//            com.sforce.soap.metadata.Package p = new com.sforce.soap.metadata.Package();
-//            p.setVersion(VERSION);
-//            
-//            PackageTypeMembers ptm = new PackageTypeMembers();
-//            ptm.setName("ConnectedApp");
-//            ptm.setMembers(new String[]{"iPad app"});
-//            
-//            PackageTypeMembers ptm1 = new PackageTypeMembers();
-//            ptm1.setName("ApexPage");
-//            ptm1.setMembers(new String[]{"britesnow_jss_canvas_page"});
-//            
-//            PackageTypeMembers ptm2 = new PackageTypeMembers();
-//            ptm2.setName("CustomTab");
-//            ptm2.setMembers(new String[]{"BriteSnow_Hellow_Page"});
-//            
-//            p.setTypes(new PackageTypeMembers[]{ptm,ptm1,ptm2});
-//            
-//            retrieveRequest.setUnpackaged(p);
-//            
-//            asyncResult = metadataConnection.retrieve(retrieveRequest);
-//            asyncResult = waitForRetrieveCompletion(asyncResult,metadataConnection);
-//            RetrieveResult retrieveResult =  metadataConnection.checkRetrieveStatus(asyncResult.getId());
-//            
-//            StringBuilder stringBuilder = new StringBuilder();
-//            if (retrieveResult.getMessages() != null) {
-//                for (RetrieveMessage rm : retrieveResult.getMessages()) {
-//                    stringBuilder.append(rm.getFileName() + " - " + rm.getProblem() + "\n");
-//                }
-//            }
-//            if (stringBuilder.length() > 0) {
-//                System.out.println("Retrieve warnings:\n" + stringBuilder);
-//            }
-//            System.out.println("Writing results to zip file");
-//            File resultsFile = new File("/Users/friping/work/test.zip");
-//            FileOutputStream os = new FileOutputStream(resultsFile);
-//            try {
-//                os.write(retrieveResult.getZipFile());
-//            } finally {
-//                os.close();
-//            }
-//            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -190,6 +209,76 @@ public class SalesForceMDService {
         oauth.addHeader("X-PrettyPrint", "1");
         result = JsonUtil.toMapAndList(oauth.send().getBody());
         return result;
+    }
+    
+    private byte[] getCustomAppsAndProfiles(MetadataConnection metadataConnection){
+        try{
+            
+            RetrieveRequest retrieveRequest = new RetrieveRequest();
+            retrieveRequest.setApiVersion(new Double(VERSION));
+            com.sforce.soap.metadata.Package p = new com.sforce.soap.metadata.Package();
+            p.setVersion(VERSION);
+            
+            PackageTypeMembers ptm = new PackageTypeMembers();
+            ptm.setName("CustomApplication");
+            ptm.setMembers(new String[]{"*"});
+            
+            PackageTypeMembers ptm1 = new PackageTypeMembers();
+            ptm1.setName("Profile");
+            ptm1.setMembers(new String[]{"*"});
+            
+            p.setTypes(new PackageTypeMembers[]{ptm,ptm1});
+            
+            retrieveRequest.setUnpackaged(p);
+            
+            AsyncResult asyncResult = metadataConnection.retrieve(retrieveRequest);
+            asyncResult = waitForRetrieveCompletion(asyncResult,metadataConnection);
+            RetrieveResult retrieveResult =  metadataConnection.checkRetrieveStatus(asyncResult.getId());
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            if (retrieveResult.getMessages() != null) {
+                for (RetrieveMessage rm : retrieveResult.getMessages()) {
+                    stringBuilder.append(rm.getFileName() + " - " + rm.getProblem() + "\n");
+                }
+            }
+            if (stringBuilder.length() > 0) {
+                System.out.println("Retrieve warnings:\n" + stringBuilder);
+            }
+            byte[] bs = retrieveResult.getZipFile();
+            return bs;
+        }catch (Exception e){
+            
+        }
+        return null;
+        
+    }
+    
+    private Map<String,String> unZip(byte[] data, String path) {
+        Map<String, String> m = new HashMap();
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(data);
+            ZipInputStream zip = new ZipInputStream(bis);
+            ZipEntry entry = null;
+            while ((entry = zip.getNextEntry()) != null) {
+                if(entry.getName().indexOf(path) == 0){
+                    byte[] buf = new byte[1024];
+                    int num = -1;
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    while ((num = zip.read(buf, 0, buf.length)) != -1) {
+                        baos.write(buf, 0, num);
+                    }
+                    m.put(entry.getName(), baos.toString());
+                    baos.flush();
+                    baos.close();
+                    zip.closeEntry();
+                }
+            }
+            zip.close();
+            bis.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return m;
     }
     
     private String getMetaDataServerUrl(String token, String instanceUrl){
@@ -231,28 +320,28 @@ public class SalesForceMDService {
         return deployResult;
     }
     
-//    private AsyncResult waitForRetrieveCompletion(AsyncResult asyncResult,MetadataConnection metadataConnection) throws Exception {
-//        int poll = 0;
-//        long waitTimeMilliSecs = 1000;
-//        while (!asyncResult.isDone()) {
-//            Thread.sleep(waitTimeMilliSecs);
-//            // double the wait time for the next iteration
-//            waitTimeMilliSecs *= 2;
-//            if (poll++ > 50) {
-//                throw new Exception(
-//                    "Request timed out. If this is a large set of metadata components, " +
-//                    "ensure that MAX_NUM_POLL_REQUESTS is sufficient.");
-//            }
-//            asyncResult = metadataConnection.checkStatus(
-//                new String[]{asyncResult.getId()})[0];
-//            System.out.println("Status is: " + asyncResult.getState());
-//        }
-//        if (asyncResult.getState() != AsyncRequestState.Completed) {
-//            throw new Exception(asyncResult.getStatusCode() + " msg: " +
-//                asyncResult.getMessage());
-//        }
-//        return asyncResult;
-//    }
+    private AsyncResult waitForRetrieveCompletion(AsyncResult asyncResult,MetadataConnection metadataConnection) throws Exception {
+        int poll = 0;
+        long waitTimeMilliSecs = 1000;
+        while (!asyncResult.isDone()) {
+            Thread.sleep(waitTimeMilliSecs);
+            // double the wait time for the next iteration
+            waitTimeMilliSecs *= 2;
+            if (poll++ > 50) {
+                throw new Exception(
+                    "Request timed out. If this is a large set of metadata components, " +
+                    "ensure that MAX_NUM_POLL_REQUESTS is sufficient.");
+            }
+            asyncResult = metadataConnection.checkStatus(
+                new String[]{asyncResult.getId()})[0];
+            System.out.println("Status is: " + asyncResult.getState());
+        }
+        if (asyncResult.getState() != AsyncRequestState.Completed) {
+            throw new Exception(asyncResult.getStatusCode() + " msg: " +
+                asyncResult.getMessage());
+        }
+        return asyncResult;
+    }
     
     private String generateAppXml(ConnectedApp app){
         StringBuilder sb = new StringBuilder();
