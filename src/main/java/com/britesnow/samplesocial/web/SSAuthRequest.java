@@ -1,13 +1,9 @@
 package com.britesnow.samplesocial.web;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
-import com.britesnow.samplesocial.service.FacebookAuthService;
-import com.britesnow.snow.util.ObjectUtil;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.auth.AuthRequest;
 import com.britesnow.snow.web.auth.AuthToken;
@@ -22,14 +18,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class SSAuthRequest implements AuthRequest {
+public class SSAuthRequest implements AuthRequest<Object> {
     
-    @Inject
-    private FacebookAuthService facebookAuthService;
     @Inject
     private OAuthManager oAuthManager;
     
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     public AuthToken authRequest(RequestContext rc) {
         // Note: this is not the login logic, the login logic would be
         // @WebActionHandler that would generate the appropriate
@@ -54,7 +49,8 @@ public class SSAuthRequest implements AuthRequest {
 
             // Build the expectedUserToken from the user info
             // For this example, simplistic userToken (sha1(username,password))
-            String expectedUserToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
+            @SuppressWarnings("deprecation")
+			String expectedUserToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
             if (Objects.equal(expectedUserToken, userToken)) {
                 // if valid, then, we create the AuthTocken with our User object
                 AuthToken<User> authToken = new AuthToken<User>();
@@ -72,13 +68,13 @@ public class SSAuthRequest implements AuthRequest {
     }
 
     @WebModelHandler(startsWith = "/")
-    public void pageIndex(@WebModel Map m, @WebUser User user, RequestContext rc) {
+    public void pageIndex(@WebModel Map<String, User> m, @WebUser User user, RequestContext rc) {
         // gameTestManager.init();
         m.put("user", user);
     }
 
     @WebModelHandler(startsWith = "/logout")
-    public void logout(@WebModel Map m, @WebUser User user, RequestContext rc) {
+    public void logout(@WebModel Map<?, ?> m, @WebUser User user, RequestContext rc) {
         if (user != null) {
             //remove cookie
 //            for(Cookie c : rc.getReq().getCookies()){
@@ -111,19 +107,11 @@ public class SSAuthRequest implements AuthRequest {
     private void setUserToSession(RequestContext rc, User user) {
         // TODO: need to implement session less login (to easy loadbalancing)
         if (user != null) {
+        	@SuppressWarnings("deprecation")
             String userToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
             rc.setCookie("userToken", userToken);
             rc.setCookie("userId", user.getId());
             //
         }
     }
-
-    private boolean authentication(User user, String password) {
-        if (user != null && user.getPassword() != null && user.getPassword().equals(password)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    // --------- /Private Helpers --------- //
 }
