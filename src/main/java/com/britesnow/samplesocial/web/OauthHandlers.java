@@ -5,10 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.britesnow.samplesocial.service.*;
 import org.scribe.model.Token;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
@@ -16,6 +13,16 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
+import com.britesnow.samplesocial.service.DropboxAuthService;
+import com.britesnow.samplesocial.service.FacebookAuthService;
+import com.britesnow.samplesocial.service.FoursquareAuthService;
+import com.britesnow.samplesocial.service.GithubAuthService;
+import com.britesnow.samplesocial.service.GoogleAuthService;
+import com.britesnow.samplesocial.service.LinkedInAuthService;
+import com.britesnow.samplesocial.service.LiveAuthService;
+import com.britesnow.samplesocial.service.SalesForceAuthService;
+import com.britesnow.samplesocial.service.TwitterAuthService;
+import com.britesnow.samplesocial.service.YahooAuthService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -84,30 +91,12 @@ public class OauthHandlers {
     public void fbCallback(@WebModel Map<?, ?> m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
         SocialIdEntity s =   facebookAuthService.getSocialIdEntity(user.getId());
-        String[] strArr =tokens[2].split("&expires=");
-        String expire = strArr[1];
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.SECOND,new Integer(expire)/1000);
-        Date tokenDate = cal.getTime();
-        if (s==null) {
-            s = new SocialIdEntity();
-            s.setUser_id(user.getId());
-            s.setToken(tokens[0]);
-            s.setService(ServiceType.FaceBook);
-            s.setTokenDate(tokenDate);
-            //socialIdEntityDao.save(s);
-            
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", user.getId()+"");
-            map.put("access_token", tokens[0]);
-            oAuthManager.setInfo(ServiceType.FaceBook, map);
-            
-        }else{
-            s.setTokenDate(tokenDate);
-            s.setToken(tokens[0]);
-            //socialIdEntityDao.update(s);
-        }
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("userId", user.getId()+"");
+        map.put("secret", null);
+        map.put("email", null);
+        map.put("access_token", tokens[0]);
+        oAuthManager.setInfo(ServiceType.FaceBook, map);
     }
     
     @WebModelHandler(startsWith="/twitterCallback")
@@ -163,7 +152,6 @@ public class OauthHandlers {
         } else {
             rc.getRes().sendRedirect(googleAuthService.getAuthorizationUrl());
         }
-
     }
 
     @WebModelHandler(startsWith="/dropbox_callback")
@@ -179,36 +167,13 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) {
         String[] tokens = salesForceAuthService.getAccessToken(code);
-        SocialIdEntity s =   salesForceAuthService.getSocialIdEntityIgnoreAuth(user.getId());
-        Pattern expirePattern = Pattern.compile("\"issued_at\":\\s*\"(\\S*?)\"");
-        Matcher matcher = expirePattern.matcher(tokens[2]);
-        String expire = null;
-        if(matcher.find()){
-            expire = matcher.group(1);
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.SECOND,new Long(expire).intValue()/1000);
-        Date tokenDate = cal.getTime();
-        if (s==null) {
-            s = new SocialIdEntity();
-            s.setUser_id(user.getId());
-            s.setToken(tokens[0]);
-            s.setService(ServiceType.SalesForce);
-            s.setTokenDate(tokenDate);
             
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", user.getId()+"");
-            map.put("access_token", tokens[0]);
-            oAuthManager.setInfo(ServiceType.SalesForce, map);
-            
-            //socialIdEntityDao.save(s);
-        }else{
-            s.setToken(tokens[0]);
-            s.setTokenDate(tokenDate);
-           // socialIdEntityDao.update(s);
-        }
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("userId", user.getId()+"");
+        map.put("secret", null);
+        map.put("email", null);
+        map.put("access_token", tokens[0]);
+        oAuthManager.setInfo(ServiceType.SalesForce, map);
     }
 
     @WebModelHandler(startsWith="/yahoo_callback")

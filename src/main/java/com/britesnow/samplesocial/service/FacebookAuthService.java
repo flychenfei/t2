@@ -10,9 +10,9 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
@@ -23,7 +23,7 @@ public class FacebookAuthService implements AuthService {
     private Map               cfg;
     private OAuthService oAuthService;
     @Inject
-    private SocialIdEntityDao socialIdEntityDao;
+    private SocialService SocialService;
 
     private ServiceType           service     = ServiceType.FaceBook;
     private Token             EMPTY_TOKEN = null;
@@ -32,9 +32,14 @@ public class FacebookAuthService implements AuthService {
     public FacebookAuthService(OAuthServiceHelper oauthServiceHelper) {
         oAuthService = oauthServiceHelper.getOauthService(service);
     }
-    @Override
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-        return socialIdEntityDao.getSocialdentity(userId, service);
+    
+	public SocialIdEntity getSocialIdEntity(Long userId) {
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(service);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
+        }
+        return socialId;
     }
 
     public String getAuthorizationUrl() {
