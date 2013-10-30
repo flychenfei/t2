@@ -34,23 +34,24 @@ public class GithubAuthService implements AuthService {
     private Map configMap;
     @Inject
     private OAuthManager oAuthManager;
-    
+    @Inject
+    private SocialService SocialService;
     @Inject
     public GithubAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Github);
         this.configMap = configMap;
     }
     
-    @Override
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Github);
-        if (socialId != null) {
-            return socialId;
+    
+	public SocialIdEntity getSocialIdEntity(Long userId) {
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Github);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
-        //if result is null, need redo auth
-        throw new OauthException(getAuthorizationUrl());
+        return socialId;
     }
-
+   
     public String getAuthorizationUrl() {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
@@ -83,29 +84,13 @@ public class GithubAuthService implements AuthService {
             client.setOAuth2Token(accessToken.getToken());
             UserService userService = new UserService(client);
             User ghUser = userService.getUser();
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Github);
-            boolean newSocial = false;
-            if (social == null) {
-                social = new SocialIdEntity();
-                newSocial = true;
-            }
-            social.setEmail(ghUser.getEmail());
-            social.setUser_id(userId);
-            social.setToken(accessToken.getToken());
-            social.setService(ServiceType.Github);
-            social.setSecret( configMap.get(prefix+".secret").toString());
             
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("userId", userId+"");
+            map.put("email", ghUser.getEmail());
             map.put("access_token", accessToken.getToken());
             map.put("secret", configMap.get(prefix+".secret").toString());
             oAuthManager.setInfo(ServiceType.Github, map);
-            
-            if (newSocial) {
-                socialIdEntityDao.save(social);
-            } else {
-                socialIdEntityDao.update(social);
-            }
             return true;
         }
         throw new OauthException(getAuthorizationUrl());
@@ -121,6 +106,7 @@ public class GithubAuthService implements AuthService {
 
     public Token getToken(com.britesnow.samplesocial.entity.User user) {
 		SocialIdEntity soId = getSocialIdEntity((long) user.getId());
+		System.out.println("-----user------"+user);
 		return new Token(soId.getToken(), soId.getSecret());
 	}
 

@@ -33,6 +33,7 @@ public class GitHubUserHandlers {
 	@WebGet("/github/userInfo")
 	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) {
 		String userInfo = githubUserService.getUserInfo(user);
+		System.out.println("-----userInfo----"+user);
 		return WebResponse.success(userInfo).set("emails", githubUserService.getEmails(user));
 	}
 	
