@@ -11,7 +11,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
@@ -29,11 +28,11 @@ public class TwitterAuthService implements AuthService{
     @ApplicationProperties
     private Map cfg;
 	
-	@Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
     
     private final LoadingCache<String, Token> tokenCache;
 
@@ -49,7 +48,6 @@ public class TwitterAuthService implements AuthService{
                 });
     }
 
-    
     public String getAuthorizationUrl() {
 		Token requestToken = oAuthService.getRequestToken();
 		tokenCache.put(requestToken.getToken(), requestToken);
@@ -59,9 +57,10 @@ public class TwitterAuthService implements AuthService{
     }
     
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Twitter);
-        if (socialId != null) {
-            socialId.setValid(true);
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Twitter);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
         return socialId;
     }
@@ -71,36 +70,20 @@ public class TwitterAuthService implements AuthService{
     	Verifier verifier = new Verifier(verifierCode);
     	Token accessToken = oAuthService.getAccessToken(requestToken, verifier);
         if (accessToken.getToken() != null) {
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(id, ServiceType.Twitter);
-            boolean newSocial = false;
-            if (social == null) {
-                social = new SocialIdEntity();
-                newSocial = true;
-            }
-            
-            social.setUser_id(id);
-            social.setToken(accessToken.getToken());
-            social.setSecret(accessToken.getSecret());
-            social.setService(ServiceType.Twitter);
             
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("userId", id+"");
+            map.put("email", null);
             map.put("access_token", accessToken.getToken());
             map.put("secret", accessToken.getSecret());
             oAuthManager.setInfo(ServiceType.Twitter, map);
             
-            if (newSocial) {
-                socialIdEntityDao.save(social);
-            } else {
-                socialIdEntityDao.update(social);
-            }
         } else {
         	throw new OauthException(getAuthorizationUrl());
         }
     	
 	}
 
-    
     public String getApiKey() {
         return (String) cfg.get("twitter.apiKey");
     }

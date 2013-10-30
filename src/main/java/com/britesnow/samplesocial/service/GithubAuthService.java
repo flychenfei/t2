@@ -14,7 +14,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
@@ -28,8 +27,6 @@ import com.google.inject.Singleton;
 @Singleton
 public class GithubAuthService implements AuthService {
 
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private Map configMap;
     @Inject
@@ -41,7 +38,6 @@ public class GithubAuthService implements AuthService {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Github);
         this.configMap = configMap;
     }
-    
     
 	public SocialIdEntity getSocialIdEntity(Long userId) {
 		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Github);
@@ -106,7 +102,6 @@ public class GithubAuthService implements AuthService {
 
     public Token getToken(com.britesnow.samplesocial.entity.User user) {
 		SocialIdEntity soId = getSocialIdEntity((long) user.getId());
-		System.out.println("-----user------"+user);
 		return new Token(soId.getToken(), soId.getSecret());
 	}
 

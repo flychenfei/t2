@@ -3,7 +3,6 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GithubUserService;
 import com.britesnow.snow.web.RequestContext;
@@ -19,8 +18,6 @@ public class GitHubUserHandlers {
 
 	@Inject
 	private GithubAuthService githubAuthService;
-	@Inject
-    private OAuthManager oAuthManager;
 	
 	@Inject
 	private GithubUserService githubUserService;
@@ -33,7 +30,6 @@ public class GitHubUserHandlers {
 	@WebGet("/github/userInfo")
 	public WebResponse getUserInfo(RequestContext rc,@WebUser User user) {
 		String userInfo = githubUserService.getUserInfo(user);
-		System.out.println("-----userInfo----"+user);
 		return WebResponse.success(userInfo).set("emails", githubUserService.getEmails(user));
 	}
 	

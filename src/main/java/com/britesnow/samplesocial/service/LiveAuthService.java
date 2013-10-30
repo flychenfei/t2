@@ -1,6 +1,17 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
+import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
@@ -10,31 +21,17 @@ import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.scribe.model.OAuthConstants.EMPTY_TOKEN;
 
 
 @Singleton
 public class LiveAuthService implements AuthService {
     public static final String PROFILE_ENDPOINT = "https://apis.live.net/v5.0/me";
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private Map configMap;
     @Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
     
     @Inject
     public LiveAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
@@ -42,15 +39,15 @@ public class LiveAuthService implements AuthService {
         this.configMap = configMap;
     }
 
-    @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
-        if (socialId != null && socialId.getTokenDate().getTime() - System.currentTimeMillis()  >0) {
-            return socialId;
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Live);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
-        //if result is null, need redo auth
-        throw new OauthException(getAuthorizationUrl());
+        return socialId;
     }
+    
 
     public String getAuthorizationUrl() {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
@@ -65,13 +62,6 @@ public class LiveAuthService implements AuthService {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
-            long expireDate = -1;
-            String rawResponse = accessToken.getRawResponse();
-            Pattern expire = Pattern.compile("\"expires_in\"\\s*:\\s*(\\d+)");
-            Matcher matcher = expire.matcher(rawResponse);
-            if (matcher.find()) {
-                expireDate = System.currentTimeMillis() + (Integer.valueOf(matcher.group(1)) - 100) * 1000;
-            }
             //get user profile
             //get userinfo
             OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_ENDPOINT);
@@ -80,36 +70,15 @@ public class LiveAuthService implements AuthService {
             Map profile = JsonUtil.toMapAndList(response.getBody());
             String email = (String) ((Map) profile.get("emails")).get("account");
             String prefix = "live";
-            String secret = configMap.get(prefix+".apiSecret").toString();
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Live);
-            boolean newSocial = false;
-            if (social == null) {
-                social = new SocialIdEntity();
-                newSocial = true;
-            }
-            social.setUser_id(userId);
-            social.setTokenDate(new Date(expireDate));
-            social.setToken(accessToken.getToken());
-            social.setService(ServiceType.Live);
-            social.setEmail(email);
-            social.setEmail(secret);
-            
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("userId", userId+"");
             map.put("access_token", accessToken.getToken());
-            map.put("secret", accessToken.getSecret());
+            map.put("secret", configMap.get(prefix+".apiSecret").toString());
             map.put("email", email);
             oAuthManager.setInfo(ServiceType.Live, map);
-            
-            if (newSocial) {
-                socialIdEntityDao.save(social);
-            } else {
-                socialIdEntityDao.update(social);
-            }
         }else{
             throw new OauthException(getAuthorizationUrl());
         }
-
 
     }
 

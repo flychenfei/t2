@@ -7,7 +7,6 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
@@ -24,9 +23,9 @@ import com.google.inject.Singleton;
 public class DropboxAuthService implements AuthService{
 
 	@Inject
-	private SocialIdEntityDao socialIdEntityDao;
-	@Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
 	
 	@Inject
 	@ApplicationProperties
@@ -40,14 +39,14 @@ public class DropboxAuthService implements AuthService{
     public DropboxAuthService() {
     }
     
-	@Override
-	public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId= socialIdEntityDao.getSocialdentity(userId,ServiceType.Dropbox);
-		if (socialId != null) {
-	        return socialId;
-	     }
-	     throw new OauthException(getAuthorizationUrl());
-	}
+    public SocialIdEntity getSocialIdEntity(Long userId) {
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Dropbox);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
+        }
+        return socialId;
+    }
 	
     public String getAuthorizationUrl() {
     	OAuthRequest request = new OAuthRequest(Verb.POST,REQUEST_TOKEN);
@@ -128,26 +127,14 @@ public class DropboxAuthService implements AuthService{
 	public void updateAccessToken(Token authToken, User user) {
 		try {
 			Token accessToken = getAccessToken(authToken);
-			SocialIdEntity soId = socialIdEntityDao.getSocialdentity(
-					user.getId(), ServiceType.Dropbox);
-			if (soId == null) {
-				soId = new SocialIdEntity();
-			}
-			soId.setToken(accessToken.getToken());
-			soId.setSecret(accessToken.getSecret());
-			soId.setUser_id(user.getId());
-			soId.setService(ServiceType.Dropbox);
 			
 			HashMap<String, String> map = new HashMap<String, String>();
             map.put("userId", user.getId()+"");
+            map.put("email", null);
             map.put("access_token", accessToken.getToken());
             map.put("secret", accessToken.getSecret());
             oAuthManager.setInfo(ServiceType.Dropbox, map);
 			
-			if (soId.getId() != null)
-				socialIdEntityDao.update(soId);
-			else
-				socialIdEntityDao.save(soId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OauthException(getAuthorizationUrl());

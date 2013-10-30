@@ -1,6 +1,14 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import org.scribe.model.OAuthConstants;
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
@@ -11,25 +19,16 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @Singleton
 public class YahooAuthService implements AuthService {
 
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -47,14 +46,13 @@ public class YahooAuthService implements AuthService {
                 });
     }
 
-    @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Yahoo);
-        if (socialId != null && socialId.getTokenDate().getTime() >= System.currentTimeMillis()) {
-            return socialId;
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Yahoo);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
-        //if result is null, need redo auth
-        throw new OauthException(getAuthorizationUrl());
+        return socialId;
     }
 
     public String getAuthorizationUrl() {
@@ -69,46 +67,19 @@ public class YahooAuthService implements AuthService {
             Token reqToken = tokenCache.get(requestToken);
             Token accessToken = oAuthService.getAccessToken(reqToken, verifier);
             if (accessToken.getToken() != null) {
-                //get expire date
-                String rawResponse = accessToken.getRawResponse();
-                Pattern expire = Pattern.compile("oauth_authorization_expires_in=\\s*(\\d+)");
-                Matcher matcher = expire.matcher(rawResponse);
-                long expireDate = -1;
-                if (matcher.find()) {
-                    expireDate = System.currentTimeMillis() + (Integer.valueOf(matcher.group(1)) - 100) * 1000;
-                }
-
 /*                OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_URL);
                 request.addHeader("x-li-format","json");
                 oAuthService.signRequest(accessToken, request);
                 Response response = request.send();
                 Map map = JsonUtil.toMapAndList(response.getBody());*/
 
-                SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Yahoo);
-                boolean newSocial = false;
-                if (social == null) {
-                    social = new SocialIdEntity();
-                    newSocial = true;
-                }
-                social.setUser_id(userId);
-                //social.setEmail((String) map.get("emailAddress"));
-                social.setToken(accessToken.getToken());
-                social.setSecret(accessToken.getSecret());
-                social.setService(ServiceType.Yahoo);
-                social.setTokenDate(new Date(expireDate));
                 
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("userId", userId+"");
+                map.put("email", null);
                 map.put("access_token", accessToken.getToken());
                 map.put("secret", accessToken.getSecret());
                 oAuthManager.setInfo(ServiceType.Yahoo, map);
-                
-                if (newSocial) {
-                    socialIdEntityDao.save(social);
-                } else {
-                    socialIdEntityDao.update(social);
-                }
-
                 return true;
             }
         } catch (ExecutionException e) {

@@ -1,15 +1,10 @@
 package com.britesnow.samplesocial.service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.britesnow.samplesocial.manager.OAuthManager;
-import com.britesnow.samplesocial.oauth.OauthException;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -18,9 +13,10 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
+import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.util.JsonUtil;
 import com.google.common.cache.CacheBuilder;
@@ -33,11 +29,11 @@ import com.google.inject.Singleton;
 @Singleton
 public class LinkedInAuthService implements AuthService {
 
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -60,14 +56,13 @@ public class LinkedInAuthService implements AuthService {
      * @param userId   user id
      * @return linkedin socialid entity
      */
-    @Override
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
-        if (socialId != null && socialId.getTokenDate().getTime() >= System.currentTimeMillis()) {
-            return socialId;
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.LinkedIn);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
-        //if result is null, need redo auth
-        throw new OauthException(getAuthorizationUrl());
+        return socialId;
     }
 
     /**
@@ -93,13 +88,6 @@ public class LinkedInAuthService implements AuthService {
             Token accessToken = oAuthService.getAccessToken(reqToken, verifier);
             if (accessToken.getToken() != null) {
                 //get expire date
-                String rawResponse = accessToken.getRawResponse();
-                Pattern expire = Pattern.compile("oauth_authorization_expires_in=\\s*(\\d+)");
-                Matcher matcher = expire.matcher(rawResponse);
-                long expireDate = -1;
-                if (matcher.find()) {
-                    expireDate = System.currentTimeMillis() + (Integer.valueOf(matcher.group(1)) - 100) * 1000;
-                }
 
                 OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_URL);
                 request.addHeader("x-li-format","json");
@@ -107,19 +95,6 @@ public class LinkedInAuthService implements AuthService {
                 Response response = request.send();
                 Map map = JsonUtil.toMapAndList(response.getBody());
 
-                SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.LinkedIn);
-                boolean newSocial = false;
-                if (social == null) {
-                    social = new SocialIdEntity();
-                    newSocial = true;
-                }
-                social.setUser_id(userId);
-                social.setEmail((String) map.get("emailAddress"));
-                social.setToken(accessToken.getToken());
-                social.setSecret(accessToken.getSecret());
-                social.setService(ServiceType.LinkedIn);
-                social.setTokenDate(new Date(expireDate));
-                
                 HashMap<String, String> managerMap = new HashMap<String, String>();
                 managerMap.put("userId", userId+"");
                 managerMap.put("access_token", accessToken.getToken());
@@ -127,12 +102,6 @@ public class LinkedInAuthService implements AuthService {
                 managerMap.put("email", (String) map.get("emailAddress"));
                 oAuthManager.setInfo(ServiceType.LinkedIn, managerMap);
                 
-                if (newSocial) {
-                    socialIdEntityDao.save(social);
-                } else {
-                    socialIdEntityDao.update(social);
-                }
-
             }else{
                 throw new OauthException(getAuthorizationUrl());
             }

@@ -9,7 +9,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
@@ -25,13 +24,13 @@ import fi.foyt.foursquare.api.FoursquareApi;
 @Singleton
 public class FoursquareAuthService implements AuthService {
 
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     private OAuthService oAuthService;
     private final CloneApi foursquareApi;
     private String secret,clienId;//callback;
     @Inject
     private OAuthManager oAuthManager;
+    @Inject
+    private SocialService SocialService;
 
     @Inject
     public FoursquareAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map config) {
@@ -43,14 +42,14 @@ public class FoursquareAuthService implements AuthService {
         foursquareApi = new CloneApi(clienId, secret, callback);
     }
 
-    @Override
+    
     public SocialIdEntity getSocialIdEntity(Long userId) {
-        SocialIdEntity socialId = socialIdEntityDao.getSocialdentity(userId, ServiceType.Foursquare);
-        if (socialId != null) {
-            return socialId;
+		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Foursquare);
+        if(socialId == null){
+        	//if result is null, need redo auth
+        	throw new OauthException(getAuthorizationUrl());
         }
-        //if result is null, need redo auth
-        throw new OauthException(getAuthorizationUrl());
+        return socialId;
     }
 
     public String getAuthorizationUrl() {
@@ -62,27 +61,14 @@ public class FoursquareAuthService implements AuthService {
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
             foursquareApi.setoAuthToken(accessToken.getToken());
-            boolean newSocial = false;
-            SocialIdEntity social = socialIdEntityDao.getSocialdentity(userId, ServiceType.Foursquare);
-            if (social == null) {
-                social = new SocialIdEntity();
-                newSocial = true;
-            }
-            social.setUser_id(userId);
-            social.setToken(accessToken.getToken());
-            social.setService(ServiceType.Foursquare);
 
             HashMap<String, String> managerMap = new HashMap<String, String>();
             managerMap.put("userId", userId+"");
+            managerMap.put("email", null);
             managerMap.put("access_token", accessToken.getToken());
             managerMap.put("secret", accessToken.getSecret());
             oAuthManager.setInfo(ServiceType.Foursquare, managerMap);
             
-            if (newSocial) {
-                socialIdEntityDao.save(social);
-            } else {
-                socialIdEntityDao.update(social);
-            }
         }else{
             throw new OauthException(getAuthorizationUrl());
         }
