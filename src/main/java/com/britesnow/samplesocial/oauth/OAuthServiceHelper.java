@@ -4,7 +4,13 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.*;
+import org.scribe.builder.api.DropBoxApi;
+import org.scribe.builder.api.FacebookApi;
+import org.scribe.builder.api.Foursquare2Api;
+import org.scribe.builder.api.LinkedInApi;
+import org.scribe.builder.api.LiveApi;
+import org.scribe.builder.api.TwitterApi;
+import org.scribe.builder.api.YahooApi;
 import org.scribe.model.SignatureType;
 import org.scribe.oauth.OAuthService;
 

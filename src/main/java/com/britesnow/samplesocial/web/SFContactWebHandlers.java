@@ -4,9 +4,7 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
-import com.britesnow.samplesocial.dao.SocialIdEntityDao;
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.samplesocial.service.SalesForceService;
 import com.britesnow.snow.web.RequestContext;
@@ -19,9 +17,6 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class SFContactWebHandlers {
-    
-    @Inject
-    private SocialIdEntityDao socialIdEntityDao;
     @Inject
     private SalesForceService salesforceService;
     @Inject
@@ -47,7 +42,7 @@ public class SFContactWebHandlers {
 	@WebGet("/salesforce/getContact")
 	public Map getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-	    String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
+	    String token = salesForceAuthService.getSocialIdEntity(user.getId()).getToken();
 	    JSONObject obj = salesforceService.getContact(token, id);
 	    m.put("result", obj);
 	    return m ;
@@ -56,7 +51,7 @@ public class SFContactWebHandlers {
 	@WebPost("/salesforce/saveContact")
 	public Object saveSFContact(@WebModel Map m,@WebParam("id") String id,@WebParam("name") String name,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-	    String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
+	    String token = salesForceAuthService.getSocialIdEntity(user.getId()).getToken();
 	    salesforceService.saveContact(token, id, name);
         return null;
 	}
@@ -64,7 +59,7 @@ public class SFContactWebHandlers {
 	@WebPost("/salesforce/deleteContact")
 	public Object deleteSFContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    User user = rc.getUser(User.class);
-        String token = socialIdEntityDao.getSocialdentity(user.getId(), ServiceType.SalesForce).getToken();
+        String token = salesForceAuthService.getSocialIdEntity(user.getId()).getToken();
         salesforceService.deleteContact(token, id);
         return null;
 	}

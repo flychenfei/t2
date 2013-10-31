@@ -3,30 +3,17 @@ package com.britesnow.samplesocial.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.britesnow.samplesocial.oauth.ServiceType;
 
-@Entity
-@Table(name = "social_id_entity")
-@javax.persistence.SequenceGenerator(name = "SEQ_STORE", allocationSize = 1, sequenceName = "social_id_entity_id_seq")
 public class SocialIdEntity extends BaseEntity {
     private Long   user_id;
-    @Column(length = 2048)
     private String token;
-    @Column(name="token_date")
     private Date tokenDate;
-    @Enumerated(EnumType.STRING)
     private ServiceType service;
     private String email;
     private String secret;
     private String fbid;
-    @Transient
     private boolean isValid = false;
     
     public Long getUser_id() {

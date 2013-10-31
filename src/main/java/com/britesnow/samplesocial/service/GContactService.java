@@ -113,7 +113,8 @@ public class GContactService {
 
     private ContactsService getContactsService(User user) {
         SocialIdEntity social = authService.getSocialIdEntity(user.getId());
-        if (social != null && social.isValid()) {
+        //System.out.println("---------"+social.getToken());
+        if (social != null) {
             ContactsService service = new ContactsService("Contacts Sample");
             service.setHeader("Authorization", "Bearer " + social.getToken());
             return service;

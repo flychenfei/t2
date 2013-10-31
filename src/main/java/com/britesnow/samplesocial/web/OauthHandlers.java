@@ -1,14 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.scribe.model.Token;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
@@ -90,7 +87,6 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/callback_fb")
     public void fbCallback(@WebModel Map<?, ?> m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
         String[] tokens = facebookAuthService.getAccessToken(code);
-        SocialIdEntity s =   facebookAuthService.getSocialIdEntity(user.getId());
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("userId", user.getId()+"");
         map.put("secret", null);

@@ -80,7 +80,7 @@ public class GMailService {
                     count = total - start;
                 }
             }
-            System.out.println(String.format("start %s count %s", start, count));
+           // System.out.println(String.format("start %s count %s", start, count));
             return new Pair<Integer, Message[]>(total, inbox.getMessages(start, start + count));
         }
         return new Pair<Integer, Message[]>(0, new Message[0]);
@@ -246,7 +246,7 @@ public class GMailService {
     private IMAPStore getImapStore(User user) throws Exception {
         if (user != null) {
             SocialIdEntity social = authService.getSocialIdEntity(user.getId());
-            if (social != null && social.getEmail() != null && social.isValid()) {
+            if (social != null && social.getEmail() != null ) {
                 return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
             }
         }

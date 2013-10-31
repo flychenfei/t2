@@ -1,11 +1,5 @@
 package com.britesnow.samplesocial.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "contactinfo")
-@javax.persistence.SequenceGenerator(name = "SEQ_STORE", allocationSize = 1, sequenceName = "contactinfo_id_seq")
 public class ContactInfo extends BaseEntity {
     private Long   contactId;
     private String birthday;
