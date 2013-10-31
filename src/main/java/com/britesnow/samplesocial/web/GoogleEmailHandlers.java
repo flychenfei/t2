@@ -29,7 +29,7 @@ public class GoogleEmailHandlers {
 
     @WebGet("/gmail/folders")
     public WebResponse listFolders(@WebUser User user) throws Exception {
-        Folder[] folders = gMailService.listFolders(user);
+        Folder[] folders = gMailService.listFolders();
         List list = new ArrayList();
         for (Folder folder : folders) {
             Map map = new HashMap();
@@ -42,7 +42,7 @@ public class GoogleEmailHandlers {
 
     @WebPost("/gmail/folder/delete")
     public WebResponse deleteFolder(@WebUser User user, @WebParam("folderName") String folderName, RequestContext rc) throws Exception {
-        boolean result = gMailService.deleteFolder(user, folderName);
+        boolean result = gMailService.deleteFolder(folderName);
         if (result) {
             return WebResponse.success(result);
         }else {
@@ -55,7 +55,7 @@ public class GoogleEmailHandlers {
                            @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
-    	Pair<Integer, Message[]> pair = gMailService.listMails(user, "inbox", pageSize*pageIndex+1, pageSize);
+    	Pair<Integer, Message[]> pair = gMailService.listMails("inbox", pageSize*pageIndex+1, pageSize);
         List<MailInfo> mailInfos = new ArrayList<MailInfo>();
 
         for (Message message : pair.getSecond()) {
@@ -67,7 +67,7 @@ public class GoogleEmailHandlers {
 
     @WebGet("/gmail/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
-        MailInfo info = gMailService.getEmail(user, id);
+        MailInfo info = gMailService.getEmail(id);
         return WebResponse.success(info);
     }
 
@@ -76,7 +76,7 @@ public class GoogleEmailHandlers {
     @WebPost("/gmail/delete")
     public WebResponse deleteEmail(@WebUser User user,
                               @WebParam("id") Integer id, RequestContext rc) throws Exception {
-        gMailService.deleteEmail(user, id);
+        gMailService.deleteEmail(id);
         return WebResponse.success(true);
     }
 
@@ -85,7 +85,7 @@ public class GoogleEmailHandlers {
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
                            @WebParam("content") String content, @WebParam("to") String to, RequestContext rc) throws Exception {
-        gMailService.sendMail(user, subject, content, to);
+        gMailService.sendMail(subject, content, to);
         return WebResponse.success();
     }
 
@@ -94,7 +94,7 @@ public class GoogleEmailHandlers {
                         @WebParam("subject") String subject, @WebParam("from") String from,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
 
-        Pair<List<MailInfo>, Integer> pair = gMailService.search(user, subject, from, pageSize, pageIndex);
+        Pair<List<MailInfo>, Integer> pair = gMailService.search(subject, from, pageSize, pageIndex);
         return WebResponse.success(pair.getFirst()).setResultCount(pair.getSecond());
     }
 

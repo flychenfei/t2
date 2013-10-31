@@ -2,7 +2,6 @@ package com.britesnow.samplesocial.web;
 
 import java.util.Map;
 
-import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.samplesocial.service.SalesForceMDService;
 import com.britesnow.snow.util.JsonUtil;
@@ -25,8 +24,7 @@ public class SalesforceMDWebHandlers {
     @WebPost("/salesforce/saveCavnasApp")
     public WebResponse saveCanvasApp(RequestContext rc,@WebParam("objJson") String jsonString) {
         Map<String,String> opts = JsonUtil.toMapAndList(jsonString);
-        User user = rc.getUser(User.class);
-        String token = salesForceAuthService.getSocialIdEntity(user.getId()).getToken();
+        String token = salesForceAuthService.getSocialIdEntity().getToken();
         //FIXME: hardcode for now
         String instanceUrl = "https://na14.salesforce.com";
         

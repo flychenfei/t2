@@ -31,7 +31,7 @@ public class LiveAuthService implements AuthService {
     @Inject
     private OAuthManager oAuthManager;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
     
     @Inject
     public LiveAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
@@ -39,8 +39,8 @@ public class LiveAuthService implements AuthService {
         this.configMap = configMap;
     }
 
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Live);
+    public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Live);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());
@@ -89,8 +89,8 @@ public class LiveAuthService implements AuthService {
      * @param url  url
      * @return  oauthrequest have sign
      */
-    public OAuthRequest createRequest(Long userId, Verb verb, String url) {
-        SocialIdEntity soid = getSocialIdEntity(userId);
+    public OAuthRequest createRequest(Verb verb, String url) {
+        SocialIdEntity soid = getSocialIdEntity();
         String secret = configMap.get("live.apiSecret").toString();
         OAuthRequest request = new OAuthRequest(verb, url);
         oAuthService.signRequest(new Token(soid.getToken(), secret), request);

@@ -1,8 +1,11 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+
 import com.britesnow.samplesocial.entity.ContactInfo;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.entity.User;
 import com.britesnow.snow.util.Pair;
 import com.google.gdata.client.contacts.ContactQuery;
 import com.google.gdata.client.contacts.ContactsService;
@@ -15,10 +18,6 @@ import com.google.gdata.util.ServiceException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
 @Singleton
 public class GContactService {
     @Inject
@@ -27,24 +26,24 @@ public class GContactService {
     private final String BASE_CONTACTS_URL = "https://www.google.com/m8/feeds/contacts/default/full";
     private final String BASE_GROUP_URL = "https://www.google.com/m8/feeds/groups/default/full";
 
-    public ContactGroupEntry createContactGroupEntry(User user, String name) throws Exception {
+    public ContactGroupEntry createContactGroupEntry(String name) throws Exception {
         ContactGroupEntry group = new ContactGroupEntry();
         group.setTitle(new PlainTextConstruct(name));
         URL postUrl = new URL(BASE_GROUP_URL);
-        return getContactsService(user).insert(postUrl, group);
+        return getContactsService().insert(postUrl, group);
     }
 
-    public ContactGroupEntry getContactGroupEntry(User user,String groupId) throws IOException, ServiceException {
+    public ContactGroupEntry getContactGroupEntry(String groupId) throws IOException, ServiceException {
         URL url = new URL(BASE_GROUP_URL + "/" + groupId);
-        return getContactsService(user).getEntry(url, ContactGroupEntry.class);
+        return getContactsService().getEntry(url, ContactGroupEntry.class);
     }
-    public ContactEntry getContactEntry(User user,String contactId) throws IOException, ServiceException {
+    public ContactEntry getContactEntry(String contactId) throws IOException, ServiceException {
         URL url = new URL(BASE_CONTACTS_URL + "/" + contactId);
-        return getContactsService(user).getEntry(url, ContactEntry.class);
+        return getContactsService().getEntry(url, ContactEntry.class);
     }
 
 
-    public Pair<List<ContactEntry>,Integer> getContactResults(User user, String groupId, int startIndex, int count) throws ServiceException, IOException {
+    public Pair<List<ContactEntry>,Integer> getContactResults(String groupId, int startIndex, int count) throws ServiceException, IOException {
         URL feedUrl = new URL(BASE_CONTACTS_URL);
         ContactQuery myQuery = new ContactQuery(feedUrl);
         if (groupId != null) {
@@ -52,11 +51,11 @@ public class GContactService {
         }
         myQuery.setStartIndex(startIndex);
         myQuery.setMaxResults(count);
-        ContactFeed resultFeed = getContactsService(user).query(myQuery, ContactFeed.class);
+        ContactFeed resultFeed = getContactsService().query(myQuery, ContactFeed.class);
         int total = resultFeed.getTotalResults();
         return new Pair<List<ContactEntry>, Integer>(resultFeed.getEntries(), total);
     }
-    public Pair<List<ContactEntry>,Integer> searchContactResults(User user, String contactName, int startIndex, int count) throws ServiceException, IOException {
+    public Pair<List<ContactEntry>,Integer> searchContactResults(String contactName, int startIndex, int count) throws ServiceException, IOException {
         URL feedUrl = new URL(BASE_CONTACTS_URL);
         ContactQuery myQuery = new ContactQuery(feedUrl);
         if (contactName != null) {
@@ -66,54 +65,54 @@ public class GContactService {
         myQuery.setMaxResults(count);
 //       myQuery.setGroup(String.format(BASE_GROUP_URL + "/" + groupId).replace("full","base"));
 //        myQuery.setGroup("https://www.google.com/m8/feeds/groups/woofgl%40gmail.com/base/6");
-        ContactFeed resultFeed = getContactsService(user).query(myQuery, ContactFeed.class);
+        ContactFeed resultFeed = getContactsService().query(myQuery, ContactFeed.class);
         int total = resultFeed.getTotalResults();
         return new Pair<List<ContactEntry>, Integer>(resultFeed.getEntries(), total);
     }
 
 
-    public Pair<List<ContactGroupEntry>, Integer> getGroupResults(User user) throws IOException, ServiceException {
+    public Pair<List<ContactGroupEntry>, Integer> getGroupResults() throws IOException, ServiceException {
         URL feedurUrl = new URL(BASE_GROUP_URL);
-        ContactGroupFeed contactGroupFeed = getContactsService(user).getFeed(feedurUrl, ContactGroupFeed.class);
+        ContactGroupFeed contactGroupFeed = getContactsService().getFeed(feedurUrl, ContactGroupFeed.class);
         int count = contactGroupFeed.getTotalResults();
         return new Pair<List<ContactGroupEntry>, Integer>(contactGroupFeed.getEntries(), count);
     }
 
 
 
-    public ContactEntry createContact(User user,ContactInfo contact)
+    public ContactEntry createContact(ContactInfo contact)
             throws ServiceException, IOException {
         ContactEntry contactEntry = contact.to();
         //Add process
         URL postUrl = new URL(BASE_CONTACTS_URL);
-        return getContactsService(user).insert(postUrl, contactEntry);
+        return getContactsService().insert(postUrl, contactEntry);
 
     }
 
 
-    public void deleteGroup(User user,String groupId, String etag) throws IOException, ServiceException {
+    public void deleteGroup(String groupId, String etag) throws IOException, ServiceException {
         String url = String.format("%s/%s", BASE_GROUP_URL, groupId);
-        getContactsService(user).delete(new URL(url), etag);
+        getContactsService().delete(new URL(url), etag);
     }
-    public void deleteContact(User user,String contactId, String etag) throws IOException, ServiceException {
+    public void deleteContact(String contactId, String etag) throws IOException, ServiceException {
         String url = String.format("%s/%s", BASE_CONTACTS_URL, contactId);
-        getContactsService(user).delete(new URL(url), etag);
+        getContactsService().delete(new URL(url), etag);
     }
 
-    public void updateContactGroupEntry(User user,String groupId, String etag, String groupName) throws IOException, ServiceException {
+    public void updateContactGroupEntry(String groupId, String etag, String groupName) throws IOException, ServiceException {
         String url = String.format("%s/%s", BASE_GROUP_URL, groupId);
         ContactGroupEntry group = new ContactGroupEntry();
         group.setTitle(new PlainTextConstruct(groupName));
-        getContactsService(user).update(new URL(url), group, etag);
+        getContactsService().update(new URL(url), group, etag);
     }
 
-    public void updateContactEntry(User user,ContactInfo contact) throws IOException, ServiceException {
+    public void updateContactEntry(ContactInfo contact) throws IOException, ServiceException {
         String url = String.format("%s/%s", BASE_CONTACTS_URL, contact.getId());
-        getContactsService(user).update(new URL(url), contact.to());
+        getContactsService().update(new URL(url), contact.to());
     }
 
-    private ContactsService getContactsService(User user) {
-        SocialIdEntity social = authService.getSocialIdEntity(user.getId());
+    private ContactsService getContactsService() {
+        SocialIdEntity social = authService.getSocialIdEntity();
         //System.out.println("---------"+social.getToken());
         if (social != null) {
             ContactsService service = new ContactsService("Contacts Sample");

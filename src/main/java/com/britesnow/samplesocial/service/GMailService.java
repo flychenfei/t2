@@ -1,17 +1,9 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.mail.MailInfo;
-import com.britesnow.samplesocial.mail.OAuth2Authenticator;
-import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.snow.util.Pair;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.sun.mail.imap.IMAPStore;
-import com.sun.mail.smtp.SMTPTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
@@ -27,10 +19,19 @@ import javax.mail.search.FromStringTerm;
 import javax.mail.search.OrTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.mail.MailInfo;
+import com.britesnow.samplesocial.mail.OAuth2Authenticator;
+import com.britesnow.samplesocial.oauth.OauthException;
+import com.britesnow.snow.util.Pair;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.sun.mail.imap.IMAPStore;
+import com.sun.mail.smtp.SMTPTransport;
 
 @Singleton
 public class GMailService {
@@ -50,8 +51,8 @@ public class GMailService {
      * @return  pare of couf and messages
      * @throws Exception
      */
-    public Pair<Integer, Message[]> listMails(User user, String folderName, int start, int count) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public Pair<Integer, Message[]> listMails(String folderName, int start, int count) throws Exception {
+        IMAPStore imap = getImapStore();
 
         Folder inbox;
         if (folderName == null) {
@@ -92,12 +93,12 @@ public class GMailService {
      * @return
      * @throws Exception
      */
-    public Folder[] listFolders(User user) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public Folder[] listFolders() throws Exception {
+        IMAPStore imap = getImapStore();
         return imap.getDefaultFolder().list();
     }
-    public Folder getFolder(User user, String folderName) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public Folder getFolder(String folderName) throws Exception {
+        IMAPStore imap = getImapStore();
         return imap.getFolder(folderName);
     }
 
@@ -108,8 +109,8 @@ public class GMailService {
      * @return
      * @throws Exception
      */
-    public MailInfo getEmail(User user, int emailId) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public MailInfo getEmail(int emailId) throws Exception {
+        IMAPStore imap = getImapStore();
         Folder inbox = imap.getFolder("INBOX");
         if (!inbox.isOpen()) {
             inbox.open(Folder.READ_ONLY);
@@ -127,8 +128,8 @@ public class GMailService {
      * @param emailId
      * @throws Exception
      */
-    public void deleteEmail(User user, int emailId) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public void deleteEmail(int emailId) throws Exception {
+        IMAPStore imap = getImapStore();
         Folder inbox = imap.getFolder("INBOX");
 
         inbox.open(Folder.READ_WRITE);
@@ -143,8 +144,8 @@ public class GMailService {
      * @return  delete ok or not
      * @throws Exception
      */
-    public boolean deleteFolder(User user, String folderName) throws Exception {
-        IMAPStore imap = getImapStore(user);
+    public boolean deleteFolder(String folderName) throws Exception {
+        IMAPStore imap = getImapStore();
         Folder folder = imap.getFolder(folderName);
         if (folder.isOpen()) {
             folder.close(true);
@@ -162,12 +163,12 @@ public class GMailService {
      * @return   pair of count and mail info.
      * @throws Exception
      */
-    public Pair<List<MailInfo>, Integer> search(User user, String subject, String from, int pageSize, int pageIndex) throws Exception {
+    public Pair<List<MailInfo>, Integer> search(String subject, String from, int pageSize, int pageIndex) throws Exception {
         Folder inbox = null;
         List<MailInfo> infos = new ArrayList<MailInfo>();
         int count = 0;
         try {
-            IMAPStore imap = getImapStore(user);
+            IMAPStore imap = getImapStore();
 
             inbox = imap.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
@@ -216,8 +217,8 @@ public class GMailService {
      * @return  mail ok or not
      * @throws Exception
      */
-    public boolean sendMail(User user, String subject, String content, String to) throws Exception {
-        SocialIdEntity idEntity = authService.getSocialIdEntity(user.getId());
+    public boolean sendMail(String subject, String content, String to) throws Exception {
+        SocialIdEntity idEntity = authService.getSocialIdEntity();
         if (idEntity != null) {
             String email = idEntity.getEmail();
             String token = idEntity.getToken();
@@ -243,12 +244,10 @@ public class GMailService {
 
     }
 
-    private IMAPStore getImapStore(User user) throws Exception {
-        if (user != null) {
-            SocialIdEntity social = authService.getSocialIdEntity(user.getId());
-            if (social != null && social.getEmail() != null ) {
-                return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
-            }
+    private IMAPStore getImapStore() throws Exception {
+        SocialIdEntity social = authService.getSocialIdEntity();
+        if (social != null && social.getEmail() != null) {
+            return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
         }
         throw new IllegalArgumentException("access token is invalid");
     }

@@ -18,7 +18,7 @@ public class DropboxAccountService {
 	
 	public Map getAccountInfo(Long userId){
 		OAuthRequest request = new OAuthRequest(Verb.GET,ACCOUNTINFO);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String accountInfo = request.send().getBody();
     	return JsonUtil.toMapAndList(accountInfo);
 	}

@@ -49,79 +49,79 @@ public class DropboxFileService {
 	private static String DELTA = "https://api.dropbox.com/1/delta";
 	private static String COMMITCHUNKEDUPLOAD="https://api-content.dropbox.com/1/commit_chunked_upload/dropbox";
 	
-	public Map getMetadata(String path,Long userId,boolean includeDeleted,Locale locale){
+	public Map getMetadata(String path,boolean includeDeleted,Locale locale){
 		OAuthRequest request = new OAuthRequest(Verb.GET,METADATA+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addQuerystringParameter("locale", locale.toString());
 		request.addQuerystringParameter("include_deleted", includeDeleted+"");
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public InputStream getThumbnails(String path,Long userId){
+	public InputStream getThumbnails(String path){
 		OAuthRequest request = new OAuthRequest(Verb.GET,THUMBNAILS+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	return request.send().getStream();
 	}
 	
-	public InputStream getFile(String path,Long userId){
+	public InputStream getFile(String path){
 		OAuthRequest request = new OAuthRequest(Verb.GET,FILES+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		return request.send().getStream();
 	}
 	
-	public Map createFolder(String path,Long userId){
+	public Map createFolder(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,CREATEFOLDER);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("path", path);
 		request.addBodyParameter("root", "dropbox");
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public Map delete(String path,Long userId){
+	public Map delete(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,DELETE);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("path", path);
 		request.addBodyParameter("root", "dropbox");
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public Entry upload(FileItem item,String path,Long userId) throws IOException, DropboxException{
+	public Entry upload(FileItem item,String path) throws IOException, DropboxException{
 		WebAuthSession session = dropboxAuthService.getWebAuthSession();
-	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity(userId);
+	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity();
 	    AccessTokenPair accessPair = new AccessTokenPair(soId.getToken(),soId.getSecret());
 	    session.setAccessTokenPair(accessPair);
 	    DropboxAPI<WebAuthSession> dropboxApi= new DropboxAPI<WebAuthSession>(session);
     	return dropboxApi.putFile(path, item.getInputStream(),item.getSize(), null, null);
 	}
 	
-	public Map share(String path,Long userId){
+	public Map share(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,SHARE+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public Map restore(String path,String rev,Long userId){
+	public Map restore(String path,String rev){
 		OAuthRequest request = new OAuthRequest(Verb.POST,RESTORE+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("rev", rev);
     	String metadata = request.send().getBody();
     	return JsonUtil.toMapAndList(metadata);
 	}
 	
-	public String getRevisions(String path,Long userId){
+	public String getRevisions(String path){
 		OAuthRequest request = new OAuthRequest(Verb.GET,REVISIONS+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String revisions = request.send().getBody();
     	return revisions;
 	}
 	
-	public Map copy(String fromPath,String toPath,Long userId){
+	public Map copy(String fromPath,String toPath){
 		OAuthRequest request = new OAuthRequest(Verb.POST,COPY);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("root", "dropbox");
 		request.addBodyParameter("from_path", fromPath);
 		request.addBodyParameter("to_path", toPath+fromPath);
@@ -129,9 +129,9 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(copyResult);
 	}
 	
-	public Map move(String fromPath,String toPath,Long userId){
+	public Map move(String fromPath,String toPath){
 		OAuthRequest request = new OAuthRequest(Verb.POST,MOVE);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("root", "dropbox");
 		request.addBodyParameter("from_path", fromPath);
 		request.addBodyParameter("to_path", toPath+fromPath);
@@ -139,43 +139,43 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(copyResult);
 	}
 	
-	public String search(String path,String query,Long userId,boolean includeDeleted){
+	public String search(String path,String query,boolean includeDeleted){
 		OAuthRequest request = new OAuthRequest(Verb.GET,SEARCH+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addQuerystringParameter("include_deleted", includeDeleted+"");
 		request.addQuerystringParameter("query", query);
     	String searchResult = request.send().getBody();
     	return searchResult;
 	}
 	
-	public Map getMedia(String path,Long userId){
+	public Map getMedia(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,MEDIA+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String media = request.send().getBody();
     	return JsonUtil.toMapAndList(media);
     	
 	}
 	
-	public Map getCopyref(String path,Long userId){
+	public Map getCopyref(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,COPYREF+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String media = request.send().getBody();
     	return JsonUtil.toMapAndList(media);
 	}
 	
-	public Map getDelta(String path,Long userId){
+	public Map getDelta(String path){
 		OAuthRequest request = new OAuthRequest(Verb.POST,DELTA);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
     	String delta = request.send().getBody();
     	return JsonUtil.toMapAndList(delta);
 	}
 	
-	public Map chunkedUpload(FileItem item,String uploadId,Long offset,int chunk,Long userId) throws IOException, DropboxException{
+	public Map chunkedUpload(FileItem item,String uploadId,Long offset,int chunk) throws IOException, DropboxException{
 		WebAuthSession session = dropboxAuthService.getWebAuthSession();
 		String url = RESTUtility.buildURL(session.getContentServer(), 1,
 	                "/chunked_upload", new String[]{"upload_id", uploadId, "offset", ""+offset});
 		HttpPut req = new HttpPut(url);
-	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity(userId);
+	    SocialIdEntity soId = dropboxAuthService.getSocialIdEntity();
 	    AccessTokenPair accessPair = new AccessTokenPair(soId.getToken(),soId.getSecret());
 	    session.setAccessTokenPair(accessPair);
 		session.sign(req);
@@ -205,9 +205,9 @@ public class DropboxFileService {
     	return JsonUtil.toMapAndList(RESTUtility.parseAsJSON(rep).toString());
 	}
 	
-	public Object commitChunkedUpload(String path,String uploadId,Long userId) throws IOException, DropboxException{
+	public Object commitChunkedUpload(String path,String uploadId) throws IOException, DropboxException{
 		OAuthRequest request = new OAuthRequest(Verb.POST,COMMITCHUNKEDUPLOAD+path);
-		dropboxAuthService.setAuthorizationHeader(request, userId);
+		dropboxAuthService.setAuthorizationHeader(request);
 		request.addBodyParameter("upload_id", uploadId);
     	String commitChunkedUpload = request.send().getBody();
     	return JsonUtil.toMapAndList(commitChunkedUpload);

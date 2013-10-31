@@ -33,7 +33,7 @@ public class FacebookContactHandlers {
     @WebGet("/fb/friend-detail")
     public Object getFacebookFriendDetail(@WebModel Map<String, com.restfb.types.User> m, @WebUser User user, @WebParam("fbid") String fbid,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         com.restfb.types.User friend = (com.restfb.types.User) facebookService.getUserInformation(token, fbid);
         m.put("result", friend);
@@ -44,7 +44,7 @@ public class FacebookContactHandlers {
     public WebResponse addFacebookContact(@WebUser User user, @WebParam("groupId") Long groupId,
                             @WebParam("fbid") String fbid) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             return WebResponse.success(e);
         } catch (Exception e) {
             e.printStackTrace();

@@ -23,7 +23,7 @@ public class FacebookAuthService implements AuthService {
     private Map               cfg;
     private OAuthService oAuthService;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
 
     private ServiceType           service     = ServiceType.FaceBook;
     private Token             EMPTY_TOKEN = null;
@@ -33,8 +33,8 @@ public class FacebookAuthService implements AuthService {
         oAuthService = oauthServiceHelper.getOauthService(service);
     }
     
-	public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(service);
+	public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(service);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

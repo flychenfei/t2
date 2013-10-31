@@ -1,6 +1,14 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.britesnow.samplesocial.entity.ContactInfo;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OauthException;
@@ -18,13 +26,6 @@ import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Singleton
 public class GoogleContactHandlers {
@@ -50,7 +51,7 @@ public class GoogleContactHandlers {
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
         Pair<List<ContactEntry>, Integer> pair;
-        pair = gContactService.getContactResults(user, groupId, pageIndex * pageSize + 1, pageSize);
+        pair = gContactService.getContactResults(groupId, pageIndex * pageSize + 1, pageSize);
         List<ContactEntry> list = pair.getFirst();
         List<ContactInfo> infos = new ArrayList<ContactInfo>();
         for (ContactEntry contact : list) {
@@ -75,7 +76,7 @@ public class GoogleContactHandlers {
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) throws Exception {
         Pair<List<ContactEntry>, Integer> pair;
-        pair = gContactService.searchContactResults(user, contactName, pageIndex * pageSize + 1, pageSize);
+        pair = gContactService.searchContactResults(contactName, pageIndex * pageSize + 1, pageSize);
         List<ContactEntry> list = pair.getFirst();
         List<ContactInfo> infos = new ArrayList<ContactInfo>();
         for (ContactEntry contact : list) {
@@ -87,7 +88,7 @@ public class GoogleContactHandlers {
 
     @WebGet("/ggroup/list")
     public Object getGroups(@WebModel Map m, @WebUser User user, RequestContext rc) throws Exception {
-        Pair<List<ContactGroupEntry>, Integer> pair = gContactService.getGroupResults(user);
+        Pair<List<ContactGroupEntry>, Integer> pair = gContactService.getGroupResults();
         return WebResponse.success(pair.getFirst()).set("result_count", pair.getSecond());
     }
 
@@ -98,9 +99,9 @@ public class GoogleContactHandlers {
 
             try {
                 if (contact.getId() == null) {
-                    gContactService.createContact(user,contact);
+                    gContactService.createContact(contact);
                 } else {
-                    gContactService.updateContactEntry(user, contact);
+                    gContactService.updateContactEntry(contact);
                 }
 
             } catch (Exception e) {
@@ -119,10 +120,10 @@ public class GoogleContactHandlers {
             try {
                 if (groupId == null) {
                     //create group
-                    gContactService.createContactGroupEntry(user, groupName);
+                    gContactService.createContactGroupEntry(groupName);
                 } else {
                     //update group
-                    gContactService.updateContactGroupEntry(user, groupId, etag, groupName);
+                    gContactService.updateContactGroupEntry(groupId, etag, groupName);
                 }
 
             } catch (Exception e) {
@@ -139,7 +140,7 @@ public class GoogleContactHandlers {
         boolean result = false;
         if (user != null) {
             try {
-                gContactService.deleteGroup(user, groupId, etag);
+                gContactService.deleteGroup(groupId, etag);
                 result = true;
             } catch (Exception e) {
                 log.warn(String.format("delete group %s fail", groupId), e);
@@ -154,7 +155,7 @@ public class GoogleContactHandlers {
         boolean result = false;
         if (user != null) {
             try {
-                gContactService.deleteContact(user, contactId, etag);
+                gContactService.deleteContact(contactId, etag);
                 result = true;
             } catch (Exception e) {
                 log.warn(String.format("delete contact %s fail", contactId), e);
@@ -170,7 +171,7 @@ public class GoogleContactHandlers {
         Map m = new HashMap();
         if (user != null && contactId != null) {
             try {
-                ContactEntry entry = gContactService.getContactEntry(user, contactId);
+                ContactEntry entry = gContactService.getContactEntry(contactId);
                 return WebResponse.success(ContactInfo.from(entry));
             } catch (Exception e) {
                 log.warn(String.format("get contact %s fail", contactId), e);

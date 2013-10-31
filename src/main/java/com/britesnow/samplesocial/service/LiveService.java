@@ -21,8 +21,8 @@ public class LiveService {
      * @param userId auth user id
      * @return user info map
      */
-    public Map getUserInfo(Long userId) {
-        OAuthRequest request = oAuthService.createRequest(userId, Verb.GET, LiveAuthService.PROFILE_ENDPOINT);
+    public Map getUserInfo() {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LiveAuthService.PROFILE_ENDPOINT);
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;

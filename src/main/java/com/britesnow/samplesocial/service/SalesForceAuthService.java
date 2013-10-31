@@ -16,15 +16,15 @@ public class SalesForceAuthService implements AuthService {
     private Token             EMPTY_TOKEN = null;
     private OAuthService      oAuthService;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
 
     @Inject
     public SalesForceAuthService(OAuthServiceHelper oauthServiceHelper) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.SalesForce);
     }
 
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(serivce);
+    public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(serivce);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

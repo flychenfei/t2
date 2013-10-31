@@ -29,7 +29,7 @@ public class FacebookFeedHandlers {
     public Object getFacebookPosts(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getObjectList(token, "me", "feed", null, null, pageSize, pageIndex);
         m.put("result", ls);
@@ -43,7 +43,7 @@ public class FacebookFeedHandlers {
     public Object getFacebookPhotos(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getPhotoList(token, "me", pageSize, pageIndex);
         m.put("result", ls);
@@ -57,7 +57,7 @@ public class FacebookFeedHandlers {
     public Object getFacebookNotes(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getNotesList(token, "me", pageSize, pageIndex);
         m.put("result", ls);
@@ -71,7 +71,7 @@ public class FacebookFeedHandlers {
     public Object getFacebookEvents(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getEventsList(token, "me", pageSize, pageIndex);
         m.put("result", ls);
@@ -85,7 +85,7 @@ public class FacebookFeedHandlers {
     public Object getFacebookQuestions(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getQuestionsList(token, "me", pageSize, pageIndex);
         m.put("result", ls);
@@ -98,7 +98,7 @@ public class FacebookFeedHandlers {
     @WebPost("/fb/post-add")
     public WebResponse addFacebookPost(@WebUser User user, @WebParam("value") String value) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.publishFeed(token, e.getFbid(), value);
             return WebResponse.success(true);
@@ -112,7 +112,7 @@ public class FacebookFeedHandlers {
     @WebPost("/fb/post-delete")
     public WebResponse deleteFacebookPost(@WebUser User user, @WebParam("messageId") String messageId) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.deleteFeed(token, messageId);
             return WebResponse.success(true);
@@ -127,7 +127,7 @@ public class FacebookFeedHandlers {
     public WebResponse addFacebookNote(@WebUser User user, @WebParam("subject") String subject,
                             @WebParam("msg") String msg) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.publishNote(token, "me", subject, msg);
             return WebResponse.success(true);
@@ -141,7 +141,7 @@ public class FacebookFeedHandlers {
     @WebPost("/fb/note-delete")
     public WebResponse deleteFacebookNote(@WebUser User user, @WebParam("messageId") String messageId) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.deleteNote(token, messageId);
             return WebResponse.success(true);
@@ -156,7 +156,7 @@ public class FacebookFeedHandlers {
     public WebResponse addFacebookPhoto(@WebUser User user, @WebParam("fbid") String fbid,
                             @WebParam("data") String data, @WebParam("file") FileItem file) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.publishPhoto(token, "me", data, file.getInputStream());
             return WebResponse.success(true);
@@ -170,7 +170,7 @@ public class FacebookFeedHandlers {
     @WebPost("/fb/delete-photo")
     public WebResponse deleteFacebookPhoto(@WebUser User user, @WebParam("messageId") String messageId) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.deletePhoto(token, messageId);
             return WebResponse.success(true);
@@ -185,7 +185,7 @@ public class FacebookFeedHandlers {
     public WebResponse addFacebookEvent(@WebUser User user, @WebParam("name") String name,
                             @WebParam("start_time") String start_time) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.publishEvent(token, "me", name, start_time);
             return WebResponse.success(true);
@@ -199,7 +199,7 @@ public class FacebookFeedHandlers {
     @WebPost("/fb/delete-event")
     public WebResponse deleteFacebookEvent(@WebUser User user, @WebParam("messageId") String messageId) {
         try {
-            SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+            SocialIdEntity e = facebookAuthService.getSocialIdEntity();
             String token = e.getToken();
             facebookService.deleteEvent(token, messageId);
             return WebResponse.success(true);

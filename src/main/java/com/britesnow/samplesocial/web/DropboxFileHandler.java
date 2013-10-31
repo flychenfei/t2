@@ -35,13 +35,13 @@ public class DropboxFileHandler {
 			path="";
 		if(includeDeleted==null)
 			includeDeleted = false;
-		return WebResponse.success(dropboxFileService.getMetadata(path, user.getId(),includeDeleted,rc.getReq().getLocale()));
+		return WebResponse.success(dropboxFileService.getMetadata(path,includeDeleted,rc.getReq().getLocale()));
 	}
 	
 	@WebResourceHandler(matches="/dropbox/getFile/.*")
 	public void getFile(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
 		path = path.substring("/dropbox/getFile".length());
-		InputStream in = dropboxFileService.getFile(path, user.getId());
+		InputStream in = dropboxFileService.getFile(path);
 		HttpServletResponse res = rc.getRes();
 		res.addHeader("Content-Disposition", "attachment;filename="+path.substring(path.lastIndexOf("/")+1));
 		OutputStream out = res.getOutputStream();
@@ -58,7 +58,7 @@ public class DropboxFileHandler {
 	@WebResourceHandler(matches="/dropbox/thumbnails/.*")
 	public void getThumbnails(@WebPath String path,@WebUser User user,RequestContext rc) throws IOException{
 		path = path.substring("/dropbox/thumbnails".length());
-		InputStream in = dropboxFileService.getThumbnails(path, user.getId());
+		InputStream in = dropboxFileService.getThumbnails(path);
 		HttpServletResponse res = rc.getRes();
 		OutputStream out = res.getOutputStream();
 		res.setContentType("image/jpeg");
@@ -73,12 +73,12 @@ public class DropboxFileHandler {
 	
 	@WebPost("/dropbox/createFolder")
 	public WebResponse createFolder(@WebParam("path") String path,@WebUser User user){
-		return WebResponse.success(dropboxFileService.createFolder(path, user.getId()));
+		return WebResponse.success(dropboxFileService.createFolder(path));
 	}
 	
 	@WebPost("/dropbox/delete")
 	public WebResponse delete(@WebParam("path") String path,@WebUser User user){
-		return WebResponse.success(dropboxFileService.delete(path, user.getId()));
+		return WebResponse.success(dropboxFileService.delete(path));
 	}
 	
 	@WebPost("/dropbox/upload")
@@ -88,45 +88,45 @@ public class DropboxFileHandler {
 			path=path+"/";
 		path +=file.getName();
 		if(file.getSize()<150*1024*1024)
-			return WebResponse.success(dropboxFileService.upload(file, path, user.getId()));
+			return WebResponse.success(dropboxFileService.upload(file, path));
 		else{//when file size more than 150mb,use chunked_upload
 			Long offset = 0L;
 			String uploadId = null;
 			int chunk = 50*1024*1024;//every time upload size
-			Map result = dropboxFileService.chunkedUpload(file,uploadId,offset,chunk, user.getId());
+			Map result = dropboxFileService.chunkedUpload(file,uploadId,offset,chunk);
 			while((offset=Long.parseLong(result.get("offset").toString()))<file.getSize()){
 				uploadId = result.get("upload_id").toString();
-				result = dropboxFileService.chunkedUpload(file, uploadId,offset,chunk, user.getId());
+				result = dropboxFileService.chunkedUpload(file, uploadId,offset,chunk);
 			}
-			return WebResponse.success(dropboxFileService.commitChunkedUpload(path,uploadId,user.getId()));		
+			return WebResponse.success(dropboxFileService.commitChunkedUpload(path,uploadId));		
 		}
 	}
 	
 	@WebGet("/dropbox/share")
 	public WebResponse share(@WebParam("path") String path,@WebUser User user){
-		return WebResponse.success(dropboxFileService.share(path,user.getId()));
+		return WebResponse.success(dropboxFileService.share(path));
 	}
 	
 	@WebPost("/dropbox/restore")
 	public WebResponse restore(@WebParam("path") String path,@WebParam("rev")String rev,@WebUser User user){
 		path = path.startsWith("/")?path:("/"+path);
-		return WebResponse.success(dropboxFileService.restore(path,rev,user.getId()));
+		return WebResponse.success(dropboxFileService.restore(path,rev));
 	}
 	
 	@WebGet("/dropbox/revisions")
 	public WebResponse getRevisions(@WebParam("path") String path,@WebUser User user){
 		path = path.startsWith("/")?path:("/"+path);
-		return WebResponse.success(dropboxFileService.getRevisions(path,user.getId()));
+		return WebResponse.success(dropboxFileService.getRevisions(path));
 	}
 	
 	@WebPost("/dropbox/copy")
 	public WebResponse copy(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
-		return WebResponse.success(dropboxFileService.copy(fromPath,toPath,user.getId()));
+		return WebResponse.success(dropboxFileService.copy(fromPath,toPath));
 	}
 	
 	@WebPost("/dropbox/move")
 	public WebResponse move(@WebParam("fromPath") String fromPath,@WebParam("toPath") String toPath,@WebUser User user){
-		return WebResponse.success(dropboxFileService.move(fromPath,toPath,user.getId()));
+		return WebResponse.success(dropboxFileService.move(fromPath,toPath));
 	}
 	
 	@WebGet("/dropbox/search")
@@ -134,16 +134,16 @@ public class DropboxFileHandler {
 			@WebParam("include_deleted") Boolean includeDeleted,@WebUser User user){
 		if(includeDeleted==null)
 			includeDeleted = false;
-		return WebResponse.success(dropboxFileService.search(path, query, user.getId(), includeDeleted));
+		return WebResponse.success(dropboxFileService.search(path, query, includeDeleted));
 	}
 	
 	@WebGet("/dropbox/getMedia")
 	public WebResponse getMedia(@WebParam("path") String path,@WebUser User user){
-		return WebResponse.success(dropboxFileService.getMedia(path, user.getId()));
+		return WebResponse.success(dropboxFileService.getMedia(path));
 	}
 	
 	@WebGet("/dropbox/getDelta")
 	public WebResponse getDelta(@WebParam("path") String path,@WebUser User user){
-		return WebResponse.success(dropboxFileService.getDelta(path, user.getId()));
+		return WebResponse.success(dropboxFileService.getDelta(path));
 	}
 }

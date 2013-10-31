@@ -25,7 +25,7 @@ public class DropboxAuthService implements AuthService{
 	@Inject
     private OAuthManager oAuthManager;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
 	
 	@Inject
 	@ApplicationProperties
@@ -39,8 +39,8 @@ public class DropboxAuthService implements AuthService{
     public DropboxAuthService() {
     }
     
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Dropbox);
+    public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Dropbox);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());
@@ -91,8 +91,8 @@ public class DropboxAuthService implements AuthService{
         return tokenHandler(access_token);
     }
     
-    public void setAuthorizationHeader(OAuthRequest request,Long userId){
-    	SocialIdEntity soId =getSocialIdEntity(userId);
+    public void setAuthorizationHeader(OAuthRequest request){
+    	SocialIdEntity soId =getSocialIdEntity();
     	StringBuffer requestHeader = new StringBuffer("OAuth ");
     	requestHeader.append("oauth_version=\"1.0\",")
     				 .append("oauth_signature_method=\"PLAINTEXT\",")
@@ -110,8 +110,8 @@ public class DropboxAuthService implements AuthService{
     	return new WebAuthSession(new AppKeyPair(
     			configMap.get(DROPBOX+".app_key").toString(),configMap.get(DROPBOX+".app_secret").toString()), AccessType.DROPBOX);
     }
-    public String getHeader(Long userId){
-    	SocialIdEntity soId =getSocialIdEntity(userId);
+    public String getHeader(){
+    	SocialIdEntity soId =getSocialIdEntity();
     	StringBuffer requestHeader = new StringBuffer("OAuth ");
     	requestHeader.append("oauth_version=\"1.0\",")
     				 .append("oauth_signature_method=\"PLAINTEXT\",")

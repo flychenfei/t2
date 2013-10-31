@@ -26,7 +26,7 @@ public class FacebookFriendHandlers {
     public Object getFacebookFriends(@WebModel Map m, @WebUser User user, @WebParam("query") String query,
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
                             @WebParam("limit") Integer limit, @WebParam("offset") Integer offset, RequestContext rc) {
-        SocialIdEntity e = facebookAuthService.getSocialIdEntity(user.getId());
+        SocialIdEntity e = facebookAuthService.getSocialIdEntity();
         String token = e.getToken();
         List ls = facebookService.getFriendsByPage(token, query, limit, offset);
         m.put("result", ls);

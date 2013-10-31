@@ -19,7 +19,7 @@ public class LiveHandlers {
     @WebGet("/live/getUserInfo")
     public WebResponse getUserInfo(@WebUser User user, RequestContext rc)  {
         if (user != null) {
-            Map userInfo = liveService.getUserInfo(user.getId());
+            Map userInfo = liveService.getUserInfo();
             WebResponse response = WebResponse.success(userInfo);
             return response;
         }else {

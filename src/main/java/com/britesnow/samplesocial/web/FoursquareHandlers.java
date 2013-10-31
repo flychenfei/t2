@@ -26,7 +26,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/getUserFriends")
     public WebResponse getFriends(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
-            Result<UserGroup> result = foursquareService.getFriends(user.getId());
+            Result<UserGroup> result = foursquareService.getFriends();
             if(result.getMeta().getCode() == 200) {
                 return WebResponse.success(result.getResult());
             }{
@@ -40,7 +40,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/getUserInfo")
     public WebResponse getUserInfo(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
-            Result<CompleteUser> result = foursquareService.getUserInfo(user.getId());
+            Result<CompleteUser> result = foursquareService.getUserInfo();
             return WebResponse.success(result);
         }else {
             return WebResponse.fail();
@@ -53,7 +53,7 @@ public class FoursquareHandlers {
                                   @WebParam("twitterSource") String twitterSource, @WebParam("fbid") String fbid,
                                   @WebParam("name") String name) throws Exception {
         if (user != null) {
-            Result<CompactUser[]> result = foursquareService.userSearch(user.getId(), phone, email, twitter, twitterSource, fbid, name);
+            Result<CompactUser[]> result = foursquareService.userSearch(phone, email, twitter, twitterSource, fbid, name);
             if (result.getMeta().getCode() == 200) {
                 return WebResponse.success(result.getResult());
             }else{
@@ -69,7 +69,7 @@ public class FoursquareHandlers {
                                   @WebParam("limit") Integer limit,@WebParam("after") String after) throws Exception {
         if (user != null) {
             long afterTime = System.currentTimeMillis() - 4 * 1000*60*60;
-            Result<Checkin[]> result = foursquareService.recentCheckins(user.getId(), ll, limit, afterTime);
+            Result<Checkin[]> result = foursquareService.recentCheckins(ll, limit, afterTime);
             return WebResponse.success(result);
         }else {
             return WebResponse.fail();
@@ -79,7 +79,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/venuesCategories")
     public WebResponse venuesCategories(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
-            Result<Category[]> result = foursquareService.venuesCategories(user.getId());
+            Result<Category[]> result = foursquareService.venuesCategories();
             if(result.getMeta().getCode()==200){
                 return WebResponse.success(result.getResult());
             }
@@ -91,7 +91,7 @@ public class FoursquareHandlers {
     public WebResponse venuesTrending(@WebUser User user, RequestContext rc, @WebParam("ll") String ll,
                                       @WebParam("limit") Integer limit,@WebParam("after") Integer radius) throws Exception {
         if (user != null) {
-            Result<CompactVenue[]> result = foursquareService.venuesTrending(user.getId(), ll, limit, radius);
+            Result<CompactVenue[]> result = foursquareService.venuesTrending(ll, limit, radius);
             if (result.getMeta().getCode() == 200) {
                 return WebResponse.success(convertCompactVenues(result.getResult()));
             }
@@ -154,7 +154,7 @@ public class FoursquareHandlers {
     public WebResponse venuesSearch(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
             Map venues = rc.getParamMap("venues.");
-            Result<VenuesSearchResult> result = foursquareService.venuesSearch(user.getId(), venues);
+            Result<VenuesSearchResult> result = foursquareService.venuesSearch(venues);
             return WebResponse.success(convertCompactVenues(result.getResult().getVenues()));
         }else {
             return WebResponse.fail();
@@ -164,7 +164,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/venuesExplore")
     public WebResponse venuesExplore(@WebUser User user, RequestContext rc, @WebParam("ll") String ll, @WebParam("limit") Integer limit) throws Exception {
         if (user != null) {
-            Result<Recommended> result = foursquareService.venuesExplore(user.getId(), ll, limit);
+            Result<Recommended> result = foursquareService.venuesExplore(ll, limit);
             if (result.getMeta().getCode() == 200) {
                 List<Map> dtos = new ArrayList<Map>();
                 for (RecommendationGroup group : result.getResult().getGroups()) {
@@ -183,7 +183,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/specialSearch")
     public WebResponse specialSearch(@WebUser User user, RequestContext rc, @WebParam("ll") String ll, @WebParam("limit") Integer limit) throws Exception {
         if (user != null) {
-            Result<SpecialGroup> result = foursquareService.specialSearch(user.getId(), ll, limit);
+            Result<SpecialGroup> result = foursquareService.specialSearch(ll, limit);
             if (result.getMeta().getCode() == 200) {
                 return WebResponse.success(result.getResult());
             }
@@ -195,7 +195,7 @@ public class FoursquareHandlers {
     @WebGet("/foursquare/usersBadges")
     public WebResponse usersBadges(@WebUser User user, RequestContext rc) throws Exception {
         if (user != null) {
-            Result<Badges> result = foursquareService.usersBadges(user.getId());
+            Result<Badges> result = foursquareService.usersBadges();
             if (result.getMeta().getCode() == 200) {
                 return WebResponse.success(result.getResult().getBadges());
             }

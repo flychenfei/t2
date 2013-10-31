@@ -29,7 +29,7 @@ public class GoogleAuthService implements AuthService {
     @Inject
     private OAuthManager oAuthManager;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
 
     @Inject
     public GoogleAuthService(OAuthServiceHelper oauthServiceHelper) {
@@ -37,8 +37,8 @@ public class GoogleAuthService implements AuthService {
     }
 
     
-    public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Google);
+    public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Google);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

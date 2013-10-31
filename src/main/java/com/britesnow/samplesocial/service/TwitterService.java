@@ -9,7 +9,6 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -62,54 +61,54 @@ public class TwitterService {
 	//Suggested Users
 	public static final String SUGGESTIONS = "https://api.twitter.com/1.1/users/suggestions.json";
 	
-	private Token getToken(User user) {
-		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity(user.getId());
+	private Token getToken() {
+		SocialIdEntity socialEn = twitterAuthService.getSocialIdEntity();
 		if (socialEn != null) {
 			return new Token(socialEn.getToken(), socialEn.getSecret());
 		}
 		throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
 	}
 	
-	public Map getUserInfo(User user) {
-		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(USER_INFO, getIdInTwitter(user).get("id")));
-		oAuthService.signRequest(getToken(user), request);
+	public Map getUserInfo() {
+		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(USER_INFO, getIdInTwitter().get("id")));
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 	    return map;
 	}
 	
 	//Timeline
-	public String getTimeline(User user) {
+	public String getTimeline() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, TWITTER_TIMELINE);
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    return response.getBody();
 	}
 	
-	public String getRetweets(User user) {
+	public String getRetweets() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, RETWEET_OF_ME);
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    return response.getBody();
 	}
 	
-	public String getMentionTimeline(User user) {
+	public String getMentionTimeline() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, MENTION_TIMELINE);
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    return response.getBody();
 	}
 	
-	public String getUserTimeline(User user) {
-		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(USER_TIMELINE, getIdInTwitter(user).get("id")));
-		oAuthService.signRequest(getToken(user), request);
+	public String getUserTimeline() {
+		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(USER_TIMELINE, getIdInTwitter().get("id")));
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    return response.getBody();
 	}
 	
-	private Map getIdInTwitter(User user) {
+	private Map getIdInTwitter() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, USER_TWITTER_ID);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 	   
@@ -119,46 +118,46 @@ public class TwitterService {
 
 	//Tweets
 	//GET statuses/retweets/:id
-	public String getRetweetById(User user, String tweet_id) {
+	public String getRetweetById(String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(RETWEET_BY_ID, tweet_id));
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
 	//GET statuses/show/:id
-	public Map getStatusById(User user, String tweet_id) {
+	public Map getStatusById(String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(STATUS_BY_ID, tweet_id));
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 		return map;
 	}
 	
-	public String postStatus(User user, String status) {
+	public String postStatus(String status) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, POST_STATUS);
 		request.addBodyParameter("status", status);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
-	public Map retweet(User user, String tweet_id) {
+	public Map retweet(String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(RETWEET, tweet_id));
 		request.addBodyParameter("id", tweet_id);
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 	    return map;
 	}
 	
-	public Map destroyTweet(User user, String tweet_id) {
+	public Map destroyTweet(String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, String.format(DESTORY_TWEET, tweet_id));
 		System.out.println(String.format(DESTORY_TWEET, tweet_id));
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 	    return map;
@@ -166,9 +165,9 @@ public class TwitterService {
 	
 	//Search
 	//GET search/tweets
-	public Map searchTweets(User user, String query) {
+	public Map searchTweets(String query) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(SEARECH_TWEETS, query));
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
@@ -177,39 +176,39 @@ public class TwitterService {
 	
 	//Direct Messages
 	//GET direct_messages
-	public String getDirectMsg(User user) {
+	public String getDirectMsg() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, DIRECT_MSG);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
 	//GET direct_messages/sent
-	public String getSendMsg(User user) {
+	public String getSendMsg() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, GET_SEND_MSG);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
 	//GET direct_messages/show
-	public String showMsg(User user,String msg_id) {
+	public String showMsg(String msg_id) {
 		OAuthRequest request = new OAuthRequest(Verb.GET, String.format(SHOW_MSG, msg_id));
 		System.out.println("msg_id:" + String.format(SHOW_MSG, msg_id));
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
 	//POST direct_messages
-	public Map sendMsg(User user,String screen_name, String text) {
+	public Map sendMsg(String screen_name, String text) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, SEND_MSG);
 		request.addBodyParameter("screen_name", screen_name);
 		request.addBodyParameter("text", text);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 		Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
@@ -217,19 +216,19 @@ public class TwitterService {
 	}
 	
 	//Suggested Users
-	public String getSuggestions(User user) {
+	public String getSuggestions() {
 		OAuthRequest request = new OAuthRequest(Verb.GET, SUGGESTIONS);
-		Token accessToken = getToken(user);
+		Token accessToken = getToken();
 		oAuthService.signRequest(accessToken, request);
 	    Response response = request.send();
 		return response.getBody();
 	}
 	
 	//Favorites
-	public Map favorite(User user, String tweet_id) {
+	public Map favorite(String tweet_id) {
 		OAuthRequest request = new OAuthRequest(Verb.POST, FAVORITE);
 		request.addBodyParameter("id", tweet_id);
-		oAuthService.signRequest(getToken(user), request);
+		oAuthService.signRequest(getToken(), request);
 	    Response response = request.send();
 	    Map map = JsonUtil.toMapAndList(response.getBody());
 	    return map;

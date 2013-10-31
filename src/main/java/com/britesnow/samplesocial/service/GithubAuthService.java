@@ -32,15 +32,15 @@ public class GithubAuthService implements AuthService {
     @Inject
     private OAuthManager oAuthManager;
     @Inject
-    private SocialService SocialService;
+    private SocialService socialService;
     @Inject
     public GithubAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Github);
         this.configMap = configMap;
     }
     
-	public SocialIdEntity getSocialIdEntity(Long userId) {
-		SocialIdEntity socialId = SocialService.getSocialIdEntityfromSession(ServiceType.Github);
+	public SocialIdEntity getSocialIdEntity() {
+		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Github);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());
@@ -101,7 +101,7 @@ public class GithubAuthService implements AuthService {
     }
 
     public Token getToken(com.britesnow.samplesocial.entity.User user) {
-		SocialIdEntity soId = getSocialIdEntity((long) user.getId());
+		SocialIdEntity soId = getSocialIdEntity();
 		return new Token(soId.getToken(), soId.getSecret());
 	}
 

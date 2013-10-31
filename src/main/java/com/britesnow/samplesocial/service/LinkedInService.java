@@ -35,7 +35,7 @@ public class LinkedInService {
     }
 
     private Token getToken(User user) {
-        SocialIdEntity soId = authService.getSocialIdEntity(user.getId());
+        SocialIdEntity soId = authService.getSocialIdEntity();
         if (soId != null) {
             return new Token(soId.getToken(), soId.getSecret());
         }
