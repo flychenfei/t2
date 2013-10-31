@@ -1,13 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.scribe.model.Token;
 
 import com.britesnow.samplesocial.entity.User;
-import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.DropboxAuthService;
@@ -53,8 +51,6 @@ public class OauthHandlers {
     private YahooAuthService yahooAuthService;
    // @Inject
    // private SocialIdEntityDao   socialIdEntityDao;
-    @Inject
-    private OAuthManager oAuthManager;
 
     @WebGet("/authorize")
     public void authorize(@WebModel Map<?, ?> m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
@@ -86,13 +82,7 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/callback_fb")
     public void fbCallback(@WebModel Map<?, ?> m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
-        String[] tokens = facebookAuthService.getAccessToken(code);
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("userId", user.getId()+"");
-        map.put("secret", null);
-        map.put("email", null);
-        map.put("access_token", tokens[0]);
-        oAuthManager.setInfo(ServiceType.FaceBook, map);
+        facebookAuthService.updateAccessToken(code, user.getId());
     }
     
     @WebModelHandler(startsWith="/twitterCallback")
@@ -162,14 +152,7 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) {
-        String[] tokens = salesForceAuthService.getAccessToken(code);
-            
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("userId", user.getId()+"");
-        map.put("secret", null);
-        map.put("email", null);
-        map.put("access_token", tokens[0]);
-        oAuthManager.setInfo(ServiceType.SalesForce, map);
+        salesForceAuthService.updateAccessToken(code,user.getId());
     }
 
     @WebModelHandler(startsWith="/yahoo_callback")
