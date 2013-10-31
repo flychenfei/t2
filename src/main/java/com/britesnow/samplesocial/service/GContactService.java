@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.service;
 
+import com.britesnow.samplesocial.entity.ContactInfo;
 import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.snow.util.Pair;

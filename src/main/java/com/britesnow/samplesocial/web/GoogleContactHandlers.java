@@ -1,9 +1,9 @@
 package com.britesnow.samplesocial.web;
 
 
+import com.britesnow.samplesocial.entity.ContactInfo;
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.oauth.OauthException;
-import com.britesnow.samplesocial.service.ContactInfo;
 import com.britesnow.samplesocial.service.GContactService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
 import com.britesnow.samplesocial.web.annotation.WebObject;
