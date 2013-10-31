@@ -2,8 +2,6 @@ package com.britesnow.samplesocial.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,9 +50,9 @@ public class SalesForceMDService {
             Map<String, String> apps = unZip(bs,"unpackaged/applications/");
             Map<String, String> profiles = unZip(bs,"unpackaged/profiles/");
             
-            File file = new File("/Users/friping/Desktop/test1.zip");
-            FileOutputStream fos = new FileOutputStream(file);
-            ZipOutputStream out1 = new ZipOutputStream(fos);
+//            File file = new File("/Users/friping/Desktop/test1.zip");
+//            FileOutputStream fos = new FileOutputStream(file);
+//            ZipOutputStream out1 = new ZipOutputStream(fos);
             
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ZipOutputStream out = new ZipOutputStream(byteStream);
@@ -141,31 +139,31 @@ public class SalesForceMDService {
             
             
             
-            zipFile(out1, "unpackaged/package.xml", builder.toString());
-            zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page-meta.xml", page);
-            zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page", pageInfo);
-            zipFile(out1, "unpackaged/tabs/"+connectedApp.getFullName()+"_tab.tab", tab);
-            zipFile(out1, "unpackaged/connectedApps/"+connectedApp.getFullName()+".connectedApp", generateAppXml(connectedApp));
-            
-            for(Iterator<String> ite = apps.keySet().iterator(); ite.hasNext();){
-                String key = ite.next();
-                String value = apps.get(key);
-                String t = "</tab>";
-                int endIndex = value.lastIndexOf(t) + t.length();
-                value = value.substring(0,endIndex) + "\n\t<tab>"+connectedApp.getFullName()+"_tab</tab>\n" + value.substring(endIndex+1);
-                zipFile(out1, key, value);
-            }
-            for(Iterator<String> ite = profiles.keySet().iterator(); ite.hasNext();){
-                String key = ite.next();
-                String value = profiles.get(key);
-                String t = "</applicationVisibilities>";
-                int endIndex = value.lastIndexOf(t) + t.length();
-                value = value.substring(0,endIndex) + "\n\t<tabVisibilities><tab>"+connectedApp.getFullName()+"_tab</tab><visibility>DefaultOn</visibility></tabVisibilities>\n" + value.substring(endIndex+1);
-                zipFile(out1, key, value);
-            }
-            
-            out1.close();
-            fos.close();
+//            zipFile(out1, "unpackaged/package.xml", builder.toString());
+//            zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page-meta.xml", page);
+//            zipFile(out1, "unpackaged/pages/"+connectedApp.getFullName()+"_page.page", pageInfo);
+//            zipFile(out1, "unpackaged/tabs/"+connectedApp.getFullName()+"_tab.tab", tab);
+//            zipFile(out1, "unpackaged/connectedApps/"+connectedApp.getFullName()+".connectedApp", generateAppXml(connectedApp));
+//            
+//            for(Iterator<String> ite = apps.keySet().iterator(); ite.hasNext();){
+//                String key = ite.next();
+//                String value = apps.get(key);
+//                String t = "</tab>";
+//                int endIndex = value.lastIndexOf(t) + t.length();
+//                value = value.substring(0,endIndex) + "\n\t<tab>"+connectedApp.getFullName()+"_tab</tab>\n" + value.substring(endIndex+1);
+//                zipFile(out1, key, value);
+//            }
+//            for(Iterator<String> ite = profiles.keySet().iterator(); ite.hasNext();){
+//                String key = ite.next();
+//                String value = profiles.get(key);
+//                String t = "</applicationVisibilities>";
+//                int endIndex = value.lastIndexOf(t) + t.length();
+//                value = value.substring(0,endIndex) + "\n\t<tabVisibilities><tab>"+connectedApp.getFullName()+"_tab</tab><visibility>DefaultOn</visibility></tabVisibilities>\n" + value.substring(endIndex+1);
+//                zipFile(out1, key, value);
+//            }
+//            
+//            out1.close();
+//            fos.close();
             
             
             byte[] zipBytes = byteStream.toByteArray(); 
