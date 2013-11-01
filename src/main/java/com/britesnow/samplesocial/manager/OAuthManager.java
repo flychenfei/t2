@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.CurrentRequestContextHolder;
 import com.google.inject.Inject;

@@ -1,4 +1,4 @@
-package com.britesnow.samplesocial.entity;
+package com.britesnow.samplesocial.model;
 
 
 import com.google.gdata.data.Content;

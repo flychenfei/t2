@@ -23,9 +23,9 @@ import javax.mail.search.SubjectTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.mail.OAuth2Authenticator;
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.snow.util.Pair;
 import com.google.inject.Inject;

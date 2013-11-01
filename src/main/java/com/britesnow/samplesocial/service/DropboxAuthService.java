@@ -7,9 +7,9 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
-import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
+import com.britesnow.samplesocial.model.SocialIdEntity;
+import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;

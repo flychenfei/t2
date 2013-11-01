@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Repository;
 
-import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GithubCommitService;
 import com.britesnow.samplesocial.service.GithubRepositoriesService;
 import com.britesnow.samplesocial.service.GithubUserService;

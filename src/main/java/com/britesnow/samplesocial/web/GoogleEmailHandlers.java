@@ -1,8 +1,8 @@
 package com.britesnow.samplesocial.web;
 
 
-import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
+import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GMailService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;

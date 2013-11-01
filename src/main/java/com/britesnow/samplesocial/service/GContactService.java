@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import com.britesnow.samplesocial.entity.ContactInfo;
-import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.model.ContactInfo;
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.snow.util.Pair;
 import com.google.gdata.client.contacts.ContactQuery;
 import com.google.gdata.client.contacts.ContactsService;

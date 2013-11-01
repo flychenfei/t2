@@ -16,7 +16,7 @@ import org.apache.http.entity.InputStreamEntity;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.snow.util.JsonUtil;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.Entry;

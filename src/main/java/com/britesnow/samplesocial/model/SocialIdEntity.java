@@ -1,4 +1,4 @@
-package com.britesnow.samplesocial.entity;
+package com.britesnow.samplesocial.model;
 
 
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.britesnow.samplesocial.oauth.ServiceType;
 
-public class SocialIdEntity extends BaseEntity {
+public class SocialIdEntity {
     private Long   user_id;
     private String token;
     private Date tokenDate;
@@ -15,6 +15,15 @@ public class SocialIdEntity extends BaseEntity {
     private String secret;
     private String fbid;
     private boolean isValid = false;
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
     public Long getUser_id() {
         return user_id;

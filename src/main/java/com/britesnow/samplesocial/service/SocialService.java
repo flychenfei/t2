@@ -3,8 +3,8 @@ package com.britesnow.samplesocial.service;
 import java.util.Map;
 
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

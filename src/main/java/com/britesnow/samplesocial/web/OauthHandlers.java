@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.scribe.model.Token;
 
-import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.DropboxAuthService;

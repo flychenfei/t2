@@ -14,8 +14,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import com.britesnow.samplesocial.entity.SocialIdEntity;
 import com.britesnow.samplesocial.manager.OAuthManager;
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
@@ -93,14 +93,14 @@ public class GithubAuthService implements AuthService {
 
     }
 
-    public GitHubClient createClient(com.britesnow.samplesocial.entity.User user){
+    public GitHubClient createClient(com.britesnow.samplesocial.model.User user){
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(getToken(user).getToken());
 		client.setUserAgent("GitHubJava/2.1.0");
 		return client;
     }
 
-    public Token getToken(com.britesnow.samplesocial.entity.User user) {
+    public Token getToken(com.britesnow.samplesocial.model.User user) {
 		SocialIdEntity soId = getSocialIdEntity();
 		return new Token(soId.getToken(), soId.getSecret());
 	}
