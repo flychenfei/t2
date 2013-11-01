@@ -32,8 +32,6 @@ public class LinkedInAuthService implements AuthService {
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -57,7 +55,7 @@ public class LinkedInAuthService implements AuthService {
      * @return linkedin socialid entity
      */
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.LinkedIn);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.LinkedIn);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

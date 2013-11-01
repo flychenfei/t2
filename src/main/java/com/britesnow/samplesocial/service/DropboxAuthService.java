@@ -24,8 +24,6 @@ public class DropboxAuthService implements AuthService{
 
 	@Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
 	
 	@Inject
 	@ApplicationProperties
@@ -40,7 +38,7 @@ public class DropboxAuthService implements AuthService{
     }
     
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Dropbox);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Dropbox);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

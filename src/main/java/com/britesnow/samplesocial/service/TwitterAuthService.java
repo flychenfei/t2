@@ -31,8 +31,6 @@ public class TwitterAuthService implements AuthService{
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
     
     private final LoadingCache<String, Token> tokenCache;
 
@@ -57,7 +55,7 @@ public class TwitterAuthService implements AuthService{
     }
     
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Twitter);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Twitter);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

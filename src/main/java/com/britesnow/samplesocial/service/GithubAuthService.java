@@ -32,15 +32,13 @@ public class GithubAuthService implements AuthService {
     @Inject
     private OAuthManager oAuthManager;
     @Inject
-    private SocialService socialService;
-    @Inject
     public GithubAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Github);
         this.configMap = configMap;
     }
     
 	public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Github);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Github);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

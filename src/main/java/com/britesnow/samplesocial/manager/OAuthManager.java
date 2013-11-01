@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.britesnow.samplesocial.model.SocialIdEntity;
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.CurrentRequestContextHolder;
@@ -41,5 +42,20 @@ public class OAuthManager {
     	HttpSession session = getSession();
     	
     	session.setAttribute(userkey, user);
+    }
+    
+    public SocialIdEntity getSocialIdEntityfromSession(ServiceType s){
+    	SocialIdEntity socialId = new SocialIdEntity();
+		Map<String, String> social = getInfo(s);
+		if(social == null){
+		  return null;
+		}
+		socialId.setUser_id(Long.parseLong(social.get("userId").toString()));
+        socialId.setEmail((String)social.get("email"));
+        socialId.setToken((String)social.get("access_token"));
+        socialId.setSecret((String)social.get("secret"));
+        socialId.setService(s);
+    	
+    	return socialId;
     }
 }

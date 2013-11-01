@@ -20,8 +20,6 @@ public class SalesForceAuthService implements AuthService {
     private ServiceType       serivce     = ServiceType.SalesForce;
     private Token             EMPTY_TOKEN = null;
     private OAuthService      oAuthService;
-    @Inject
-    private SocialService socialService;
     
     @Inject
     private OAuthManager oAuthManager;
@@ -32,7 +30,7 @@ public class SalesForceAuthService implements AuthService {
     }
 
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(serivce);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(serivce);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

@@ -29,8 +29,6 @@ public class FoursquareAuthService implements AuthService {
     private String secret,clienId;//callback;
     @Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
 
     @Inject
     public FoursquareAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map config) {
@@ -44,7 +42,7 @@ public class FoursquareAuthService implements AuthService {
 
     
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Foursquare);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Foursquare);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

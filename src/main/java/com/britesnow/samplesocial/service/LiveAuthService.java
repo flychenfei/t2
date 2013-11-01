@@ -30,8 +30,6 @@ public class LiveAuthService implements AuthService {
     private Map configMap;
     @Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
     
     @Inject
     public LiveAuthService(OAuthServiceHelper oauthServiceHelper, @ApplicationProperties Map configMap) {
@@ -40,7 +38,7 @@ public class LiveAuthService implements AuthService {
     }
 
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Live);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Live);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

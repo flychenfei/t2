@@ -27,8 +27,6 @@ public class YahooAuthService implements AuthService {
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
-    @Inject
-    private SocialService socialService;
 
     public static final String PROFILE_URL = "http://api.linkedin.com/v1/people/~:(email-address)";
 
@@ -47,7 +45,7 @@ public class YahooAuthService implements AuthService {
     }
 
     public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(ServiceType.Yahoo);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(ServiceType.Yahoo);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());

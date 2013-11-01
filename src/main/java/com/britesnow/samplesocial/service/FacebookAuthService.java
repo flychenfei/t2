@@ -25,8 +25,6 @@ public class FacebookAuthService implements AuthService {
     private Map               cfg;
     private OAuthService oAuthService;
     @Inject
-    private SocialService socialService;
-    @Inject
     private OAuthManager oAuthManager;
 
     private ServiceType           service     = ServiceType.FaceBook;
@@ -38,7 +36,7 @@ public class FacebookAuthService implements AuthService {
     }
     
 	public SocialIdEntity getSocialIdEntity() {
-		SocialIdEntity socialId = socialService.getSocialIdEntityfromSession(service);
+		SocialIdEntity socialId = oAuthManager.getSocialIdEntityfromSession(service);
         if(socialId == null){
         	//if result is null, need redo auth
         	throw new OauthException(getAuthorizationUrl());
