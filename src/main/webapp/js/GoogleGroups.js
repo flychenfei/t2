@@ -57,7 +57,7 @@
                 },
                 {
                     text:"Title",
-                    attrs: " data-cmd='SHOW_CONTACTS' style='cursor:pointer;width:40%' ",
+                    attrs: " data-cmd='DO_REFRESH_CONTACT' style='cursor:pointer;width:40%' ",
                     render:function(obj){return obj.title.text}
 
                 },

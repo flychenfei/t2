@@ -49,7 +49,7 @@
                 } else {
                     app.googleApi.createContact(data).done(function (extraData) {
                         setTimeout((function () {
-                            $("body").trigger("SHOW_CONTACTS");
+                            $(document).trigger("DO_REFRESH_CONTACT");
                         }), 5000);
                         view.close();
                     });

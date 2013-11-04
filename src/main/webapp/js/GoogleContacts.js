@@ -20,6 +20,10 @@
         },
 
         docEvents: {
+            "DO_REFRESH_CONTACT":function(){
+                 var view = this;
+                 showContacts.call(view);
+             },
             "DELETE_CONTACT": function(event, extraData) {
                 if (extraData && extraData.objId) {
                     var contactId = getContactId(extraData.objId);
@@ -27,7 +31,7 @@
                     app.googleApi.deleteContact(contactId, etag).done(function (extradata) {
                         if (extradata && extradata.result) {
                             setTimeout((function () {
-                                showContacts();
+                                $(document).trigger("DO_REFRESH_CONTACT");
                             }), 3000);
 
                         }
