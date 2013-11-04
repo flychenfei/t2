@@ -12,9 +12,16 @@
         },
 
         events: {
+          "click;.btnAdd":function(e){
+             brite.display("CreateGroup",null,null);
+          }
         },
 
         docEvents: {
+            "DO_REFRESH_GROUPS":function(){
+                 var view = this;
+                 showGroups.call(view);
+             },
             "EDIT_GROUP":function(event, extraData){
                 if (extraData && extraData.objId) {
                     var groupId = getGroupId(extraData.objId);

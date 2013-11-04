@@ -17,6 +17,9 @@
         },
 
         events: {
+          "click;.btnAdd":function(e){
+             brite.display("CreateContact",null,{id:null});
+          }
         },
 
         docEvents: {

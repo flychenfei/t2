@@ -48,7 +48,7 @@
                     }
                     dfd.done(function (extraData) {
                         setTimeout((function () {
-                            $("body").trigger("SHOW_GROUPS");
+                            $(document).trigger("DO_REFRESH_GROUPS");
                         }), 5000);
                         view.close();
                     });
