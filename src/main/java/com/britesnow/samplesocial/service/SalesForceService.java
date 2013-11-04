@@ -18,7 +18,7 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class SalesForceService {
-    private  static final String SF_URL = "https://ap1.salesforce.com/services/data/v26.0";
+    private  static final String SF_URL = "/services/data/v26.0";
     private  static final String SF_QUERY_URL = SF_URL+"/query?";
     
     
@@ -26,9 +26,9 @@ public class SalesForceService {
      * @return JSONArray results
      *         Long result_count
      */
-    public Map listContacts(String token, int pageIndex, int pageSize){
+    public Map listContacts(String token, String instanceUrl, int pageIndex, int pageSize){
         Map resultMap = new HashMap();
-        String url = SF_QUERY_URL;
+        String url = instanceUrl+SF_QUERY_URL;
         String sql = "SELECT Id, Name FROM Contact LIMIT "+pageSize+"OFFSET "+pageIndex;
         String csql = "SELECT count(Id) FROM Contact ";
         sql = Client.encode(sql);
@@ -54,8 +54,8 @@ public class SalesForceService {
     /**
      * @return JSONObject contact
      */
-    public JSONObject getContact(String token, String contactId){
-        String url = SF_QUERY_URL;
+    public JSONObject getContact(String token, String instanceUrl, String contactId){
+        String url = instanceUrl+SF_QUERY_URL;
         String sql = "SELECT Id, Name FROM Contact WHERE Id='"+contactId+"'";
         sql = Client.encode(sql);
         String params = "q="+sql;
@@ -70,16 +70,16 @@ public class SalesForceService {
     /**
      * save or update contact
      */
-    public void saveContact(String token, String id,String name){
+    public void saveContact(String token, String instanceUrl, String id,String name){
         String url = null;
         Map map = new HashMap();
         map.put("lastName", name);
         PostMethod method = null;
         if(id != null && id.length() > 0){
-            url = SF_URL+"/sobjects/Contact/"+id;
+            url = instanceUrl + SF_URL+"/sobjects/Contact/"+id;
             method = new PostMethod(url+"?_HttpMethod=PATCH");
         }else{
-            url = SF_URL+"/sobjects/Contact/";
+            url = instanceUrl + SF_URL+"/sobjects/Contact/";
             method = new PostMethod(url);
         }
         addCommonHeader(method,token);
@@ -100,11 +100,11 @@ public class SalesForceService {
     /**
      * save or update contact
      */
-    public void deleteContact(String token, String id){
+    public void deleteContact(String token, String instanceUrl, String id){
         String url = null;
         PostMethod method = null;
         if(id != null && id.length() > 0){
-            url = SF_URL+"/sobjects/Contact/"+id;
+            url = instanceUrl + SF_URL+"/sobjects/Contact/"+id;
             method = new PostMethod(url+"?_HttpMethod=DELETE");
             addCommonHeader(method,token);
             try{

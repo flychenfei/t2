@@ -4,6 +4,8 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import com.britesnow.samplesocial.manager.OAuthManager;
+import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.SalesForceAuthService;
 import com.britesnow.samplesocial.service.SalesForceService;
 import com.britesnow.snow.web.RequestContext;
@@ -20,6 +22,8 @@ public class SFContactWebHandlers {
     private SalesForceService salesforceService;
     @Inject
     private SalesForceAuthService salesForceAuthService;
+    @Inject
+    private OAuthManager oauthManager;
     
     @WebGet("/salesforce/listContacts")
     public Map listSFContacts(@WebModel Map m,
@@ -31,8 +35,8 @@ public class SFContactWebHandlers {
         if(pageSize == null){
             pageSize = 10;
         }
-        
-        Map result = salesforceService.listContacts(token, pageIndex, pageSize);
+        String instanceUrl = oauthManager.getInfo(ServiceType.SalesForce).get("instance_url");
+        Map result = salesforceService.listContacts(token,instanceUrl, pageIndex * pageSize, pageSize);
         m.putAll(result);
         return m ;
     }
@@ -40,7 +44,8 @@ public class SFContactWebHandlers {
 	@WebGet("/salesforce/getContact")
 	public Map getContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
 	    String token = salesForceAuthService.getSocialIdEntity().getToken();
-	    JSONObject obj = salesforceService.getContact(token, id);
+	    String instanceUrl = oauthManager.getInfo(ServiceType.SalesForce).get("instance_url");
+	    JSONObject obj = salesforceService.getContact(token, instanceUrl, id);
 	    m.put("result", obj);
 	    return m ;
 	}
@@ -48,14 +53,16 @@ public class SFContactWebHandlers {
 	@WebPost("/salesforce/saveContact")
 	public Object saveSFContact(@WebModel Map m,@WebParam("id") String id,@WebParam("name") String name,RequestContext rc) {
 	    String token = salesForceAuthService.getSocialIdEntity().getToken();
-	    salesforceService.saveContact(token, id, name);
+	    String instanceUrl = oauthManager.getInfo(ServiceType.SalesForce).get("instance_url");
+	    salesforceService.saveContact(token, instanceUrl, id, name);
         return null;
 	}
 	
 	@WebPost("/salesforce/deleteContact")
 	public Object deleteSFContact(@WebModel Map m,@WebParam("id") String id,RequestContext rc) {
         String token = salesForceAuthService.getSocialIdEntity().getToken();
-        salesforceService.deleteContact(token, id);
+        String instanceUrl = oauthManager.getInfo(ServiceType.SalesForce).get("instance_url");
+        salesforceService.deleteContact(token,instanceUrl,id);
         return null;
 	}
 }

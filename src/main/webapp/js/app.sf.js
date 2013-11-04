@@ -2,8 +2,9 @@ var app = app || {};
 (function($) {
 	app.sf = {};
 	
-	app.sf.listContacts = function(){
-		var params = {method:"GET"};
+	app.sf.listContacts = function(params){
+		params = params || {};
+		params.method = "GET"
 		return app.getJsonData(contextPath+"/salesforce/listContacts",params);
 	}
 	app.sf.getContact = function(id){
