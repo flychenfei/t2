@@ -14,7 +14,7 @@ public class DropboxAccountHandler {
 	
 	@WebGet("/dropbox/getAccountInfo")
 	public WebResponse getAccountInfo(@WebUser User user){
-		return WebResponse.success(dropboxAccountService.getAccountInfo(user.getId()));
+		return WebResponse.success(dropboxAccountService.getAccountInfo(null));
 	}
 	
 }

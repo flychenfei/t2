@@ -59,12 +59,11 @@ public class FacebookAuthService implements AuthService {
     }
     
 
-    public String updateAccessToken(String code, Long userId) {
+    public String updateAccessToken(String code) {
         Verifier verifier = new Verifier(code);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("userId", userId+"");
         map.put("secret", null);
         map.put("email", null);
         map.put("access_token", accessToken.getToken());

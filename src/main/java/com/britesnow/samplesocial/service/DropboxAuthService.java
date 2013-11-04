@@ -127,7 +127,6 @@ public class DropboxAuthService implements AuthService{
 			Token accessToken = getAccessToken(authToken);
 			
 			HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", user.getId()+"");
             map.put("email", null);
             map.put("access_token", accessToken.getToken());
             map.put("secret", accessToken.getSecret());

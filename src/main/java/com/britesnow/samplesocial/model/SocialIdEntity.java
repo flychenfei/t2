@@ -15,15 +15,7 @@ public class SocialIdEntity {
     private String secret;
     private String fbid;
     private boolean isValid = false;
-    private Long id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
     
     public Long getUser_id() {
         return user_id;

@@ -40,7 +40,6 @@ public class OAuthManager {
     }
     public void setUserInfo(String userkey,User user){
     	HttpSession session = getSession();
-    	
     	session.setAttribute(userkey, user);
     }
     
@@ -50,7 +49,7 @@ public class OAuthManager {
 		if(social == null){
 		  return null;
 		}
-		socialId.setUser_id(Long.parseLong(social.get("userId").toString()));
+		//socialId.setUser_id(Long.parseLong(social.get("userId").toString()));
         socialId.setEmail((String)social.get("email"));
         socialId.setToken((String)social.get("access_token"));
         socialId.setSecret((String)social.get("secret"));

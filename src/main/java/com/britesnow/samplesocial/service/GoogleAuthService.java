@@ -48,7 +48,7 @@ public class GoogleAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
-    public void updateAccessToken(String verifierCode, long userId) {
+    public void updateAccessToken(String verifierCode) {
     	
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
@@ -63,7 +63,6 @@ public class GoogleAuthService implements AuthService {
             
             //todo extract userinfo
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", userId+"");
             map.put("secret", accessToken.getSecret());
             map.put("access_token", accessToken.getToken());
             map.put("email", (String) profile.get("email"));

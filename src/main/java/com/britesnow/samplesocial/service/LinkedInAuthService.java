@@ -79,7 +79,7 @@ public class LinkedInAuthService implements AuthService {
      * @param verifierCode verifierCode
      * @param userId  user id
      */
-    public void updateAccessToken(String requestToken, String verifierCode, long userId)  {
+    public void updateAccessToken(String requestToken, String verifierCode)  {
         try {
             Verifier verifier = new Verifier(verifierCode);
             Token reqToken = tokenCache.get(requestToken);
@@ -94,7 +94,6 @@ public class LinkedInAuthService implements AuthService {
                 Map map = JsonUtil.toMapAndList(response.getBody());
 
                 HashMap<String, String> managerMap = new HashMap<String, String>();
-                managerMap.put("userId", userId+"");
                 managerMap.put("access_token", accessToken.getToken());
                 managerMap.put("secret", accessToken.getSecret());
                 managerMap.put("email", (String) map.get("emailAddress"));

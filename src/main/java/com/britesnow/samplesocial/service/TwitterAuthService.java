@@ -63,14 +63,13 @@ public class TwitterAuthService implements AuthService{
         return socialId;
     }
     
-    public void updateAccessToken(String requestTok, String verifierCode, Long id) throws Exception {
+    public void updateAccessToken(String requestTok, String verifierCode) throws Exception {
     	Token requestToken = tokenCache.get(requestTok);
     	Verifier verifier = new Verifier(verifierCode);
     	Token accessToken = oAuthService.getAccessToken(requestToken, verifier);
         if (accessToken.getToken() != null) {
             
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", id+"");
             map.put("email", null);
             map.put("access_token", accessToken.getToken());
             map.put("secret", accessToken.getSecret());

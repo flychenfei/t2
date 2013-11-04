@@ -50,7 +50,7 @@ public class SSAuthRequest implements AuthRequest<Object> {
             // Build the expectedUserToken from the user info
             // For this example, simplistic userToken (sha1(username,password))
             @SuppressWarnings("deprecation")
-			String expectedUserToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
+			String expectedUserToken = Hashing.sha1().hashString(user.getUsername()).toString();
             if (Objects.equal(expectedUserToken, userToken)) {
                 // if valid, then, we create the AuthTocken with our User object
                 AuthToken<User> authToken = new AuthToken<User>();
@@ -90,11 +90,9 @@ public class SSAuthRequest implements AuthRequest<Object> {
     }
 
     @WebActionHandler
-    public Object login(@WebParam("userId") Long userId, @WebParam("username") String username,
+    public Object login(@WebParam("username") String username,
                             @WebParam("password") String password, RequestContext rc) {
-    	long id = 2;
     	User user = new User();
-    	user.setId(id);
     	user.setUsername(username);
         user.setPassword(password);
         setUserToSession(rc, user);
@@ -108,9 +106,8 @@ public class SSAuthRequest implements AuthRequest<Object> {
         // TODO: need to implement session less login (to easy loadbalancing)
         if (user != null) {
         	@SuppressWarnings("deprecation")
-            String userToken = Hashing.sha1().hashString(user.getUsername() + user.getId()).toString();
+            String userToken = Hashing.sha1().hashString(user.getUsername()).toString();
             rc.setCookie("userToken", userToken);
-            rc.setCookie("userId", user.getId());
             //
         }
     }

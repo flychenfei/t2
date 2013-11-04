@@ -54,14 +54,13 @@ public class FoursquareAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
-    public void updateAccessToken(String verifierCode, long userId) {
+    public void updateAccessToken(String verifierCode) {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
             foursquareApi.setoAuthToken(accessToken.getToken());
 
             HashMap<String, String> managerMap = new HashMap<String, String>();
-            managerMap.put("userId", userId+"");
             managerMap.put("email", null);
             managerMap.put("access_token", accessToken.getToken());
             managerMap.put("secret", accessToken.getSecret());

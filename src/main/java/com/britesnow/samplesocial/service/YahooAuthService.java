@@ -59,7 +59,7 @@ public class YahooAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(reqToken);
     }
 
-    public boolean updateAccessToken(String requestToken, String verifierCode, long userId)  {
+    public boolean updateAccessToken(String requestToken, String verifierCode)  {
         try {
             Verifier verifier = new Verifier(verifierCode);
             Token reqToken = tokenCache.get(requestToken);
@@ -73,7 +73,6 @@ public class YahooAuthService implements AuthService {
 
                 
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("userId", userId+"");
                 map.put("email", null);
                 map.put("access_token", accessToken.getToken());
                 map.put("secret", accessToken.getSecret());

@@ -50,7 +50,7 @@ public class GithubAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
-    public boolean updateAccessToken(String verifierCode, long userId) throws IOException {
+    public boolean updateAccessToken(String verifierCode) throws IOException {
     	OAuthRequest request = new OAuthRequest(Verb.POST, "https://github.com/login/oauth/access_token");
     	String prefix = "github";
     	request.addBodyParameter("code", verifierCode);
@@ -80,7 +80,6 @@ public class GithubAuthService implements AuthService {
             User ghUser = userService.getUser();
             
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", userId+"");
             map.put("email", ghUser.getEmail());
             map.put("access_token", accessToken.getToken());
             map.put("secret", configMap.get(prefix+".secret").toString());

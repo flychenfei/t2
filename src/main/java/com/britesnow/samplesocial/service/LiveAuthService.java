@@ -56,7 +56,7 @@ public class LiveAuthService implements AuthService {
      * @param verifierCode  verifier code that server return.
      * @param userId user id
      */
-    public void updateAccessToken(String verifierCode, long userId) {
+    public void updateAccessToken(String verifierCode) {
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
         if (accessToken.getToken() != null) {
@@ -69,7 +69,6 @@ public class LiveAuthService implements AuthService {
             String email = (String) ((Map) profile.get("emails")).get("account");
             String prefix = "live";
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userId", userId+"");
             map.put("access_token", accessToken.getToken());
             map.put("secret", configMap.get(prefix+".apiSecret").toString());
             map.put("email", email);

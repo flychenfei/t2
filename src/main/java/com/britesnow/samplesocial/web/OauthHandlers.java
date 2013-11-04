@@ -82,14 +82,14 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/callback_fb")
     public void fbCallback(@WebModel Map<?, ?> m, @WebUser User user,@WebParam("code") String code,  RequestContext rc) {
-        facebookAuthService.updateAccessToken(code, user.getId());
+        facebookAuthService.updateAccessToken(code);
     }
     
     @WebModelHandler(startsWith="/twitterCallback")
     public void twitterCallback(@WebUser User user, @WebParam("oauth_token") String requestToken, 
     		@WebParam("oauth_verifier") String verifier,  RequestContext rc) throws Exception {
     	 if (user != null && verifier != null) {
-             twitterAuthService.updateAccessToken(requestToken, verifier, user.getId());
+             twitterAuthService.updateAccessToken(requestToken, verifier);
          }else{
 			rc.getRes().sendRedirect(twitterAuthService.getAuthorizationUrl());
          }
@@ -99,7 +99,7 @@ public class OauthHandlers {
     public void linkedinCallback(RequestContext rc,@WebUser User user,  @WebParam("oauth_token") String reqToken,
                                  @WebParam("oauth_verifier") String code) throws Exception {
         if (user!=null && code != null) {
-            linkedInAuthService.updateAccessToken(reqToken, code, user.getId());
+            linkedInAuthService.updateAccessToken(reqToken, code);
         }else{
             rc.getRes().sendRedirect(linkedInAuthService.getAuthorizationUrl());
         }
@@ -107,7 +107,7 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/liveCallback")
     public void liveCallback(RequestContext rc,@WebUser User user, @WebParam("code") String code) throws Exception {
         if (user!=null && code != null) {
-            liveAuthService.updateAccessToken(code, user.getId());
+            liveAuthService.updateAccessToken(code);
         }else{
             rc.getRes().sendRedirect(liveAuthService.getAuthorizationUrl());
         }
@@ -116,7 +116,7 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/foursquareCallback")
     public void fourquareCallback(RequestContext rc,@WebUser User user, @WebParam("code") String code) throws Exception {
         if (user!=null && code != null) {
-            foursquareAuthService.updateAccessToken(code, user.getId());
+            foursquareAuthService.updateAccessToken(code);
         }else{
             rc.getRes().sendRedirect(foursquareAuthService.getAuthorizationUrl());
         }
@@ -125,7 +125,7 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/github_callback")
     public void githubCallback(RequestContext rc,@WebUser User user,  @WebParam("code") String code) throws Exception {
     	if (user!=null && code != null) {
-            githubAuthService.updateAccessToken(code, user.getId());
+            githubAuthService.updateAccessToken(code);
         }else{
             rc.getRes().sendRedirect(githubAuthService.getAuthorizationUrl());
         }
@@ -134,7 +134,7 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/googleCallback")
     public void googleCallback(@WebUser User user, RequestContext rc, @WebParam("code") String code) throws Exception {
     	if (user != null && code != null) {
-            googleAuthService.updateAccessToken(code, user.getId());
+            googleAuthService.updateAccessToken(code);
         } else {
             rc.getRes().sendRedirect(googleAuthService.getAuthorizationUrl());
         }
@@ -152,14 +152,14 @@ public class OauthHandlers {
 
     @WebModelHandler(startsWith="/salesforce_callback")
     public void salesforceCallback(RequestContext rc, @WebUser User user,@WebParam("code") String code) {
-        salesForceAuthService.updateAccessToken(code,user.getId());
+        salesForceAuthService.updateAccessToken(code);
     }
 
     @WebModelHandler(startsWith="/yahoo_callback")
     public void yahooCallback(RequestContext rc,@WebUser User user,  @WebParam("oauth_token") String reqToken,
                                  @WebParam("oauth_verifier") String code) throws Exception {
         if (user!=null && code != null) {
-            yahooAuthService.updateAccessToken(reqToken, code, user.getId());
+            yahooAuthService.updateAccessToken(reqToken, code);
         }else{
             rc.getRes().sendRedirect(yahooAuthService.getAuthorizationUrl());
         }
