@@ -34,10 +34,9 @@ public class SSAuthRequest implements AuthRequest<Object> {
         // it can be as secure as statefull login while keeping it's scalability attributes
 
         // First, we get userId and userToken from cookie
-        String userIdStr = rc.getCookie("userId");
         String userToken = rc.getCookie("userToken");
 
-        if (userIdStr != null && userToken != null) {
+        if (userToken != null) {
             // get the User from the DAO
            // Long userId = ObjectUtil.getValue(userIdStr, Long.class, null);
            // User user = userDao.get(userId);
@@ -70,6 +69,7 @@ public class SSAuthRequest implements AuthRequest<Object> {
     @WebModelHandler(startsWith = "/")
     public void pageIndex(@WebModel Map<String, User> m, @WebUser User user, RequestContext rc) {
         // gameTestManager.init();
+    	
         m.put("user", user);
     }
 
