@@ -74,7 +74,9 @@
                                 title: 'Search Email',
                                 fields: [
                                     {label:"Subject", name:'subject', mandatory:false},
-                                    {label:"From", name:"from", mandatory:false}
+                                    {label:"From", name:"from", mandatory:false},
+                                    {label:"StartDate",name:"startDate",placeholder:"yyyy-mm-dd",mandatory:false},
+                                    {label:"EndDate",name:"endDate",placeholder:"yyyy-mm-dd",mandatory:false}
                                 ],
                                 callback: function (params) {
                                     brite.display("GoogleMails",".mails-container",{

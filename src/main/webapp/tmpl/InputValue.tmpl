@@ -6,7 +6,7 @@
 	        <div class="form">
                 {{#each fields }}
 		        <div class="control-group">
-		  		<label>{{label}}:</label><input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
+		  		<label>{{label}}:</label><input type="text"  name="{{name}}"   placeholder="{{#if placeholder}} {{placeholder}} {{else}} input value {{/if}}" ><span class="help-inline" ></span>
 		  		<br/>
 		  		</div>
                 {{/each}}

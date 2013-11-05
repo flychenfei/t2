@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.service;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.FetchProfile;
@@ -163,7 +164,7 @@ public class GMailService {
      * @return   pair of count and mail info.
      * @throws Exception
      */
-    public Pair<List<MailInfo>, Integer> search(String subject, String from, int pageSize, int pageIndex) throws Exception {
+	public Pair<List<MailInfo>, Integer> search(String subject, String from, Date sDate , Date eDate, int pageSize, int pageIndex) throws Exception {
         Folder inbox = null;
         List<MailInfo> infos = new ArrayList<MailInfo>();
         int count = 0;
@@ -180,9 +181,25 @@ public class GMailService {
             if (from != null) {
                 FromStringTerm fromStringTerm = new FromStringTerm(from);
                 searchTerms.add(fromStringTerm);
+            }else{
+            	FromStringTerm fromStringTerm = new FromStringTerm("");
+                searchTerms.add(fromStringTerm);
             }
             if (searchTerms.size() > 0) {
-                Message[] msgs =  inbox.search(new OrTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
+                Message[] msgst =  inbox.search(new OrTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
+                List<Message> msgse = new ArrayList<Message>(0);
+                Message[] msgs = {};
+                if (sDate !=null && eDate != null && sDate.before(eDate)){
+                	  
+                	  for(int i = 0;i < msgst.length;i++){
+                		if(msgst[i].getSentDate().after(sDate) && msgst[i].getSentDate().before(eDate)){
+                			msgse.add(msgst[i]);
+	                    }                		
+                	  }
+                      msgs =  msgse.toArray(new  Message[0]);
+                }else{
+                   msgs = msgst;
+                }
                 count = msgs.length;
                 Message[] resultMsgs={};
                 int start = pageSize*pageIndex;
@@ -191,10 +208,11 @@ public class GMailService {
                 }else if (msgs.length > start && msgs.length < start + pageSize) {
                     resultMsgs = Arrays.copyOfRange(msgs, start, msgs.length);
                 }
-
                 if (resultMsgs.length > 0) {
                     for (Message msg : resultMsgs) {
-                        infos.add(buildMailInfo(msg));
+                    	if(msg !=null){
+                          infos.add(buildMailInfo(msg));
+                    	}
                     }
                 }
             }
@@ -279,7 +297,7 @@ public class GMailService {
     }
 
     public MailInfo buildMailInfo(Message message) throws MessagingException, UnsupportedEncodingException {
-        return new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
+    	return new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
                 decodeText(message.getFrom()[0].toString()), message.getSubject());
     }
 
