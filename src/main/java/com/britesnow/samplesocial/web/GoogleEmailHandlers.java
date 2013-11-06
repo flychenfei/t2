@@ -98,10 +98,15 @@ public class GoogleEmailHandlers {
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("----startDate-----"+startDate);
+        System.out.println("----startDate-----"+endDate);
         Date sDate,eDate;
         if(startDate != null && endDate !=null){
            startDate = startDate + " 00:00:00";
            endDate = endDate + " 23:59:59";
+           
+           System.out.println("----startDate-----"+endDate);
+           System.out.println("----endDate-----"+endDate);
            sDate = format.parse(startDate);
            eDate = format.parse(endDate);
         }else{

@@ -6,7 +6,18 @@
 	        <div class="form">
                 {{#each fields }}
 		        <div class="control-group">
-		  		<label>{{label}}:</label><input type="text"  name="{{name}}"   placeholder="{{#if placeholder}} {{placeholder}} {{else}} input value {{/if}}" ><span class="help-inline" ></span>
+		  		<label>{{label}}:</label>
+		  		
+		  		<input type="text"  name="{{name}}"  placeholder="input value" class= "{{#if placeholder}} hide {{/if}} "><span class="help-inline" ></span>
+		  		
+		  		<div class="input-append datetimepicker date {{#if placeholder}} show {{else}} hide {{/if}}"> 
+			      <input type="text" name="{{name}}">
+			      <span class="add-on"> 
+			          <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+			      </span> 
+			    </div>
+			      
+			      
 		  		<br/>
 		  		</div>
                 {{/each}}
@@ -15,6 +26,7 @@
 		    		<a href="#" class="btn cancelBtn">Close</a>
 		  		</div>
 	        </div>
+			</div>
 	    </div>
     </div>
 </script>

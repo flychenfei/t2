@@ -25,6 +25,16 @@
                 var view = this;
                 var $e = view.$el;
                 $e.find("form").find("input[type=text]").focus();
+                $('.datetimepicker').datetimepicker({ 
+                    format: 'yyyy-MM-dd', 
+                    language: 'en', 
+                     pickDate: true, 
+                     pickTime: true, 
+                    // hourStep: 1, 
+                    // minuteStep: 15, 
+                   // secondStep: 30, 
+                     inputMask: true 
+                  }); 
             },
 
             close:function () {
@@ -51,6 +61,7 @@
                             var fieldVal = input.val();
                             if(fieldVal !== ""){
                                result[val.name] = fieldVal;
+                               console.log(result);
                             }
                         }
                     }
@@ -80,7 +91,15 @@
                     var view = this;
                     view.close();
                 }
-            }
+            },
+            
         })
     })(jQuery);
+    
+//    Handlebars.registerHelper('date', function(dateObj) {
+//		if(dateObj){
+//			
+//		}
+//	});
+    
 })();
