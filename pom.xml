@@ -92,10 +92,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
+    
+   <!--  <dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>javax.mail-api</artifactId>
+    <version>1.5.0</version>
+</dependency>-->
+    
+     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
-      <version>1.5.0-b01</version>
+      <version>1.4.5</version>
     </dependency>
     <!-- Google apis -->
 

@@ -89,6 +89,12 @@
                 },{
                     text: "",
                     render: function(){
+                        return "<div class='icon-info-sign'/>"
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
+                },{
+                    text: "",
+                    render: function(){
                         return "<div class='icon-user'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"

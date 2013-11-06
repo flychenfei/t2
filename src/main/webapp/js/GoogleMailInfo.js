@@ -23,7 +23,9 @@
 			}
 			
 			$.when(dfd).done(function(mail) {
-				console.log(mail);
+				//console.log(mail);
+				var recDate = new Date(mail.date);
+                mail.sendDate = recDate.format("yyyy-MM-dd hh:mm:ss")
 				var $html = app.render("tmpl-GoogleMailInfo",mail);
 				//show a screen to prevent use click other places
 				view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body");
