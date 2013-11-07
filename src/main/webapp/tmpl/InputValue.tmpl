@@ -5,21 +5,21 @@
 	        <h2>{{title}}</h2>
 	        <div class="form">
                 {{#each fields }}
-		        <div class="control-group">
-		  		<label>{{label}}:</label>
-		  		
-		  		<input type="text"  name="{{name}}"  placeholder="input value" class= "{{#if placeholder}} hide {{/if}} "><span class="help-inline" ></span>
-		  		
-		  		<div class="input-append datetimepicker date {{#if placeholder}} show {{else}} hide {{/if}}"> 
-			      <input type="text" name="{{name}}">
-			      <span class="add-on"> 
-			          <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
-			      </span> 
-			    </div>
-			      
-			      
-		  		<br/>
-		  		</div>
+		          <div class="control-group">
+			        {{#if label}}
+				  		<label>{{label}}:</label>
+				  		<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
+			  		{{else}}
+			  		<label>{{datelabel}}:</label>
+				  		<div class="input-append datetimepicker date"> 
+					      <input type="text" name="{{name}}">
+					      <span class="add-on"> 
+					          <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+					      </span> 
+					    </div>
+				    {{/if}}
+			  		<br/>
+			  		</div>
                 {{/each}}
 		  		<div>
 		    		<a href="#" class="btn btn-primary inputValueBtn">OK</a>

@@ -52,6 +52,7 @@
                 $.each(this.model.fields, function(idx, val){
                     if (check) {
                         input = $e.find("input[name='{0}']".format(val.name));
+                        console.log(val.name);
                         if (val.mandatory && input.val() == "") {
                             input.focus();
                             input.closest("div").addClass("error").find("span").html("Please enter value.");
@@ -95,11 +96,5 @@
             
         })
     })(jQuery);
-    
-//    Handlebars.registerHelper('date', function(dateObj) {
-//		if(dateObj){
-//			
-//		}
-//	});
     
 })();
