@@ -89,13 +89,13 @@
                 },{
                     text: "",
                     render: function(){
-                        return "<div class='icon-info-sign'/>"
+                        return "<div class='icon-envelope'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
                 },{
                     text: "",
                     render: function(){
-                        return "<div class='icon-user'/>"
+                        return "<div class='icon-share-alt'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
                 }
