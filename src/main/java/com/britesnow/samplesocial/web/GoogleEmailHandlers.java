@@ -120,13 +120,18 @@ public class GoogleEmailHandlers {
         }else{
             srDate = null;
         }
-        if(endDate !=null){
+        if(endReceivedDate !=null){
         	endReceivedDate = endReceivedDate + " 23:59:59";
             erDate = format.parse(endReceivedDate);
         }else{
         	erDate = null;
         }
-        
+        if(minSize == null ){
+        	minSize = 0;
+        }
+        if(maxSize == null){
+        	maxSize = Integer.MAX_VALUE;
+        }
         Pair<List<MailInfo>, Integer> pair = gMailService.search(subject, from, to, body,
         		sDate, eDate, srDate, erDate, minSize, maxSize, pageSize, pageIndex);
         return WebResponse.success(pair.getFirst()).setResultCount(pair.getSecond());
