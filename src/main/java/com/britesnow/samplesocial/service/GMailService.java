@@ -13,12 +13,18 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
+import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
+import javax.mail.search.AndTerm;
+import javax.mail.search.BodyTerm;
 import javax.mail.search.FromStringTerm;
-import javax.mail.search.OrTerm;
+import javax.mail.search.ReceivedDateTerm;
+import javax.mail.search.RecipientStringTerm;
 import javax.mail.search.SearchTerm;
+import javax.mail.search.SentDateTerm;
+import javax.mail.search.SizeTerm;
 import javax.mail.search.SubjectTerm;
 
 import org.slf4j.Logger;
@@ -164,13 +170,14 @@ public class GMailService {
      * @return   pair of count and mail info.
      * @throws Exception
      */
-	public Pair<List<MailInfo>, Integer> search(String subject, String from, Date sDate , Date eDate, int pageSize, int pageIndex) throws Exception {
+	public Pair<List<MailInfo>, Integer> search(String subject, String from, String to, 
+			String body, Date sDate , Date eDate, Date srDate , Date erDate,
+			int minSize, int maxSize, int pageSize, int pageIndex) throws Exception {
         Folder inbox = null;
         List<MailInfo> infos = new ArrayList<MailInfo>();
         int count = 0;
         try {
             IMAPStore imap = getImapStore();
-
             inbox = imap.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
             List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
@@ -181,25 +188,44 @@ public class GMailService {
             if (from != null) {
                 FromStringTerm fromStringTerm = new FromStringTerm(from);
                 searchTerms.add(fromStringTerm);
-            }else{
-            	FromStringTerm fromStringTerm = new FromStringTerm("");
-                searchTerms.add(fromStringTerm);
             }
+            if (to != null) {
+            	RecipientStringTerm recipientStringTerm = new RecipientStringTerm(RecipientType.TO, to);
+                searchTerms.add(recipientStringTerm);
+            }
+            
+            if(body != null){
+            	BodyTerm bodyTerm = new BodyTerm(body);
+            	searchTerms.add(bodyTerm);
+            }
+            if(sDate != null){
+            	SentDateTerm startSentDateTerm = new SentDateTerm(6, sDate);
+            	searchTerms.add(startSentDateTerm);
+            }
+            if(eDate != null){
+            	SentDateTerm endSentDateTerm = new SentDateTerm(1, eDate);
+            	searchTerms.add(endSentDateTerm);
+            }
+            if(srDate != null){
+            	ReceivedDateTerm startReceivedDateTerm = new ReceivedDateTerm(6, srDate);
+            	searchTerms.add(startReceivedDateTerm);
+            }
+            if(erDate != null){
+            	ReceivedDateTerm endReceivedDateTerm = new ReceivedDateTerm(1, erDate);
+            	searchTerms.add(endReceivedDateTerm);
+            }
+            if(minSize != 0){
+            	SizeTerm minSizeTerm = new SizeTerm(6, minSize);
+            	searchTerms.add(minSizeTerm);
+            }
+            if(maxSize != 0){
+            	SizeTerm maxSizeTerm = new SizeTerm(1, maxSize);
+            	searchTerms.add(maxSizeTerm);
+            }
+            
+            
             if (searchTerms.size() > 0) {
-                Message[] msgst =  inbox.search(new OrTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
-                List<Message> msgse = new ArrayList<Message>(0);
-                Message[] msgs = {};
-                if (sDate !=null && eDate != null && sDate.before(eDate)){
-                	  
-                	  for(int i = 0;i < msgst.length;i++){
-                		if(msgst[i].getSentDate().after(sDate) && msgst[i].getSentDate().before(eDate)){
-                			msgse.add(msgst[i]);
-	                    }                		
-                	  }
-                      msgs =  msgse.toArray(new  Message[0]);
-                }else{
-                   msgs = msgst;
-                }
+                Message[] msgs =  inbox.search(new AndTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
                 count = msgs.length;
                 Message[] resultMsgs={};
                 int start = pageSize*pageIndex;

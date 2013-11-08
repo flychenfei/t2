@@ -1,7 +1,7 @@
 ;
 (function ($) {
 
-    brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:true}, {
+    brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:false}, {
         create: function (data, config) {
             if(data && data.search) {
                 this.search = data.search;
@@ -18,7 +18,6 @@
 
         events: {
         },
-
         docEvents: {
             "DELETE_EMAIL": function(event, extra){
                 var view = this;

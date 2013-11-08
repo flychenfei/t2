@@ -94,21 +94,41 @@ public class GoogleEmailHandlers {
     @WebGet("/gmail/search")
     public WebResponse search(@WebUser User user,
                         @WebParam("subject") String subject, @WebParam("from") String from,
+                        @WebParam("to") String to,@WebParam("body") String body,
                         @WebParam("startDate") String startDate, @WebParam("endDate") String endDate,
+                        @WebParam("startReceivedDate") String startReceivedDate, @WebParam("endReceivedDate") String endReceivedDate,
+                        @WebParam("minSize") Integer minSize,@WebParam("maxSize") Integer maxSize,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date sDate,eDate;
-        if(startDate != null && endDate !=null){
+        Date sDate,eDate,srDate,erDate;
+        if(startDate != null){
            startDate = startDate + " 00:00:00";
-           endDate = endDate + " 23:59:59";
            sDate = format.parse(startDate);
-           eDate = format.parse(endDate);
         }else{
         	 sDate = null;
-             eDate = null;
         }
-        Pair<List<MailInfo>, Integer> pair = gMailService.search(subject, from, sDate, eDate, pageSize, pageIndex);
+        if(endDate !=null){
+            endDate = endDate + " 23:59:59";
+            eDate = format.parse(endDate);
+        }else{
+            eDate = null;
+        }
+        if(startReceivedDate !=null){
+        	startReceivedDate = startReceivedDate + " 00:00:00";
+        	srDate = format.parse(startReceivedDate);
+        }else{
+            srDate = null;
+        }
+        if(endDate !=null){
+        	endReceivedDate = endReceivedDate + " 23:59:59";
+            erDate = format.parse(endReceivedDate);
+        }else{
+        	erDate = null;
+        }
+        
+        Pair<List<MailInfo>, Integer> pair = gMailService.search(subject, from, to, body,
+        		sDate, eDate, srDate, erDate, minSize, maxSize, pageSize, pageIndex);
         return WebResponse.success(pair.getFirst()).setResultCount(pair.getSecond());
     }
 
