@@ -13,10 +13,40 @@
 
         postDisplay: function (data, config) {
             var view = this;
+            var $e = view.$el;
+            
+            $e.find('.datetimepicker').datetimepicker({ 
+                format: 'yyyy-MM-dd', 
+                language: 'en', 
+                 pickDate: true, 
+                 pickTime: true, 
+                 inputMask: true 
+            });
+            
             showEmails.call(view);
         },
 
         events: {
+          "btap; .inputValueBtn":function () {
+                var view = this;
+                var $e = view.$el;
+                //view.submit();
+                var result = {};
+                $e.find(".search-mails-container :text").each(function(){
+                  if($(this).val() !== ""){
+                    result[$(this).attr("name")] = $(this).val();
+                  }
+                });
+                
+                view.search = function(opts) {
+                  opts = opts || [];
+                  $.extend(opts, result)
+                  return app.googleApi.searchEmails(opts)
+                };
+                
+                showEmails.call(view);
+          }
+
         },
         docEvents: {
             "DELETE_EMAIL": function(event, extra){

@@ -1,6 +1,15 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.Folder;
+
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GMailService;
@@ -13,16 +22,6 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import javax.mail.Folder;
-import javax.mail.Message;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Singleton
 public class GoogleEmailHandlers {
@@ -57,13 +56,9 @@ public class GoogleEmailHandlers {
                            @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
-    	Pair<Integer, Message[]> pair = gMailService.listMails("inbox", pageSize*pageIndex+1, pageSize);
-        List<MailInfo> mailInfos = new ArrayList<MailInfo>();
+    	Pair<Integer, List<MailInfo>> pair = gMailService.listMails("inbox", pageSize*pageIndex+1, pageSize);
+        List<MailInfo> mailInfos = pair.getSecond();
 
-        for (Message message : pair.getSecond()) {
-            MailInfo info = gMailService.buildMailInfo(message);
-            mailInfos.add(0, info);
-        }
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
 
@@ -132,9 +127,12 @@ public class GoogleEmailHandlers {
         if(maxSize == null){
         	maxSize = Integer.MAX_VALUE;
         }
-        Pair<List<MailInfo>, Integer> pair = gMailService.search(subject, from, to, body,
-        		sDate, eDate, srDate, erDate, minSize, maxSize, pageSize, pageIndex);
-        return WebResponse.success(pair.getFirst()).setResultCount(pair.getSecond());
+        
+        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
+            sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+        List<MailInfo> mailInfos = pair.getSecond();
+
+        return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
 
 }

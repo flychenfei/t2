@@ -2,7 +2,9 @@ package com.britesnow.samplesocial.test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Folder;
@@ -48,19 +50,32 @@ public class GMailTest extends SnowTestSupport {
                 Folder inbox = imap.getFolder("INBOX");
                 inbox.open(Folder.READ_ONLY);
 
+                List<SearchTerm> terms = new ArrayList<SearchTerm>();
+                
                 SubjectTerm subjectTerm = new SubjectTerm("2013-11-07");
+                terms.add(subjectTerm);
+                
                 BodyTerm bodyTerm = new BodyTerm("liu");
-                FromStringTerm formTerm = new FromStringTerm("jeremy");
+                terms.add(bodyTerm);
+                
+                FromStringTerm fromTerm = new FromStringTerm("jeremy");
+                terms.add(fromTerm);
+                
+//                SizeTerm maxSizeTerm = new SizeTerm(SizeTerm.GE, 6000);
+//                terms.add(maxSizeTerm);
+//                
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 Date d = df.parse("2013-11-07");
                 ReceivedDateTerm dateTerm = new ReceivedDateTerm(DateTerm.GT,d);
-                AndTerm andTerm = new AndTerm(new SearchTerm[]{bodyTerm,subjectTerm,formTerm,dateTerm});
+                terms.add(dateTerm);
+                
+                AndTerm andTerm = new AndTerm(terms.toArray(new SearchTerm[0]));
                 Message[] messages = inbox.search(andTerm);
                 
-                for(Message message : messages){
-                    System.out.println(message.getSubject() +"-------"+ message.getFrom()[0]);
-                }
-
+//                for(Message m : messages){
+//                    System.out.println(m.getSize());
+//                }
+                System.out.println(messages.length);
                 System.out.println("finished");
             } catch (Exception e) {
                 e.printStackTrace();

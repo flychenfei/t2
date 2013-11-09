@@ -65,6 +65,7 @@ var app = app || {};
         searchEmails: function(opts) {
             var params = opts||{};
             params.method = "Get";
+            console.log(opts);
             return app.getJsonData(contextPath + "/gmail/search", params);
         },
         searchContact: function(opts) {

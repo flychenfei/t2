@@ -2,7 +2,6 @@ package com.britesnow.samplesocial.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -10,10 +9,10 @@ import javax.mail.FetchProfile;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
-import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
@@ -24,7 +23,6 @@ import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.RecipientStringTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
-import javax.mail.search.SizeTerm;
 import javax.mail.search.SubjectTerm;
 
 import org.slf4j.Logger;
@@ -58,7 +56,7 @@ public class GMailService {
      * @return  pare of couf and messages
      * @throws Exception
      */
-    public Pair<Integer, Message[]> listMails(String folderName, int start, int count) throws Exception {
+    public Pair<Integer, List<MailInfo>> listMails(String folderName, int start, int count) throws Exception {
         IMAPStore imap = getImapStore();
 
         Folder inbox;
@@ -75,23 +73,27 @@ public class GMailService {
             inbox.open(Folder.READ_ONLY);
         }
         int total = inbox.getMessageCount();
+        List<MailInfo> mails = new ArrayList();
+        Message[] messages = null;
         if (total > 0) {
-            if (total - start - count > 0) {
-                start = total - count - start;
-                count --;
-            } else {
-                if (total - start > 0) {
-                    start = total - start;
-                    count = total - start;
-                } else {
-                    start = 1;
-                    count = total - start;
-                }
+            Integer end = getEnd(start, count, total);
+            if(end != null){
+                messages = inbox.getMessages(start, end);
             }
-           // System.out.println(String.format("start %s count %s", start, count));
-            return new Pair<Integer, Message[]>(total, inbox.getMessages(start, start + count));
         }
-        return new Pair<Integer, Message[]>(0, new Message[0]);
+        
+        if(messages != null){
+            for (Message message : messages) {
+                MailInfo info = buildMailInfo(message);
+                mails.add(info);
+            }
+        }
+        
+        if(inbox.isOpen()){
+            inbox.close(true);
+        }
+        
+        return new Pair<Integer, List<MailInfo>>(total, mails);
     }
 
     /**
@@ -170,86 +172,92 @@ public class GMailService {
      * @return   pair of count and mail info.
      * @throws Exception
      */
-	public Pair<List<MailInfo>, Integer> search(String subject, String from, String to, 
+	public Pair<Integer, List<MailInfo>> search(String subject, String from, String to, 
 			String body, Date sDate , Date eDate, Date srDate , Date erDate,
-			int minSize, int maxSize, int pageSize, int pageIndex) throws Exception {
+			Integer minSize, Integer maxSize, int start, int count) throws Exception {
+	    
         Folder inbox = null;
-        List<MailInfo> infos = new ArrayList<MailInfo>();
-        int count = 0;
-        try {
-            IMAPStore imap = getImapStore();
-            inbox = imap.getFolder("INBOX");
-            inbox.open(Folder.READ_ONLY);
-            List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
-            if (subject != null) {
-                SubjectTerm subjectTerm = new SubjectTerm(subject);
-                searchTerms.add(subjectTerm);
-            }
-            if (from != null) {
-                FromStringTerm fromStringTerm = new FromStringTerm(from);
-                searchTerms.add(fromStringTerm);
-            }
-            if (to != null) {
-            	RecipientStringTerm recipientStringTerm = new RecipientStringTerm(RecipientType.TO, to);
-                searchTerms.add(recipientStringTerm);
-            }
-            
-            if(body != null){
-            	BodyTerm bodyTerm = new BodyTerm(body);
-            	searchTerms.add(bodyTerm);
-            }
-            if(sDate != null){
-            	SentDateTerm startSentDateTerm = new SentDateTerm(6, sDate);
-            	searchTerms.add(startSentDateTerm);
-            }
-            if(eDate != null){
-            	SentDateTerm endSentDateTerm = new SentDateTerm(1, eDate);
-            	searchTerms.add(endSentDateTerm);
-            }
-            if(srDate != null){
-            	ReceivedDateTerm startReceivedDateTerm = new ReceivedDateTerm(6, srDate);
-            	searchTerms.add(startReceivedDateTerm);
-            }
-            if(erDate != null){
-            	ReceivedDateTerm endReceivedDateTerm = new ReceivedDateTerm(1, erDate);
-            	searchTerms.add(endReceivedDateTerm);
-            }
-            if(minSize != 0){
-            	SizeTerm minSizeTerm = new SizeTerm(6, minSize);
-            	searchTerms.add(minSizeTerm);
-            }
-            if(maxSize != 0){
-            	SizeTerm maxSizeTerm = new SizeTerm(1, maxSize);
-            	searchTerms.add(maxSizeTerm);
-            }
-            
-            
-            if (searchTerms.size() > 0) {
-                Message[] msgs =  inbox.search(new AndTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
-                count = msgs.length;
-                Message[] resultMsgs={};
-                int start = pageSize*pageIndex;
-                if (msgs.length > start && msgs.length > start+pageSize) {
-                    resultMsgs = Arrays.copyOfRange(msgs, start, start + pageSize);
-                }else if (msgs.length > start && msgs.length < start + pageSize) {
-                    resultMsgs = Arrays.copyOfRange(msgs, start, msgs.length);
-                }
-                if (resultMsgs.length > 0) {
-                    for (Message msg : resultMsgs) {
-                    	if(msg !=null){
-                          infos.add(buildMailInfo(msg));
-                    	}
+        int total = 0;
+        IMAPStore imap = getImapStore();
+        inbox = imap.getFolder("INBOX");
+        inbox.open(Folder.READ_ONLY);
+        List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
+        if (subject != null) {
+            SubjectTerm subjectTerm = new SubjectTerm(subject);
+            searchTerms.add(subjectTerm);
+        }
+        if (from != null) {
+            FromStringTerm fromStringTerm = new FromStringTerm(from);
+            searchTerms.add(fromStringTerm);
+        }
+        if (to != null) {
+            RecipientStringTerm recipientStringTerm = new RecipientStringTerm(RecipientType.TO, to);
+            searchTerms.add(recipientStringTerm);
+        }
+
+        if (body != null) {
+            BodyTerm bodyTerm = new BodyTerm(body);
+            searchTerms.add(bodyTerm);
+        }
+        if (sDate != null) {
+            SentDateTerm startSentDateTerm = new SentDateTerm(SentDateTerm.GE, sDate);
+            searchTerms.add(startSentDateTerm);
+        }
+        if (eDate != null) {
+            SentDateTerm endSentDateTerm = new SentDateTerm(SentDateTerm.LE, eDate);
+            searchTerms.add(endSentDateTerm);
+        }
+        if (srDate != null) {
+            ReceivedDateTerm startReceivedDateTerm = new ReceivedDateTerm(ReceivedDateTerm.GE, srDate);
+            searchTerms.add(startReceivedDateTerm);
+        }
+        if (erDate != null) {
+            ReceivedDateTerm endReceivedDateTerm = new ReceivedDateTerm(ReceivedDateTerm.LE, erDate);
+            searchTerms.add(endReceivedDateTerm);
+        }
+
+        // FIXME: hide this for now, it would scan all if add this SizeTerm
+        // if(minSize != 0){
+        // SizeTerm minSizeTerm = new SizeTerm(SizeTerm.GE, minSize);
+        // searchTerms.add(minSizeTerm);
+        // }
+        // if(maxSize != 0){
+        // SizeTerm maxSizeTerm = new SizeTerm(SizeTerm.LE, maxSize);
+        // searchTerms.add(maxSizeTerm);
+        // }
+        
+        List<MailInfo> mails = new ArrayList();
+        Message[] messages = null;
+        
+        if (searchTerms.size() > 0) {
+            Message[] msgs = inbox.search(new AndTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
+            total = msgs.length;
+
+            if (total > 0) {
+                Integer end = getEnd(start, count, total);
+                if (end != null) {
+                    messages = new Message[end - start + 1];
+                    int c = 0;
+                    for (int i = messages.length - 1; i >= 0; i--) {
+                        messages[c] = msgs[start + i - 1];
+                        c++;
                     }
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (inbox != null)
-                inbox.close(true);
         }
-        return new Pair<List<MailInfo>, Integer>(infos, count);
+        
+        if(messages != null){
+            for (Message message : messages) {
+                MailInfo info = buildMailInfo(message);
+                mails.add(0, info);
+            }
+        }
+        
+        if(inbox.isOpen()){
+            inbox.close(true);
+        }
+        
+        return new Pair<Integer, List<MailInfo>>(total, mails);
     }
 
     /**
@@ -338,6 +346,19 @@ public class GMailService {
         }
         return text;
 
+    }
+    
+    private Integer getEnd(int start, int count, int total){
+        //prerequire total should be > 0
+        Integer end = null;
+        if(start > total){
+            return null;
+        }else if(start > total - count){
+            end = total;
+        }else{
+            end = start + count - 1;
+        }
+        return end;
     }
 
 

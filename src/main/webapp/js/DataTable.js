@@ -251,7 +251,7 @@
             }
 
             var dataProvider =  view.dataProvider ? view.dataProvider : (view.dataType?brite.dao(view.dataType):null);
-
+            console.log(view.dataProvider);
             var dfd = view.opts.withDataListening ?
                     dataProvider.list(opts) :
                     view.gridData;

@@ -47,7 +47,6 @@ var app = app || {};
 			data : params,
 			dataType : "json"
 		}).success(function(data) {
-			console.log(data);
 			//auth fail
 			if (data && data.AUTH_FAILED) {
 
@@ -66,7 +65,6 @@ var app = app || {};
 				}
 				return;
 			} else {
-				console.log(data)
 				dfd.resolve(data);
 			}
 
