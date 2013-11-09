@@ -140,7 +140,7 @@
                     var view = this;
                     if (view.opts.withPaging) {
                         var opts = view.opts.dataOpts;
-                        opts.pageIndex = view.numOfPages;
+                        opts.pageIndex = view.numOfPages - 1;
                         refreshDataTable.call(view);
                     }
 
