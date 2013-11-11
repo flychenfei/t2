@@ -89,8 +89,8 @@ public class GMailTest extends SnowTestSupport {
     @Test
     public void testGmailSearch() {
       //Please Enter username and password
-        String mail = "wangxuwei84@gmail.com";
-        String password = "wxw123456";
+        String mail = "";
+        String password = "";
         if (mail.length() > 0 && password.length() > 0) {
             try {
                 Properties prop = System.getProperties();
