@@ -22,16 +22,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.britesnow.snow.testsupport.SnowTestSupport;
+import com.sun.mail.gimap.GmailRawSearchTerm;
+import com.sun.mail.gimap.GmailSSLStore;
 import com.sun.mail.imap.IMAPStore;
 
 public class GMailTest extends SnowTestSupport {
     @BeforeClass
     public static void initTestClass() throws Exception {
-        SnowTestSupport.initWebApplication("src/main/webapp");
     }
 
     @Test
     public void testSearch() {
+        //Please Enter username and password
         String mail = "";
         String password = "";
         if (mail.length() > 0 && password.length() > 0) {
@@ -81,6 +83,44 @@ public class GMailTest extends SnowTestSupport {
                 e.printStackTrace();
             }
 
+        }
+    }
+    
+    @Test
+    public void testGmailSearch() {
+      //Please Enter username and password
+        String mail = "wangxuwei84@gmail.com";
+        String password = "wxw123456";
+        if (mail.length() > 0 && password.length() > 0) {
+            try {
+                Properties prop = System.getProperties();
+                prop.put("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                prop.put("mail.imap.host", "imap.gmail.com");
+                prop.put("mail.imap.port", "993");
+                prop.put("mail.debug", "true");
+
+                Session session = Session.getInstance(prop);
+                session.setDebug(true);
+
+                GmailSSLStore imap = (GmailSSLStore) session.getStore("gimaps");
+                imap.connect(mail, password);
+
+                Folder inbox = imap.getFolder("INBOX");
+                inbox.open(Folder.READ_ONLY);
+
+                GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm("after:2013/09/01");
+                
+                Message[] messages = inbox.search(gmailSearchTerm);
+                
+//                for(Message m : messages){
+//                    System.out.println(m.getSize());
+//                }
+                System.out.println(messages.length);
+                System.out.println("finished");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         }
     }
 }
