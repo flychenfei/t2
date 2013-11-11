@@ -100,7 +100,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 </dependency>-->
     <!-- Google apis -->
     
-    <!-- deprecated we use com.sun.mail
+    <!-- deprecated we use com.sun.mail -->
      <!-- <dependency> 
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
