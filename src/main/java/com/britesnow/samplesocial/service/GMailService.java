@@ -35,6 +35,9 @@ import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.snow.util.Pair;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sun.mail.gimap.GmailRawSearchTerm;
+import com.sun.mail.gimap.GmailSSLStore;
+import com.sun.mail.imap.IMAPSSLStore;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -361,5 +364,82 @@ public class GMailService {
         return end;
     }
 
+    
+    public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
+			String body, Date sDate , Date eDate, Date srDate , Date erDate,
+			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
+    	
+    	IMAPSSLStore imap =  (IMAPSSLStore) getImapStore();
+    	Folder inbox = imap.getFolder("INBOX");
+        inbox.open(Folder.READ_ONLY);
+
+        StringBuffer searchTerms = new StringBuffer();
+        
+        if (subject != null) {
+        	searchTerms.append("subject:");
+        	searchTerms.append(subject);
+        }
+        if (from != null) {
+        	searchTerms.append(" from:");
+        	searchTerms.append(from);
+        }
+        if (to != null) {
+        	searchTerms.append(" to:");
+        	searchTerms.append(to);
+        }
+        if (body != null) {
+        	searchTerms.append(" body:");
+        	searchTerms.append(body);
+        }
+        if (sDate != null) {
+        	searchTerms.append(" after:");
+        	searchTerms.append(sDate);
+        }
+        if (eDate != null) {
+        	searchTerms.append(" before:");
+        	searchTerms.append(eDate);
+        }
+        if (srDate != null) {
+        	searchTerms.append(" after:");
+        	searchTerms.append(srDate);
+        }
+        if (erDate != null) {
+        	searchTerms.append(" before:");
+        	searchTerms.append(erDate);
+        }
+        GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
+        
+        List<MailInfo> mails = new ArrayList();
+        Message[] messages = null;
+        
+    	int total = 0;
+        if (gmailSearchTerm != null) {
+        	Message[] msgs = inbox.search(gmailSearchTerm);
+            total = msgs.length;
+
+            if (total > 0) {
+                Integer end = getEnd(start, count, total);
+                if (end != null) {
+                    messages = new Message[end - start + 1];
+                    int c = 0;
+                    for (int i = messages.length - 1; i >= 0; i--) {
+                        messages[c] = msgs[start + i - 1];
+                        c++;
+                    }
+                }
+            }
+        }
+        if(messages != null){
+            for (Message message : messages) {
+                MailInfo info = buildMailInfo(message);
+                mails.add(0, info);
+            }
+        }
+        if(inbox.isOpen()){
+            inbox.close(true);
+        }
+        
+        return new Pair<Integer, List<MailInfo>>(total, mails);
+    }
 
 }

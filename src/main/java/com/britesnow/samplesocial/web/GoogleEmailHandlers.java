@@ -127,11 +127,11 @@ public class GoogleEmailHandlers {
         if(maxSize == null){
         	maxSize = Integer.MAX_VALUE;
         }
-        
         Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
-            sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+//    	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,
+//                sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
-
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
 
