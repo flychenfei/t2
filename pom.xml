@@ -92,34 +92,16 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         </exclusion>
       </exclusions>
     </dependency>
-    
-   <!--  <dependency>
-    <groupId>javax.mail</groupId>
-    <artifactId>javax.mail-api</artifactId>
-    <version>1.5.0</version>
-</dependency>-->
-    <!-- Google apis -->
-    
-    <!-- deprecated we use com.sun.mail -->
-     <!-- <dependency> 
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4.5</version>
-    </dependency>-->
-    
     <!-- For gmail -->
-    <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>javax.mail</artifactId>
-        <version>1.5.0</version>
-    </dependency>
     <dependency>
         <groupId>com.sun.mail</groupId>
         <artifactId>gimap</artifactId>
         <version>1.5.0</version>
     </dependency>
     <!-- /For gmail -->
-
+    
+    <!-- Google apis -->
+    
     <!--Facebook api-->
     <dependency>
       <groupId>com.restfb</groupId>
