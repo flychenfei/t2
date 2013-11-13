@@ -90,6 +90,8 @@ public class GoogleEmailHandlers {
                         @WebParam("to") String to,@WebParam("body") String body,
                         @WebParam("startDate") String startDate, @WebParam("endDate") String endDate,
                         @WebParam("startReceivedDate") String startReceivedDate, @WebParam("endReceivedDate") String endReceivedDate,
+                        @WebParam("label") String label,@WebParam("hasAttachment") String hasAttachment,
+                        @WebParam("attachmentName") String attachmentName,@WebParam("cc") String cc,
                         @WebParam("minSize") Integer minSize,@WebParam("maxSize") Integer maxSize,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
@@ -128,7 +130,8 @@ public class GoogleEmailHandlers {
 //        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
 //              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
     	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,
-    			startDate, endDate, startReceivedDate, endReceivedDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+    			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
+    			attachmentName , cc , minSize, maxSize, pageSize * pageIndex + 1, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }

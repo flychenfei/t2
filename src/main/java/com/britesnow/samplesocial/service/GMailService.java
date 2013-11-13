@@ -374,6 +374,7 @@ public class GMailService {
     
     public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
 			String body, String sDate , String eDate, String srDate , String erDate,
+			String label, String hasAttachment , String attachmentName , String cc ,
 			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
     	
     	//IMAPSSLStore imap =  (IMAPSSLStore) getImapStore();
@@ -416,6 +417,31 @@ public class GMailService {
         	searchTerms.append(" before:");
         	searchTerms.append(erDate);
         }
+        //ddd
+        if (label != null) {
+        	searchTerms.append(" label:");
+        	searchTerms.append(label);
+        }
+        if (hasAttachment.equalsIgnoreCase("yes")) {
+        	searchTerms.append(" has:attachment");
+        }
+        if (attachmentName != null) {
+        	searchTerms.append(" filename:");
+        	searchTerms.append(attachmentName);
+        }
+        if (cc != null) {
+        	searchTerms.append(" cc:");
+        	searchTerms.append(cc);
+        }
+        if (minSize != null) {
+        	searchTerms.append(" larger:");
+        	searchTerms.append(minSize.toString());
+        }
+        if (maxSize != null) {
+        	searchTerms.append(" smaller:");
+        	searchTerms.append(maxSize.toString());
+        }
+        
         GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
         
         List<MailInfo> mails = new ArrayList();
