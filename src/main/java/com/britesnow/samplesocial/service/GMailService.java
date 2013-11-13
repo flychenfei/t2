@@ -36,8 +36,7 @@ import com.britesnow.snow.util.Pair;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.mail.gimap.GmailRawSearchTerm;
-import com.sun.mail.gimap.GmailSSLStore;
-import com.sun.mail.imap.IMAPSSLStore;
+import com.sun.mail.gimap.GmailStore;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -181,7 +180,7 @@ public class GMailService {
 	    
         Folder inbox = null;
         int total = 0;
-        IMAPStore imap = getImapStore();
+        IMAPStore imap = getImapsStore();
         inbox = imap.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
         List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
@@ -306,6 +305,14 @@ public class GMailService {
         }
         throw new IllegalArgumentException("access token is invalid");
     }
+    
+    private GmailStore getImapsStore() throws Exception {
+    	SocialIdEntity social = authService.getSocialIdEntity();
+    	if(social != null && social.getEmail() != null){
+    		return emailAuthenticator.connectToGmailImap(social.getEmail(), social.getToken());
+    	}
+    	throw new IllegalArgumentException("access token is invalid");
+    }
 
     private String getContent(Message message) throws Exception {
         StringBuffer str = new StringBuffer();
@@ -366,10 +373,11 @@ public class GMailService {
 
     
     public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
-			String body, Date sDate , Date eDate, Date srDate , Date erDate,
+			String body, String sDate , String eDate, String srDate , String erDate,
 			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
     	
-    	IMAPSSLStore imap =  (IMAPSSLStore) getImapStore();
+    	//IMAPSSLStore imap =  (IMAPSSLStore) getImapStore();
+        GmailStore imap = getImapsStore();
     	Folder inbox = imap.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
 
@@ -388,8 +396,9 @@ public class GMailService {
         	searchTerms.append(to);
         }
         if (body != null) {
-        	searchTerms.append(" body:");
+        	searchTerms.append(" \"");
         	searchTerms.append(body);
+        	searchTerms.append("\"");
         }
         if (sDate != null) {
         	searchTerms.append(" after:");

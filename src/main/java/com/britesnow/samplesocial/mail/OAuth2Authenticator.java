@@ -23,6 +23,8 @@ import javax.mail.Session;
 import javax.mail.URLName;
 
 import com.google.inject.Singleton;
+import com.sun.mail.gimap.GmailSSLStore;
+import com.sun.mail.gimap.GmailStore;
 import com.sun.mail.imap.IMAPSSLStore;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPTransport;
@@ -92,6 +94,27 @@ public class OAuth2Authenticator {
         return store;
     }
 
+    public  GmailStore connectToGmailImap(String host,
+			            int port,
+			            String userEmail,
+			            String oauthToken,
+			            boolean debug) throws Exception {
+			Properties props = new Properties();
+			props.put("mail.gimaps.sasl.enable", "true");
+			props.put("mail.gimaps.sasl.mechanisms", "XOAUTH2");
+			props.put("mail.debug", "true");
+			props.put(OAuth2SaslClientFactory.OAUTH_TOKEN_PROP, oauthToken);
+			Session session = Session.getInstance(props);
+			session.setDebug(true);
+			//final URLName unusedUrlName = null;
+			//GmailSSLStore store = new GmailSSLStore(session, unusedUrlName);
+			GmailStore store = (GmailStore) session.getStore("gimaps");
+			final String emptyPassword = "";
+			store.connect(host, port, userEmail, emptyPassword);
+			return store;
+		}
+    
+    
     /**
      * Connects and authenticates to an SMTP server with OAuth2. You must have
      * called {@code initialize}.
@@ -135,6 +158,10 @@ public class OAuth2Authenticator {
 
     public SMTPTransport connectToSmtp(String email, String token) throws Exception {
         return connectToSmtp("smtp.gmail.com", 587, email, token, true);
+    }
+    
+    public GmailStore connectToGmailImap(String email, String token) throws Exception {
+        return connectToGmailImap("imap.gmail.com", 993, email, token, true);
     }
 
     /**
