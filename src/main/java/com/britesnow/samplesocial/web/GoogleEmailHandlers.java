@@ -127,6 +127,10 @@ public class GoogleEmailHandlers {
         if(maxSize == null){
         	maxSize = Integer.MAX_VALUE;
         }
+        if(hasAttachment.equalsIgnoreCase("false")){
+        	hasAttachment = null;
+        }
+        
 //        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
 //              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
     	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,

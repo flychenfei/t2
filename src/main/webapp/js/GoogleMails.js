@@ -37,6 +37,11 @@
                     result[$(this).attr("name")] = $(this).val();
                   }
                 });
+                $e.find(".search-mails-container .checkbox").each(function(){
+                    if($(this).val() !== ""){
+                      result[$(this).attr("name")] = $(this).prop("checked");
+                    }
+                  });
                 
                 view.search = function(opts) {
                   opts = opts || [];

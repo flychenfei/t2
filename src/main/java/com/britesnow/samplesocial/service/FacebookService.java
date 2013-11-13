@@ -61,7 +61,8 @@ public class FacebookService {
         return fetchObjectsResults;
     }
 
-    public List getObjectList(String accessToken, String userId, String object, String type, String typeValue,
+    @SuppressWarnings("unchecked")
+	public List getObjectList(String accessToken, String userId, String object, String type, String typeValue,
                             Integer limit, Integer offset) {
         Connection<JsonObject> myFeed = new DefaultFacebookClient(accessToken).fetchConnection(userId + "/" + object, JsonObject.class, Parameter.with(type, typeValue), Parameter.with("limit", limit), Parameter.with("offset", offset));
         List ls = myFeed.getData();

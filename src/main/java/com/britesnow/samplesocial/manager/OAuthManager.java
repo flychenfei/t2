@@ -22,6 +22,7 @@ public class OAuthManager {
     	return currentRequestContextHolder.getCurrentRequestContext().getReq().getSession();
     	
     }
+	@SuppressWarnings("unchecked")
 	public Map<String, String> getInfo(ServiceType serviceType){
     	HttpSession session = getSession();
     	return (Map)session.getAttribute(serviceType.toString());

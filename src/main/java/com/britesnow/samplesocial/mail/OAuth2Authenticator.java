@@ -23,7 +23,6 @@ import javax.mail.Session;
 import javax.mail.URLName;
 
 import com.google.inject.Singleton;
-import com.sun.mail.gimap.GmailSSLStore;
 import com.sun.mail.gimap.GmailStore;
 import com.sun.mail.imap.IMAPSSLStore;
 import com.sun.mail.imap.IMAPStore;

@@ -377,7 +377,6 @@ public class GMailService {
 			String label, String hasAttachment , String attachmentName , String cc ,
 			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
     	
-    	//IMAPSSLStore imap =  (IMAPSSLStore) getImapStore();
         GmailStore imap = getImapsStore();
     	Folder inbox = imap.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
@@ -417,12 +416,11 @@ public class GMailService {
         	searchTerms.append(" before:");
         	searchTerms.append(erDate);
         }
-        //ddd
         if (label != null) {
         	searchTerms.append(" label:");
         	searchTerms.append(label);
         }
-        if (hasAttachment.equalsIgnoreCase("yes")) {
+        if (hasAttachment !=null) {
         	searchTerms.append(" has:attachment");
         }
         if (attachmentName != null) {
