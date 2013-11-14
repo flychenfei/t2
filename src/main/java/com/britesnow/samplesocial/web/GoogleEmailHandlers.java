@@ -92,6 +92,9 @@ public class GoogleEmailHandlers {
                         @WebParam("startReceivedDate") String startReceivedDate, @WebParam("endReceivedDate") String endReceivedDate,
                         @WebParam("label") String label,@WebParam("hasAttachment") String hasAttachment,
                         @WebParam("attachmentName") String attachmentName,@WebParam("cc") String cc,
+                        @WebParam("list") String list, @WebParam("hasCircle") String hasCircle , 
+                        @WebParam("circle") String circle , @WebParam("chatContent") String chatContent ,
+                        @WebParam("unread") String unread, 
                         @WebParam("minSize") Integer minSize,@WebParam("maxSize") Integer maxSize,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
@@ -130,12 +133,27 @@ public class GoogleEmailHandlers {
         if(hasAttachment.equalsIgnoreCase("false")){
         	hasAttachment = null;
         }
+        if(unread.equalsIgnoreCase("false")){
+        	unread = null;
+        }
+        if(hasCircle.equalsIgnoreCase("false")){
+        	hasCircle = null;
+        }
+        
+        String regex = "^.*[\\s\\(\\){}\\|].*$";
+        if(circle !=null){
+	        circle = circle.replace("\"", "\\\"");
+	        if( circle.matches(regex) ){
+	        	circle = "\""+ circle + "\"";
+	        }
+        }
         
 //        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
 //              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
     	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,
     			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
-    			attachmentName , cc , minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+    			attachmentName , cc , list,  hasCircle ,  circle ,  chatContent , unread,
+    			minSize, maxSize, pageSize * pageIndex + 1, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }

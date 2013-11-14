@@ -375,7 +375,8 @@ public class GMailService {
     public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
 			String body, String sDate , String eDate, String srDate , String erDate,
 			String label, String hasAttachment , String attachmentName , String cc ,
-			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
+			String list, String hasCircle , String circle , String chatContent ,
+			String unread, Integer minSize, Integer maxSize, int start, int count) throws Exception  {
     	
         GmailStore imap = getImapsStore();
     	Folder inbox = imap.getFolder("INBOX");
@@ -439,6 +440,28 @@ public class GMailService {
         	searchTerms.append(" smaller:");
         	searchTerms.append(maxSize.toString());
         }
+        
+        
+        
+        if (list != null) {
+        	searchTerms.append(" list:");
+        	searchTerms.append(list);
+        }
+        if (hasCircle != null) {
+        	searchTerms.append(" has:circle");
+        }
+        if (circle != null) {
+        	searchTerms.append(" circle:");
+        	searchTerms.append(circle);
+        }
+        if (chatContent != null) {
+        	searchTerms.append(" is:chat ");
+        	searchTerms.append(chatContent);
+        }
+        if (unread != null) {
+        	searchTerms.append(" is:unread");
+        }
+        
         
         GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
         
