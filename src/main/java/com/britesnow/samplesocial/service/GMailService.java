@@ -370,13 +370,13 @@ public class GMailService {
         }
         return end;
     }
-
     
     public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
 			String body, String sDate , String eDate, String srDate , String erDate,
 			String label, String hasAttachment , String attachmentName , String cc ,
 			String list, String hasCircle , String circle , String chatContent ,
-			String unread, Integer minSize, Integer maxSize, int start, int count) throws Exception  {
+			String unread,String category , String deliveredTo , String rfc822msgid ,
+			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
     	
         GmailStore imap = getImapsStore();
     	Folder inbox = imap.getFolder("INBOX");
@@ -440,9 +440,6 @@ public class GMailService {
         	searchTerms.append(" smaller:");
         	searchTerms.append(maxSize.toString());
         }
-        
-        
-        
         if (list != null) {
         	searchTerms.append(" list:");
         	searchTerms.append(list);
@@ -461,7 +458,18 @@ public class GMailService {
         if (unread != null) {
         	searchTerms.append(" is:unread");
         }
-        
+        if (category != null) {
+        	searchTerms.append(" category:");
+        	searchTerms.append(category);
+        }
+        if (deliveredTo != null) {
+        	searchTerms.append(" deliveredTo:");
+        	searchTerms.append(deliveredTo);
+        }
+        if (rfc822msgid != null) {
+        	searchTerms.append(" rfc822msgid:");
+        	searchTerms.append(rfc822msgid);
+        }
         
         GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
         

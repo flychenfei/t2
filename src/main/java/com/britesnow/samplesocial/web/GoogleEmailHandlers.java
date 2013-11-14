@@ -94,7 +94,8 @@ public class GoogleEmailHandlers {
                         @WebParam("attachmentName") String attachmentName,@WebParam("cc") String cc,
                         @WebParam("list") String list, @WebParam("hasCircle") String hasCircle , 
                         @WebParam("circle") String circle , @WebParam("chatContent") String chatContent ,
-                        @WebParam("unread") String unread, 
+                        @WebParam("unread") String unread, @WebParam("category") String category , 
+                        @WebParam("deliveredTo") String deliveredTo , @WebParam("rfc822msgid") String rfc822msgid ,
                         @WebParam("minSize") Integer minSize,@WebParam("maxSize") Integer maxSize,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
@@ -139,7 +140,6 @@ public class GoogleEmailHandlers {
         if(hasCircle.equalsIgnoreCase("false")){
         	hasCircle = null;
         }
-        
         String regex = "^.*[\\s\\(\\){}\\|].*$";
         if(circle !=null){
 	        circle = circle.replace("\"", "\\\"");
@@ -153,7 +153,7 @@ public class GoogleEmailHandlers {
     	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,
     			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
     			attachmentName , cc , list,  hasCircle ,  circle ,  chatContent , unread,
-    			minSize, maxSize, pageSize * pageIndex + 1, pageSize);
+    			category , deliveredTo , rfc822msgid , minSize, maxSize, pageSize * pageIndex + 1, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
