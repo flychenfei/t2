@@ -1,0 +1,23 @@
+<script id="tmpl-CreateCalendarEvent" type="text/html">
+    <div class="CreateCalendarEvent">
+        <div class='CreateCalendarEventDialogGlass'/>
+        <div class="CreateCalendarEvent-content">
+            <h2>{{#if id}}Edit{{else}}Create{{/if}} Calendar Event</h2>
+
+            <div class="form form-horizontal">
+
+                <div class="control-group ">
+                    <label class="control-label">Summary:</label>
+                    <div class="controls">
+                        <textarea rows="5" style="width:280px" name="summary" placeholder="summary hear">{{#if summary}}{{summary}}{{/if}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="#" class="btn btn-primary CreateCalendarEventBtn">{{#if id}}Update{{else}}Create{{/if}}</a>
+                    <a href="#" class="btn cancelBtn">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

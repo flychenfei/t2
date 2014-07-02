@@ -110,6 +110,22 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     </dependency>
     <!-- /For gmail -->
     
+    
+    <!-- Google Canleader -->
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-calendar</artifactId>
+      <version>v3-rev84-1.18.0-rc</version>
+    </dependency>
+    
+    <dependency>
+	    <groupId>com.google.api-client</groupId>
+	    <artifactId>google-api-client-jackson2</artifactId>
+	    <version>1.18.0-rc</version>
+	</dependency>
+    <!-- /Google Canleader -->
+    
+    
     <!-- Google apis -->
     
     <!--Facebook api-->
