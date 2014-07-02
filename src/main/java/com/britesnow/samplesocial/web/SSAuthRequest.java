@@ -12,6 +12,7 @@ import com.britesnow.snow.web.handler.annotation.WebModelHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
+import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
 import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
@@ -48,8 +49,7 @@ public class SSAuthRequest implements AuthRequest<Object> {
 
             // Build the expectedUserToken from the user info
             // For this example, simplistic userToken (sha1(username,password))
-            @SuppressWarnings("deprecation")
-			String expectedUserToken = Hashing.sha1().hashString(user.getUsername()).toString();
+			String expectedUserToken = sha1(user.getUsername());
             if (Objects.equal(expectedUserToken, userToken)) {
                 // if valid, then, we create the AuthTocken with our User object
                 AuthToken<User> authToken = new AuthToken<User>();
@@ -105,10 +105,13 @@ public class SSAuthRequest implements AuthRequest<Object> {
     private void setUserToSession(RequestContext rc, User user) {
         // TODO: need to implement session less login (to easy loadbalancing)
         if (user != null) {
-        	@SuppressWarnings("deprecation")
-            String userToken = Hashing.sha1().hashString(user.getUsername()).toString();
+            String userToken = sha1(user.getUsername());
             rc.setCookie("userToken", userToken);
             //
         }
+    }
+    
+    static String sha1(String txt){
+        return Hashing.sha1().hashString(txt, Charsets.UTF_8).toString();
     }
 }
