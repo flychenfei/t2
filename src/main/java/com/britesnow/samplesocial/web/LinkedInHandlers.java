@@ -22,6 +22,15 @@ public class LinkedInHandlers {
         resp.set("result_count", result.get("_total"));
         return resp;
     }
+    
+    @WebGet("/linkedin/groups")
+    public WebResponse getGroups(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
+        Map result = linkedInService.getGroups(user, pageIndex, pageSize);
+        WebResponse resp = WebResponse.success(result.get("values"));
+        resp.set("result_count", result.get("_total"));
+        return resp;
+    }
+    
     @WebGet("/linkedin/jobs")
     public WebResponse searchJobs(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

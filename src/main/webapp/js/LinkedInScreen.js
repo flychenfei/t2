@@ -35,6 +35,8 @@
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
+                }else if(menu == "groups"){
+                    showGroups.call(view);
                 }
 
               }
@@ -113,6 +115,49 @@
             });
         }
 
+        function showGroups() {
+            brite.display("DataTable", ".LinkedInScreen-content",{
+                dataProvider: {list: app.linkedInApi.getGroups},
+                columnDef: [
+                    {
+                        text: "#",
+                        render: function (obj, idx) {
+                            return idx + 1
+                        },
+                        attrs: "style='width: 20%'"
+                    },
+                    {
+                        text: "GroupId",
+                        render: function (obj) {
+                        	return obj.group.id;
+                        },
+                        attrs: "style='width: 20%'"
+                    },
+                    {
+                        text: "Name",
+                        render: function (obj) {
+                            return obj.group.name;
+                        },
+                        attrs: "style='width: 40%'"
+
+                    },
+                    {
+                        text: "MembershipState",
+                        render: function (obj) {
+                            return obj.membershipState.code;
+                        },
+                        attrs: "style='width: 20%'"
+
+                    }
+                ],
+                opts: {
+                    htmlIfEmpty: "Not Groups found",
+                    withPaging: true,
+                    withCmdDelete:false
+                }
+            });
+        }
+        
         function showJobs(keywork) {
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: function(params){

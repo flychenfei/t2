@@ -23,6 +23,7 @@ public class LinkedInService {
     private LinkedInAuthService authService;
 
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
+    public static final String Groups_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
     public static final String PEOPLE_SEARCH_ENDPOINT = "http://api.linkedin.com/v1/people-search?keywords=%s";
@@ -70,6 +71,24 @@ public class LinkedInService {
         int start = pageIndex*pageSize;
         request.addQuerystringParameter("start", String.valueOf(start));
         request.addQuerystringParameter("count", String.valueOf(pageSize));
+    }
+
+    /**
+     * get user groups   by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  group map
+     */
+    public Map getGroups(User user, Integer pageIndex, Integer pageSize) {
+
+        OAuthRequest request = createRequest(Verb.GET, Groups_ENDPOINT);
+
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        Map map = JsonUtil.toMapAndList(response.getBody());
+        return map;
     }
 
     /**
