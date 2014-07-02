@@ -9,11 +9,12 @@
 		parent : "body"
 	}, {
 		
-		create : function(mail, config) {
+		create : function(data, config) {
 			var view = this;
+			data = data || {};
+			view.type = data.type;
 			var dfd = $.Deferred();
-            console.log(mail);
-			var $html = app.render("tmpl-GoogleMailSend",mail);
+			var $html = app.render("tmpl-GoogleMailSend",data);
 			//show a screen to prevent use click other places
 			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body"); 
 			return $html;
@@ -48,10 +49,25 @@
 		var subject = $e.find("input[name='subject']").val();
 		
 		// if mail id exist do update,else do create
-		app.googleApi.sendMail({to:to,subject:subject,content:content}).done(function() {
-			$(document).trigger("DO_REFRESH_MAIL");
-			view.close();
-		}); 
+		if (view.type == 'rest') {
+			app.googleApi.sendMailRest({
+				to : to,
+				subject : subject,
+				content : content
+			}).done(function() {
+				$(document).trigger("DO_REFRESH_MAIL");
+				view.close();
+			});
+		} else {
+			app.googleApi.sendMail({
+				to : to,
+				subject : subject,
+				content : content
+			}).done(function() {
+				$(document).trigger("DO_REFRESH_MAIL");
+				view.close();
+			});
+		}
 
 
 	}

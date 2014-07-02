@@ -4,13 +4,13 @@ package com.britesnow.samplesocial.mail;
 import javax.mail.Message;
 
 public class MailInfo {
-    private int id;
-    private long date;
+    private Object id;
+    private Object date;
     private String from;
     private String subject;
     private String content;
 
-    public MailInfo(int id, long date, String from, String subject) {
+    public MailInfo(Object id, Object date, String from, String subject) {
         this.id = id;
         this.date = date;
         this.from = from;
@@ -22,11 +22,15 @@ public class MailInfo {
 
     }
 
-    public long getDate() {
+    public MailInfo() {
+    }
+
+
+    public Object getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(Object date) {
         this.date = date;
     }
 
@@ -46,9 +50,14 @@ public class MailInfo {
         this.subject = subject;
     }
 
-    public int getId() {
+    public Object getId() {
         return id;
     }
+
+    public void setId(Object id) {
+        this.id = id;
+    }
+
 
     public void setContent(String content) {
         this.content = content;
@@ -57,4 +66,6 @@ public class MailInfo {
     public String getContent() {
         return content;
     }
+
+
 }

@@ -9,7 +9,6 @@
 	}, {
 		
 		create : function(data, config) {
-            console.log(data);
 			var view = this;
 			var dfd = $.Deferred();
 			var createDfd = $.Deferred();

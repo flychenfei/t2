@@ -251,7 +251,6 @@
             }
 
             var dataProvider =  view.dataProvider ? view.dataProvider : (view.dataType?brite.dao(view.dataType):null);
-            console.log(view.dataProvider);
             var dfd = view.opts.withDataListening ?
                     dataProvider.list(opts) :
                     view.gridData;
@@ -293,7 +292,7 @@
             var htmlHeader = renderTableHead.call(view);
             $tableContent.find("thead").append(htmlHeader);
 
-            if (view.numOfPages == 0) {
+            if (!view.gridData || view.gridData.length == 0) {
                 htmlContent = renderEmptyTableBody.call(view);
                 $tableContent.find("tbody").append(htmlContent);
             } else {

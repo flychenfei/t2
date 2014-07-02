@@ -1,28 +1,26 @@
 ;
 (function ($) {
 
-    brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:true}, {
+    brite.registerView("GoogleMailsRest",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
-            if(data && data.search) {
-                this.search = data.search;
-            }else{
-                this.search = app.googleApi.getEmails;
-            }
-            return app.render("tmpl-GoogleMails");
+        	this.search = function(opts) {
+				return app.googleApi.searchEmailsRest(opts)
+			};
+            return app.render("tmpl-GoogleMailsRest");
         },
 
         postDisplay: function (data, config) {
             var view = this;
             var $e = view.$el;
             
-            $e.find('.datetimepicker').datetimepicker({ 
-                format: 'yyyy-MM-dd', 
-                language: 'en', 
-                 pickDate: true, 
-                 pickTime: true, 
-                 inputMask: true 
-            });
-            
+			$e.find('.datetimepicker').datetimepicker({
+				format : 'yyyy-MM-dd',
+				language : 'en',
+				pickDate : true,
+				pickTime : true,
+				inputMask : true
+			}); 
+
             showEmails.call(view);
         },
 
@@ -37,28 +35,27 @@
                     result[$(this).attr("name")] = $(this).val();
                   }
                 });
-                $e.find(".search-mails-container .checkbox").each(function(){
-                    if($(this).val() !== ""){
-                      result[$(this).attr("name")] = $(this).prop("checked");
-                    }
-                  });
-                
-                view.search = function(opts) {
-                  opts = opts || [];
-                  $.extend(opts, result)
-                  return app.googleApi.searchEmails(opts)
-                };
+				$e.find(".search-mails-container .checkbox").each(function() {
+					if ($(this).val() !== "") {
+						result[$(this).attr("name")] = $(this).prop("checked");
+					}
+				}); 
+				
+				view.search = function(opts) {
+					opts = opts || [];
+					$.extend(opts, result)
+					return app.googleApi.searchEmailsRest(opts)
+				};
                 
                 showEmails.call(view);
           }
 
         },
         docEvents: {
-            "DELETE_EMAIL": function(event, extra){
+        	"DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
-                    app.googleApi.deleteEmail(extra.objId).done(function(result){
-                        console.log(result);
+                    app.googleApi.deleteEmailRest(extra.objId).done(function(result){
                         setTimeout(function(){
                             showEmails().call(view);
                         }, 3000)
@@ -66,16 +63,11 @@
                     });
                 }
             },
-            "SHOW_INFO": function(event, extra) {
-                var data = {id: extra.objId};
-                console.log(data);
-                brite.display("GoogleMailInfo", "body", data);
-            },
             "REPLAY_EMAIL": function(event, extra) {
-                app.googleApi.getMail(extra.objId).done(function(data){
+                app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
-                        console.log(data);
-                        brite.display("GoogleMailSend", "body",data.result);
+                    	var opt = data.result || {type:'rest'};
+                        brite.display("GoogleMailSend", "body",opt);
                     }
 
                 })
@@ -101,8 +93,7 @@
                 {
                     text: "Date",
                     render: function (obj) {
-                        var recDate = new Date(obj.date);
-                        return recDate.format("yyyy-MM-dd hh:mm:ss")
+                        return obj.date;
                     },
                     attrs: "style='width: 20%'"
 
@@ -122,12 +113,6 @@
                 },{
                     text: "",
                     render: function(){
-                        return "<div class='icon-envelope'/>"
-                    },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
-                },{
-                    text: "",
-                    render: function(){
                         return "<div class='icon-share-alt'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
@@ -135,7 +120,6 @@
             ],
             opts: {
                 htmlIfEmpty: "Not emails found",
-                withPaging: true,
                 cmdDelete: "DELETE_EMAIL"
             }
         });

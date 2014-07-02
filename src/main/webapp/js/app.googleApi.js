@@ -92,6 +92,26 @@ var app = app || {};
             var params = opts||{};
             params.method = "Post";
             return app.getJsonData(contextPath + "/googleCalendar/delete", params);
+        },
+        searchEmailsRest: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/search", params);
+        },
+        deleteEmailRest: function(id) {
+            var params = {id: id};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmailrest/delete", params);
+        },
+        getMailRest: function(id) {
+            var params = {id: id};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/get", params);
+        },
+        sendMailRest: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/send", params);
         }
 	};
 })();

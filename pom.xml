@@ -92,7 +92,16 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- For gmail -->
+    
+    <!-- Google Oauth2 -->
+    <dependency>
+	    <groupId>com.google.api-client</groupId>
+	    <artifactId>google-api-client-jackson2</artifactId>
+	    <version>1.18.0-rc</version>
+	</dependency>
+    <!-- /Google Oauth2 -->
+    
+    <!-- Gmail IMAP -->
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
@@ -108,7 +117,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <artifactId>gimap</artifactId>
         <version>1.5.0</version>
     </dependency>
-    <!-- /For gmail -->
+    <!-- /Gmail IMAP -->
+    
+    <!-- Gmail REST API -->
+    <dependency>
+		<groupId>com.google.apis</groupId>
+		<artifactId>google-api-services-gmail</artifactId>
+		<version>v1-rev2-1.18.0-rc</version>
+	</dependency>
+    <!-- /Gmail REST API -->
     
     
     <!-- Google Canleader -->
@@ -118,15 +135,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <version>v3-rev84-1.18.0-rc</version>
     </dependency>
     
-    <dependency>
-	    <groupId>com.google.api-client</groupId>
-	    <artifactId>google-api-client-jackson2</artifactId>
-	    <version>1.18.0-rc</version>
-	</dependency>
     <!-- /Google Canleader -->
     
     
-    <!-- Google apis -->
+    <!-- /Google apis -->
     
     <!--Facebook api-->
     <dependency>
@@ -209,6 +221,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <version>3.4.0</version>
     </dependency>
     <!-- /javasimon -->
+    
     <!-- metapossum -->
     <dependency>
       <groupId>com.metapossum</groupId>

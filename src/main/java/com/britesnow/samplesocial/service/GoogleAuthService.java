@@ -28,7 +28,7 @@ public class GoogleAuthService implements AuthService {
     private OAuthService oAuthService;
     @Inject
     private OAuthManager oAuthManager;
-
+    
     @Inject
     public GoogleAuthService(OAuthServiceHelper oauthServiceHelper) {
         oAuthService = oauthServiceHelper.getOauthService(ServiceType.Google);
@@ -74,4 +74,6 @@ public class GoogleAuthService implements AuthService {
 
 
     }
+    
+    
 }

@@ -14,8 +14,7 @@
             postDisplay:function (data, config) {
                 var view = this;
                 var $e = view.$el;
-                brite.display("GoogleSearchMails");
-                brite.display("GoogleCalendarEvents");
+                brite.display("GoogleMails");
             },
             events:{
               "btap;.nav li":function(e){
@@ -32,6 +31,8 @@
                   brite.display("GoogleCalendarEvents");
                 }else if(menu == "mails"){
                   brite.display("GoogleMails");
+                }else if(menu == "mails_rest"){
+                  brite.display("GoogleMailsRest");
                 }else if(menu == "groups"){
                   brite.display("GoogleGroups");
                 }else if(menu == "folders"){
