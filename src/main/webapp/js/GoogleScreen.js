@@ -15,7 +15,7 @@
                 var view = this;
                 var $e = view.$el;
                 brite.display("GoogleSearchMails");
-                brite.display("GoogleMails");
+                brite.display("GoogleCalendarEvents");
             },
             events:{
               "btap;.nav li":function(e){
@@ -28,6 +28,8 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "contacts"){
                   brite.display("GoogleContacts");
+                }else if(menu == "calendars"){
+                  brite.display("GoogleCalendarEvents");
                 }else if(menu == "mails"){
                   brite.display("GoogleMails");
                 }else if(menu == "groups"){

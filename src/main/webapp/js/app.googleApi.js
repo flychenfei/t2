@@ -72,6 +72,26 @@ var app = app || {};
             var params = opts||{};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gcontact/search", params);
+        },
+        listCalendarEvents: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendar/list", params);
+        },
+        getCalendarEvent: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendar/get", params);
+        },
+        saveCalendarEvent: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/googleCalendar/save", params);
+        },
+        deleteCalendarEvent: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/googleCalendar/delete", params);
         }
 	};
 })();
