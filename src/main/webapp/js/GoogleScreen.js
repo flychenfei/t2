@@ -47,6 +47,8 @@
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
+                }else if(menu == "docs"){
+                	brite.display("GoogleDocs");
                 }
               }
             },
