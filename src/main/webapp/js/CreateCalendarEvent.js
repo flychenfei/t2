@@ -22,6 +22,15 @@
             postDisplay:function (data, config) {
                 var view = this;
                 var $e = view.$el;
+
+				$e.find('.datetimepicker').datetimepicker({
+					format : 'yyyy-MM-dd',
+					language : 'en',
+					pickDate : true,
+					pickTime : true,
+					inputMask : true
+				});
+
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
             },
@@ -35,14 +44,19 @@
                 var view = this;
                 var $e = this.$el;
                 var mainScreen = view.mainScreen;
+                var $controls = $e.find(".controls input,.controls textarea");
                 data = {};
+                $controls.each(function(idx, obj){
+                	var $this = $(this);
+                	data[$this.attr("name")] = $this.val();
+                	
+                });
                 data.id = view.id;
                 var input = $e.find("textarea[name='summary']");
                 if (input.val() == "") {
                     input.focus();
                     input.closest("div").addClass("error").find("span").html("Please enter summary.");
                 } else {
-                	data.summary = input.val();
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
@@ -51,6 +65,7 @@
                     });
 
                 }
+                
             },
 
             events:{
