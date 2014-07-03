@@ -14,9 +14,16 @@
 			var createDfd = $.Deferred();
 			data = data || {};
 			if (data.id) {
-				app.googleApi.getMail(data.id).done(function(data) {
-					dfd.resolve(data.result);
-				});
+				if(data.type == 'rest'){
+					app.googleApi.getMailRest(data.id).done(function(data) {
+						dfd.resolve(data.result);
+					});
+				}else{
+					app.googleApi.getMail(data.id).done(function(data) {
+						dfd.resolve(data.result);
+					});
+				}
+				
 			} else {
 				dfd.resolve({});
 			}

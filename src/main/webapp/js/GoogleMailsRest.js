@@ -63,6 +63,10 @@
                     });
                 }
             },
+            "SHOW_INFO": function(event, extra) {
+                var data = {id: extra.objId, type:'rest'};
+                brite.display("GoogleMailInfo", "body", data);
+            },
             "REPLAY_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
@@ -86,7 +90,8 @@
                 {
                     text: "Date",
                     render: function (obj) {
-                        return obj.date;
+                        var recDate = new Date(obj.date);
+                        return recDate.format("yyyy-MM-dd hh:mm:ss");
                     },
                     attrs: "style='width: 20%'"
 
@@ -103,6 +108,12 @@
                     render: function (obj) {
                         return obj.subject
                     }
+                },{
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-envelope'/>"
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
                 },{
                     text: "",
                     render: function(){

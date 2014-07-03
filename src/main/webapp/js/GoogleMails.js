@@ -68,7 +68,6 @@
             },
             "SHOW_INFO": function(event, extra) {
                 var data = {id: extra.objId};
-                console.log(data);
                 brite.display("GoogleMailInfo", "body", data);
             },
             "REPLAY_EMAIL": function(event, extra) {

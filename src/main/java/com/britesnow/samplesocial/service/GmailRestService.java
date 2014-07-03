@@ -1,10 +1,14 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -26,7 +30,6 @@ import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
-import com.google.api.services.gmail.model.MessagePartHeader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -159,7 +162,7 @@ public class GmailRestService {
             };
 
             for (Message message : messages) {
-                getGmailClient().users().messages().get("me", message.getId()).queue(batch, callback);
+                getGmailClient().users().messages().get("me", message.getId()).setFormat("raw").queue(batch, callback);
             }
             
             batch.execute();
@@ -179,8 +182,8 @@ public class GmailRestService {
     public MailInfo getEmail(String messageId) throws Exception {
         Message message = null;
         try {
-            message = getGmailClient().users().messages().get("me", messageId).execute();
-            return this.buildMailInfo(message);
+            message = getGmailClient().users().messages().get("me", messageId).setFormat("raw").execute();
+            return buildMailInfo(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,20 +191,25 @@ public class GmailRestService {
     }
 
     public MailInfo buildMailInfo(Message message) {
+        byte[] emailBytes = Base64.decodeBase64(message.getRaw());
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = null;
+        try {
+            email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        
         MailInfo mailInfo = new MailInfo();
-        mailInfo.setContent(message.getSnippet());
-        mailInfo.setId(message.getId());
-        List<MessagePartHeader> headers = message.getPayload().getHeaders();
-        for(MessagePartHeader header :headers){
-            if(header.getName().equals("Date")){
-                mailInfo.setDate(header.getValue());
-            }
-            if(header.getName().equals("Subject")){
-                mailInfo.setSubject(header.getValue());
-            }
-            if(header.getName().equals("From")){
-                mailInfo.setFrom(header.getValue());
-            }
+        try {
+            mailInfo.setContent(getContent(email));
+            mailInfo.setId(message.getId());
+            mailInfo.setDate(email.getSentDate().getTime());
+            mailInfo.setSubject(email.getSubject());
+            mailInfo.setFrom(email.getFrom()[0].toString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     	return mailInfo;
     }
@@ -209,7 +217,9 @@ public class GmailRestService {
     public boolean sendMail(String subject, String content, String to) throws Exception {
         String email = authService.getSocialIdEntity().getEmail();
         Gmail gmail = getGmailClient();
-        Session session = null;
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+
         MimeMessage msg = new MimeMessage(session);
         try {
             msg.setFrom(new InternetAddress(email));
@@ -248,7 +258,32 @@ public class GmailRestService {
         }
     }
     
-
+    private String getContent(javax.mail.Message message) throws Exception {
+        StringBuffer str = new StringBuffer();
+        if (message.isMimeType("text/plain"))
+            str.append(message.getContent().toString());
+        if (message.isMimeType("multipart/alternative")) {
+            Multipart part = (Multipart) message.getContent();
+            str.append(part.getBodyPart(1).getContent().toString());
+        }
+        if (message.isMimeType("multipart/related")) {
+            Multipart part = (Multipart) message.getContent();
+            Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
+            str.append(cpart.getBodyPart(1).getContent().toString());
+        }
+        if (message.isMimeType("multipart/mixed")) {
+            Multipart part = (Multipart) message.getContent();
+            if (part.getBodyPart(0).isMimeType("text/plain")) {
+                str.append(part.getBodyPart(0).getContent());
+            }
+            if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
+                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
+                str.append(multipart.getBodyPart(1).getContent());
+            }
+        }
+        return str.toString();
+    }
+    
     private Gmail getGmailClient(){
         if(gmail == null){
             HttpTransport httpTransport = new NetHttpTransport();
