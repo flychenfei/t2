@@ -9,12 +9,38 @@
 
         postDisplay: function (data, config) {
             var view = this;
+            var $e = view.$el;
+            
+            $e.find('.datetimepicker').datetimepicker({ 
+                format: 'yyyy-MM-dd', 
+                language: 'en', 
+                 pickDate: true, 
+                 pickTime: true, 
+                 inputMask: true 
+            });
+            console.log(data);
             showCalendars.call(view);
         },
 
         events: {
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateCalendarEvent",null,{id:null});
+	        },
+	        "click;.searchCalendar":function(){
+	        	view = this;
+	        	$e = view.$el;
+	        	var result = {};
+	        	$e.find(".search-calendars-container :text").each(function(){
+	        		if($(this).val() != ""){
+	        			result[$(this).attr("name")] = $(this).val();
+	        		}
+	        	});
+	        	view.search = function(opts){
+	        		opts = opts || [];
+	        		$.extend(opts,result);
+	        		return app.googleApi.listCalendarEvents(opts);
+	        	};
+	        	showCalendars.call(view);
 	        }
         },
 
@@ -27,15 +53,18 @@
                 if (extraData && extraData.objId) {
                     app.googleApi.deleteCalendarEvent({id:extraData.objId}).done(function (extradata) {
 						setTimeout((function() {
-							$(document).trigger("DO_REFRESH_CONTACT");
+							$(document).trigger("DO_REFRESH_CALENDAR");
 						}), 3000); 
                     });
                 }
 
             },
             "EDIT_CALENDAR": function(event, extraData){
+            	console.log(extraData);
                 if (extraData && extraData.objId) {
                     app.googleApi.getCalendarEvent({id:extraData.objId}).done(function (data) {
+                    	console.log(2);
+                    	console.log(data);
                         if(data && data.result){
                             brite.display("CreateCalendarEvent", null, data.result);
                         }
@@ -50,7 +79,7 @@
 
     function showCalendars() {
         var view = this;
-        brite.display("DataTable", ".contacts-container", {
+        brite.display("DataTable", ".calendars-container", {
             dataProvider: {list: view.search},
             columnDef: [
                 {
@@ -73,14 +102,14 @@
                     render: function (obj) {
                         return obj.location || "";
                     },
-                    attrs: "style='width: 20%"
+                    attrs: "style='width: 10%'"
                 },
                 {
                     text: "Date",
                     render: function (obj) {
                         return new Date(obj.date.dateTime.value).format("yyyy-MM-dd hh:mm:ss");
                     },
-                    attrs: "style='width: 10%'"
+                    attrs: "style='width: 15%'"
                 },
                 {
                     text: "Status",

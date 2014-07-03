@@ -18,8 +18,8 @@ public class GoogleCalendarHandlers {
 
 
     @WebGet("/googleCalendar/list")
-    public Object listEvents(@WebModel Map m) throws Exception {
-        return WebResponse.success(googleCalendarService.listEvents(0, 20)).set("result_count", 0);
+    public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate) throws Exception {
+        return WebResponse.success(googleCalendarService.listEvents(0, 20,startDate,endDate)).set("result_count", 0);
     }
     
     @WebGet("/googleCalendar/get")
@@ -28,14 +28,11 @@ public class GoogleCalendarHandlers {
     }
     
     @WebPost("/googleCalendar/save")
-    public Object saveEvents(@WebModel Map m, @WebParam("id") String id,  @WebParam("summary") String summary) throws Exception {
+    public Object saveEvents(@WebModel Map m, @WebParam("id") String id,  @WebParam("summary") String summary, 
+                            @WebParam("location") String location,@WebParam("status") String status,@WebParam("startTime") String startTime,
+                            @WebParam("endTime") String endTime) throws Exception {
         
-        if(id == null || "".equals(id)){
-            googleCalendarService.createEvent(summary);
-        }else{
-            googleCalendarService.updateEvent(id, summary);
-        }
-        
+        googleCalendarService.saveEvent(id, summary,location, startTime, endTime);
         return WebResponse.success();
     }
     @WebPost("/googleCalendar/delete")

@@ -1,10 +1,29 @@
 <script id="tmpl-GoogleCalendarEvents" type="text/html">
 <div class="GoogleCalendarEvents">
-  <div>
-        <span class="btn btnAdd"><i class="icon-plus"></i>Add</span>
-      </div>
-  <div class="contacts-container">
-    
-  </div>
+	<div>
+		<span class="btn btnAdd"><i class="icon-plus"></i>Add</span>
+	</div>
+	<div class ="search-calendars-container">
+		<div class="control-group">
+			Start Date
+			<div class="input-append datetimepicker date">
+				<input type="text" name = "startDate">
+				<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			End Date
+			<div class="input-append datetimepicker date">
+				<input type="text" name = "endDate">
+				<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<a href="#" class="btn searchCalendar">Search</a>
+		</div>
+	</div>
+	<div class="calendars-container">
+	
+	</div>
 </div>
 </script>
