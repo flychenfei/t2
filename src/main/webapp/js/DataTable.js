@@ -111,9 +111,14 @@
                     var view = this;
                     if (view.opts.withPaging) {
                         var opts = view.opts.dataOpts;
-                        if (opts.pageIndex > 0) {
-                            opts.pageIndex--;
-                            refreshDataTable.call(view);
+                        if(view.prevPageToken){
+                        	opts.pageIndex = view.prevPageToken;
+	                        refreshDataTable.call(view);
+                        }else{
+                        	if (opts.pageIndex > 0) {
+	                            opts.pageIndex--;
+	                            refreshDataTable.call(view);
+	                        }
                         }
                     }
                 },
@@ -121,9 +126,14 @@
                     var view = this;
                     if (view.opts.withPaging) {
                         var opts = view.opts.dataOpts;
-                        if ((opts.pageIndex + 1 < view.numOfPages)||view.hasNext) {
-                            opts.pageIndex++;
-                            refreshDataTable.call(view);
+                        if(view.nextPageToken){
+                        	opts.pageIndex = view.nextPageToken;
+	                        refreshDataTable.call(view);
+                        }else{
+                        	if ((opts.pageIndex + 1 < view.numOfPages)||view.hasNext) {
+                            	opts.pageIndex++;
+	                            refreshDataTable.call(view);
+	                        }
                         }
                     }
 
@@ -243,7 +253,6 @@
             var view = this;
             var $e = view.$element;
             var opts = view.opts.dataOpts || {};
-            opts.withResultCount = true;
 
             view.defaultState = state || "closed";
             if (eraseTreeStates) {
@@ -273,6 +282,8 @@
                 }
                 !view.numOfPages && (view.numOfPages = 0);
                 view.gridData = data.result;
+                view.prevPageToken = data.prevPageToken;
+                view.nextPageToken = data.nextPageToken;
                 var dataTableHtml = renderDataTable.call(view);
                 var $html = $(dataTableHtml);
                 $e.bEmpty().append($html);
@@ -464,9 +475,17 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            var pagination = new app.Pagination(view.resultCount,null,opts.pageSize);
-            pagination.go(opts.pageIndex+1);
-            return app.render("tmpl-DataTable-Foot",pagination.getPageInfo());
+            console.log(opts);
+            if(opts.withResultCount){
+	            var pagination = new app.Pagination(view.resultCount,null,opts.pageSize);
+	            pagination.go(opts.pageIndex+1);
+	            return app.render("tmpl-DataTable-Foot",pagination.getPageInfo());
+            }else{
+	            return app.render("tmpl-DataTable-Foot-without-pageNum",{
+	            	prevPageToken: view.prevPageToken,
+	            	nextPageToken: view.nextPageToken
+	            });
+            }
         }
 
         function renderEmptyTableBody() {
@@ -528,7 +547,8 @@
                 withPaging:true,
                 dataOpts:{
                     pageIndex:0,
-                    pageSize:10
+                    pageSize:10,
+                    withResultCount:true
                 }
             };
         }

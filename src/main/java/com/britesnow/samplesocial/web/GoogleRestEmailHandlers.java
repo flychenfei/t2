@@ -66,8 +66,6 @@ public class GoogleRestEmailHandlers {
     			category , deliveredTo , rfc822msgid , minSize, maxSize, pageIndex, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
         WebResponse result = WebResponse.success(mailInfos);
-        result.set("result_count", -1);
-        result.set("lastPageToken", pageIndex);
         result.set("nextPageToken", pair.getFirst());
         return result;
     }

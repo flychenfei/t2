@@ -84,13 +84,6 @@
             dataProvider: {list: view.search},
             columnDef: [
                 {
-                    text: "#",
-                    render: function (obj, idx) {
-                        return idx + 1
-                    },
-                    attrs: "data-cmd='SHOW_INFO' style='width: 5%;cursor: pointer'"
-                },
-                {
                     text: "Date",
                     render: function (obj) {
                         return obj.date;
@@ -120,7 +113,10 @@
             ],
             opts: {
                 htmlIfEmpty: "Not emails found",
-                cmdDelete: "DELETE_EMAIL"
+                cmdDelete: "DELETE_EMAIL",
+                dataOpts: {
+                	withResultCount:false
+                }
             }
         });
     }

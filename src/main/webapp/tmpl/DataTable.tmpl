@@ -78,3 +78,16 @@
     </div>
 </script>
 
+<script id="tmpl-DataTable-Foot-without-pageNum" type="text/html">
+    <div class="tfoot">
+          <span class="nums">
+          	{{#if prevPageToken}}
+            <span class="num prev action" data-pageToken="prevPageToken">&lt;&lt; Prev</span>
+          	{{/if}}
+          	{{#if nextPageToken}}
+            <span class="num next action" data-pageToken="nextPageToken">Next &gt;&gt;</span>
+          	{{/if}}
+          </span>
+    </div>
+</script>
+
