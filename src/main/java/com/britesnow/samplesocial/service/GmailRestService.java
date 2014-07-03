@@ -9,9 +9,16 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.batch.BatchRequest;
+import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -25,7 +32,7 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class GmailRestService {
-
+    private static Logger log = LoggerFactory.getLogger(GmailRestService.class);
     @Inject
     GoogleAuthService authService;
     
@@ -133,14 +140,29 @@ public class GmailRestService {
         
         ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).setQ(query.toString()).execute();
         
-        List<MailInfo> mails = new ArrayList();
+        final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
         
         if(messages != null){
+            
+            BatchRequest batch = gmail.batch();
+            JsonBatchCallback<Message> callback = new JsonBatchCallback<Message>() {
+
+                public void onSuccess(Message message, HttpHeaders responseHeaders) {
+                    MailInfo info = buildMailInfo(message);
+                    mails.add(info);
+                }
+
+                public void onFailure(GoogleJsonError e, HttpHeaders responseHeaders) {
+                    log.warn("Error Message: " + e.getMessage());
+                }
+            };
+
             for (Message message : messages) {
-                MailInfo info = buildMailInfo(message.getId());
-                mails.add(info);
+                getGmailClient().users().messages().get("me", message.getId()).queue(batch, callback);
             }
+            
+            batch.execute();
         }
         
         return new Pair<String, List<MailInfo>>(response.getNextPageToken(), mails);
@@ -155,20 +177,20 @@ public class GmailRestService {
      * @throws Exception
      */
     public MailInfo getEmail(String messageId) throws Exception {
-        return this.buildMailInfo(messageId);
-    }
-
-    public MailInfo buildMailInfo(String messageId) {
-        
         Message message = null;
         try {
             message = getGmailClient().users().messages().get("me", messageId).execute();
+            return this.buildMailInfo(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public MailInfo buildMailInfo(Message message) {
         MailInfo mailInfo = new MailInfo();
         mailInfo.setContent(message.getSnippet());
-        mailInfo.setId(messageId);
+        mailInfo.setId(message.getId());
         List<MessagePartHeader> headers = message.getPayload().getHeaders();
         for(MessagePartHeader header :headers){
             if(header.getName().equals("Date")){
