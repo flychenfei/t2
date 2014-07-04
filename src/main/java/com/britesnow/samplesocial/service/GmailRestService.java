@@ -216,18 +216,22 @@ public class GmailRestService {
             }
             
             if(message.getPayload().getParts() != null){
-                for(MessagePart part : message.getPayload().getParts()){
-                    if(part.getMimeType().equalsIgnoreCase("text/html")){
-                        String body = part.getBody().getData();
-                        
-                        body.replaceAll("-", "+");
-                        body.replaceAll("_", "/");
-                        body.replaceAll(",", "=");
-                        
-                        byte[] content = Base64.decodeBase64(body);
-                        mailInfo.setContent(new String(content));
-                        break;
+                if(message.getPayload().getParts().size() == 1){
+                    String body = message.getPayload().getParts().get(0).getBody().getData();
+                    mailInfo.setContent(getContent(body));
+                }else{
+                    for(MessagePart part : message.getPayload().getParts()){
+                        if(part.getMimeType().equalsIgnoreCase("text/html")){
+                            String body = part.getBody().getData();
+                            mailInfo.setContent(getContent(body));
+                            break;
+                        }
                     }
+                }
+            }else{
+                if(message.getPayload().getBody() != null){
+                    String body = message.getPayload().getBody().getData();
+                    mailInfo.setContent(getContent(body));
                 }
             }
             
@@ -309,6 +313,16 @@ public class GmailRestService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private String getContent(String body){
+        
+        body.replaceAll("-", "+");
+        body.replaceAll("_", "/");
+        body.replaceAll(",", "=");
+        
+        byte[] content = Base64.decodeBase64(body);
+        return new String(content);
     }
     
     private Gmail getGmailClient(){
