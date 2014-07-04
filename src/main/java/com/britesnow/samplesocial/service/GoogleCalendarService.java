@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -18,7 +19,9 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.Event.Reminders;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -28,14 +31,15 @@ public class GoogleCalendarService {
     @Inject
     GoogleAuthService authService;
     
-    public List<Map> listEvents(int pageIndex, int pageSize,String startDate, String endDate){
+    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
         try {
-            list = getCalendarService().events().list("primary").setMaxResults(pageSize);
+            list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        
         if(startDate != null){
             DateTime minTime = null;
             Date min = null;
@@ -47,6 +51,7 @@ public class GoogleCalendarService {
             minTime = new DateTime(min.getTime());
             list = list.setTimeMin(minTime);
         }
+        
         if(endDate != null){
             Date max = null;
             try {
@@ -58,6 +63,11 @@ public class GoogleCalendarService {
             list = list.setTimeMax(maxTime);
         }
         
+        if(pageIndex != null && !pageIndex.equals("") && !pageIndex.equals("0")){
+            list.setPageToken(pageIndex);
+        }
+        
+        String pageToken = null;
         try {
             Events events = list.execute();
             List<Event> items = events.getItems();
@@ -71,8 +81,8 @@ public class GoogleCalendarService {
                 eventMap.put("status", event.getStatus());
                 eventList.add(eventMap);
             }
-            
-            return eventList;
+            pageToken = events.getNextPageToken();
+           return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,7 +111,7 @@ public class GoogleCalendarService {
         return null;
     }
     
-    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime){
+    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min){
         try {
             boolean create = false;
             Event event = null;
@@ -143,6 +153,19 @@ public class GoogleCalendarService {
                 event.setEnd(new EventDateTime().setDateTime(etime));
             }else{
                 event.setEnd(new EventDateTime().setDateTime(new DateTime(new Date(), TimeZone.getTimeZone("UTC"))));
+            }
+            if (min != null && min > 0){
+                EventReminder eventReminder = new EventReminder();
+                eventReminder.setMethod("email");
+                eventReminder.setMinutes(min);
+                List<EventReminder> eventReminders = new ArrayList();
+                eventReminders.add(eventReminder);
+                
+                Reminders reminders = new Reminders();
+                reminders.setOverrides(eventReminders);
+                reminders.setUseDefault(false);
+                
+                event.setReminders(reminders);
             }
             
             if(create){

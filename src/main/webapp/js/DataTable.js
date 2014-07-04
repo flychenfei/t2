@@ -475,7 +475,6 @@
         function renderPagingFooter() {
             var view = this;
             var opts = view.opts.dataOpts || {};
-            console.log(opts);
             if(opts.withResultCount){
 	            var pagination = new app.Pagination(view.resultCount,null,opts.pageSize);
 	            pagination.go(opts.pageIndex+1);
