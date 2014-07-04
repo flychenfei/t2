@@ -36,9 +36,9 @@ public class GoogleCalendarHandlers {
     @WebPost("/googleCalendar/save")
     public Object saveEvents(@WebModel Map m, @WebParam("id") String id,  @WebParam("summary") String summary, 
                             @WebParam("location") String location,@WebParam("status") String status,@WebParam("startTime") String startTime,
-                            @WebParam("endTime") String endTime) throws Exception {
+                            @WebParam("endTime") String endTime,@WebParam("reminder-time") Integer min) throws Exception {
         
-        googleCalendarService.saveEvent(id, summary,location, startTime, endTime);
+        googleCalendarService.saveEvent(id, summary,location, startTime, endTime,min);
         return WebResponse.success();
     }
     @WebPost("/googleCalendar/delete")

@@ -19,7 +19,9 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.Event.Reminders;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -109,7 +111,7 @@ public class GoogleCalendarService {
         return null;
     }
     
-    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime){
+    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min){
         try {
             boolean create = false;
             Event event = null;
@@ -151,6 +153,19 @@ public class GoogleCalendarService {
                 event.setEnd(new EventDateTime().setDateTime(etime));
             }else{
                 event.setEnd(new EventDateTime().setDateTime(new DateTime(new Date(), TimeZone.getTimeZone("UTC"))));
+            }
+            if (min != null && min > 0){
+                EventReminder eventReminder = new EventReminder();
+                eventReminder.setMethod("email");
+                eventReminder.setMinutes(min);
+                List<EventReminder> eventReminders = new ArrayList();
+                eventReminders.add(eventReminder);
+                
+                Reminders reminders = new Reminders();
+                reminders.setOverrides(eventReminders);
+                reminders.setUseDefault(false);
+                
+                event.setReminders(reminders);
             }
             
             if(create){

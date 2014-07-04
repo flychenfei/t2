@@ -31,6 +31,15 @@
                         <textarea rows="5" style="width:280px" name="summary" placeholder="summary hear">{{#if summary}}{{summary}}{{/if}}</textarea>
                     </div>
                 </div>
+                <div class="control-group ">
+                    <label class="control-label">Reminders:</label>
+                    <div class="controls">
+                        <select class = "reminder-method" title="reminder-type">
+                        	<option>email</option>
+                        </select>
+                        <input type ="text" class = "reminder-time" name = "reminder-time" value="10" /> min
+                    </div>
+                </div>
                 <div class="form-actions">
                     <a href="#" class="btn btn-primary CreateCalendarEventBtn">{{#if id}}Update{{else}}Create{{/if}}</a>
                     <a href="#" class="btn cancelBtn">Close</a>
