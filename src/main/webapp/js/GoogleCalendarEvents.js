@@ -18,7 +18,6 @@
                  pickTime: true, 
                  inputMask: true 
             });
-            console.log(data);
             showCalendars.call(view);
         },
 
@@ -60,11 +59,8 @@
 
             },
             "EDIT_CALENDAR": function(event, extraData){
-            	console.log(extraData);
                 if (extraData && extraData.objId) {
                     app.googleApi.getCalendarEvent({id:extraData.objId}).done(function (data) {
-                    	console.log(2);
-                    	console.log(data);
                         if(data && data.result){
                             brite.display("CreateCalendarEvent", null, data.result);
                         }

@@ -32,7 +32,7 @@ public class GoogleCalendarService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
         try {
-            list = getCalendarService().events().list("primary").setMaxResults(pageSize);
+            list = getCalendarService().events().list("primary").setMaxResults(30).setOrderBy("startTime").setSingleEvents(true);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
