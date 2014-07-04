@@ -16,6 +16,12 @@ var app = app || {};
             param.withResultCoun = param.withResultCoun || true;
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDocsList/search", param);
+        },
+        deleteDoc: function(param){
+        	param = param || {};
+        	param.forever = param.forever || false;
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDocsList/deleteDoc", param);
         }
 	};
 })();

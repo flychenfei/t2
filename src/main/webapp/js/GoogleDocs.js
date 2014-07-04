@@ -40,7 +40,17 @@
                  showDocs.call(view);
              },
             "DELETE_DOC": function(event, extraData){
-                alert("NOT implement yet");
+            	var parma = {};
+            	parma.resourceId = $(extraData.event.currentTarget).closest("tr").attr("data-resourceId");
+            	parma.etag = $(extraData.event.currentTarget).closest("tr").attr("data-etag");
+                app.googleDocsApi.deleteDoc(parma).done(function (success) {
+                    if(success){
+                    	alert("Delete success");
+                    }else{
+                    	alert("Delete fail");
+                    }
+                    brite.display("GoogleDocs",".GoogleScreen-content");
+                });
             }
         },
 
@@ -51,6 +61,9 @@
     	var view = this;
         return brite.display("DataTable", ".docs-container", {
         	dataProvider: {list: view.results},
+        	rowAttrs: function (obj) {
+                return " data-resourceId='{0}' data-etag='{1}'".format(obj.resourceId,obj.etag)
+            },
             columnDef:[
                 {
                     text:"#",
@@ -64,9 +77,9 @@
 
                 },
                 {
-                    text:"LastUpdateTime",
+                    text:"Last UpdateTime",
                     attrs: "style='width:30%'",
-                    render:function(obj){return obj.createTime}
+                    render:function(obj){return obj.updateTime}
 
                 },
                 {
