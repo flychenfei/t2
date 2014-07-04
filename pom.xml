@@ -105,18 +105,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.2</version>
     </dependency>
     <dependency>
-        <groupId>javax.mail</groupId>
-        <artifactId>mail</artifactId>
-        <version>1.4.7</version>
-    </dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<version>1.5.0-b01</version>
+	</dependency>
     <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>gimap</artifactId>
-        <version>1.5.0</version>
-    </dependency>
+		<groupId>com.sun.mail</groupId>
+		<artifactId>gimap</artifactId>
+		<version>1.5.2</version>
+	</dependency>
     <!-- /Gmail IMAP -->
     
     <!-- Gmail REST API -->
@@ -144,7 +144,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <dependency>
       <groupId>com.restfb</groupId>
       <artifactId>restfb</artifactId>
-      <version>1.6.12</version>
+      <version>1.6.14</version>
     </dependency>
     <!--/Facebook api-->
     
@@ -198,10 +198,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     
     <!-- Logging -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>
-    </dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.7.7</version>
+	</dependency>
     <!-- /Logging -->
 
     <!-- Generic Type Workaround -->
@@ -216,10 +216,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
     <!-- javasimon -->
     <dependency>
-      <groupId>org.javasimon</groupId>
-      <artifactId>javasimon-core</artifactId>
-      <version>3.4.0</version>
-    </dependency>
+		<groupId>org.javasimon</groupId>
+		<artifactId>javasimon-core</artifactId>
+		<version>3.5.1</version>
+	</dependency>
     <!-- /javasimon -->
     
     <!-- metapossum -->
