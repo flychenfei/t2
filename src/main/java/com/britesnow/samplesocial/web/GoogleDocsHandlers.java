@@ -22,4 +22,12 @@ public class GoogleDocsHandlers {
     	return WebResponse.success(results).set("result_count", results.size());
     }
     
+    @WebGet("/googleDocsList/search")
+    public Object deleteFile(@WebModel Map m, @WebParam("title") String title, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) throws Exception {
+    	List<Map> results = googleDocListService.searchFile(title,pageIndex,pageSize);
+    	if(results == null)
+    		return WebResponse.fail();
+    	else
+    		return WebResponse.success(results).set("result_count", results.size());
+    }
 }

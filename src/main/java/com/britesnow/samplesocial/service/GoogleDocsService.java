@@ -36,9 +36,13 @@ public class GoogleDocsService {
         	Map<String,String> item = null;
 			for (DocumentListEntry entry : feed.getEntries()) {
 				item = new HashMap<String,String>();
+				item.put("docId", entry.getDocId());
 				item.put("name", entry.getTitle().getPlainText());
-				item.put("createTime", entry.getUpdated().toString());
+				item.put("updateTime", entry.getUpdated().toString());
 				item.put("type", entry.getType());
+				item.put("selflink", entry.getSelfLink().getHref());
+				item.put("resouseId", entry.getResourceId());
+				item.put("etag", entry.getEtag());
 				results.add(item);
 			}
 		} catch (IOException e) {
@@ -47,7 +51,40 @@ public class GoogleDocsService {
 			e.printStackTrace();
 		}
         return results;
-    }   
+    }
+    
+    public List<Map> searchFile(String title,Integer pageIndex, Integer pageSize){
+    	List<Map> results = null;
+    	try {
+    		URL feedUrl = new URL(BASE_DOCS_URL);
+    		DocsService docsService = getDocsService();
+        	DocumentQuery query = new DocumentQuery(feedUrl);
+        	query.setStartIndex(pageIndex+1);
+        	query.setMaxResults(pageSize);
+        	query.setTitleQuery(title);
+        	query.setTitleExact(true);
+			DocumentListFeed feed = docsService.query(query, DocumentListFeed.class);
+			results = new ArrayList<Map>();
+        	Map<String,String> item = null;
+        	for (DocumentListEntry entry : feed.getEntries()) {
+				item = new HashMap<String,String>();
+				item.put("docId", entry.getDocId());
+				item.put("name", entry.getTitle().getPlainText());
+				item.put("createTime", entry.getUpdated().toString());
+				item.put("type", entry.getType());
+				item.put("selflink", entry.getSelfLink().getHref());
+				item.put("resouseId", entry.getResourceId());
+				item.put("etag", entry.getEtag());
+				results.add(item);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+        return results;
+    }
+    
     
     private DocsService getDocsService() {
     	DocsService docsService = new DocsService("MyDocumentsListIntegration-v1");

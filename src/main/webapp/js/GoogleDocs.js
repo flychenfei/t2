@@ -1,26 +1,43 @@
 ;
 (function ($) {
-
     brite.registerView("GoogleDocs",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
+        	 if(data && data.results) {
+                 this.results = data.results;
+             }else{
+                 this.results = app.googleDocsApi.getDocsList;
+             }
             return app.render("tmpl-GoogleDocs");
         },
 
         postDisplay: function (data, config) {
             var view = this;
-            showGroups.call(view);
+            showDocs.call(view);
         },
 
         events: {
-          "click;.btnAdd":function(e){
-             brite.display("CreateDoc",null,null);
+          "click;.btnSearch":function(e){
+        	  brite.display("InputValue", ".MainScreen", {
+                  title: 'Search Doc',
+                  fields: [
+                      {label:"FileName", name:'title', mandatory:true}
+                  ],
+                  callback: function (params) {
+                      brite.display("GoogleDocs",".GoogleScreen-content",{
+                    	  results: function(opts){
+                             opts = opts||[];
+                              $.extend(opts, params)
+                             return app.googleDocsApi.searchDocs(opts)
+                         }
+                      });
+                  }});
           }
         },
 
         docEvents: {
             "DO_REFRESH_DOCS":function(){
                  var view = this;
-                 showGroups.call(view);
+                 showDocs.call(view);
              },
             "DELETE_DOC": function(event, extraData){
                 alert("NOT implement yet");
@@ -30,10 +47,10 @@
         daoEvents: {
         }
     });
-    function showGroups() {
-        var groups = app.googleApi.getGroups();
+    function showDocs() {
+    	var view = this;
         return brite.display("DataTable", ".docs-container", {
-        	dataProvider: {list: app.googleDocsApi.getDocsList},
+        	dataProvider: {list: view.results},
             columnDef:[
                 {
                     text:"#",
@@ -41,18 +58,20 @@
                     attrs:"style='width: 10%'"
                 },
                 {
-                    text:"Name",
-                    attrs: " data-cmd='DO_REFRESH_CONTACT' style='cursor:pointer;width:40%' ",
+                    text:"FileName",
+                    attrs: "style='width:30%'",
                     render:function(obj){return obj.name}
 
                 },
                 {
-                    text:"CreateTime",
+                    text:"LastUpdateTime",
+                    attrs: "style='width:30%'",
                     render:function(obj){return obj.createTime}
 
                 },
                 {
                     text:"Type",
+                    attrs: "style='width:20%'",
                     render:function(obj){return obj.type}
 
                 }
