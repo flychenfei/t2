@@ -99,25 +99,25 @@
                 {
                     text: "From",
                     render: function (obj) {
-                        return obj.from
+                        return obj.from;
                     },
                     attrs: "style='width: 25%'"
                 },
                 {
                     text: "Subject",
                     render: function (obj) {
-                        return obj.subject
+                        return obj.subject;
                     }
                 },{
                     text: "",
                     render: function(){
-                        return "<div class='icon-envelope'/>"
+                        return "<div class='icon-envelope'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
                 },{
                     text: "",
                     render: function(){
-                        return "<div class='icon-share-alt'/>"
+                        return "<div class='icon-share-alt'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
                 }

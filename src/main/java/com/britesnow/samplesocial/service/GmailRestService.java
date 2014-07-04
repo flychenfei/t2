@@ -1,14 +1,15 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -30,6 +31,8 @@ import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
+import com.google.api.services.gmail.model.MessagePart;
+import com.google.api.services.gmail.model.MessagePartHeader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -162,7 +165,7 @@ public class GmailRestService {
             };
 
             for (Message message : messages) {
-                getGmailClient().users().messages().get("me", message.getId()).setFormat("raw").queue(batch, callback);
+                getGmailClient().users().messages().get("me", message.getId()).queue(batch, callback);
             }
             
             batch.execute();
@@ -182,7 +185,7 @@ public class GmailRestService {
     public MailInfo getEmail(String messageId) throws Exception {
         Message message = null;
         try {
-            message = getGmailClient().users().messages().get("me", messageId).setFormat("raw").execute();
+            message = getGmailClient().users().messages().get("me", messageId).execute();
             return buildMailInfo(message);
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,26 +194,51 @@ public class GmailRestService {
     }
 
     public MailInfo buildMailInfo(Message message) {
-        byte[] emailBytes = Base64.decodeBase64(message.getRaw());
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
-        MimeMessage email = null;
-        try {
-            email = new MimeMessage(session, new ByteArrayInputStream(emailBytes));
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
         
         MailInfo mailInfo = new MailInfo();
-        try {
-            mailInfo.setContent(getContent(email));
-            mailInfo.setId(message.getId());
-            mailInfo.setDate(email.getSentDate().getTime());
-            mailInfo.setSubject(email.getSubject());
-            mailInfo.setFrom(email.getFrom()[0].toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
+        
+        mailInfo.setId(message.getId());
+        
+        if(message.getPayload() != null){
+            
+            if(message.getPayload().getHeaders() != null){
+                for(MessagePartHeader header : message.getPayload().getHeaders()){
+                    if(header.getName().equals("Subject")){
+                        mailInfo.setSubject(header.getValue());
+                    }
+                    if(header.getName().equals("From")){
+                        mailInfo.setFrom(header.getValue());
+                    }
+                    if(header.getName().equals("Date")){
+                        try {
+                            mailInfo.setDate(df.parse(String.valueOf(header.getValue())).getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            
+            if(message.getPayload().getParts() != null){
+                for(MessagePart part : message.getPayload().getParts()){
+                    if(part.getMimeType().equalsIgnoreCase("text/html")){
+                        String body = part.getBody().getData();
+                        
+                        body.replaceAll("-", "+");
+                        body.replaceAll("_", "/");
+                        body.replaceAll(",", "=");
+                        
+                        byte[] content = Base64.decodeBase64(body);
+                        mailInfo.setContent(new String(content));
+                        break;
+                    }
+                }
+            }
+            
         }
+        
+        
     	return mailInfo;
     }
     
@@ -256,32 +284,6 @@ public class GmailRestService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
-    private String getContent(javax.mail.Message message) throws Exception {
-        StringBuffer str = new StringBuffer();
-        if (message.isMimeType("text/plain"))
-            str.append(message.getContent().toString());
-        if (message.isMimeType("multipart/alternative")) {
-            Multipart part = (Multipart) message.getContent();
-            str.append(part.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/related")) {
-            Multipart part = (Multipart) message.getContent();
-            Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
-            str.append(cpart.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/mixed")) {
-            Multipart part = (Multipart) message.getContent();
-            if (part.getBodyPart(0).isMimeType("text/plain")) {
-                str.append(part.getBodyPart(0).getContent());
-            }
-            if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
-                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
-                str.append(multipart.getBodyPart(1).getContent());
-            }
-        }
-        return str.toString();
     }
     
     private Gmail getGmailClient(){
