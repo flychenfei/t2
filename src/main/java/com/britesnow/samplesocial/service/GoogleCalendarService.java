@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -28,14 +29,15 @@ public class GoogleCalendarService {
     @Inject
     GoogleAuthService authService;
     
-    public List<Map> listEvents(int pageIndex, int pageSize,String startDate, String endDate){
+    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
         try {
-            list = getCalendarService().events().list("primary").setMaxResults(30).setOrderBy("startTime").setSingleEvents(true);
+            list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        
         if(startDate != null){
             DateTime minTime = null;
             Date min = null;
@@ -47,6 +49,7 @@ public class GoogleCalendarService {
             minTime = new DateTime(min.getTime());
             list = list.setTimeMin(minTime);
         }
+        
         if(endDate != null){
             Date max = null;
             try {
@@ -58,6 +61,11 @@ public class GoogleCalendarService {
             list = list.setTimeMax(maxTime);
         }
         
+        if(pageIndex != null && !pageIndex.equals("") && !pageIndex.equals("0")){
+            list.setPageToken(pageIndex);
+        }
+        
+        String pageToken = null;
         try {
             Events events = list.execute();
             List<Event> items = events.getItems();
@@ -71,8 +79,8 @@ public class GoogleCalendarService {
                 eventMap.put("status", event.getStatus());
                 eventList.add(eventMap);
             }
-            
-            return eventList;
+            pageToken = events.getNextPageToken();
+           return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
             e.printStackTrace();
         }

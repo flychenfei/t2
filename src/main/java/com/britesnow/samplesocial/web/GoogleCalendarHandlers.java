@@ -1,9 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.britesnow.samplesocial.service.GoogleCalendarService;
+import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
@@ -18,8 +20,12 @@ public class GoogleCalendarHandlers {
 
 
     @WebGet("/googleCalendar/list")
-    public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate) throws Exception {
-        return WebResponse.success(googleCalendarService.listEvents(0, 20,startDate,endDate)).set("result_count", 0);
+    public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") String pageIndex) throws Exception {
+        Pair<String, List<Map>> pair = googleCalendarService.listEvents(pageIndex, pageSize, startDate, endDate);
+        List<Map> map = pair.getSecond();
+        WebResponse result = WebResponse.success(map);
+        result.set("nextPageToken", pair.getFirst());
+        return result;
     }
     
     @WebGet("/googleCalendar/get")

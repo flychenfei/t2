@@ -79,13 +79,6 @@
             dataProvider: {list: view.search},
             columnDef: [
                 {
-                    text: "#",
-                    render: function (obj, idx) {
-                        return idx + 1;
-                    },
-                    attrs: "style='width: 10%'"
-                },
-                {
                     text: "Summary",
                     render: function (obj) {
                         return obj.summary;
@@ -103,7 +96,10 @@
                 {
                     text: "Date",
                     render: function (obj) {
-                        return new Date(obj.date.dateTime.value).format("yyyy-MM-dd hh:mm:ss");
+                    	if(obj.date){
+	                        return new Date(obj.date.dateTime.value).format("yyyy-MM-dd hh:mm:ss");
+                    	}
+                    	return "";
                     },
                     attrs: "style='width: 15%'"
                 },
@@ -117,9 +113,12 @@
             ],
             opts: {
                 htmlIfEmpty: "Not calendar found",
-                withPaging: false,
+                withPaging: true,
                 cmdDelete: "DELETE_CALENDAR",
-                cmdEdit: "EDIT_CALENDAR"
+                cmdEdit: "EDIT_CALENDAR",
+                dataOpts:{
+                	withResultCount:false
+                }
             }
         });
     }
