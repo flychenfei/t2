@@ -15,11 +15,28 @@ import com.google.inject.Singleton;
 public class GoogleDocsHandlers {
     @Inject
     private GoogleDocsService googleDocListService;
-    
+
+
     @WebGet("/googleDocsList/listDocs")
     public Object listFiles(@WebModel Map m, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) throws Exception {
         List<Map> results = googleDocListService.listFiles(pageIndex, pageSize); 
     	return WebResponse.success(results).set("result_count", results.size());
     }
     
+    @WebGet("/googleDocsList/deleteDoc")
+    public Object deleteFile(@WebModel Map m, @WebParam("resourceId") String resourceId, @WebParam("etag") String etag, @WebParam("forever") Boolean forever) throws Exception {
+        if(googleDocListService.deleteFile(resourceId, etag, forever))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    @WebGet("/googleDocsList/search")
+    public Object searchFile(@WebModel Map m, @WebParam("title") String title, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) throws Exception {
+    	List<Map> results = googleDocListService.searchFile(title,pageIndex,pageSize);
+    	if(results == null)
+    		return WebResponse.fail();
+    	else
+    		return WebResponse.success(results).set("result_count", results.size());
+    }
 }
