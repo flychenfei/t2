@@ -12,9 +12,22 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+            	data = data || {};
                 if(data) {
                     this.id = data.id;
                 }
+                
+                if(data.startTime){
+                	var date = new Date(data.startTime);
+                	data.startDate = date.format("yyyy-MM-dd");
+                	this.startDate = date;
+                }
+                if(data.endTime){
+                	var date = new Date(data.endTime);
+                	data.endDate = date.format("yyyy-MM-dd");
+                	this.endDate = date;
+                }
+                
                 var html = app.render("tmpl-CreateCalendarEvent",data||{});
                 var $e = $(html);
                 return $e;
@@ -30,6 +43,43 @@
 					pickTime : true,
 					inputMask : true
 				});
+				
+				$e.find(".hour").each(function(){
+					var $hour = $(this);
+					for (var i = 0; i <= 23; i++) {
+						var value = i < 10 ? "0" + i : i;
+						var selected = "";
+						if($hour.hasClass("startHour")){
+							if(view.startDate && view.startDate.getHours() == i){
+								selected = "selected";
+							}
+						}else{
+							if(view.endDate && view.endDate.getHours() == i){
+								selected = "selected";
+							}
+						}
+						$hour.append("<option value='" + value + "' "+selected+">" + value + "</option>");
+					}
+				});
+				
+				$e.find(".min").each(function(){
+					var $min = $(this);
+					for (var i = 0; i <= 59; i++) {
+						var value = i < 10 ? "0" + i : i;
+						var selected = "";
+						if($min.hasClass("startMin")){
+							if(view.startDate && view.startDate.getMinutes() == i){
+								selected = "selected";
+							}
+						}else{
+							if(view.endDate && view.endDate.getMinutes() == i){
+								selected = "selected";
+							}
+						}
+						$min.append("<option value='" + value + "' "+selected+">" + value + "</option>");
+					}
+				});
+				
 
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
@@ -44,14 +94,21 @@
                 var view = this;
                 var $e = this.$el;
                 var mainScreen = view.mainScreen;
-                var $controls = $e.find(".controls input,.controls textarea");
                 data = {};
-                $controls.each(function(idx, obj){
-                	var $this = $(this);
-                	data[$this.attr("name")] = $this.val();
-                	
-                });
                 data.id = view.id;
+                data.location=$e.find(".controls input[name='location'] ").val();
+                data.summary=$e.find(".controls textarea[name='summary'] ").val();
+                data.reminders=$e.find(".reminders").val();
+                
+                var dateVal = $e.find("input[name='startTime']").val();
+                var startHour = $e.find(".startHour").val();
+                var startMin =$e.find(".startMin").val();
+               	data.startTime = dateVal+" "+startHour+":"+ startMin+ ":00";
+               	
+                var endDateVal = $e.find("input[name='endTime']").val();
+                var endHour = $e.find(".endHour").val();
+                var endMin =$e.find(".endMin").val();
+               	data.endTime = endDateVal+" "+endHour+":"+ endMin+ ":00";
                 var input = $e.find("textarea[name='summary']");
                 if (input.val() == "") {
                     input.focus();
