@@ -137,6 +137,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     
     <!-- /Google Canleader -->
     
+    <!-- Google Drive -->
+	<dependency>
+		<groupId>com.google.apis</groupId>
+		<artifactId>google-api-services-drive</artifactId>
+		<version>v2-rev130-1.18.0-rc</version>
+	</dependency>
+    <!-- /Google Drive -->
     
     <!-- /Google apis -->
     

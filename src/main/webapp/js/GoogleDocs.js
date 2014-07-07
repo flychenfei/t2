@@ -15,43 +15,12 @@
             showDocs.call(view);
         },
 
-        events: {
-          "click;.btnSearch":function(e){
-        	  brite.display("InputValue", ".MainScreen", {
-                  title: 'Search Doc',
-                  fields: [
-                      {label:"FileName", name:'title', mandatory:true}
-                  ],
-                  callback: function (params) {
-                      brite.display("GoogleDocs",".GoogleScreen-content",{
-                    	  results: function(opts){
-                             opts = opts||[];
-                              $.extend(opts, params)
-                             return app.googleDocsApi.searchDocs(opts)
-                         }
-                      });
-                  }});
-          }
-        },
-
         docEvents: {
             "DO_REFRESH_DOCS":function(){
                  var view = this;
                  showDocs.call(view);
              },
-            "DELETE_DOC": function(event, extraData){
-            	var parma = {};
-            	parma.resourceId = $(extraData.event.currentTarget).closest("tr").attr("data-resourceId");
-            	parma.etag = $(extraData.event.currentTarget).closest("tr").attr("data-etag");
-                app.googleDocsApi.deleteDoc(parma).done(function (success) {
-                    if(success){
-                    	alert("Delete success");
-                    }else{
-                    	alert("Delete fail");
-                    }
-                    brite.display("GoogleDocs",".GoogleScreen-content");
-                });
-            }
+            "DELETE_DOC": function(event, extraData){alert("not implement");}
         },
 
         daoEvents: {
@@ -62,37 +31,58 @@
         return brite.display("DataTable", ".docs-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-resourceId='{0}' data-etag='{1}'".format(obj.resourceId,obj.etag)
+                return " data-fileId='{0}'".format(obj.fileId)
             },
             columnDef:[
                 {
                     text:"#",
-                    render: function(obj, idx){return idx + 1},
-                    attrs:"style='width: 10%'"
+                    render: function(obj, idx){ return idx + 1},
+                    attrs:"style='width: 5%'"
                 },
                 {
                     text:"FileName",
-                    attrs: "style='width:30%'",
-                    render:function(obj){return obj.name}
+                    attrs: "style='width:15%'",
+                    render:function(obj){return obj.fileName}
 
                 },
                 {
-                    text:"Last UpdateTime",
-                    attrs: "style='width:30%'",
+                    text:"CreateTime",
+                    attrs: "style='width:15%'",
+                    render:function(obj){return obj.createTime}
+
+                },
+                {
+                    text:"UpdateTime",
+                    attrs: "style='width:15%'",
                     render:function(obj){return obj.updateTime}
 
                 },
                 {
-                    text:"Type",
+                    text:"FileType",
                     attrs: "style='width:20%'",
-                    render:function(obj){return obj.type}
+                    render:function(obj){return obj.fileType}
+
+                },
+                {
+                    text:"FileSize(bytes)",
+                    attrs: "style='width:10%'",
+                    render:function(obj){return obj.fileSize}
+
+                },
+                {
+                    text:"Owner",
+                    attrs: "style='width:10%'",
+                    render:function(obj){return obj.owner}
 
                 }
             ],
             opts:{
                 htmlIfEmpty: "Not Docs found",
                 withPaging: true,
-                cmdDelete: "DELETE_DOC"
+                cmdDelete: "DELETE_DOC",
+            	dataOpts: {
+                	withResultCount:false
+                }
             }
         });
     }
