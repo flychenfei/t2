@@ -1,19 +1,20 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gdata.client.DocumentQuery;
-import com.google.gdata.client.docs.DocsService;
-import com.google.gdata.data.docs.DocumentListEntry;
-import com.google.gdata.data.docs.DocumentListFeed;
-import com.google.gdata.util.ServiceException;
+import com.britesnow.snow.util.Pair;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -23,91 +24,120 @@ public class GoogleDocsService {
     @Inject
     private GoogleAuthService authService;
     
-    private final String BASE_DOCS_URL = "https://docs.google.com/feeds/default/private/full?v=3";
     
-    public List<Map> searchFile(String title,Integer pageIndex, Integer pageSize){
-    	List<Map> results = null;
-    	try {
-    		URL feedUrl = new URL(BASE_DOCS_URL);
-    		DocsService docsService = getDocsService();
-        	DocumentQuery query = new DocumentQuery(feedUrl);
-        	query.setStartIndex(pageIndex+1);
-        	query.setMaxResults(pageSize);
-        	query.setTitleQuery(title);
-        	query.setTitleExact(true);
-			DocumentListFeed feed = docsService.query(query, DocumentListFeed.class);
-			results = new ArrayList<Map>();
-        	Map<String,String> item = null;
-        	for (DocumentListEntry entry : feed.getEntries()) {
-				item = new HashMap<String,String>();
-				item.put("docId", entry.getDocId());
-				item.put("name", entry.getTitle().getPlainText());
-				item.put("createTime", entry.getUpdated().toString());
-				item.put("type", entry.getType());
-				item.put("selflink", entry.getSelfLink().getHref());
-				item.put("resourceId", entry.getResourceId());
-				item.put("etag", entry.getEtag());
+    public Pair<String, List<Map>> searchFile(String title,String nextPagetoken, Integer pageSize){
+    	List<Map> results = new ArrayList<Map>();
+    	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
+    		return new Pair<String, List<Map>>("lastPage", results);
+    	Map<String,String> item = null;
+    	Files.List request = null;
+    	FileList filelist = null;
+    	StringBuilder query = new StringBuilder();
+        try {
+        	request = getDriverService().files().list();
+			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
+				request.setPageToken(nextPagetoken);
+			request.setMaxResults(pageSize);
+			query.append("trashed = false");
+			if(title != null && !title.equals("")){
+				query.append("and title = '").append(title).append("'");
+				request.setQ(query.toString());
+			}else{
+				return new Pair<String, List<Map>>("lastPage", results);
+			}
+        	filelist = request.execute();
+			List<File> files = filelist.getItems();
+			for(File file : files){
+				System.out.println(file);
+				item = new HashMap<String, String>();
+				item.put("fileId", file.getId());
+				item.put("fileName", file.getTitle());
+				item.put("createTime", file.getCreatedDate().toString());
+				item.put("updateTime", file.getModifiedDate().toString());
+				item.put("fileType", file.getMimeType());
+				if(file.getFileSize() != null){
+					item.put("fileSize", String.valueOf(file.getFileSize()));
+				}else{
+					item.put("fileSize", "NO Size");
+				}
+				item.put("owner", file.getOwnerNames().get(0));
+				item.put("etag", file.getEtag());
 				results.add(item);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ServiceException e) {
-			e.printStackTrace();
 		}
-        return results;
+        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
     }
     
-    public List<Map> listFiles(Integer pageIndex, Integer pageSize){
-    	List<Map> results = null;
-    	try {
-    		URL feedUrl = new URL(BASE_DOCS_URL);
-    		DocsService docsService = getDocsService();
-        	DocumentQuery query = new DocumentQuery(feedUrl);
-        	query.setStartIndex(pageIndex+1);
-        	query.setMaxResults(pageSize);
-        	DocumentListFeed feed = docsService.query(query, DocumentListFeed.class);
-        	results = new ArrayList<Map>();
-        	Map<String,String> item = null;
-			for (DocumentListEntry entry : feed.getEntries()) {
-				item = new HashMap<String,String>();
-				item.put("docId", entry.getDocId());
-				item.put("name", entry.getTitle().getPlainText());
-				item.put("updateTime", entry.getUpdated().toString());
-				item.put("type", entry.getType());
-				item.put("selflink", entry.getSelfLink().getHref());
-				item.put("resourceId", entry.getResourceId());
-				item.put("etag", entry.getEtag());
+    //list file not trashed
+    public Pair<String, List<Map>> listFiles(String nextPagetoken, Integer pageSize){
+    	List<Map> results = new ArrayList<Map>();
+    	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
+    		return new Pair<String, List<Map>>("lastPage", results);
+    	Map<String,String> item = null;
+    	Files.List request = null;
+    	FileList filelist = null;
+        try {
+        	request = getDriverService().files().list();
+			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
+				request.setPageToken(nextPagetoken);
+			request.setMaxResults(pageSize);
+			request.setQ("trashed = false");
+        	filelist = request.execute();
+			List<File> files = filelist.getItems();
+			for(File file : files){
+				item = new HashMap<String, String>();
+				item.put("fileId", file.getId());
+				item.put("fileName", file.getTitle());
+				item.put("createTime", file.getCreatedDate().toString());
+				item.put("updateTime", file.getModifiedDate().toString());
+				item.put("fileType", file.getMimeType());
+				if(file.getFileSize() != null){
+					item.put("fileSize", String.valueOf(file.getFileSize()));
+				}else{
+					item.put("fileSize", "NO Size");
+				}
+				item.put("owner", file.getOwnerNames().get(0));
+				item.put("etag", file.getEtag());
 				results.add(item);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ServiceException e) {
-			e.printStackTrace();
 		}
-        return results;
+        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
     }
     
-    public boolean deleteFile(String resourceId, String etag, boolean forever){
-    	StringBuilder uriStr = new StringBuilder(BASE_DOCS_URL.substring(0, BASE_DOCS_URL.length()-4)).append("/").append(resourceId);
-    	if(forever){
-    		uriStr.append("?delete=true");
+    //Move a file to the trash.
+    public boolean trashFile(String fileId,  boolean Permanent){
+    	if(Permanent){
+    		return deleteFile(fileId);
     	}
-    	try {
-        	URI uri = new URI(uriStr.toString());
-        	getDocsService().delete(uri, etag);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}catch (URISyntaxException e) {
-			e.printStackTrace();
+    	Drive service = getDriverService();
+		try {
+		      service.files().trash(fileId).execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
 		}
         return true;
     }
     
-    private DocsService getDocsService() {
-    	DocsService docsService = new DocsService("MyDocumentsListIntegration-v1");
-    	docsService.setAuthSubToken(authService.getSocialIdEntity().getToken(), null);
-        return docsService;
+    //Permanently delete a file, skipping the trash.
+    public boolean deleteFile(String fileId){
+    	Drive service = getDriverService();
+		try {
+		      service.files().delete(fileId).execute();
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		}
+        return true;
+    }
+    
+    private Drive getDriverService(){
+        HttpTransport httpTransport = new NetHttpTransport();
+        JacksonFactory jsonFactory = new JacksonFactory();
+        GoogleCredential credential = new GoogleCredential().setAccessToken(authService.getSocialIdEntity().getToken());
+        Drive service = new Drive.Builder(httpTransport, jsonFactory, credential).setApplicationName("Drive Test").build();
+        return service;
     }
 }

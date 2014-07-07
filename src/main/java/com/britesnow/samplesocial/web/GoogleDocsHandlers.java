@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.britesnow.samplesocial.service.GoogleDocsService;
+import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
@@ -18,25 +19,28 @@ public class GoogleDocsHandlers {
 
 
     @WebGet("/googleDocsList/listDocs")
-    public Object listFiles(@WebModel Map m, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) throws Exception {
-        List<Map> results = googleDocListService.listFiles(pageIndex, pageSize); 
-    	return WebResponse.success(results).set("result_count", results.size());
-    }
-    
-    @WebGet("/googleDocsList/deleteDoc")
-    public Object deleteFile(@WebModel Map m, @WebParam("resourceId") String resourceId, @WebParam("etag") String etag, @WebParam("forever") Boolean forever) throws Exception {
-        if(googleDocListService.deleteFile(resourceId, etag, forever))
-        	return WebResponse.success();
-        else
-        	return WebResponse.fail();
+    public Object listFiles(@WebModel Map m, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize) throws Exception {
+    	Pair<String, List<Map>> pair = googleDocListService.listFiles(nextPagetoken, pageSize);
+		List<Map> docsInfo = pair.getSecond();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", pair.getFirst());
+    	return result;
     }
     
     @WebGet("/googleDocsList/search")
-    public Object searchFile(@WebModel Map m, @WebParam("title") String title, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) throws Exception {
-    	List<Map> results = googleDocListService.searchFile(title,pageIndex,pageSize);
-    	if(results == null)
-    		return WebResponse.fail();
-    	else
-    		return WebResponse.success(results).set("result_count", results.size());
+    public Object searchFile(@WebModel Map m, @WebParam("title") String title, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize) throws Exception {
+    	Pair<String, List<Map>> pair = googleDocListService.searchFile(title, nextPagetoken, pageSize);
+		List<Map> docsInfo = pair.getSecond();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", pair.getFirst());
+    	return result;
+    }
+    
+    @WebGet("/googleDocsList/deleteDoc")
+    public Object deleteFile(@WebModel Map m, @WebParam("fileId") String fileId, @WebParam("etag") String etag, @WebParam("Permanent") Boolean Permanent) throws Exception {
+        if(googleDocListService.trashFile(fileId, Permanent))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
     }
 }
