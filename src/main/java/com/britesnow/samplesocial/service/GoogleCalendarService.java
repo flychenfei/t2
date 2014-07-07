@@ -1,12 +1,14 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -32,7 +34,7 @@ public class GoogleCalendarService {
     GoogleAuthService authService;
     
     public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         com.google.api.services.calendar.Calendar.Events.List list = null;
         try {
             list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
@@ -92,16 +94,16 @@ public class GoogleCalendarService {
     
     public Map getEvent(String eventId){
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Map eventMap = new HashMap();
             Event event = getCalendarService().events().get("primary", eventId).execute();
             eventMap.put("id", event.getId());
             eventMap.put("summary", event.getSummary());
+            eventMap.put("reminders", event.getReminders());
             if(event.getEnd() != null){
-                eventMap.put("endTime", sdf.format(new Date(event.getEnd().getDateTime().getValue())));
+                eventMap.put("endTime", new Date(event.getEnd().getDateTime().getValue()).getTime());
             }
             if(event.getStart() != null){
-                eventMap.put("startTime", sdf.format(new Date(event.getStart().getDateTime().getValue())));
+                eventMap.put("startTime", new Date(event.getStart().getDateTime().getValue()).getTime());
             }
             eventMap.put("location", event.getLocation());
             return eventMap;
@@ -124,7 +126,7 @@ public class GoogleCalendarService {
             }
             event.setSummary(summary);
             event.setLocation(location);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             if (startTime != null && !startTime.equals("")) {
                 Date start = null;

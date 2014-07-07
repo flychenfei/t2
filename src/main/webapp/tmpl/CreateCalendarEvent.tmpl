@@ -14,15 +14,33 @@
 				<div class="control-group ">
 					<label class="control-label">StartTime:</label>
 					<div class="controls input-append datetimepicker date">
-						<input type="text" name="startTime" {{#if startTime}}value='{{startTime}}' {{/if}} placeholder="">
+						<input type="text" class="dateControl" name="startTime" {{#if startDate}}value='{{startDate}}' {{/if}} placeholder="">
 						<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+						
+						<span class="timeControl">
+							<select name="startHour" class="hour startHour">
+								{{#if startHour}}{{startHour}}{{/if}}
+							</select>
+							<select name="startMin" class="min startMin">
+								{{#if startMin}}{{startMin}}{{/if}}
+							</select>
+						</span>
+						
 					</div>
 				</div>
 				<div class="control-group ">
 					<label class="control-label">EndTime:</label>
 					<div class="controls input-append datetimepicker date">
-						<input type="text" name="endTime" {{#if startTime}}value='{{endTime}}' {{/if}} placeholder="">
+						<input type="text" class="dateControl" name="endTime" {{#if endDate}}value='{{endDate}}' {{/if}} placeholder="">
 						<span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+						<span class="timeControl">
+							<select name="endHour" class="hour endHour">
+								
+							</select>
+							<select name="endHour" class="min endMin">
+								
+							</select> 
+						</span>
 					</div>
 				</div>
                 <div class="control-group ">
@@ -37,7 +55,7 @@
                         <select class = "reminder-method" title="reminder-type">
                         	<option>email</option>
                         </select>
-                        <input type ="text" class = "reminder-time" name = "reminder-time" value="10" /> min
+                        <input type ="text" class = "reminders" name = "reminders" value='{{#if minutes}}{{minutes}}{{else}}10{{/if}}' /> min
                     </div>
                 </div>
                 <div class="form-actions">
