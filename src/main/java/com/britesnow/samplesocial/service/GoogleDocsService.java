@@ -107,7 +107,32 @@ public class GoogleDocsService {
 		}
         return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
     }
-
+    
+    //Move a file to the trash.
+    public boolean trashFile(String fileId,  boolean Permanent){
+    	if(Permanent){
+    		return deleteFile(fileId);
+    	}
+    	Drive service = getDriverService();
+		try {
+		      service.files().trash(fileId).execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
+		}
+        return true;
+    }
+    
+    //Permanently delete a file, skipping the trash.
+    public boolean deleteFile(String fileId){
+    	Drive service = getDriverService();
+		try {
+		      service.files().delete(fileId).execute();
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		}
+        return true;
+    }
+    
     private Drive getDriverService(){
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();

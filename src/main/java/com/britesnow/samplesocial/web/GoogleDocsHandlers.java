@@ -35,4 +35,12 @@ public class GoogleDocsHandlers {
 		result.set("nextPageToken", pair.getFirst());
     	return result;
     }
+    
+    @WebGet("/googleDocsList/deleteDoc")
+    public Object deleteFile(@WebModel Map m, @WebParam("fileId") String fileId, @WebParam("etag") String etag, @WebParam("Permanent") Boolean Permanent) throws Exception {
+        if(googleDocListService.trashFile(fileId, Permanent))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
 }

@@ -39,7 +39,18 @@
                  var view = this;
                  showDocs.call(view);
              },
-            "DELETE_DOC": function(event, extraData){alert("not implement")}
+            "DELETE_DOC": function(event, extraData){
+            	var parma = {};
+            	parma.fileId = $(extraData.event.currentTarget).closest("tr").attr("data-fileId");
+                app.googleDocsApi.deleteDoc(parma).done(function (success) {
+                    if(success){
+                    	alert("Delete success");
+                    }else{
+                    	alert("Delete fail");
+                    }
+                    brite.display("GoogleDocs",".GoogleScreen-content");
+                });
+            }
         },
 
         daoEvents: {
