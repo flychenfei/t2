@@ -15,12 +15,31 @@
             showDocs.call(view);
         },
 
+        events: {
+          "click;.btnSearch":function(e){
+        	  brite.display("InputValue", ".MainScreen", {
+                  title: 'Search Doc',
+                  fields: [
+                      {label:"FileName", name:'title', mandatory:true}
+                  ],
+                  callback: function (params) {
+                      brite.display("GoogleDocs",".GoogleScreen-content",{
+                    	  results: function(opts){
+                             opts = opts||[];
+                              $.extend(opts, params)
+                             return app.googleDocsApi.searchDocs(opts)
+                         }
+                      });
+                  }});
+          }
+        },
+
         docEvents: {
             "DO_REFRESH_DOCS":function(){
                  var view = this;
                  showDocs.call(view);
              },
-            "DELETE_DOC": function(event, extraData){alert("not implement");}
+            "DELETE_DOC": function(event, extraData){alert("not implement")}
         },
 
         daoEvents: {

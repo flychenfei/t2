@@ -26,4 +26,13 @@ public class GoogleDocsHandlers {
 		result.set("nextPageToken", pair.getFirst());
     	return result;
     }
+    
+    @WebGet("/googleDocsList/search")
+    public Object searchFile(@WebModel Map m, @WebParam("title") String title, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize) throws Exception {
+    	Pair<String, List<Map>> pair = googleDocListService.searchFile(title, nextPagetoken, pageSize);
+		List<Map> docsInfo = pair.getSecond();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", pair.getFirst());
+    	return result;
+    }
 }

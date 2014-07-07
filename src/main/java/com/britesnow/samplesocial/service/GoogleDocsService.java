@@ -25,6 +25,51 @@ public class GoogleDocsService {
     private GoogleAuthService authService;
     
     
+    public Pair<String, List<Map>> searchFile(String title,String nextPagetoken, Integer pageSize){
+    	List<Map> results = new ArrayList<Map>();
+    	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
+    		return new Pair<String, List<Map>>("lastPage", results);
+    	Map<String,String> item = null;
+    	Files.List request = null;
+    	FileList filelist = null;
+    	StringBuilder query = new StringBuilder();
+        try {
+        	request = getDriverService().files().list();
+			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
+				request.setPageToken(nextPagetoken);
+			request.setMaxResults(pageSize);
+			query.append("trashed = false");
+			if(title != null && !title.equals("")){
+				query.append("and title = '").append(title).append("'");
+				request.setQ(query.toString());
+			}else{
+				return new Pair<String, List<Map>>("lastPage", results);
+			}
+        	filelist = request.execute();
+			List<File> files = filelist.getItems();
+			for(File file : files){
+				System.out.println(file);
+				item = new HashMap<String, String>();
+				item.put("fileId", file.getId());
+				item.put("fileName", file.getTitle());
+				item.put("createTime", file.getCreatedDate().toString());
+				item.put("updateTime", file.getModifiedDate().toString());
+				item.put("fileType", file.getMimeType());
+				if(file.getFileSize() != null){
+					item.put("fileSize", String.valueOf(file.getFileSize()));
+				}else{
+					item.put("fileSize", "NO Size");
+				}
+				item.put("owner", file.getOwnerNames().get(0));
+				item.put("etag", file.getEtag());
+				results.add(item);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
+    }
+    
     //list file not trashed
     public Pair<String, List<Map>> listFiles(String nextPagetoken, Integer pageSize){
     	List<Map> results = new ArrayList<Map>();
@@ -62,8 +107,7 @@ public class GoogleDocsService {
 		}
         return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
     }
-    
-    
+
     private Drive getDriverService(){
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();
