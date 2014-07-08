@@ -1,0 +1,43 @@
+<script id="tmpl-GoogleCalendarView" type="text/html">
+	<div class="GoogleCalendarView">
+		<div class="GoogleCalendarView-header">
+			<span class="btn listCalendar">Show List</span>
+		</div>
+		<div class="GoogleCalendarView-content"></div>
+	</div>
+</script>
+
+<script id="GoogleCalendarView-calendar" type="text/html">
+	<div class="GoogleCalendarView-calendar">
+		<table class="GoogleCalendarView-calendar-table">
+			<thead>
+				<tr class="calendar-month"></tr>
+				<th colspan="7">
+					<a class="action actionPrev" href="javascript:void(0)"> &lt;&lt; </a> 
+					{{header}}
+					<a class="action actionNext" href="javascript:void(0)"> &gt;&gt; </a></th>
+				<tr class="calendar-week">
+					<th data-vale="0">Sun</th>
+					<th data-vale="1">Mon</th>
+					<th data-vale="2">Tue</th>
+					<th data-vale="3">Wed</th>
+					<th data-vale="4">Thu</th>
+					<th data-vale="5">Fri</th>
+					<th data-vale="6">Sat</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+</script>
+
+<script id="GoogleCalendarView-calendar-tr" type="text/html">
+	<tr></tr>
+</script>
+
+<script id="GoogleCalendarView-calendar-td" type="text/html">
+	<td  {{#if dateStr}}data-date='{{dateStr}}'{{/if}}>
+    <div class="date">{{#if dateLabel}} {{dateLabel}} {{else}}&nbsp;{{/if}}</div>
+    <div class="events"></div>
+  </td>
+</script>

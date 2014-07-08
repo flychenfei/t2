@@ -25,6 +25,12 @@
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateCalendarEvent",null,{id:null});
 	        },
+	        "click;.showCanlendarView":function(){
+	        	var view = this;
+	        	var $e = view.$el;
+	        	
+	        	brite.display("GoogleCalendarView");
+	        },
 	        "click;.searchCalendar":function(){
 	        	view = this;
 	        	$e = view.$el;
@@ -96,8 +102,8 @@
                 {
                     text: "Date",
                     render: function (obj) {
-                    	if(obj.date){
-	                        return new Date(obj.date.dateTime.value).format("yyyy-MM-dd hh:mm:ss");
+                    	if(obj.date && obj.date.dateTime){
+	                        return new Date(obj.date.dateTime.value).format("yyyy-MM-dd");
                     	}
                     	return "";
                     },
@@ -122,4 +128,5 @@
             }
         });
     }
+    
 })(jQuery);

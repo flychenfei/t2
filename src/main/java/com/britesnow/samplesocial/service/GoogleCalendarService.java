@@ -1,14 +1,12 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -20,10 +18,10 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Event.Reminders;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
-import com.google.api.services.calendar.model.Event.Reminders;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -99,10 +97,10 @@ public class GoogleCalendarService {
             eventMap.put("id", event.getId());
             eventMap.put("summary", event.getSummary());
             eventMap.put("reminders", event.getReminders());
-            if(event.getEnd() != null){
+            if(event.getEnd() != null && event.getEnd().getDateTime() != null){
                 eventMap.put("endTime", new Date(event.getEnd().getDateTime().getValue()).getTime());
             }
-            if(event.getStart() != null){
+            if(event.getStart() != null && event.getStart().getDateTime() != null){
                 eventMap.put("startTime", new Date(event.getStart().getDateTime().getValue()).getTime());
             }
             eventMap.put("location", event.getLocation());
