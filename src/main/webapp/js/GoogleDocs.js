@@ -65,11 +65,6 @@
             },
             columnDef:[
                 {
-                    text:"#",
-                    render: function(obj, idx){ return idx + 1},
-                    attrs:"style='width: 5%; word-break: break-word;'"
-                },
-                {
                     text:"FileName",
                     attrs: "style='width:15%; word-break: break-word;'",
                     render:function(obj){return obj.fileName}
