@@ -67,41 +67,41 @@
                 {
                     text:"#",
                     render: function(obj, idx){ return idx + 1},
-                    attrs:"style='width: 5%'"
+                    attrs:"style='width: 5%; word-break: break-word;'"
                 },
                 {
                     text:"FileName",
-                    attrs: "style='width:15%'",
+                    attrs: "style='width:15%; word-break: break-word;'",
                     render:function(obj){return obj.fileName}
 
                 },
                 {
                     text:"CreateTime",
-                    attrs: "style='width:15%'",
+                    attrs: "style='width:15%; word-break: break-word;'",
                     render:function(obj){return obj.createTime}
 
                 },
                 {
                     text:"UpdateTime",
-                    attrs: "style='width:15%'",
+                    attrs: "style='width:15%; word-break: break-word;'",
                     render:function(obj){return obj.updateTime}
 
                 },
                 {
                     text:"FileType",
-                    attrs: "style='width:20%'",
+                    attrs: "style='width:20%; word-break: break-word;'",
                     render:function(obj){return obj.fileType}
 
                 },
                 {
                     text:"FileSize(bytes)",
-                    attrs: "style='width:10%'",
+                    attrs: "style='width:10%; word-break: break-word;'",
                     render:function(obj){return obj.fileSize}
 
                 },
                 {
                     text:"Owner",
-                    attrs: "style='width:10%'",
+                    attrs: "style='width:10%; word-break: break-word;'",
                     render:function(obj){return obj.owner}
 
                 }
