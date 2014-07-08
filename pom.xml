@@ -81,17 +81,22 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <!-- /Snow -->
 
     <!-- Google apis -->
+    <!-- Google apis -->
     <dependency>
-      <groupId>com.google.gdata</groupId>
-      <artifactId>core</artifactId>
-      <version>1.47.1</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>google-collections</artifactId>
-          <groupId>com.google.collections</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+		<groupId>com.google.gdata</groupId>
+		<artifactId>core</artifactId>
+		<version>1.47.1</version>
+		<exclusions>
+			<exclusion>
+				<artifactId>google-collections</artifactId>
+				<groupId>com.google.collections</groupId>
+			</exclusion>
+			<exclusion>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
     
     <!-- Google Oauth2 -->
     <dependency>
@@ -102,15 +107,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <!-- /Google Oauth2 -->
     
     <!-- Gmail IMAP -->
-    <dependency>
-      <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <version>1.5.2</version>
-    </dependency>
+    <!-- Note: can not updated to 1.5.2, otherwise mail can not be sent -->
     <dependency>
 		<groupId>com.sun.mail</groupId>
 		<artifactId>gimap</artifactId>
-		<version>1.5.2</version>
+		<version>1.4.7</version>
 	</dependency>
     <!-- /Gmail IMAP -->
     
