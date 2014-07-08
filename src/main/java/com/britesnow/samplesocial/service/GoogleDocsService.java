@@ -1,6 +1,7 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -55,6 +58,7 @@ public class GoogleDocsService {
 				item.put("createTime", file.getCreatedDate().toString());
 				item.put("updateTime", file.getModifiedDate().toString());
 				item.put("fileType", file.getMimeType());
+				item.put("url", file.getDownloadUrl());
 				if(file.getFileSize() != null){
 					item.put("fileSize", String.valueOf(file.getFileSize()));
 				}else{
@@ -93,6 +97,9 @@ public class GoogleDocsService {
 				item.put("createTime", file.getCreatedDate().toString());
 				item.put("updateTime", file.getModifiedDate().toString());
 				item.put("fileType", file.getMimeType());
+				if(file.getDownloadUrl() != null){
+					item.put("hasUrl", "true");
+				}
 				if(file.getFileSize() != null){
 					item.put("fileSize", String.valueOf(file.getFileSize()));
 				}else{
@@ -132,6 +139,32 @@ public class GoogleDocsService {
 		}
         return true;
     }
+    
+    public InputStream download(String fileId){
+    	File file = getFile(fileId);
+    	if (file.getDownloadUrl() != null && file.getDownloadUrl().length() > 0) {
+    	      try {
+    	        HttpResponse resp = getDriverService().getRequestFactory().buildGetRequest(new GenericUrl(file.getDownloadUrl())).execute();
+    	        return resp.getContent();
+    	      } catch (IOException e) {
+    	        e.printStackTrace();
+    	        return null;
+    	      }
+    	    } else {
+    	      // The file doesn't have any content stored on Drive.
+    	      return null;
+    	    }
+	}
+    
+    private File getFile(String fileId) {
+        try {
+          File file = getDriverService().files().get(fileId).execute();
+          return file;
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
     
     private Drive getDriverService(){
         HttpTransport httpTransport = new NetHttpTransport();
