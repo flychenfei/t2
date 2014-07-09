@@ -14,6 +14,7 @@ import org.apache.commons.fileupload.FileItem;
 import com.britesnow.samplesocial.service.GoogleDocsService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
@@ -63,7 +64,7 @@ public class GoogleDocsHandlers {
         	return WebResponse.fail();
     }
     
-    @WebGet("/googleDocsList/download")
+    @WebResourceHandler(matches="/googleDocsList/download")
     public void download(@WebParam("fileId") String fileId, @WebParam("fileName") String fileName,  RequestContext rc) throws IOException {
     	InputStream in = googleDocListService.download(fileId);
     	if(in != null){
