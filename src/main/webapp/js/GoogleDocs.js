@@ -16,6 +16,9 @@
         },
 
         events: {
+        	"click;.btnUpload":function(e){
+        		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
+			},
 			"click;.btnSearch":function(e){
 				  brite.display("InputValue", ".MainScreen", {
 				  title: 'Search Doc',
