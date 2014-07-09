@@ -27,8 +27,10 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "contacts"){
                   brite.display("GoogleContacts");
-                }else if(menu == "calendars"){
+                }else if(menu == "calendar-events"){
                   brite.display("GoogleCalendarEvents");
+                }else if(menu == "calendars"){
+                  brite.display("GoogleCalendars");
                 }else if(menu == "mails"){
                   brite.display("GoogleMails");
                 }else if(menu == "mails_rest"){

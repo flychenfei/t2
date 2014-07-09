@@ -65,7 +65,6 @@ var app = app || {};
         searchEmails: function(opts) {
             var params = opts||{};
             params.method = "Get";
-            console.log(opts);
             return app.getJsonData(contextPath + "/gmail/search", params);
         },
         searchContact: function(opts) {
@@ -76,22 +75,42 @@ var app = app || {};
         listCalendarEvents: function(opts) {
             var params = opts||{};
             params.method = "Get";
-            return app.getJsonData(contextPath + "/googleCalendar/list", params);
+            return app.getJsonData(contextPath + "/googleCalendarEvents/list", params);
         },
         getCalendarEvent: function(opts) {
             var params = opts||{};
             params.method = "Get";
-            return app.getJsonData(contextPath + "/googleCalendar/get", params);
+            return app.getJsonData(contextPath + "/googleCalendarEvents/get", params);
         },
         saveCalendarEvent: function(opts) {
             var params = opts||{};
             params.method = "Post";
-            return app.getJsonData(contextPath + "/googleCalendar/save", params);
+            return app.getJsonData(contextPath + "/googleCalendarEvents/save", params);
         },
         deleteCalendarEvent: function(opts) {
             var params = opts||{};
             params.method = "Post";
-            return app.getJsonData(contextPath + "/googleCalendar/delete", params);
+            return app.getJsonData(contextPath + "/googleCalendarEvents/delete", params);
+        },
+        listCalendars: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendars/list", params);
+        },
+        getCalendars: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendars/get", params);
+        },
+        saveCalendars: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/googleCalendars/save", params);
+        },
+        deleteCalendars: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/googleCalendars/delete", params);
         },
         searchEmailsRest: function(opts) {
             var params = opts||{};

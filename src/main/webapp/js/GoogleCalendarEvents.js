@@ -18,7 +18,7 @@
                  pickTime: true, 
                  inputMask: true 
             });
-            showCalendars.call(view);
+            showCalendarEvents.call(view);
         },
 
         events: {
@@ -45,26 +45,26 @@
 	        		$.extend(opts,result);
 	        		return app.googleApi.listCalendarEvents(opts);
 	        	};
-	        	showCalendars.call(view);
+	        	showCalendarEvents.call(view);
 	        }
         },
 
         docEvents: {
-        	"DO_REFRESH_CALENDAR":function(){
+        	"DO_REFRESH_CALENDAR_EVENT":function(){
                  var view = this;
-                 showCalendars.call(view);
+                 showCalendarEvents.call(view);
              },
-            "DELETE_CALENDAR": function(event, extraData) {
+            "DELETE_CALENDAR_EVENT": function(event, extraData) {
                 if (extraData && extraData.objId) {
                     app.googleApi.deleteCalendarEvent({id:extraData.objId}).done(function (extradata) {
 						setTimeout((function() {
-							$(document).trigger("DO_REFRESH_CALENDAR");
+							$(document).trigger("DO_REFRESH_CALENDAR_EVENT");
 						}), 3000); 
                     });
                 }
 
             },
-            "EDIT_CALENDAR": function(event, extraData){
+            "EDIT_CALENDAR_EVENT": function(event, extraData){
                 if (extraData && extraData.objId) {
                     app.googleApi.getCalendarEvent({id:extraData.objId}).done(function (data) {
                         if(data && data.result){
@@ -79,7 +79,7 @@
         }
     });
 
-    function showCalendars() {
+    function showCalendarEvents() {
         var view = this;
         brite.display("DataTable", ".calendars-container", {
             dataProvider: {list: view.search},
@@ -120,8 +120,8 @@
             opts: {
                 htmlIfEmpty: "Not calendar found",
                 withPaging: true,
-                cmdDelete: "DELETE_CALENDAR",
-                cmdEdit: "EDIT_CALENDAR",
+                cmdDelete: "DELETE_CALENDAR_EVENT",
+                cmdEdit: "EDIT_CALENDAR_EVENT",
                 dataOpts:{
                 	withResultCount:false
                 }
