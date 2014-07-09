@@ -5,8 +5,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.model.Label;
+import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
@@ -309,9 +313,60 @@ public class GmailRestService {
      */
     public void deleteEmail(String messageId) {
         try {
-            gmail.users().messages().delete("me", messageId).execute();
+            getGmailClient().users().messages().delete("me", messageId).execute();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public List<Map> listLabels() throws Exception  {
+        ListLabelsResponse response = getGmailClient().users().labels().list("me").execute();
+        
+        List<Map> labelsList = new ArrayList();
+        List<Label> labels = response.getLabels();
+        
+        if(labels != null){
+            
+            for (Label label : labels) {
+                Map labelInfo = new HashMap();
+                labelInfo.put("id", label.getId());
+                labelInfo.put("name", label.getName());
+                labelInfo.put("type", label.getType());
+                labelsList.add(labelInfo);
+            }
+            
+        }
+        
+        return labelsList;
+    }
+    
+    public void deleteLabel(String labelId) throws Exception  {
+        try {
+            getGmailClient().users().labels().delete("me", labelId).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public Map getLabel(String labelId) throws Exception  {
+       Label label = getGmailClient().users().labels().get("me", labelId).execute();
+       Map map  = new HashMap();
+       map.put("id", label.getId());
+       map.put("name", label.getName());
+       map.put("type", label.getType());
+       return map;
+    }
+    
+    public void saveLabel(String labelId, String name) throws Exception  {
+        Label label = new Label();
+        label.setName(name);
+        label.setMessageListVisibility("show");
+        label.setLabelListVisibility("labelShow");
+        if(labelId != null && !"".equals(labelId)){
+            label.setId(labelId);
+            getGmailClient().users().labels().update("me", labelId, label).execute();
+        }else{
+            getGmailClient().users().labels().create("me", label).execute();
         }
     }
     

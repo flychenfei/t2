@@ -93,4 +93,32 @@ public class GoogleRestEmailHandlers {
     }
 
 
+    
+    @WebGet("/gmailrest/labels/list")
+    public WebResponse listLabels(@WebUser User user) throws Exception {
+        List<Map> labels = gmailRestService.listLabels();
+        WebResponse result = WebResponse.success(labels);
+        return result;
+    }
+    
+    @WebPost("/gmailrest/labels/delete")
+    public WebResponse deleteLabel(@WebUser User user,
+                              @WebParam("id") String id, RequestContext rc) throws Exception {
+        gmailRestService.deleteLabel(id);
+        return WebResponse.success(true);
+    }
+
+
+    @WebPost("/gmailrest/labels/save")
+    public WebResponse saveLabel(@WebUser User user,
+                           @WebModel Map m, @WebParam("id") String id, @WebParam("name") String name, RequestContext rc) throws Exception {
+        gmailRestService.saveLabel(id, name);
+        return WebResponse.success();
+    }
+    
+    @WebGet("/gmailrest/labels/get")
+    public WebResponse getLabel(@WebUser User user, @WebParam("id") String id) throws Exception {
+        Map info = gmailRestService.getLabel(id);
+        return WebResponse.success(info);
+    }
 }

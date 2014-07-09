@@ -1,0 +1,18 @@
+<script id="tmpl-CreateFolder" type="text/html">
+    <div class="CreateFolder">
+		<div class='CreateFolderDialogGlass' />
+	    <div class="CreateFolder-content">
+	        <h2>{{#if id}}Edit{{else}}Create{{/if}} Folder</h2>
+	        <div class="form">
+		        <div class="control-group">
+		  		Name:<input type="text"  name="name" {{#if name}} value='{{name}}'{{/if}} placeholder=""><span class="help-inline" ></span>
+		  		<br/>
+		  		</div>
+		  		<div>
+		    		<a href="#" class="btn btn-primary createFolderBtn">{{#if id}}Update{{else}}Create{{/if}}</a>
+		    		<a href="#" class="btn cancelBtn">Close</a>
+		  		</div>
+	        </div>
+	    </div>
+    </div>
+</script>

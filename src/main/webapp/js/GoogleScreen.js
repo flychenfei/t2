@@ -39,6 +39,8 @@
                   brite.display("GoogleGroups");
                 }else if(menu == "folders"){
                   brite.display("GoogleFolders");
+                }else if(menu == "folders_rest"){
+                  brite.display("GoogleFoldersRest");
                 }else if(menu == "actions"){
                     var list = [
                         {name:"sendMail",label:"Send Mail"},

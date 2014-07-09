@@ -131,6 +131,26 @@ var app = app || {};
             var params = opts||{};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmailrest/send", params);
+        },
+        listLabelsRest: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/labels/list", params);
+        },
+        deleteLabelRest: function(id) {
+            var params = {id: id};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmailrest/labels/delete", params);
+        },
+        getLabelRest: function(id) {
+            var params = {id: id};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/labels/get", params);
+        },
+        saveLabelRest: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmailrest/labels/save", params);
         }
 	};
 })();
