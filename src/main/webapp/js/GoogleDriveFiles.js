@@ -110,7 +110,7 @@
                     text:"Operator",
                     attrs: "style='width:10%'",
                     render: function (obj) {
-                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a></br><a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     }
                 }
             ],
