@@ -20,9 +20,9 @@
 					return false;
 				$(uploadBtn).toggleClass("disabled");
 				console.log($(":input[type='file']")[0].files[0]);
-				app.ajaxPost(contextPath+"/googleDocsList/upload",{},$(":input[type='file']")[0].files[0]).done(function(){
+				app.ajaxPost(contextPath+"/googleDrive/upload",{},$(":input[type='file']")[0].files[0]).done(function(){
 					view.$el.remove();
-					brite.display("GoogleDocs",".GoogleScreen-content");
+					brite.display("GoogleDriveFiles",".GoogleScreen-content");
 				});
 			}
 		}

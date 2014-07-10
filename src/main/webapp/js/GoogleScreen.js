@@ -51,8 +51,13 @@
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
-                }else if(menu == "docs"){
-                	brite.display("GoogleDocs");
+                }else if(menu == "drive"){
+                	var list = [
+                                {name:"file",label:"Files"},
+                                {name:"trash",label:"Trash"}
+                            ];
+                    brite.display("Dropdown",null,{$target:$li,list:list});
+                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
                 }
               }
             },
@@ -113,6 +118,10 @@
                                     });
                                 }});
                             break;
+                        case "file":brite.display("GoogleDriveFiles");
+                        	break;
+                        case "trash":brite.display("GoogleDriveTrash");
+                        	break;
                         default:
                     }
                 }

@@ -1,18 +1,18 @@
 ;
 (function ($) {
-    brite.registerView("GoogleDocs",{parent:".GoogleScreen-content",emptyParent:true}, {
+    brite.registerView("GoogleDriveFiles",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
         	 if(data && data.results) {
                  this.results = data.results;
              }else{
-                 this.results = app.googleDocsApi.getDocsList;
+                 this.results = app.googleDriveApi.fileList;
              }
-            return app.render("tmpl-GoogleDocs");
+            return app.render("tmpl-GoogleDriveFiles");
         },
 
         postDisplay: function (data, config) {
             var view = this;
-            showDocs.call(view);
+            showFile.call(view);
         },
 
         events: {
@@ -21,16 +21,16 @@
 			},
 			"click;.btnSearch":function(e){
 				  brite.display("InputValue", ".MainScreen", {
-				  title: 'Search Doc',
+				  title: 'Search File',
 				  fields: [
 				      {label:"FileName", name:'title', mandatory:true}
 				  ],
 				  callback: function (params) {
-				      brite.display("GoogleDocs",".GoogleScreen-content",{
+				      brite.display("GoogleDriveFiles",".GoogleScreen-content",{
 				            	  results: function(opts){
 				                     opts = opts||[];
 				                      $.extend(opts, params)
-				                     return app.googleDocsApi.searchDocs(opts)
+				                     return app.googleDriveApi.searchFile(opts)
 				                 }
 				              });
 				          }});
@@ -40,7 +40,7 @@
 	        	var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
 	        	var fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
 	        	if(fileId && fileUrl == "true"){
-	        		window.location.href=contextPath+"/googleDocsList/download?fileId="+fileId+"&fileName="+fileName;
+	        		window.location.href=contextPath+"/googleDrive/download?fileId="+fileId+"&fileName="+fileName;
 	        	}else{
 	        		alert("This file is not support download!");
 	        	}
@@ -48,13 +48,13 @@
 			 "click;.delete":function(event){
 			    var parma = {};
             	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDocsApi.deleteDoc(parma).done(function (success) {
+                app.googleDriveApi.deleteFile(parma).done(function (success) {
                     if(success){
                     	alert("Delete success");
                     }else{
                     	alert("Delete fail");
                     }
-                    brite.display("GoogleDocs",".GoogleScreen-content");
+                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
                 });
 				}
         },
@@ -62,15 +62,15 @@
         docEvents: {
             "DO_REFRESH_DOCS":function(){
                  var view = this;
-                 showDocs.call(view);
+                 showFile.call(view);
              }
         },
         daoEvents: {
         }
     });
-    function showDocs() {
+    function showFile() {
     	var view = this;
-        return brite.display("DataTable", ".docs-container", {
+        return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
                 return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false")

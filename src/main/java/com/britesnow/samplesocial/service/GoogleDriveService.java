@@ -2,7 +2,9 @@ package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class GoogleDocsService {
+public class GoogleDriveService {
 
     @Inject
     private GoogleAuthService authService;
@@ -66,8 +68,9 @@ public class GoogleDocsService {
 				item = new HashMap<String, String>();
 				item.put("fileId", file.getId());
 				item.put("fileName", file.getTitle());
-				item.put("createTime", file.getCreatedDate().toString());
-				item.put("updateTime", file.getModifiedDate().toString());
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
+				item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
 				item.put("fileType", file.getMimeType());
 				item.put("url", file.getDownloadUrl());
 				if(file.getFileSize() != null){
@@ -86,7 +89,7 @@ public class GoogleDocsService {
     }
     
     //list file not trashed
-    public Pair<String, List<Map>> listFiles(String nextPagetoken, Integer pageSize){
+    public Pair<String, List<Map>> list(String nextPagetoken, Integer pageSize, boolean trash){
     	List<Map> results = new ArrayList<Map>();
     	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
     		return new Pair<String, List<Map>>("lastPage", results);
@@ -98,15 +101,20 @@ public class GoogleDocsService {
 			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
 				request.setPageToken(nextPagetoken);
 			request.setMaxResults(pageSize);
-			request.setQ("trashed = false");
+			if(trash){
+				request.setQ("trashed = true");
+			}else{
+				request.setQ("trashed = false");
+			}
         	filelist = request.execute();
 			List<File> files = filelist.getItems();
 			for(File file : files){
 				item = new HashMap<String, String>();
 				item.put("fileId", file.getId());
 				item.put("fileName", file.getTitle());
-				item.put("createTime", file.getCreatedDate().toString());
-				item.put("updateTime", file.getModifiedDate().toString());
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
+				item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
 				item.put("fileType", file.getMimeType());
 				if(file.getDownloadUrl() != null){
 					item.put("hasUrl", "true");

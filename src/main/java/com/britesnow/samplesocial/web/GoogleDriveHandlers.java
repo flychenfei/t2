@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 
-import com.britesnow.samplesocial.service.GoogleDocsService;
+import com.britesnow.samplesocial.service.GoogleDriveService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
@@ -22,51 +22,51 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class GoogleDocsHandlers {
+public class GoogleDriveHandlers {
     @Inject
-    private GoogleDocsService googleDocListService;
+    private GoogleDriveService googleDriveService;
 
 
-    @WebGet("/googleDocsList/listDocs")
+    @WebGet("/googleDrive/filelist")
     public Object listFiles(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDocListService.listFiles(nextPagetoken, pageSize);
+    	Pair<String, List<Map>> pair = googleDriveService.list(nextPagetoken, pageSize, false);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());
     	return result;
     }
     
-    @WebGet("/googleDocsList/search")
+    @WebGet("/googleDrive/search")
     public Object searchFile(@WebParam("title") String title, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDocListService.searchFile(title, nextPagetoken, pageSize);
+    	Pair<String, List<Map>> pair = googleDriveService.searchFile(title, nextPagetoken, pageSize);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());
     	return result;
     }
     
-    @WebPost("/googleDocsList/upload")
+    @WebPost("/googleDrive/upload")
 	public WebResponse upload(@WebParam("file") FileItem file){
     	if(file==null){
     		return WebResponse.fail();
     	}
-		if(googleDocListService.uploadFile(file)){
+		if(googleDriveService.uploadFile(file)){
 			return WebResponse.success();
 		}
 		return WebResponse.fail();
 	}
     
-    @WebGet("/googleDocsList/deleteDoc")
+    @WebGet("/googleDrive/deleteFile")
     public Object deleteFile(@WebParam("fileId") String fileId, @WebParam("etag") String etag, @WebParam("Permanent") Boolean Permanent){
-        if(googleDocListService.trashFile(fileId, Permanent))
+        if(googleDriveService.trashFile(fileId, Permanent))
         	return WebResponse.success();
         else
         	return WebResponse.fail();
     }
     
-    @WebResourceHandler(matches="/googleDocsList/download")
+    @WebResourceHandler(matches="/googleDrive/download")
     public void download(@WebParam("fileId") String fileId, @WebParam("fileName") String fileName,  RequestContext rc) throws IOException {
-    	InputStream in = googleDocListService.download(fileId);
+    	InputStream in = googleDriveService.download(fileId);
     	if(in != null){
     		HttpServletResponse res = rc.getRes();
     		res.addHeader("Content-Disposition", "attachment;filename="+fileName);
@@ -80,5 +80,14 @@ public class GoogleDocsHandlers {
     		in.close();
     		out.close();
     	}
+    }
+    
+    @WebGet("/googleDrive/trashlist")
+    public Object listTrash(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
+    	Pair<String, List<Map>> pair = googleDriveService.list(nextPagetoken, pageSize,true);
+		List<Map> docsInfo = pair.getSecond();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", pair.getFirst());
+    	return result;
     }
 }
