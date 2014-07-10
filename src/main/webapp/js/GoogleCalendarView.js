@@ -72,7 +72,6 @@
 				endDate:endDate.format("yyyy-MM-dd hh:mm:ss"),
 				pageSize:100
 			};
-			console.log(opts);
 			app.googleApi.listCalendarEvents(opts).done(function(data){
 				
 				for(var i = 0; i < data.result.length; i++){

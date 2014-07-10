@@ -31,16 +31,19 @@ public class GoogleCalendarEventsService {
     @Inject
     GoogleAuthService authService;
     
-    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate, String calendarId){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
+        if(calendarId == null || calendarId.equals("")){
+            calendarId = "primary";
+        }
         try {
-            list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
+           list = getCalendarService().events().list(calendarId).setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
         
-        if(startDate != null){
+        if(startDate != null && !startDate.equals("")){
             DateTime minTime = null;
             Date min = null;
             try {
@@ -52,7 +55,7 @@ public class GoogleCalendarEventsService {
             list = list.setTimeMin(minTime);
         }
         
-        if(endDate != null){
+        if(endDate != null && !endDate.equals("")){
             Date max = null;
             try {
                 max = sdf.parse(endDate);
@@ -79,6 +82,7 @@ public class GoogleCalendarEventsService {
                 eventMap.put("date", event.getStart());
                 eventMap.put("location", event.getLocation());
                 eventMap.put("status", event.getStatus());
+                eventMap.put("calendarId", event.getOrganizer().getEmail());
                 eventList.add(eventMap);
             }
             pageToken = events.getNextPageToken();
@@ -90,10 +94,15 @@ public class GoogleCalendarEventsService {
         return null;
     }
     
-    public Map getEvent(String eventId){
+    public Map getEvent(String eventId,String calendarId){
         try {
+            if(calendarId == null || calendarId.equals("")){
+                calendarId = "primary";
+            }
             Map eventMap = new HashMap();
-            Event event = getCalendarService().events().get("primary", eventId).execute();
+            Event event = null;
+            event = getCalendarService().events().get(calendarId, eventId).execute();
+            
             eventMap.put("id", event.getId());
             eventMap.put("summary", event.getSummary());
             eventMap.put("reminders", event.getReminders());
@@ -104,6 +113,7 @@ public class GoogleCalendarEventsService {
                 eventMap.put("startTime", new Date(event.getStart().getDateTime().getValue()).getTime());
             }
             eventMap.put("location", event.getLocation());
+            eventMap.put("calendarId", event.getOrganizer().getEmail());
             return eventMap;
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,15 +121,18 @@ public class GoogleCalendarEventsService {
         return null;
     }
     
-    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min){
+    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min,String calendarId){
         try {
             boolean create = false;
             Event event = null;
+            if(calendarId == null || calendarId.equals("")){
+                calendarId = "primary";
+            }
             if(eventId == null || "".equals(eventId)){
                 event = new Event();
                 create = true;
             }else{
-                event = getCalendarService().events().get("primary", eventId).execute();
+                event = getCalendarService().events().get(calendarId, eventId).execute();
                 create = false;
             }
             event.setSummary(summary);
@@ -169,17 +182,20 @@ public class GoogleCalendarEventsService {
             }
             
             if(create){
-                getCalendarService().events().insert("primary", event).execute();
+                getCalendarService().events().insert(calendarId, event).execute();
             }else{
-                getCalendarService().events().update("primary", event.getId(), event).execute();
+                getCalendarService().events().update(calendarId, event.getId(), event).execute();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void deleteEvent(String eventId){
+    public void deleteEvent(String eventId, String calendarId){
         try {
-            getCalendarService().events().delete("primary", eventId).execute();
+            if(calendarId == null || calendarId.equals("")){
+                calendarId = "primary";
+            }
+            getCalendarService().events().delete(calendarId, eventId).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
