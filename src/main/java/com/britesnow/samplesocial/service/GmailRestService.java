@@ -219,16 +219,26 @@ public class GmailRestService {
                 }
             }
             
+            List attachments = new ArrayList();
             if(message.getPayload().getParts() != null){
                 if(message.getPayload().getParts().size() == 1){
                     String body = message.getPayload().getParts().get(0).getBody().getData();
                     mailInfo.setContent(getContent(body));
                 }else{
                     for(MessagePart part : message.getPayload().getParts()){
-                        if(part.getMimeType().equalsIgnoreCase("text/html")){
+                        if(part.getMimeType().equalsIgnoreCase("text/html") && (part.getFilename() == null || part.getFilename().equals(""))){
                             String body = part.getBody().getData();
                             mailInfo.setContent(getContent(body));
-                            break;
+                        }else{
+                            String attachmentId = part.getBody().getAttachmentId();
+                            if(attachmentId != null && !attachmentId.equals("")){
+                                Map map = new HashMap();
+                                map.put("id", attachmentId);
+                                map.put("messageId", mailInfo.getId());
+                                map.put("name", part.getFilename());
+                                map.put("type", part.getMimeType());
+                                attachments.add(map);
+                            }
                         }
                     }
                 }
@@ -238,6 +248,7 @@ public class GmailRestService {
                     mailInfo.setContent(getContent(body));
                 }
             }
+            mailInfo.setAttachments(attachments);
             
         }
         
@@ -368,6 +379,12 @@ public class GmailRestService {
         }else{
             getGmailClient().users().labels().create("me", label).execute();
         }
+    }
+    
+    public byte[] getAttachment(String messageId, String attachmentId) throws Exception  {
+        MessagePartBody attachPart = getGmailClient().users().messages().attachments().get("me", messageId, attachmentId).execute();
+        byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
+        return fileByteArray;
     }
     
     private String getContent(String body){

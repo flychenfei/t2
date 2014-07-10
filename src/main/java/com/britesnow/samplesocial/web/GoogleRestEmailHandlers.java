@@ -1,14 +1,18 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GmailRestService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -120,5 +124,17 @@ public class GoogleRestEmailHandlers {
     public WebResponse getLabel(@WebUser User user, @WebParam("id") String id) throws Exception {
         Map info = gmailRestService.getLabel(id);
         return WebResponse.success(info);
+    }
+    
+    @WebResourceHandler(matches = "/gmailrest/attachment")
+    public void getAttachment(@WebUser User user, @WebParam("messageId") String messageId, @WebParam("attachmentId") String attachmentId, @WebParam("name") String name, RequestContext rc) throws Exception {
+        byte[] data = gmailRestService.getAttachment(messageId, attachmentId);
+        HttpServletResponse res = rc.getRes();
+        res.addHeader("Content-Disposition", "attachment;filename=" + new String(name.getBytes()));
+        res.setContentType("application/octet-stream");
+        OutputStream out = res.getOutputStream();
+        out.write(data);
+        out.flush();
+        out.close();
     }
 }

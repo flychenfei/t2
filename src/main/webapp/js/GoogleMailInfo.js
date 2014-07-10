@@ -13,10 +13,16 @@
 			var dfd = $.Deferred();
 			var createDfd = $.Deferred();
 			data = data || {};
+			view.id = data.id;
 			if (data.id) {
 				if(data.type == 'rest'){
 					app.googleApi.getMailRest(data.id).done(function(data) {
-						dfd.resolve(data.result);
+						var result = data.result;
+						if(!result && (result.attachments || result.attachments.length == 0)){
+							result.hideAttachments = true;
+						}
+						console.log(result);
+						dfd.resolve(result);
 					});
 				}else{
 					app.googleApi.getMail(data.id).done(function(data) {
@@ -45,6 +51,14 @@
 	 		"btap; .btnClose": function(){
 	 			var view = this;
 	 			view.close();
+	 		},
+	 		"btap; .attachment": function(e){
+	 			var view = this;
+	 			var $attachment = $(e.currentTarget);
+	 			var attachmentId = $attachment.attr("data-attachment-id");
+	 			var name = $attachment.attr("data-attachment-name");
+	 			var messageId = view.id;
+	 			window.open(contextPath+"/gmailrest/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
 	 		}
 		},
 
