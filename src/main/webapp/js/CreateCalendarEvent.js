@@ -28,6 +28,8 @@
                 	this.endDate = date;
                 }
                 
+                this.calendarId = data.calendarId;
+                
                 var html = app.render("tmpl-CreateCalendarEvent",data||{});
                 var $e = $(html);
                 return $e;
@@ -81,6 +83,17 @@
 				});
 				
 
+				$calendar = $e.find(".calendar");
+				app.googleApi.listCalendars().done(function(data) {
+					var selected = "";
+					for (var i = 0; i < data.result.length; i++) {
+						var id = data.result[i].id;
+						var value = data.result[i].summary;
+						$calendar.append("<option value='" + id + "'>" + value + "</option>");
+					}
+					$calendar.val(view.calendarId);
+				}); 
+
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
             },
@@ -109,6 +122,7 @@
                 var endHour = $e.find(".endHour").val();
                 var endMin =$e.find(".endMin").val();
                	data.endTime = endDateVal+" "+endHour+":"+ endMin+ ":00";
+               	data.calendarId = $e.find(".calendar").val();
                 var input = $e.find("textarea[name='summary']");
                 if (input.val() == "") {
                     input.focus();

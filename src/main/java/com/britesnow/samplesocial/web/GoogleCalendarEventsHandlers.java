@@ -31,21 +31,21 @@ public class GoogleCalendarEventsHandlers {
     }
     
     @WebGet("/googleCalendarEvents/get")
-    public Object getEvents(@WebModel Map m, @WebParam("id") String id) throws Exception {
-        return WebResponse.success(googleCalendarEventsService.getEvent(id));
+    public Object getEvents(@WebModel Map m, @WebParam("id") String id,@WebParam("calendarId") String calendarId) throws Exception {
+        return WebResponse.success(googleCalendarEventsService.getEvent(id,calendarId));
     }
     
     @WebPost("/googleCalendarEvents/save")
     public Object saveEvents(@WebModel Map m, @WebParam("id") String id,  @WebParam("summary") String summary, 
                             @WebParam("location") String location,@WebParam("status") String status,@WebParam("startTime") String startTime,
-                            @WebParam("endTime") String endTime,@WebParam("reminders") Integer min) throws Exception {
+                            @WebParam("endTime") String endTime,@WebParam("reminders") Integer min,@WebParam("calendarId")String calendarId) throws Exception {
         
-        googleCalendarEventsService.saveEvent(id, summary,location, startTime, endTime,min);
+        googleCalendarEventsService.saveEvent(id, summary,location, startTime, endTime,min,calendarId);
         return WebResponse.success();
     }
     @WebPost("/googleCalendarEvents/delete")
-    public Object deleteEvents(@WebModel Map m, @WebParam("id") String id) throws Exception {
-        googleCalendarEventsService.deleteEvent(id);
+    public Object deleteEvents(@WebModel Map m, @WebParam("id") String id,@WebParam("calendarId") String calendarId) throws Exception {
+        googleCalendarEventsService.deleteEvent(id, calendarId);
         return WebResponse.success();
     }
 

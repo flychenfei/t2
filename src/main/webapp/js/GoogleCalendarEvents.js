@@ -58,7 +58,35 @@
 	        		return app.googleApi.listCalendarEvents(opts);
 	        	};
 	        	showCalendarEvents.call(view);
-	        }
+	        },
+	        "btap; .editEvent": function(event){
+	        	var view = this;
+	        	var $btn = $(event.currentTarget);
+	        	var $tr = $btn.closest("tr");
+	        	var id = $tr.attr("data-obj_id");
+	        	var calendarId = $tr.attr("data-calendarId");
+                if (id) {
+                    app.googleApi.getCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
+                    	console.log(data);
+                        if(data && data.result){
+                            brite.display("CreateCalendarEvent", null, data.result);
+                        }
+                    });
+                }
+           },
+           "btap; .deleteEvent": function(event, extraData) {
+           		var $btn = $(event.currentTarget);
+	        	var $tr = $btn.closest("tr");
+	        	var id = $tr.attr("data-obj_id");
+	        	var calendarId = $tr.attr("data-calendarId");
+                if (id) {
+                    app.googleApi.deleteCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
+                        setTimeout((function() {
+							$(document).trigger("DO_REFRESH_CALENDAR_EVENT");
+						}), 3000); 
+                    });
+                }
+            }
         },
 
         docEvents: {
@@ -66,25 +94,8 @@
                  var view = this;
                  showCalendarEvents.call(view);
              },
-            "DELETE_CALENDAR_EVENT": function(event, extraData) {
-                if (extraData && extraData.objId) {
-                    app.googleApi.deleteCalendarEvent({id:extraData.objId}).done(function (extradata) {
-						setTimeout((function() {
-							$(document).trigger("DO_REFRESH_CALENDAR_EVENT");
-						}), 3000); 
-                    });
-                }
-
-            },
-            "EDIT_CALENDAR_EVENT": function(event, extraData){
-                if (extraData && extraData.objId) {
-                    app.googleApi.getCalendarEvent({id:extraData.objId}).done(function (data) {
-                        if(data && data.result){
-                            brite.display("CreateCalendarEvent", null, data.result);
-                        }
-                    });
-                }
-            }
+            
+            
         },
 
         daoEvents: {
@@ -95,6 +106,7 @@
         var view = this;
         brite.display("DataTable", ".calendars-container", {
             dataProvider: {list: view.search},
+            rowAttrs: function(obj){ return " data-calendarId='{0}'".format(obj.calendarId);},
             columnDef: [
                 {
                     text: "Summary",
@@ -127,13 +139,27 @@
                         return obj.status;
                     },
                     attrs: "style='width: 10%'"
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return "<div class='icon-edit editEvent'></div>";
+                    },
+					attrs: "style='width: 40px'"
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return "<div class='icon-edit deleteEvent'></div>";
+                    },
+					attrs: "style='width: 40px'"
                 }
             ],
             opts: {
                 htmlIfEmpty: "Not calendar found",
                 withPaging: true,
-                cmdDelete: "DELETE_CALENDAR_EVENT",
-                cmdEdit: "EDIT_CALENDAR_EVENT",
+                withCmdEdit:false,
+                withCmdDelete:false,
                 dataOpts:{
                 	withResultCount:false
                 }
