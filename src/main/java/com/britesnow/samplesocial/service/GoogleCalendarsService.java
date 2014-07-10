@@ -35,6 +35,8 @@ public class GoogleCalendarsService {
             
                 eventMap.put("id", calendarListEntry.getId());
                 eventMap.put("summary", calendarListEntry.getSummary());
+                eventMap.put("accessRole", calendarListEntry.getAccessRole());
+                eventMap.put("primary", calendarListEntry.getPrimary());
 
                 eventList.add(eventMap);
             }

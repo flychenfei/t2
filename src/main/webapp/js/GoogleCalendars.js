@@ -70,13 +70,27 @@
                     attrs: "style='width: 300px'"
 
                 },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='icon-edit' data-cmd='EDIT_CALENDAR'></div>";
+                    },
+					attrs: "style='width: 40px'"
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='icon-remove' data-cmd='DELETE_CALENDAR'></div>";
+                    },
+					attrs: "style='width: 40px'"
+                }
                
             ],
             opts: {
                 htmlIfEmpty: "Not calendar found",
                 withPaging: true,
-                cmdDelete: "DELETE_CALENDAR",
-                cmdEdit: "EDIT_CALENDAR",
+                withCmdEdit:false,
+                withCmdDelete: false,
                 dataOpts:{
                 	withResultCount:false
                 }
