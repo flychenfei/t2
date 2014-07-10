@@ -43,6 +43,11 @@ var app = app || {};
             var params = {method: "Get"};
             return app.getJsonData(contextPath + "/gmail/folders", params);
         },
+        saveFolder: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmail/folder/save", params);
+        },
         deleteFolder: function (folderName) {
             var params = {method: "Post", folderName: folderName};
             return app.getJsonData(contextPath + "/gmail/folder/delete", params);

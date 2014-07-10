@@ -11,9 +11,11 @@
             showFolders.call(view);
         },
 
-        events: {
+		events: {
+        	"click;.btnAdd":function(e){
+	        	brite.display("CreateFolder",null,{id:null});
+	        }
         },
-
         docEvents: {
             "EDIT_FOLDER":function(event, extraData){
                 if (extraData && extraData.objId) {

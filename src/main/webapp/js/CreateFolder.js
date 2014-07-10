@@ -11,8 +11,12 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+            	data = data || {};
                 if(data) {
                     this.id = data.id;
+                }
+                if(data.type){
+                	view.type = data.type;
                 }
                 var html = app.render("tmpl-CreateFolder",data||{});
                 var $e = $(html);
@@ -40,7 +44,11 @@
                     input.focus();
                     input.closest("div").addClass("error").find("span").html("Please enter valid folder name.");
                 } else {
-                    dfd = app.googleApi.saveLabelRest({id:view.id, name: input.val()})
+                	if(view.type == 'rest'){
+	                    dfd = app.googleApi.saveLabelRest({id:view.id, name: input.val()});
+                	}else{
+                		dfd = app.googleApi.saveFolder({name: input.val()});
+                	}
                     dfd.done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_FOLDERS");

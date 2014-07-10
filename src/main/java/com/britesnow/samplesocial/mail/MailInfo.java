@@ -1,6 +1,8 @@
 package com.britesnow.samplesocial.mail;
 
 
+import java.util.List;
+
 import javax.mail.Message;
 
 public class MailInfo {
@@ -9,6 +11,7 @@ public class MailInfo {
     private String from;
     private String subject;
     private String content;
+    private List attachments = null;
 
     public MailInfo(Object id, Object date, String from, String subject) {
         this.id = id;
@@ -67,5 +70,12 @@ public class MailInfo {
         return content;
     }
 
+    public List getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List attachments) {
+        this.attachments = attachments;
+    }
 
 }

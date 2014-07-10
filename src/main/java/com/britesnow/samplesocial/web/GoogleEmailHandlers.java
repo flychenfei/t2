@@ -10,7 +10,7 @@ import javax.mail.Folder;
 
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.model.User;
-import com.britesnow.samplesocial.service.GMailService;
+import com.britesnow.samplesocial.service.GmailImapService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -24,11 +24,11 @@ import com.google.inject.Singleton;
 @Singleton
 public class GoogleEmailHandlers {
     @Inject
-    GMailService gMailService;
+    GmailImapService gmailImapService;
 
     @WebGet("/gmail/folders")
     public WebResponse listFolders(@WebUser User user) throws Exception {
-        Folder[] folders = gMailService.listFolders();
+        Folder[] folders = gmailImapService.listFolders();
         List list = new ArrayList();
         for (Folder folder : folders) {
             Map map = new HashMap();
@@ -38,10 +38,20 @@ public class GoogleEmailHandlers {
         }
         return WebResponse.success(list);
     }
+    
+    @WebPost("/gmail/folder/save")
+    public WebResponse saveFolder(@WebUser User user, @WebParam("name") String folderName, RequestContext rc) throws Exception {
+        boolean result = gmailImapService.saveFolder(folderName);
+        if (result) {
+            return WebResponse.success(result);
+        }else {
+            return WebResponse.fail(String.format("Save Folder %s fail", folderName));
+        }
+    }
 
     @WebPost("/gmail/folder/delete")
     public WebResponse deleteFolder(@WebUser User user, @WebParam("folderName") String folderName, RequestContext rc) throws Exception {
-        boolean result = gMailService.deleteFolder(folderName);
+        boolean result = gmailImapService.deleteFolder(folderName);
         if (result) {
             return WebResponse.success(result);
         }else {
@@ -54,7 +64,7 @@ public class GoogleEmailHandlers {
                            @WebParam("folderName") String folderName,
                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
-    	Pair<Integer, List<MailInfo>> pair = gMailService.listMails("inbox", pageSize*pageIndex+1, pageSize);
+    	Pair<Integer, List<MailInfo>> pair = gmailImapService.listMails("inbox", pageSize*pageIndex+1, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
 
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
@@ -62,7 +72,7 @@ public class GoogleEmailHandlers {
 
     @WebGet("/gmail/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
-        MailInfo info = gMailService.getEmail(id);
+        MailInfo info = gmailImapService.getEmail(id);
         return WebResponse.success(info);
     }
 
@@ -71,7 +81,7 @@ public class GoogleEmailHandlers {
     @WebPost("/gmail/delete")
     public WebResponse deleteEmail(@WebUser User user,
                               @WebParam("id") Integer id, RequestContext rc) throws Exception {
-        gMailService.deleteEmail(id);
+        gmailImapService.deleteEmail(id);
         return WebResponse.success(true);
     }
 
@@ -80,7 +90,7 @@ public class GoogleEmailHandlers {
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
                            @WebParam("content") String content, @WebParam("to") String to, RequestContext rc) throws Exception {
-        gMailService.sendMail(subject, content, to);
+        gmailImapService.sendMail(subject, content, to);
         return WebResponse.success();
     }
 
@@ -150,7 +160,7 @@ public class GoogleEmailHandlers {
         
 //        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
 //              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
-    	Pair<Integer, List<MailInfo>> pair = gMailService.gmailSearch(subject, from, to, body,
+    	Pair<Integer, List<MailInfo>> pair = gmailImapService.gmailSearch(subject, from, to, body,
     			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
     			attachmentName , cc , list,  hasCircle ,  circle ,  chatContent , unread,
     			category , deliveredTo , rfc822msgid , minSize, maxSize, pageSize * pageIndex + 1, pageSize);

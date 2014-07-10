@@ -41,8 +41,8 @@ import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPTransport;
 
 @Singleton
-public class GMailService {
-    private static Logger log = LoggerFactory.getLogger(GMailService.class);
+public class GmailImapService {
+    private static Logger log = LoggerFactory.getLogger(GmailImapService.class);
     @Inject
     OAuth2Authenticator emailAuthenticator;
 
@@ -108,6 +108,7 @@ public class GMailService {
         IMAPStore imap = getImapStore();
         return imap.getDefaultFolder().list();
     }
+    
     public Folder getFolder(String folderName) throws Exception {
         IMAPStore imap = getImapStore();
         return imap.getFolder(folderName);
@@ -162,6 +163,17 @@ public class GMailService {
             folder.close(true);
         }
         return folder.delete(true);
+    }
+    
+    
+    public boolean saveFolder(String folderName) throws Exception {
+        GmailStore imap = getImapsStore();
+        Folder folder = null;
+        folder = imap.getFolder(folderName);
+        if (!folder.exists()) {
+            folder.create(Folder.HOLDS_MESSAGES);
+        }
+        return true;
     }
 
     /**

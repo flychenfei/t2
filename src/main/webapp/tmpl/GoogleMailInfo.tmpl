@@ -24,6 +24,14 @@
 						{{sendDate}}
 					</div>
 				</div>
+				<div class="control-group {{#if hideAttachments}}hide{{/if}}">
+					<div class="control-label">Attachment:</div>
+					<div class="controls">
+						{{#each attachments}}
+							<div><a href="javascript:void(0)" data-attachment-id="{{id}}"data-attachment-name="{{name}}"  class="attachment">{{name}}</a></div>
+						{{/each}}
+					</div>
+				</div>
 				<div class="control-group">
 					<div class="control-label">Content:</div>
 					<div class="controls">
