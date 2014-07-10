@@ -20,8 +20,10 @@ public class GoogleCalendarEventsHandlers {
 
 
     @WebGet("/googleCalendarEvents/list")
-    public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") String pageIndex) throws Exception {
-        Pair<String, List<Map>> pair = googleCalendarEventsService.listEvents(pageIndex, pageSize, startDate, endDate);
+    public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") String pageIndex,
+                            @WebParam("calendarId") String calendarId) throws Exception {
+        Pair<String, List<Map>> pair = googleCalendarEventsService.listEvents(pageIndex, pageSize, startDate, endDate,calendarId);
         List<Map> map = pair.getSecond();
         WebResponse result = WebResponse.success(map);
         result.set("nextPageToken", pair.getFirst());

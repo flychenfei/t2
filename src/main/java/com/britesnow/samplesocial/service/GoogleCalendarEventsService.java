@@ -31,16 +31,21 @@ public class GoogleCalendarEventsService {
     @Inject
     GoogleAuthService authService;
     
-    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate, String calendarId){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
         try {
-            list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
+            if(calendarId == null || calendarId == ""){
+                list = getCalendarService().events().list("primary").setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
+            }else{
+                list = getCalendarService().events().list(calendarId).setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
+            }
+            
         } catch (IOException e1) {
             e1.printStackTrace();
         }
         
-        if(startDate != null){
+        if(startDate != null && !startDate.equals("")){
             DateTime minTime = null;
             Date min = null;
             try {
@@ -52,7 +57,7 @@ public class GoogleCalendarEventsService {
             list = list.setTimeMin(minTime);
         }
         
-        if(endDate != null){
+        if(endDate != null && !endDate.equals("")){
             Date max = null;
             try {
                 max = sdf.parse(endDate);
