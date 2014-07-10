@@ -55,7 +55,38 @@ var app = app || {};
 		$e.css("left", (pWidth - $e.width()) / 2 + "px").css("top", (pHeight - $e.height()) / 2 + "px");
 	}
 	
-
+    var _UNIT = ["B","KB","MB","GB","TB","PB"];
+    /**
+     * format the number within unit,mainly used to format the file size
+     * @param num 
+     * @param initUnit default is B(Byte)
+     */
+	app.util.formatWithUnit = function(num,initUnit){
+		var p = 0;
+		if(initUnit){
+			for(var i=0,l=_UNIT.length;i<j;i++){
+				if(_UNIT[i]==initUnit){
+					p = i;
+					break;
+				}
+			}
+		}
+		try{
+    		var number = typeof(num)=="number"?num:parseInt(num);
+    		if(isNaN(number)){
+    			return num;
+    		}else{
+    			while(number>=1024&&p<7){
+    				number = parseInt(number/1024);
+    				p++;
+    			}
+    			return number+" "+_UNIT[p];
+    		}
+    		
+    	}catch (e) {
+    		return num;
+		}
+	}
 
 })(jQuery);
 

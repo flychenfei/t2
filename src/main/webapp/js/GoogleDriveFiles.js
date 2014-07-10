@@ -68,6 +68,8 @@
         daoEvents: {
         }
     });
+    
+
     function showFile() {
     	var view = this;
         return brite.display("DataTable", ".files-container", {
@@ -97,9 +99,11 @@
                     render:function(obj){return obj.fileType}
                 },
                 {
-                    text:"FileSize(bytes)",
+                    text:"FileSize",
                     attrs: "style='width:10%; word-break: break-word;'",
-                    render:function(obj){return obj.fileSize}
+                    render:function(obj){
+                    	return app.util.formatWithUnit(obj.fileSize);
+                    }
                 },
                 {
                     text:"Owner",
