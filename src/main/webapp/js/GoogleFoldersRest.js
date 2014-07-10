@@ -13,7 +13,7 @@
 
         events: {
         	"click;.btnAdd":function(e){
-	        	brite.display("CreateFolder",null,{id:null});
+	        	brite.display("CreateFolder",null,{type:'rest', id:null});
 	        }
         },
 
@@ -22,7 +22,7 @@
                 if (extraData && extraData.objId) {
                     var $row = $(extraData.event.currentTarget).closest("tr");
                     var name = $row.attr("data-name");
-                    brite.display("CreateFolder", null, {id:extraData.objId, name:name})
+                    brite.display("CreateFolder", null, {type:'rest', id:extraData.objId, name:name})
                 }
             },
             "DELETE_FOLDER": function(event, extraData){
