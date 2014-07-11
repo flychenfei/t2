@@ -68,18 +68,30 @@
 	        		alert("This file is not support download!");
 	        	}
 			},
-			 "click;.delete":function(event){
+			 "click;.trash":function(event){
 			    var parma = {};
             	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDriveApi.deleteFile(parma).done(function (success) {
+                app.googleDriveApi.trashFile(parma).done(function (success) {
                     if(success){
-                    	alert("Delete success");
+                    	alert("Trash success");
                     }else{
-                    	alert("Delete fail");
+                    	alert("Trash fail");
                     }
                     brite.display("GoogleDriveFiles",".GoogleScreen-content");
                 });
-				}
+			},
+			 "click;.delete":function(event){
+				    var parma = {};
+	            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+	                app.googleDriveApi.deleteFile(parma).done(function (success) {
+	                    if(success){
+	                    	alert("Delete success");
+	                    }else{
+	                    	alert("Delete fail");
+	                    }
+	                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+	                });
+			}
         },
 
         docEvents: {
@@ -137,7 +149,7 @@
                     text:"Operator",
                     attrs: "style='width:10%'",
                     render: function (obj) {
-                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     }
                 }
             ],

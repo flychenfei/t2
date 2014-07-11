@@ -57,9 +57,25 @@ public class GoogleDriveHandlers {
 		return WebResponse.fail();
 	}
     
+    @WebGet("/googleDrive/trashFile")
+    public Object trashFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.trashFile(fileId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    @WebGet("/googleDrive/untrashFile")
+    public Object untrashFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.untrashFile(fileId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
     @WebGet("/googleDrive/deleteFile")
-    public Object deleteFile(@WebParam("fileId") String fileId, @WebParam("etag") String etag, @WebParam("Permanent") Boolean Permanent){
-        if(googleDriveService.trashFile(fileId, Permanent))
+    public Object deleteFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.deleteFile(fileId))
         	return WebResponse.success();
         else
         	return WebResponse.fail();

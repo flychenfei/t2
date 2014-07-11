@@ -125,17 +125,30 @@ public class GoogleDriveService {
     
     /**
      * Move the file to the trash
+     * 
      * @param fileId
-     * @param Permanent
      * @return
      */
-    public boolean trashFile(String fileId,  boolean Permanent){
-    	if(Permanent){
-    		return deleteFile(fileId);
-    	}
+    public boolean trashFile(String fileId){
     	Drive service = getDriverService();
 		try {
 		      service.files().trash(fileId).execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
+		}
+        return true;
+    }
+    
+    /**
+     * Restore a file from the trash.
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean untrashFile(String fileId){
+    	Drive service = getDriverService();
+		try {
+		      service.files().untrash(fileId).execute();
 		    } catch (IOException e) {
 		     e.printStackTrace();
 		}

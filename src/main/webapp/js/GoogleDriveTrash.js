@@ -35,27 +35,17 @@
 				              });
 				          }});
 				  },
-			"click;.download":function(event){
-				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-	        	var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
-	        	var fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
-	        	if(fileId && fileUrl == "true"){
-	        		window.location.href=contextPath+"/googleDrive/download?fileId="+fileId+"&fileName="+fileName;
-	        	}else{
-	        		alert("This file is not support download!");
-	        	}
-			},
-			 "click;.delete":function(event){
-			    var parma = {};
-            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDriveApi.deleteFile(parma).done(function (success) {
-                    if(success){
-                    	alert("Delete success");
-                    }else{
-                    	alert("Delete fail");
-                    }
-                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
-                });
+				 "click;.restore":function(event){
+					    var parma = {};
+		            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+		                app.googleDriveApi.untrashFile(parma).done(function (success) {
+		                    if(success){
+		                    	alert("Restore success");
+		                    }else{
+		                    	alert("Restore fail");
+		                    }
+		                    brite.display("GoogleDriveTrash",".GoogleScreen-content");
+		                });
 				}
         },
 
@@ -105,6 +95,13 @@
                     text:"Owner",
                     attrs: "style='width:10%; word-break: break-word;'",
                     render:function(obj){return obj.owner}
+                },
+                {
+                    text:"Operator",
+                    attrs: "style='width:10%'",
+                    render: function (obj) {
+                        return "<span> <a src=\"#\" class=\"restore\" style=\"cursor:pointer;\">"+"restore"+"</a></span>";
+                    }
                 }
             ],
             opts:{
