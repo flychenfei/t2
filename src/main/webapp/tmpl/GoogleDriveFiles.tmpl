@@ -1,9 +1,32 @@
 <script id="tmpl-GoogleDriveFiles" type="text/html">
 <div class="GoogleDriveFiles">
   <div>
-		<span class="btn btnUpload"><i class="icon-plus"></i>Upload</span>
-        <span class="btn btnSearch"><i class="icon-plus"></i>Search</span>
-      </div>
+	<span class="btn btnUpload"><i class="icon-plus"></i>Upload</span>
+  </div>
+      
+  <div class="search-form">
+  	<input type="text" placeholder="keyword" name="keyword" class="keyword"/>
+  	<div class="search-type">
+  		<div class="search-type-item">
+	  		<label for="title">Title</label>
+	  		<input id="title" type="radio" name="searchType" value="title"  checked/>
+  		</div>
+  		
+  		<div class="search-type-item">
+	  		<label for="fullText">Full Text</label>
+	  		<input id="fullText" type="radio" name="searchType" value="fullText"/>
+  		</div>
+  		
+  		<div class="search-type-item">
+	  		<label for="mimeType">mimeType</label>
+	  		<input id="mimeType" type="radio" name="searchType" value="mimeType"/>
+  		</div>
+  	</div>
+  	
+  	<div>
+  		<input type="button" class="search" value="Search" class="btn btn-default"/>
+  	</div>
+  </div>
   <div class="files-container">
     
   </div>
