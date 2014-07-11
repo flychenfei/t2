@@ -20,21 +20,44 @@
         		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
 			},
 			"click;.btnSearch":function(e){
-				  brite.display("InputValue", ".MainScreen", {
-				  title: 'Search File',
-				  fields: [
-				      {label:"FileName", name:'title', mandatory:true}
-				  ],
-				  callback: function (params) {
-				      brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-				            	  results: function(opts){
-				                     opts = opts||[];
-				                      $.extend(opts, params)
-				                     return app.googleDriveApi.searchFile(opts)
-				                 }
-				              });
-				          }});
-				  },
+			  brite.display("InputValue", ".MainScreen", {
+			  title: 'Search File',
+			  fields: [
+			      {label:"FileName", name:'title', mandatory:true}
+			  ],
+			  callback: function (params) {
+			      brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+			            	  results: function(opts){
+			                     opts = opts||[];
+			                      $.extend(opts, params)
+			                     return app.googleDriveApi.searchFile(opts)
+			                 }
+			              });
+			          }});
+			  },
+			"click;.search":function(event){
+				var $form = $(event.target).closest(".search-form");
+				var params = {};
+				var keyword = $form.find(".keyword").val();
+				var searchType;
+				$form.find("[name='searchType']").each(function(index,e){
+					if($(e).prop("checked")){
+						searchType = $(e).val();
+					}
+				});
+				if(!keyword){
+					alert("Please type some keywords for search.");
+					return;
+				}else{
+					params.keyword = keyword;
+				}
+				params.searchType = searchType;
+				brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+					results: function(){
+					    return app.googleDriveApi.searchFile(params);
+				    }
+				});
+			},  
 			"click;.download":function(event){
 				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 	        	var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
@@ -45,18 +68,30 @@
 	        		alert("This file is not support download!");
 	        	}
 			},
-			 "click;.delete":function(event){
+			 "click;.trash":function(event){
 			    var parma = {};
             	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDriveApi.deleteFile(parma).done(function (success) {
+                app.googleDriveApi.trashFile(parma).done(function (success) {
                     if(success){
-                    	alert("Delete success");
+                    	alert("Trash success");
                     }else{
-                    	alert("Delete fail");
+                    	alert("Trash fail");
                     }
                     brite.display("GoogleDriveFiles",".GoogleScreen-content");
                 });
-				}
+			},
+			 "click;.delete":function(event){
+				    var parma = {};
+	            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+	                app.googleDriveApi.deleteFile(parma).done(function (success) {
+	                    if(success){
+	                    	alert("Delete success");
+	                    }else{
+	                    	alert("Delete fail");
+	                    }
+	                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+	                });
+			}
         },
 
         docEvents: {
@@ -114,7 +149,7 @@
                     text:"Operator",
                     attrs: "style='width:10%'",
                     render: function (obj) {
-                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     }
                 }
             ],

@@ -36,102 +36,17 @@ public class GoogleDriveService {
 
     @Inject
     private GoogleAuthService authService;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
     private static String MEDIATYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media";
     private static String MULTIPARTTYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart";
-//    private static String RESUMABLETYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=resumable";
     
-    public Pair<String, List<Map>> searchFile(String title,String nextPagetoken, Integer pageSize){
-    	List<Map> results = new ArrayList<Map>();
-    	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
-    		return new Pair<String, List<Map>>("lastPage", results);
-    	Map<String,String> item = null;
-    	Files.List request = null;
-    	FileList filelist = null;
-    	StringBuilder query = new StringBuilder();
-        try {
-        	request = getDriverService().files().list();
-			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
-				request.setPageToken(nextPagetoken);
-			request.setMaxResults(pageSize);
-			query.append("trashed = false");
-			if(title != null && !title.equals("")){
-				query.append("and title = '").append(title).append("'");
-				request.setQ(query.toString());
-			}else{
-				return new Pair<String, List<Map>>("lastPage", results);
-			}
-        	filelist = request.execute();
-			List<File> files = filelist.getItems();
-			for(File file : files){
-				System.out.println(file);
-				item = new HashMap<String, String>();
-				item.put("fileId", file.getId());
-				item.put("fileName", file.getTitle());
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
-				item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
-				item.put("fileType", file.getMimeType());
-				item.put("url", file.getDownloadUrl());
-				if(file.getFileSize() != null){
-					item.put("fileSize", String.valueOf(file.getFileSize()));
-				}else{
-					item.put("fileSize", "NO Size");
-				}
-				item.put("owner", file.getOwnerNames().get(0));
-				item.put("etag", file.getEtag());
-				results.add(item);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
+    public Pair<String, List<Map>> searchFile(String queryString,String nextPageToken, Integer pageSize){
+    	return searchFiles(nextPageToken, pageSize, queryString);
     }
     
-    //list file not trashed
-    public Pair<String, List<Map>> list(String nextPagetoken, Integer pageSize, boolean trash){
-    	List<Map> results = new ArrayList<Map>();
-    	if(nextPagetoken != null && nextPagetoken.equals("lastPage"))
-    		return new Pair<String, List<Map>>("lastPage", results);
-    	Map<String,String> item = null;
-    	Files.List request = null;
-    	FileList filelist = null;
-        try {
-        	request = getDriverService().files().list();
-			if(nextPagetoken != null && !nextPagetoken.equals("") && !nextPagetoken.equals("0"))
-				request.setPageToken(nextPagetoken);
-			request.setMaxResults(pageSize);
-			if(trash){
-				request.setQ("trashed = true");
-			}else{
-				request.setQ("trashed = false");
-			}
-        	filelist = request.execute();
-			List<File> files = filelist.getItems();
-			for(File file : files){
-				item = new HashMap<String, String>();
-				item.put("fileId", file.getId());
-				item.put("fileName", file.getTitle());
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
-				item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
-				item.put("fileType", file.getMimeType());
-				if(file.getDownloadUrl() != null){
-					item.put("hasUrl", "true");
-				}
-				if(file.getFileSize() != null){
-					item.put("fileSize", String.valueOf(file.getFileSize()));
-				}else{
-					item.put("fileSize", "NO Size");
-				}
-				item.put("owner", file.getOwnerNames().get(0));
-				item.put("etag", file.getEtag());
-				results.add(item);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
+    public Pair<String, List<Map>> list(String nextPageToken, Integer pageSize, boolean trash){
+    	return searchFiles(nextPageToken, pageSize, "trashed="+trash);
     }
     
     public boolean uploadFile(FileItem fileItem){
@@ -210,17 +125,30 @@ public class GoogleDriveService {
     
     /**
      * Move the file to the trash
+     * 
      * @param fileId
-     * @param Permanent
      * @return
      */
-    public boolean trashFile(String fileId,  boolean Permanent){
-    	if(Permanent){
-    		return deleteFile(fileId);
-    	}
+    public boolean trashFile(String fileId){
     	Drive service = getDriverService();
 		try {
 		      service.files().trash(fileId).execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
+		}
+        return true;
+    }
+    
+    /**
+     * Restore a file from the trash.
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean untrashFile(String fileId){
+    	Drive service = getDriverService();
+		try {
+		      service.files().untrash(fileId).execute();
 		    } catch (IOException e) {
 		     e.printStackTrace();
 		}
@@ -273,5 +201,64 @@ public class GoogleDriveService {
         GoogleCredential credential = new GoogleCredential().setAccessToken(authService.getSocialIdEntity().getToken());
         Drive service = new Drive.Builder(httpTransport, jsonFactory, credential).setApplicationName("Drive Test").build();
         return service;
+    }
+    
+    /**
+     * search files based on the queryString ,see https://developers.google.com/drive/web/search-parameters
+     * @param nextPageToken
+     * @param pageSize
+     * @param queryString
+     * @return
+     */
+    private Pair<String, List<Map>> searchFiles(String nextPageToken,Integer pageSize,String queryString){
+    	List<Map> results = new ArrayList<Map>();
+    	if(nextPageToken != null && nextPageToken.equals("lastPage")){
+    		return new Pair<String, List<Map>>("lastPage", results);
+    	}
+    	Files.List request = null;
+    	FileList filelist = null;
+        try {
+        	request = getDriverService().files().list();
+			if(nextPageToken != null && !nextPageToken.equals("") && !nextPageToken.equals("0")){
+				request.setPageToken(nextPageToken);
+			}
+			request.setMaxResults(pageSize);
+			request.setQ(queryString);
+        	filelist = request.execute();
+			results = formatFiles(filelist.getItems());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
+    }
+
+    /**
+     * format the files object, like date format
+     * @param files
+     * @return
+     */
+    private List<Map> formatFiles(List<File> files){
+    	List<Map> results = new ArrayList<Map>();
+    	for(File file : files){
+			Map<String, String> item = new HashMap<String, String>();
+			item.put("fileId", file.getId());
+			item.put("fileName", file.getTitle());
+			item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
+			item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
+			item.put("fileType", file.getMimeType());
+			item.put("url", file.getDownloadUrl());
+			if(file.getFileSize() != null){
+				item.put("fileSize", String.valueOf(file.getFileSize()));
+			}else{
+				item.put("fileSize", "NO Size");
+			}
+			if(file.getDownloadUrl() != null){
+				item.put("hasUrl", "true");
+			}
+			item.put("owner", file.getOwnerNames().get(0));
+			item.put("etag", file.getEtag());
+			results.add(item);
+		}
+    	return results;
     }
 }

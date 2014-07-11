@@ -11,9 +11,18 @@ var app = app || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/search", param);
         },
+        trashFile: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/trashFile", param);
+        },
+        untrashFile: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/untrashFile", param);
+        },
         deleteFile: function(param){
         	param = param || {};
-        	param.Permanent = param.Permanent || false;
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/deleteFile", param);
         },

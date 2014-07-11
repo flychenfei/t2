@@ -37,8 +37,9 @@ public class GoogleDriveHandlers {
     }
     
     @WebGet("/googleDrive/search")
-    public Object searchFile(@WebParam("title") String title, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.searchFile(title, nextPagetoken, pageSize);
+    public Object searchFile(@WebParam("keyword") String keyword,@WebParam("searchType") String searchType, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
+    	System.out.println(searchType+" contains '"+keyword+"'");
+    	Pair<String, List<Map>> pair = googleDriveService.searchFile(searchType+" contains '"+keyword+"'", nextPagetoken, pageSize);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());
@@ -56,9 +57,25 @@ public class GoogleDriveHandlers {
 		return WebResponse.fail();
 	}
     
+    @WebGet("/googleDrive/trashFile")
+    public Object trashFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.trashFile(fileId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    @WebGet("/googleDrive/untrashFile")
+    public Object untrashFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.untrashFile(fileId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
     @WebGet("/googleDrive/deleteFile")
-    public Object deleteFile(@WebParam("fileId") String fileId, @WebParam("etag") String etag, @WebParam("Permanent") Boolean Permanent){
-        if(googleDriveService.trashFile(fileId, Permanent))
+    public Object deleteFile(@WebParam("fileId") String fileId){
+        if(googleDriveService.deleteFile(fileId))
         	return WebResponse.success();
         else
         	return WebResponse.fail();
