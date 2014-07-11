@@ -220,16 +220,32 @@ public class GmailRestService {
             }
             
             List attachments = new ArrayList();
+            String body = null;
             if(message.getPayload().getParts() != null){
                 if(message.getPayload().getParts().size() == 1){
-                    String body = message.getPayload().getParts().get(0).getBody().getData();
-                    mailInfo.setContent(getContent(body));
+                    body = message.getPayload().getParts().get(0).getBody().getData();
                 }else{
                     for(MessagePart part : message.getPayload().getParts()){
-                        if(part.getMimeType().equalsIgnoreCase("text/html") && (part.getFilename() == null || part.getFilename().equals(""))){
-                            String body = part.getBody().getData();
+                        if(part.getMimeType().equalsIgnoreCase("text/html")){
+                            body = part.getBody().getData();
                             mailInfo.setContent(getContent(body));
                         }else{
+                            
+                            if(part.getMimeType().equalsIgnoreCase("text/plain")){
+                                body = part.getBody().getData();
+                            }else if (part.getMimeType().equalsIgnoreCase("multipart/alternative")) {
+                                body = part.getParts().get(1).getBody().getData();
+                            }else if (part.getMimeType().equalsIgnoreCase("multipart/related")) {
+                                body = part.getParts().get(0).getParts().get(1).getBody().getData();
+                            }else if (part.getMimeType().equalsIgnoreCase("multipart/mixed")) {
+                                if (part.getParts().get(0).getMimeType().equalsIgnoreCase("text/plain")) {
+                                    body = part.getParts().get(0).getBody().getData();
+                                }else if (part.getParts().get(0).getMimeType().equalsIgnoreCase("multipart/alternative")) {
+                                    body = part.getParts().get(1).getBody().getData();
+                                }
+                            }
+                            
+                            
                             String attachmentId = part.getBody().getAttachmentId();
                             if(attachmentId != null && !attachmentId.equals("")){
                                 Map map = new HashMap();
@@ -244,9 +260,11 @@ public class GmailRestService {
                 }
             }else{
                 if(message.getPayload().getBody() != null){
-                    String body = message.getPayload().getBody().getData();
-                    mailInfo.setContent(getContent(body));
+                    body = message.getPayload().getBody().getData();
                 }
+            }
+            if(body != null){
+                mailInfo.setContent(getContent(body));
             }
             mailInfo.setAttachments(attachments);
             

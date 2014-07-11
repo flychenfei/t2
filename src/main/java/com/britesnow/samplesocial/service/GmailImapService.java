@@ -70,7 +70,7 @@ public class GmailImapService {
 
         Folder inbox;
         if (folderName == null) {
-            inbox = imap.getFolder("INBOX");
+            inbox = imap.getDefaultFolder();
         } else {
             inbox = imap.getFolder(folderName);
         }
@@ -183,7 +183,7 @@ public class GmailImapService {
                     
                     info.setAttachments(attachments);
                 }
-                
+                info.setContent(str.toString());
                 
                 
             }
