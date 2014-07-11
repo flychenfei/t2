@@ -12,9 +12,11 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+            	view = this;
             	data = data || {};
                 if(data) {
                     this.id = data.id;
+                    view.id = data.id;
                 }
                 
                 if(data.startTime){
@@ -84,14 +86,20 @@
 				
 
 				$calendar = $e.find(".calendar");
+				$calendarOpt = $e.find(".calendarOpt");
 				app.googleApi.listCalendars().done(function(data) {
-					var selected = "";
-					for (var i = 0; i < data.result.length; i++) {
-						var id = data.result[i].id;
-						var value = data.result[i].summary;
-						$calendar.append("<option value='" + id + "'>" + value + "</option>");
+					if(!view.id){
+						$calendarOpt.removeClass("hide");
+						for (var i = 0; i < data.result.length; i++) {
+							var id = data.result[i].id;
+							var value = data.result[i].summary;
+							var selected = "";
+							if(data.result[i].primary){
+								selected = "selected";
+							}
+							$calendar.append("<option value='" + id + "' "+selected+">" + value + "</option>");
+						}
 					}
-					$calendar.val(view.calendarId);
 				}); 
 
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
@@ -131,6 +139,7 @@
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
+                            alert();
                         }), 3000);
                         view.close();
                     });

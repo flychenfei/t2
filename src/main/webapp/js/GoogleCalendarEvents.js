@@ -67,7 +67,6 @@
 	        	var calendarId = $tr.attr("data-calendarId");
                 if (id) {
                     app.googleApi.getCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
-                    	console.log(data);
                         if(data && data.result){
                             brite.display("CreateCalendarEvent", null, data.result);
                         }
