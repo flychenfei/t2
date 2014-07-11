@@ -87,14 +87,18 @@ public class GmailImapService {
         if (total > 0) {
             Integer end = getEnd(start, count, total);
             if(end != null){
-                messages = inbox.getMessages(start, end);
+                
+                int finalStart = total + 1 - end;
+                int finalEnd = total + 1 - start;
+                
+                messages = inbox.getMessages(finalStart, finalEnd);
             }
         }
         
         if(messages != null){
             for (Message message : messages) {
                 MailInfo info = buildMailInfo(message);
-                mails.add(info);
+                mails.add(0,info);
             }
         }
         
@@ -518,11 +522,12 @@ public class GmailImapService {
             if (total > 0) {
                 Integer end = getEnd(start, count, total);
                 if (end != null) {
-                    messages = new Message[end - start + 1];
-                    int c = 0;
-                    for (int i = messages.length - 1; i >= 0; i--) {
-                        messages[c] = msgs[start + i - 1];
-                        c++;
+                    int finalStart = total + 1 - end;
+                    int finalEnd = total + 1 - start;
+                    
+                    messages = new Message[finalEnd - finalStart + 1];
+                    for (int i = 0; i < messages.length; i++) {
+                        messages[i] = msgs[finalStart + i - 1];
                     }
                 }
             }
