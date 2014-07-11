@@ -17,12 +17,7 @@
 			if (data.id) {
 				if(data.type == 'rest'){
 					app.googleApi.getMailRest(data.id).done(function(data) {
-						var result = data.result;
-						if(!result && (result.attachments || result.attachments.length == 0)){
-							result.hideAttachments = true;
-						}
-						console.log(result);
-						dfd.resolve(result);
+						dfd.resolve(data.result);
 					});
 				}else{
 					app.googleApi.getMail(data.id).done(function(data) {
@@ -35,7 +30,10 @@
 			}
 			
 			$.when(dfd).done(function(mail) {
-				//console.log(mail);
+				if (!mail || !mail.attachments || mail.attachments.length == 0) {
+					mail.hideAttachments = true;
+				}
+				
 				var recDate = new Date(mail.date);
                 mail.sendDate = recDate.format("yyyy-MM-dd hh:mm:ss")
 				var $html = app.render("tmpl-GoogleMailInfo",mail);
@@ -58,7 +56,11 @@
 	 			var attachmentId = $attachment.attr("data-attachment-id");
 	 			var name = $attachment.attr("data-attachment-name");
 	 			var messageId = view.id;
-	 			window.open(contextPath+"/gmailrest/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
+	 			if(view.type == 'rest'){
+		 			window.open(contextPath+"/gmailrest/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
+	 			}else{
+		 			window.open(contextPath+"/gmail/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
+	 			}
 	 		}
 		},
 
