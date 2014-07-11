@@ -19,16 +19,20 @@
                  inputMask: true 
             });
             showCalendarEvents.call(view);
-            
-            $calendar = $e.find(".calendar");
-            app.googleApi.listCalendars().done(function(data){
+
+			$calendar = $e.find(".calendar");
+			app.googleApi.listCalendars().done(function(data) {
+				for (var i = 0; i < data.result.length; i++) {
+					var id = data.result[i].id;
+					var value = data.result[i].summary;
 					var selected = "";
-					for(var i = 0; i < data.result.length; i++){
-						var id = data.result[i].id;
-						var value = data.result[i].summary;
-						$calendar.append("<option value='" + id + "'>" + value + "</option>");
+					if (data.result[i].primary) {
+						selected = "selected";
 					}
-				});
+					$calendar.append("<option value='" + id + "' " + selected + ">" + value + "</option>");
+				}
+			});
+
         },
 
         events: {

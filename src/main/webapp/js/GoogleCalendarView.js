@@ -16,35 +16,60 @@
         	return app.render("tmpl-GoogleCalendarView");
         },
 
-            postDisplay:function (data, config) {
-                var view = this;
-                showEvents.call(view);
-            },
 
-            events:{
-				"click;.listCalendar":function(){
-					brite.display("GoogleCalendarEvents");
-				},
-				"click;.action":function(e){
-					var view = this;
-					var $action = $(e.currentTarget);
-					var next = $action.hasClass("actionNext");
-					var month;
-					if(next){
-						month = view.currentMonth + 1;
-						if(month == 12){
-							view.currentYear = view.currentYear +1;
-						}
-					}else{
-						month = view.currentMonth - 1;
-						if(month == -1){
-							view.currentYear = view.currentYear -1;
-						}
+		postDisplay:function (data, config) {
+
+			var view = this;
+			var $e = view.$el;
+
+			$calendar = $e.find(".calendar");
+			app.googleApi.listCalendars().done(function(data) {
+				for (var i = 0; i < data.result.length; i++) {
+					var id = data.result[i].id;
+					var value = data.result[i].summary;
+					var selected = "";
+					if (data.result[i].primary) {
+						selected = "selected";
 					}
+					$calendar.append("<option value='" + id + "' " + selected + ">" + value + "</option>");
+				}
+			});
+			showEvents.call(view);
+		},
+
+		events:{
+			"click;.listCalendar":function(){
+				brite.display("GoogleCalendarEvents");
+			},
+			"click;.action":function(e){
+				var view = this;
+				var $action = $(e.currentTarget);
+				var next = $action.hasClass("actionNext");
+				var month;
+				if(next){
+					month = view.currentMonth + 1;
+					if(month == 12){
+						view.currentYear = view.currentYear +1;
+					}
+				}else{
+					month = view.currentMonth - 1;
+					if(month == -1){
+						view.currentYear = view.currentYear -1;
+					}
+				}
 	
-					showEvents.call(view,month);
-				},
-            }
+				showEvents.call(view,month);
+			},
+
+			"click;.searchCalendar":function() {
+				view = this;
+				$e = view.$el;
+				var result = {};
+				view.calendarId = $e.find(".calendar").val();
+				showEvents.call(view);
+			},
+
+           }
         });
         
         function showEvents(month){
@@ -70,7 +95,8 @@
 			var opts = {
 				startDate:startDate.format("yyyy-MM-dd hh:mm:ss"),
 				endDate:endDate.format("yyyy-MM-dd hh:mm:ss"),
-				pageSize:100
+				pageSize:100,
+				calendarId:view.calendarId
 			};
 			app.googleApi.listCalendarEvents(opts).done(function(data){
 				

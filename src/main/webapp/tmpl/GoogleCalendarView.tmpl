@@ -1,10 +1,21 @@
 <script id="tmpl-GoogleCalendarView" type="text/html">
 	<div class="GoogleCalendarView">
 		<div class="GoogleCalendarView-header">
-			<span class="btn listCalendar">Show List</span>
+			<div class="control-group ">
+				<span class="btn listCalendar">Show List</span>
+			</div>
+			<div class="control-group ">
+				Select Calendar:
+				<select class = "calendar">
+				</select>
+			</div>
+			<div class="control-group">
+				<a href="#" class="btn searchCalendar">Search</a>
+			</div>
 		</div>
 		<div class="GoogleCalendarView-content"></div>
 	</div>
+
 </script>
 
 <script id="GoogleCalendarView-calendar" type="text/html">
