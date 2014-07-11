@@ -1,10 +1,15 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.BodyPart;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -12,6 +17,7 @@ import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -25,6 +31,7 @@ import javax.mail.search.SearchTerm;
 import javax.mail.search.SentDateTerm;
 import javax.mail.search.SubjectTerm;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,8 +137,90 @@ public class GmailImapService {
 
         Message message = inbox.getMessage(emailId);
         MailInfo info = buildMailInfo(message);
-        info.setContent(getContent(message));
+        
+        try {
+            if(message.getContent() != null){
+                List attachments = new ArrayList();
+                StringBuffer str = new StringBuffer();
+                if (message.isMimeType("text/plain")){
+                    str.append(message.getContent().toString());
+                }else{
+                    Multipart multiPart = (Multipart) message.getContent();
+                    if (message.isMimeType("multipart/alternative")) {
+                        str.append(multiPart.getBodyPart(1).getContent().toString());
+                    }else if (message.isMimeType("multipart/related")) {
+                        Multipart cpart = (Multipart) multiPart.getBodyPart(0).getContent();
+                        str.append(cpart.getBodyPart(1).getContent().toString());
+                    }else if (message.isMimeType("multipart/mixed")) {
+                        if (multiPart.getBodyPart(0).isMimeType("text/plain")) {
+                            str.append(multiPart.getBodyPart(0).getContent());
+                        }
+                        if (multiPart.getBodyPart(0).isMimeType("multipart/alternative")) {
+                            Multipart multipart = (Multipart) multiPart.getBodyPart(0).getContent();
+                            str.append(multipart.getBodyPart(1).getContent());
+                        }
+                    }
+                    
+                    int id = 1;
+                    for (int i = 0; i < multiPart.getCount(); i++) {
+                        BodyPart bodyPart = multiPart.getBodyPart(i);
+                        if(!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) && !StringUtils.isNotBlank(bodyPart.getFileName())) {
+                          continue; 
+                        }
+                        Map map = new HashMap();
+                        map.put("id", id);
+                        map.put("messageId", info.getId());
+                        map.put("name", bodyPart.getFileName());
+                        map.put("type", bodyPart.getContentType());
+                        attachments.add(map);
+                        id++;
+                        
+                    }
+                    
+                    info.setAttachments(attachments);
+                }
+                
+                
+                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         return info;
+    }
+    
+    public InputStream getAttachment(Integer emailId, Integer attachmentId) throws Exception {
+        IMAPStore imap = getImapStore();
+        Folder inbox = imap.getFolder("INBOX");
+        if (!inbox.isOpen()) {
+            inbox.open(Folder.READ_ONLY);
+        }
+
+        Message message = inbox.getMessage(emailId);
+        
+        try {
+            if (message.getContent() != null) {
+                Multipart multiPart = (Multipart) message.getContent();
+                int id = 1;
+                for (int i = 0; i < multiPart.getCount(); i++) {
+                    BodyPart bodyPart = multiPart.getBodyPart(i);
+                    if (!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) && !StringUtils.isNotBlank(bodyPart.getFileName())) {
+                        continue;
+                    }
+                    if(attachmentId == id){
+                        return bodyPart.getInputStream();
+                    }
+                    id++;
+                }
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -310,79 +399,12 @@ public class GmailImapService {
 
     }
 
-    private IMAPStore getImapStore() throws Exception {
-        SocialIdEntity social = authService.getSocialIdEntity();
-        if (social != null && social.getEmail() != null) {
-            return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
-        }
-        throw new IllegalArgumentException("access token is invalid");
-    }
-    
-    private GmailStore getImapsStore() throws Exception {
-    	SocialIdEntity social = authService.getSocialIdEntity();
-    	if(social != null && social.getEmail() != null){
-    		return emailAuthenticator.connectToGmailImap(social.getEmail(), social.getToken());
-    	}
-    	throw new IllegalArgumentException("access token is invalid");
-    }
-
-    private String getContent(Message message) throws Exception {
-        StringBuffer str = new StringBuffer();
-        if (message.isMimeType("text/plain"))
-            str.append(message.getContent().toString());
-        if (message.isMimeType("multipart/alternative")) {
-            Multipart part = (Multipart) message.getContent();
-            str.append(part.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/related")) {
-            Multipart part = (Multipart) message.getContent();
-            Multipart cpart = (Multipart) part.getBodyPart(0).getContent();
-            str.append(cpart.getBodyPart(1).getContent().toString());
-        }
-        if (message.isMimeType("multipart/mixed")) {
-            Multipart part = (Multipart) message.getContent();
-            if (part.getBodyPart(0).isMimeType("text/plain")) {
-                str.append(part.getBodyPart(0).getContent());
-            }
-            if (part.getBodyPart(0).isMimeType("multipart/alternative")) {
-                Multipart multipart = (Multipart) part.getBodyPart(0).getContent();
-                str.append(multipart.getBodyPart(1).getContent());
-            }
-        }
-        return str.toString();
-    }
-
     public MailInfo buildMailInfo(Message message) throws MessagingException, UnsupportedEncodingException {
-    	return new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
-                decodeText(message.getFrom()[0].toString()), message.getSubject());
+        MailInfo mailInfo = new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
+            decodeText(message.getFrom()[0].toString()), message.getSubject());
+    	return mailInfo;
     }
 
-    private String decodeText(String text) throws UnsupportedEncodingException {
-        if (text == null) {
-            return null;
-        }
-        if (text.startsWith("=?GB") || text.startsWith("=?gb")) {
-            text = MimeUtility.decodeText(text);
-        } else {
-            text = new String(text.getBytes("ISO8859_1"));
-        }
-        return text;
-
-    }
-    
-    private Integer getEnd(int start, int count, int total){
-        //prerequire total should be > 0
-        Integer end = null;
-        if(start > total){
-            return null;
-        }else if(start > total - count){
-            end = total;
-        }else{
-            end = start + count - 1;
-        }
-        return end;
-    }
-    
     public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
 			String body, String sDate , String eDate, String srDate , String erDate,
 			String label, String hasAttachment , String attachmentName , String cc ,
@@ -517,5 +539,46 @@ public class GmailImapService {
         
         return new Pair<Integer, List<MailInfo>>(total, mails);
     }
+    
+    private IMAPStore getImapStore() throws Exception {
+        SocialIdEntity social = authService.getSocialIdEntity();
+        if (social != null && social.getEmail() != null) {
+            return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
+        }
+        throw new IllegalArgumentException("access token is invalid");
+    }
+    
+    private GmailStore getImapsStore() throws Exception {
+        SocialIdEntity social = authService.getSocialIdEntity();
+        if(social != null && social.getEmail() != null){
+            return emailAuthenticator.connectToGmailImap(social.getEmail(), social.getToken());
+        }
+        throw new IllegalArgumentException("access token is invalid");
+    }
+    
+    private String decodeText(String text) throws UnsupportedEncodingException {
+        if (text == null) {
+            return null;
+        }
+        if (text.startsWith("=?GB") || text.startsWith("=?gb")) {
+            text = MimeUtility.decodeText(text);
+        } else {
+            text = new String(text.getBytes("ISO8859_1"));
+        }
+        return text;
 
+    }
+    
+    private Integer getEnd(int start, int count, int total){
+        //prerequire total should be > 0
+        Integer end = null;
+        if(start > total){
+            return null;
+        }else if(start > total - count){
+            end = total;
+        }else{
+            end = start + count - 1;
+        }
+        return end;
+    }
 }

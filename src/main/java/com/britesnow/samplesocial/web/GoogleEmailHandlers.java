@@ -1,18 +1,22 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.Folder;
+import javax.servlet.http.HttpServletResponse;
 
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GmailImapService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebModel;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -168,4 +172,21 @@ public class GoogleEmailHandlers {
         return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
     }
 
+    @WebResourceHandler(matches = "/gmail/attachment")
+    public void getAttachment(@WebUser User user, @WebParam("messageId") Integer messageId, @WebParam("attachmentId") Integer attachmentId, @WebParam("name") String name, RequestContext rc) throws Exception {
+        InputStream is = gmailImapService.getAttachment(messageId, attachmentId);
+        HttpServletResponse res = rc.getRes();
+        res.addHeader("Content-Disposition", "attachment;filename=" + new String(name.getBytes()));
+        res.setContentType("application/octet-stream");
+        OutputStream out = res.getOutputStream();
+        
+        byte[] buf = new byte[4096];
+        int bytesRead;
+        while((bytesRead = is.read(buf))!=-1) {
+            out.write(buf, 0, bytesRead);
+        }
+        
+        out.flush();
+        out.close();
+    }
 }
