@@ -31,7 +31,6 @@
                 }
                 
                 this.calendarId = data.calendarId;
-                
                 var html = app.render("tmpl-CreateCalendarEvent",data||{});
                 var $e = $(html);
                 return $e;
@@ -120,6 +119,7 @@
                 data.location=$e.find(".controls input[name='location'] ").val();
                 data.summary=$e.find(".controls textarea[name='summary'] ").val();
                 data.reminders=$e.find(".reminders").val();
+                data.inviters = $e.find(".addInviter").val();
                 
                 var dateVal = $e.find("input[name='startTime']").val();
                 var startHour = $e.find(".startHour").val();
@@ -139,7 +139,6 @@
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
-                            alert();
                         }), 3000);
                         view.close();
                     });

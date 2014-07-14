@@ -66,6 +66,13 @@
                         <input type ="text" class = "reminders" name = "reminders" value='{{#if minutes}}{{minutes}}{{else}}10{{/if}}' /> min
                     </div>
                 </div>
+                <div class="control-group ">
+                    <label class="control-label">Add the inviter:</label>
+                    <div class="controls">
+                        <input type ="text" class = "addInviter" name = "addInviter" title = "Enter email address" value='{{#if inviters}}{{inviters}}{{/if}}' />
+                    </div>
+                </div>                
+                
                 <div class="form-actions">
                     <a href="#" class="btn btn-primary CreateCalendarEventBtn">{{#if id}}Update{{else}}Create{{/if}}</a>
                     <a href="#" class="btn cancelBtn">Close</a>
