@@ -30,6 +30,11 @@ var app = app || {};
         	param = param || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/trashlist", param);
+        },
+        childList: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/childList", param);
         }
 	};
 })();

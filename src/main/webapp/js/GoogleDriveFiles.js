@@ -88,6 +88,15 @@
 	                    }
 	                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
 	                });
+			},
+			 "click;.child":function(event){
+				    var parma = {};
+	            	parma.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
+	            	brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+						results: function(){
+						    return app.googleDriveApi.childList(parma);
+					    }
+					});
 			}
         },
 
@@ -107,7 +116,7 @@
         return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false")
+                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId)
             },
             columnDef:[
                 {
@@ -126,9 +135,9 @@
                     render:function(obj){return obj.updateTime}
                 },
                 {
-                    text:"FileType",
+                    text:"MimeType",
                     attrs: "style='width:20%; word-break: break-word;'",
-                    render:function(obj){return obj.fileType}
+                    render:function(obj){return obj.mimeType}
                 },
                 {
                     text:"FileSize",
@@ -144,9 +153,15 @@
                 },
                 {
                     text:"Operator",
-                    attrs: "style='width:10%'",
+                    attrs: "style='width:10%; cursor:pointer;'",
                     render: function (obj) {
-                        return "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    	var functionString = "";
+                    	if(obj.mimeType == "application/vnd.google-apps.folder"){
+                    		functionString = "<span> <a src=\"#\" class=\"child\">"+"openFolder"+"</a> </span>";
+                    	}else{
+                    		functionString += "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    	}
+                        return functionString;
                     }
                 }
             ],

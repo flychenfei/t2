@@ -29,7 +29,7 @@ public class GoogleDriveHandlers {
 
     @WebGet("/googleDrive/filelist")
     public Object listFiles(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.list(nextPagetoken, pageSize, false);
+    	Pair<String, List<Map>> pair = googleDriveService.list(null, nextPagetoken, pageSize, false);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());
@@ -100,7 +100,16 @@ public class GoogleDriveHandlers {
     
     @WebGet("/googleDrive/trashlist")
     public Object listTrash(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.list(nextPagetoken, pageSize,true);
+    	Pair<String, List<Map>> pair = googleDriveService.list(null, nextPagetoken, pageSize,true);
+		List<Map> docsInfo = pair.getSecond();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", pair.getFirst());
+    	return result;
+    }
+    
+    @WebGet("/googleDrive/childList")
+    public Object listChild(@WebParam("selfId") String selfId,@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
+    	Pair<String, List<Map>> pair = googleDriveService.list(selfId, nextPagetoken, pageSize, false);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());

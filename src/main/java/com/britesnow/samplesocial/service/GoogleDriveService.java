@@ -64,8 +64,16 @@ public class GoogleDriveService {
     	return searchFiles(nextPageToken, pageSize, query.toString());
     }
     
-    public Pair<String, List<Map>> list(String nextPageToken, Integer pageSize, boolean trash){
-    	return searchFiles(nextPageToken, pageSize, "trashed="+trash);
+    public Pair<String, List<Map>> list(String selfId, String nextPageToken, Integer pageSize, boolean trash){
+    	StringBuilder query = new StringBuilder();
+    	query.append("trashed=").append(trash);
+    	if(!Strings.isNullOrEmpty(selfId)){
+    		if(query.length() != 0){
+    			query.append(" and '");
+    		}
+        	query.append(selfId).append("' in parents");
+    	}
+    	return searchFiles(nextPageToken, pageSize, query.toString());
     }
     
     public boolean uploadFile(FileItem fileItem){
@@ -264,7 +272,7 @@ public class GoogleDriveService {
 			item.put("fileName", file.getTitle());
 			item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
 			item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
-			item.put("fileType", file.getMimeType());
+			item.put("mimeType", file.getMimeType());
 			item.put("url", file.getDownloadUrl());
 			if(file.getFileSize() != null){
 				item.put("fileSize", String.valueOf(file.getFileSize()));
@@ -274,6 +282,7 @@ public class GoogleDriveService {
 			if(file.getDownloadUrl() != null){
 				item.put("hasUrl", "true");
 			}
+			item.put("parentId", file.getParents().get(0).getId());
 			item.put("owner", file.getOwnerNames().get(0));
 			item.put("etag", file.getEtag());
 			results.add(item);
