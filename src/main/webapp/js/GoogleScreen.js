@@ -44,6 +44,7 @@
                 }else if(menu == "actions"){
                     var list = [
                         {name:"sendMail",label:"Send Mail"},
+                        {name:"sendMailRest",label:"Send Mail Via Rest"},
                         {name:"createGroup",label:"Create Group"},
                         {name:"createContact",label:"Create Contact"},
                         {name:"searchEmail",label:"Search Email"},
@@ -73,6 +74,9 @@
                     switch (name) {
                         case "sendMail":
                             brite.display("GoogleMailSend");
+                            break;
+                        case "sendMailRest":
+                            brite.display("GoogleMailSend",null,{type:'rest'});
                             break;
                         case "createGroup":
                             brite.display("CreateGroup");

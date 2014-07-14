@@ -146,7 +146,7 @@ public class GmailImapService {
             if(message.getContent() != null){
                 List attachments = new ArrayList();
                 StringBuffer str = new StringBuffer();
-                if (message.isMimeType("text/plain")){
+                if (message.isMimeType("text/plain") || message.getContent() instanceof String){
                     str.append(message.getContent().toString());
                 }else{
                     Multipart multiPart = (Multipart) message.getContent();
