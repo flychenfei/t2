@@ -19,6 +19,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Event.Reminders;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
@@ -114,6 +115,16 @@ public class GoogleCalendarEventsService {
             }
             eventMap.put("location", event.getLocation());
             eventMap.put("calendarId", event.getOrganizer().getEmail());
+            StringBuilder inviters = new StringBuilder();
+            int i = 0;
+            for(EventAttendee eventAtte : event.getAttendees()){
+                if(i != 0){
+                    inviters.append(",");
+                }
+                inviters.append(eventAtte.getEmail());
+                i++;
+            }
+            eventMap.put("inviters", inviters.toString());
             return eventMap;
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,7 +132,7 @@ public class GoogleCalendarEventsService {
         return null;
     }
     
-    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min,String calendarId){
+    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min,String calendarId,String[] inviter){
         try {
             boolean create = false;
             Event event = null;
@@ -179,6 +190,16 @@ public class GoogleCalendarEventsService {
                 reminders.setUseDefault(false);
                 
                 event.setReminders(reminders);
+            }
+            
+            if(inviter != null && inviter.length !=0){
+                List<EventAttendee> attendees = new ArrayList<EventAttendee>();
+                for(int i=0; i<inviter.length; i++){
+                    EventAttendee eventAtte = new EventAttendee();
+                    eventAtte.setEmail(inviter[i]);
+                    attendees.add(eventAtte);
+                }
+                event.setAttendees(attendees);
             }
             
             if(create){
