@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -277,60 +283,61 @@ public class GmailRestService {
     public boolean sendMail(String subject, String content, String to) throws Exception {
         String email = authService.getSocialIdEntity().getEmail();
         Gmail gmail = getGmailClient();
-        Message message = new Message();
-        MessagePart payload = new MessagePart();
-        
-        MessagePart part = new MessagePart();
-        part.setMimeType("text/plain");
-        
-        MessagePartBody body = new MessagePartBody();
-        body.setData(new String(Base64.encodeBase64URLSafe(content.getBytes())));
-        part.setBody(body);
-        List<MessagePart> parts = new ArrayList();
-        parts.add(part);
-        
-        payload.setParts(parts);
-        
-        List<MessagePartHeader> headers = new ArrayList();
-        MessagePartHeader subjectHeader = new MessagePartHeader();
-        subjectHeader.setName("Subject");
-        subjectHeader.setValue(subject);
-        headers.add(subjectHeader);
-        MessagePartHeader toHeader = new MessagePartHeader();
-        toHeader.setName("To");
-        toHeader.setValue(to);
-        headers.add(toHeader);
-        MessagePartHeader fromHeader = new MessagePartHeader();
-        toHeader.setName("From");
-        toHeader.setValue(email);
-        headers.add(fromHeader);
-        
-        payload.setHeaders(headers);
-        gmail.users().messages().send("me", message).execute();
-        return true;
-//        Properties props = new Properties();
-//        Session session = Session.getDefaultInstance(props, null);
-//        MimeMessage msg = new MimeMessage(session);
-//        try {
-//            msg.setFrom(new InternetAddress(email));
-//            msg.setSubject(subject);
-//            msg.setContent(content, "text/html;charset=UTF-8");
-//            InternetAddress[] iaRecevers = new InternetAddress[1];
-//            iaRecevers[0] = new InternetAddress(to);
-//            msg.setRecipients(javax.mail.Message.RecipientType.TO, iaRecevers);
-//            
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            msg.writeTo(baos);
-//            String encodedEmail = Base64.encodeBase64URLSafeString(baos.toByteArray());
-//            Message message = new Message();
-//            message.setRaw(encodedEmail);
-//            
-//            gmail.users().messages().send("me", message).execute();
-//            
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
+//        Message message = new Message();
+//        MessagePart payload = new MessagePart();
+//        
+//        MessagePart part = new MessagePart();
+//        part.setMimeType("text/plain");
+//        
+//        MessagePartBody body = new MessagePartBody();
+//        body.setData(new String(Base64.encodeBase64URLSafe(content.getBytes())));
+//        part.setBody(body);
+//        List<MessagePart> parts = new ArrayList();
+//        parts.add(part);
+//        
+//        payload.setParts(parts);
+//        
+//        List<MessagePartHeader> headers = new ArrayList();
+//        MessagePartHeader subjectHeader = new MessagePartHeader();
+//        subjectHeader.setName("Subject");
+//        subjectHeader.setValue(subject);
+//        headers.add(subjectHeader);
+//        MessagePartHeader toHeader = new MessagePartHeader();
+//        toHeader.setName("To");
+//        toHeader.setValue(to);
+//        headers.add(toHeader);
+//        MessagePartHeader fromHeader = new MessagePartHeader();
+//        toHeader.setName("From");
+//        toHeader.setValue(email);
+//        headers.add(fromHeader);
+//        
+//        payload.setHeaders(headers);
+//        gmail.users().messages().send("me", message).execute();
+//        return true;
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage msg = new MimeMessage(session);
+        try {
+            msg.setFrom(new InternetAddress(email));
+            msg.setSubject(subject);
+            msg.setContent(content, "text/html;charset=UTF-8");
+            InternetAddress[] iaRecevers = new InternetAddress[1];
+            iaRecevers[0] = new InternetAddress(to);
+            msg.setRecipients(javax.mail.Message.RecipientType.TO, iaRecevers);
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            msg.writeTo(baos);
+            String encodedEmail = Base64.encodeBase64URLSafeString(baos.toByteArray());
+            Message message = new Message();
+            message.setRaw(encodedEmail);
+            
+            gmail.users().messages().send("me", message).execute();
+            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
     }
     

@@ -134,7 +134,7 @@ var app = app || {};
         },
         sendMailRest: function(opts) {
             var params = opts||{};
-            params.method = "Get";
+            params.method = "Post";
             return app.getJsonData(contextPath + "/gmailrest/send", params);
         },
         listLabelsRest: function(opts) {

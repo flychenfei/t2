@@ -70,7 +70,8 @@
             "REPLAY_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
-                    	var opt = data.result || {type:'rest'};
+                    	var opt = data.result || {};
+                    	opt.type = "rest";
                         brite.display("GoogleMailSend", "body",opt);
                     }
 
