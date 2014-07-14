@@ -31,6 +31,7 @@ import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.Drive.Files.Insert;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.ParentReference;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -282,7 +283,10 @@ public class GoogleDriveService {
 			if(file.getDownloadUrl() != null){
 				item.put("hasUrl", "true");
 			}
-			item.put("parentId", file.getParents().get(0).getId());
+			List<ParentReference> parentReferenceList = file.getParents();
+			if(parentReferenceList.size() != 0){
+				item.put("parentId", parentReferenceList.get(0).getId());
+			}
 			item.put("owner", file.getOwnerNames().get(0));
 			item.put("etag", file.getEtag());
 			results.add(item);
