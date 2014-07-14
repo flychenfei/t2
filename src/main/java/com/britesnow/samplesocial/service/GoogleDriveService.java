@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.api.client.util.DateTime;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.Drive.Files.Insert;
@@ -41,8 +44,24 @@ public class GoogleDriveService {
     private static String MEDIATYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media";
     private static String MULTIPARTTYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart";
     
-    public Pair<String, List<Map>> searchFile(String queryString,String nextPageToken, Integer pageSize){
-    	return searchFiles(nextPageToken, pageSize, queryString);
+    public Pair<String, List<Map>> searchFile(String keyword, String searchType, String startDate,String endDate,String nextPageToken, Integer pageSize){
+    	StringBuilder query = new StringBuilder();
+    	if(!Strings.isNullOrEmpty(keyword)){
+        	query.append(searchType).append(" contains '").append(keyword).append("'");
+    	}
+    	if(!Strings.isNullOrEmpty(startDate)){
+    		if(query.length() != 0){
+    			query.append(" and");
+    		}
+        	query.append(" modifiedDate >= '").append(formDate(startDate,true)).append("'");
+    	}
+		if(!Strings.isNullOrEmpty(endDate)){
+			if(query.length() != 0){
+    			query.append(" and");
+    		}
+	    	query.append(" modifiedDate <= '").append(formDate(endDate,false)).append("'");
+    	}
+    	return searchFiles(nextPageToken, pageSize, query.toString());
     }
     
     public Pair<String, List<Map>> list(String nextPageToken, Integer pageSize, boolean trash){
@@ -260,5 +279,22 @@ public class GoogleDriveService {
 			results.add(item);
 		}
     	return results;
+    }
+    
+    private String formDate(String dateString, boolean isStart){
+    	if(isStart){
+    		dateString = dateString +" 00:00:00";
+    	}else{
+    		dateString = dateString +" 23:59:59";
+    	}
+    	Date date = null;
+    	try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return dateString;
+		}
+    	DateTime dateTime = new DateTime(date);
+		return dateTime.toStringRfc3339();
     }
 }

@@ -12,6 +12,14 @@
 
         postDisplay: function (data, config) {
             var view = this;
+            var $e = view.$el;
+            $e.find('.datetimepicker').datetimepicker({ 
+                format: 'yyyy-MM-dd', 
+                language: 'en', 
+                 pickDate: true, 
+                 pickTime: true, 
+                 inputMask: true 
+            });
             showFile.call(view);
         },
 
@@ -19,22 +27,6 @@
         	"click;.btnUpload":function(e){
         		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
 			},
-			"click;.btnSearch":function(e){
-			  brite.display("InputValue", ".MainScreen", {
-			  title: 'Search File',
-			  fields: [
-			      {label:"FileName", name:'title', mandatory:true}
-			  ],
-			  callback: function (params) {
-			      brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-			            	  results: function(opts){
-			                     opts = opts||[];
-			                      $.extend(opts, params)
-			                     return app.googleDriveApi.searchFile(opts)
-			                 }
-			              });
-			          }});
-			  },
 			"click;.search":function(event){
 				var $form = $(event.target).closest(".search-form");
 				var params = {};
@@ -45,13 +37,18 @@
 						searchType = $(e).val();
 					}
 				});
-				if(!keyword){
-					alert("Please type some keywords for search.");
-					return;
-				}else{
+				if(keyword){
 					params.keyword = keyword;
 				}
 				params.searchType = searchType;
+				var startDate = $form.find("[name='startDate']:first").val();
+				var endDate = $form.find("[name='endDate']").val();
+				if(startDate){
+					params.startDate = startDate;
+				}
+				if(endDate){
+					params.endDate = endDate;
+				}
 				brite.display("GoogleDriveFiles",".GoogleScreen-content",{
 					results: function(){
 					    return app.googleDriveApi.searchFile(params);
