@@ -184,6 +184,25 @@ public class GoogleDriveService {
     }
     
     /**
+     * Restore a file from the trash.
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean copyFile(String fileId,String copyTitle){
+    	Drive service = getDriverService();
+		try {
+			  File copiedFile = new File();
+			  copiedFile.setTitle(copyTitle);
+			  service.files().copy(fileId, copiedFile).execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
+		     return false;
+		}
+        return true;
+    }
+    
+    /**
      * Permanently delete the file, skipping the trash
      * @param fileId
      * @return

@@ -54,16 +54,6 @@
 					    return app.googleDriveApi.searchFile(params);
 				    }
 				});
-			},  
-			"click;.download":function(event){
-				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-	        	var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
-	        	var fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
-	        	if(fileId && fileUrl == "true"){
-	        		window.location.href=contextPath+"/googleDrive/download?fileId="+fileId+"&fileName="+fileName;
-	        	}else{
-	        		alert("This file is not support download!");
-	        	}
 			},
 			 "click;.trash":function(event){
 			    var parma = {};
@@ -89,14 +79,18 @@
 	                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
 	                });
 			},
-			 "click;.child":function(event){
-				    var parma = {};
-	            	parma.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
-	            	brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-						results: function(){
-						    return app.googleDriveApi.childList(parma);
-					    }
-					});
+			"click;.copy":function(event){
+					var parma = {};
+					parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+					parma.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
+					app.googleDriveApi.copyFile(parma).done(function (success) {
+		                    if(success){
+		                    	alert("Copy success");
+		                    }else{
+		                    	alert("Copy fail");
+		                    }
+		                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+		               });
 			},
 			"click;.fileSelf":function(event){
 				var view = this;
@@ -148,7 +142,7 @@
         return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId,obj.mimeType)
+                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
             },
             columnDef:[
                 {
@@ -193,7 +187,7 @@
                     	if(obj.mimeType == "application/vnd.google-apps.folder"){
                     		functionString = "<span><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}else{
-                    		functionString = "<span><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}
                         return functionString;
                     }

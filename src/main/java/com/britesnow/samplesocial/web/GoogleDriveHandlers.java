@@ -72,6 +72,14 @@ public class GoogleDriveHandlers {
         	return WebResponse.fail();
     }
     
+    @WebGet("/googleDrive/copyFile")
+    public Object copyFile(@WebParam("fileId") String fileId, @WebParam("copyTitle") String copyTitle){
+    	if(googleDriveService.copyFile(fileId, copyTitle))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
     @WebGet("/googleDrive/deleteFile")
     public Object deleteFile(@WebParam("fileId") String fileId){
         if(googleDriveService.deleteFile(fileId))
