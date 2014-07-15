@@ -18,6 +18,12 @@
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateCalendar",null,{id:null});
 	        },
+        	"click;.shareCalendar":function(event){
+	        	var $btn = $(event.currentTarget);
+	        	var $tr = $btn.closest("tr");
+	        	var calendarId = $tr.attr("data-obj_id");
+            	brite.display("ShareCalendar", null, calendarId);
+	        }
         },
 
         docEvents: {
@@ -43,7 +49,7 @@
                         }
                     });
                 }
-            }
+            }        
         },
 
         daoEvents: {
@@ -83,8 +89,14 @@
                     	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='icon-remove' data-cmd='DELETE_CALENDAR'></div>";
                     },
 					attrs: "style='width: 40px'"
-                }
-               
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return "<div class='icon-share shareCalendar'></div>";
+                    },
+					attrs: "style='width: 40px'"
+                }               
             ],
             opts: {
                 htmlIfEmpty: "Not calendar found",

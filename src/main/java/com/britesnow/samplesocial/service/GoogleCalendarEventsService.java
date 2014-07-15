@@ -117,12 +117,14 @@ public class GoogleCalendarEventsService {
             eventMap.put("calendarId", event.getOrganizer().getEmail());
             StringBuilder inviters = new StringBuilder();
             int i = 0;
-            for(EventAttendee eventAtte : event.getAttendees()){
-                if(i != 0){
-                    inviters.append(",");
+            if(event.getAttendees() != null){
+                for(EventAttendee eventAtte : event.getAttendees()){
+                    if(i != 0){
+                        inviters.append(",");
+                    }
+                    inviters.append(eventAtte.getEmail());
+                    i++;
                 }
-                inviters.append(eventAtte.getEmail());
-                i++;
             }
             eventMap.put("inviters", inviters.toString());
             return eventMap;
