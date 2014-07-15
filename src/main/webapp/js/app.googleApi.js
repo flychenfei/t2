@@ -120,7 +120,6 @@ var app = app || {};
         saveShareCalendar: function(opts) {
             var params = opts||{};
             params.method = "Post";
-            alert();
             return app.getJsonData(contextPath + "/googleShareCalendars/save", params);
         },
         searchEmailsRest: function(opts) {
