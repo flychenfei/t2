@@ -93,7 +93,7 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-share shareCalendar'></div>";
+                    	return "<div class='icon-share shareCalendar' style='cursor:pointer'></div>";
                     },
 					attrs: "style='width: 40px'"
                 }               
