@@ -97,7 +97,22 @@
 						    return app.googleDriveApi.childList(parma);
 					    }
 					});
-			}
+			},
+			"click;.fileSelf":function(event){
+				var view = this;
+				var parma = {};
+            	parma.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				mimeType = $(event.currentTarget).closest("tr").attr("data-mimeType");
+            	if(mimeType == "application/vnd.google-apps.folder"){
+            		view.parma = parma;
+            		openFolder.call(view);
+            	}else{
+    			    parma.fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
+    			    parma.fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
+    			    view.parma = parma;
+    			    download.call(view);
+            	}
+		   }
         },
 
         docEvents: {
@@ -109,20 +124,39 @@
         daoEvents: {
         }
     });
+
+    function openFolder(){
+    	 var parma = this.parma || {};
+    	 brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+				results: function(){
+				    return app.googleDriveApi.childList(parma);
+			    }
+			});
+    }
     
+    function download(){
+    	var parma = this.parma || {};
+    	if(parma.selfId && parma.fileUrl == "true"){
+    		window.location.href=contextPath+"/googleDrive/download?fileId="+parma.selfId+"&fileName="+parma.fileName;
+    	}else{
+    		alert("This file is not support download!");
+    	}
+   }
 
     function showFile() {
     	var view = this;
         return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId)
+                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId,obj.mimeType)
             },
             columnDef:[
                 {
                     text:"FileName",
-                    attrs: "style='width:15%; word-break: break-word;'",
-                    render:function(obj){return obj.fileName}
+                    attrs: "style='width:15%; word-break: break-word; cursor:pointer;'",
+                    render:function(obj){
+                    	return "<a src=\"#\" class=\"fileSelf\"><span><img src=\"{0}\" alt=\"img\"></img><span>{1}</span></span></a>".format(obj.iconLink,obj.fileName);
+                    	}
                 },
                 {
                     text:"CreateTime",
@@ -157,9 +191,9 @@
                     render: function (obj) {
                     	var functionString = "";
                     	if(obj.mimeType == "application/vnd.google-apps.folder"){
-                    		functionString = "<span> <a src=\"#\" class=\"child\">"+"openFolder"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}else{
-                    		functionString += "<span> <a src=\"#\" class=\"download\">"+"download"+"</a><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}
                         return functionString;
                     }

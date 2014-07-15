@@ -69,7 +69,7 @@
                 {
                     text:"FileName",
                     attrs: "style='width:15%; word-break: break-word;'",
-                    render:function(obj){return obj.fileName}
+                    render:function(obj){return "<span><img src=\"{0}\" alt=\"img\"></img><span>{1}</span></span>".format(obj.iconLink,obj.fileName);}
                 },
                 {
                     text:"CreateTime",
@@ -82,9 +82,9 @@
                     render:function(obj){return obj.updateTime}
                 },
                 {
-                    text:"FileType",
+                    text:"MimeType",
                     attrs: "style='width:20%; word-break: break-word;'",
-                    render:function(obj){return obj.fileType}
+                    render:function(obj){return obj.mimeType}
                 },
                 {
                     text:"FileSize",

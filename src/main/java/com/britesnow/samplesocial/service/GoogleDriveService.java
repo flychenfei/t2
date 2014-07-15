@@ -270,6 +270,7 @@ public class GoogleDriveService {
     	for(File file : files){
 			Map<String, String> item = new HashMap<String, String>();
 			item.put("fileId", file.getId());
+			item.put("iconLink", file.getIconLink());
 			item.put("fileName", file.getTitle());
 			item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
 			item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
