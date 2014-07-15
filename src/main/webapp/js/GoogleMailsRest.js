@@ -26,28 +26,35 @@
 
         events: {
           "btap; .inputValueBtn":function () {
-                var view = this;
-                var $e = view.$el;
-                //view.submit();
-                var result = {};
-                $e.find(".search-mails-container :text").each(function(){
-                  if($(this).val() !== ""){
-                    result[$(this).attr("name")] = $(this).val();
-                  }
-                });
+				var view = this;
+				var $e = view.$el;
+				//view.submit();
+				var result = {};
+				$e.find(".search-mails-container :text").each(function() {
+					if ($(this).val() !== "") {
+						result[$(this).attr("name")] = $(this).val();
+					}
+				});
 				$e.find(".search-mails-container .checkbox").each(function() {
 					if ($(this).val() !== "") {
 						result[$(this).attr("name")] = $(this).prop("checked");
 					}
-				}); 
-				
+				});
+
 				view.search = function(opts) {
 					opts = opts || [];
 					$.extend(opts, result)
 					return app.googleApi.searchEmailsRest(opts)
 				};
-                
-                showEmails.call(view);
+
+				showEmails.call(view); 
+
+          },
+          "click; .currentThread":function(event){
+				var view = this;
+				var $e = view.$el;
+				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
+				brite.display("GoogleThreadMails",null,{threadId:threadId});
           }
 
         },
@@ -87,6 +94,7 @@
         var view = this;
         return brite.display("DataTable", ".mails-container", {
             dataProvider: {list: view.search},
+            rowAttrs: function(obj){ return "data-thread-id={0}".format(obj.threadId)},
             columnDef: [
                 {
                     text: "Date",
@@ -109,23 +117,39 @@
                     render: function (obj) {
                         return obj.subject;
                     }
-                },{
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-envelope'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
-                },{
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-share-alt'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-remove'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='DELETE_EMAIL'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<a href-'javascript:void(0)' class='currentThread'>Current Thread</a>";
+                    },
+                    attrs: "style='width:140px;cursor:pointer'"
                 }
             ],
             opts: {
                 htmlIfEmpty: "Not emails found",
-                cmdDelete: "DELETE_EMAIL",
+                withCmdDelete:false,
                 dataOpts: {
                 	withResultCount:false
                 }

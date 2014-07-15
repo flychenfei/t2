@@ -12,6 +12,7 @@ public class MailInfo {
     private String subject;
     private String content;
     private List attachments = null;
+    private String threadId;
 
     public MailInfo(Object id, Object date, String from, String subject) {
         this.id = id;
@@ -78,4 +79,12 @@ public class MailInfo {
         this.attachments = attachments;
     }
 
+    public String getThreadId() {
+        return threadId;
+    }
+
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
 }

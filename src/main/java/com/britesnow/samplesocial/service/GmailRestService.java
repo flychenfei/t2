@@ -32,6 +32,7 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartBody;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.google.api.services.gmail.model.Thread;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -198,7 +199,7 @@ public class GmailRestService {
         DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
         
         mailInfo.setId(message.getId());
-        
+        mailInfo.setThreadId(message.getThreadId());
         if(message.getPayload() != null){
             
             if(message.getPayload().getHeaders() != null){
@@ -366,6 +367,36 @@ public class GmailRestService {
         }
     }
     
+    public List<MailInfo> getThreadMails(String threadId) throws Exception{
+        Thread thread = getGmailClient().users().threads().get("me", threadId).execute();
+        
+        final List<MailInfo> mails = new ArrayList();
+        List<Message> messages = thread.getMessages();
+        
+        if(messages != null){
+            BatchRequest batch = gmail.batch();
+            JsonBatchCallback<Message> callback = new JsonBatchCallback<Message>() {
+
+                public void onSuccess(Message message, HttpHeaders responseHeaders) {
+                    MailInfo info = buildMailInfo(message);
+                    mails.add(info);
+                }
+
+                public void onFailure(GoogleJsonError e, HttpHeaders responseHeaders) {
+                    log.warn("Error Message: " + e.getMessage());
+                }
+            };
+
+            for (Message message : messages) {
+                getGmailClient().users().messages().get("me", message.getId()).queue(batch, callback);
+            }
+            
+            batch.execute();
+        }
+        
+        return mails;
+    }
+    
     public byte[] getAttachment(String messageId, String attachmentId) throws Exception  {
         MessagePartBody attachPart = getGmailClient().users().messages().attachments().get("me", messageId, attachmentId).execute();
         byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
@@ -391,5 +422,6 @@ public class GmailRestService {
         }
         return gmail;
     }
+    
 
 }

@@ -126,6 +126,11 @@ public class GoogleRestEmailHandlers {
         return WebResponse.success(info);
     }
     
+    @WebGet("/gmailrest/getThreadMails")
+    public WebResponse getThreadMails(@WebUser User user, @WebParam("id") String id) throws Exception {
+        return WebResponse.success(gmailRestService.getThreadMails(id));
+    }
+    
     @WebResourceHandler(matches = "/gmailrest/attachment")
     public void getAttachment(@WebUser User user, @WebParam("messageId") String messageId, @WebParam("attachmentId") String attachmentId, @WebParam("name") String name, RequestContext rc) throws Exception {
         byte[] data = gmailRestService.getAttachment(messageId, attachmentId);
