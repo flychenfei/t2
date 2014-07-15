@@ -12,6 +12,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.AclRule;
+import com.google.api.services.calendar.model.AclRule.Scope;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.inject.Inject;
@@ -88,6 +90,25 @@ public class GoogleCalendarsService {
         }
     }
     
+    public void saveShareCalendar(String calendarId, String role, String scopeType, String scopeValue) {
+        // TODO Auto-generated method stub
+       try{
+           AclRule rule = new AclRule();
+           Scope scope = new Scope();
+           
+           scope.setType(scopeType);
+           scope.setValue(scopeValue);
+           rule.setScope(scope);
+           rule.setRole(role);
+           
+           getCalendarsService().acl().insert(calendarId, rule).execute();
+       } catch (IOException e) {
+           e.printStackTrace();
+           }
+        
+        
+    }
+    
     private Calendar getCalendarsService(){
         HttpTransport httpTransport = new NetHttpTransport();
         JacksonFactory jsonFactory = new JacksonFactory();
@@ -95,5 +116,6 @@ public class GoogleCalendarsService {
         Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credential).setApplicationName("Gmail Test").build();
         return service;
     }
+
 
 }

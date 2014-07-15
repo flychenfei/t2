@@ -1,0 +1,50 @@
+<script id="tmpl-ShareCalendar" type="text/html">
+<div class="ShareCalendar">
+	<div class='ShareCalendarDialogGlass'/>
+	<div class="ShareCalendar-content">
+		<h2>Create New Access Person</h2>
+
+		<div class="form form-horizontal">
+			<div class="control-group ">
+				<label class="control-label">
+					New Access Person:
+				</label>
+				<div class="controls">
+					<input type ="text" class = "newAccessPerson" name = "newAccessPerson" />
+				</div>
+			</div>
+			<div class="control-group">
+				<lable class="control-label">
+					role:
+				</lable>
+				<div class = "controls">
+					<select class="role">
+						<option>none</option>
+						<option>freeBusyReader</option>
+						<option selected="">reader</option>
+						<option>writer</option>
+						<option>owner</option>
+					</select>
+				</div>
+			</div>		
+			<div class="control-group">
+				<lable class="control-label">
+					type:
+				</lable>
+				<div class = "controls">
+					<select class = "scopeType">
+						<option>default</option>
+						<option selected="">user</option>
+						<option>group</option>
+						<option>domain</option>
+					</select>
+				</div>
+			</div>		
+			<div class="form-actions">
+				<a href="#" class="btn btn-primary ShareCalendarBtn">Save</a>
+				<a href="#" class="btn cancelBtn">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+</script>

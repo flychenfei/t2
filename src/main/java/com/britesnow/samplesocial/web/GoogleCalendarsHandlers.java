@@ -44,5 +44,13 @@ public class GoogleCalendarsHandlers {
         googleCalendarsService.deleteCalendar(id);
         return WebResponse.success();
     }
+    
+    @WebPost("/googleShareCalendars/save")
+    public Object saveShareCalendar(@WebParam("calendarId") String calendarId,@WebParam("role") String role,
+                            @WebParam("scopeType") String scopeType,@WebParam("scopeValue") String scopeValue) throws Exception {
+        
+        googleCalendarsService.saveShareCalendar(calendarId, role, scopeType, scopeValue);
+        return WebResponse.success();
+    }
 
 }
