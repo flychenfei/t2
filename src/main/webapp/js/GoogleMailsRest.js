@@ -64,7 +64,7 @@
                 if(extra.objId){
                     app.googleApi.trashEmailRest(extra.objId).done(function(result){
                         setTimeout(function(){
-                            showEmails().call(view);
+                            showEmails.call(view);
                         }, 3000)
 
                     });
@@ -75,7 +75,7 @@
                 if(extra.objId){
                     app.googleApi.deleteEmailRest(extra.objId).done(function(result){
                         setTimeout(function(){
-                            showEmails().call(view);
+                            showEmails.call(view);
                         }, 3000)
 
                     });
