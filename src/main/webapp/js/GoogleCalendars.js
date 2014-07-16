@@ -22,6 +22,7 @@
 	        	var $btn = $(event.currentTarget);
 	        	var $tr = $btn.closest("tr");
 	        	var calendarId = $tr.attr("data-obj_id");
+	        	
             	brite.display("ShareCalendar", null, calendarId);
 	        }
         },

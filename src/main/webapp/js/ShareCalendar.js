@@ -16,6 +16,11 @@
                 if(data) {
                     this.calendarId = data;
                 }
+                app.googleApi.getShareCalendar(this.calendarId).done(function(data){
+	        		for(var i = 0; i < data.result.length; i++){
+		        		$e.find(".shared").append("<div class='sharedVal'>"+data.result[i]+"</div>");
+	        		}
+	        	});
                 var html = app.render("tmpl-ShareCalendar",data||{});
                 var $e = $(html);
                 return $e;

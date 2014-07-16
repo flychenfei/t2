@@ -52,5 +52,11 @@ public class GoogleCalendarsHandlers {
         googleCalendarsService.saveShareCalendar(calendarId, role, scopeType, scopeValue);
         return WebResponse.success();
     }
+    
+    @WebGet("/googleShareCalendars/get")
+    public Object getShareCalendar(@WebParam("calendarId") String calendarId) throws Exception {
+        return WebResponse.success(googleCalendarsService.getShareCalendar(calendarId));
+    }
+    
 
 }
