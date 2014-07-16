@@ -40,6 +40,11 @@ var app = app || {};
         	param = param || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/copyFile", param);
+        },
+        emptyTrash: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/emptyTrash", param);
         }
 	};
 })();

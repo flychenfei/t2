@@ -123,4 +123,12 @@ public class GoogleDriveHandlers {
 		result.set("nextPageToken", pair.getFirst());
     	return result;
     }
+
+    @WebGet("/googleDrive/emptyTrash")
+    public Object emptyTrash(){
+    	if(googleDriveService.emptyTrash())
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
 }

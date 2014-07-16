@@ -105,7 +105,6 @@ public class GoogleDriveService {
      * @return
      */
     public boolean simpleUploadFile(FileItem fileItem){
-    	
     	 try {
              InputStreamContent content = new InputStreamContent(fileItem.getContentType(), fileItem.getInputStream());
              Drive drive = getDriverService();
@@ -124,7 +123,6 @@ public class GoogleDriveService {
      * @return
      */
     public boolean multipartUploadFile(FileItem fileItem){
-
         try {
         	MultipartContent content = new MultipartContent();
         	content.setMediaType(new HttpMediaType("multipart/related"));
@@ -217,6 +215,22 @@ public class GoogleDriveService {
         return true;
     }
     
+    /**
+     * Permanently deletes all of the user's trashed files
+     * 
+     * @return
+     */
+    public boolean emptyTrash(){
+    	Drive service = getDriverService();
+		try {
+		      service.files().emptyTrash().execute();
+		    } catch (IOException e) {
+		     e.printStackTrace();
+		     return false;
+		}
+        return true;
+    }
+
     public InputStream download(String fileId){
     	File file = getFile(fileId);
     	if (file.getDownloadUrl() != null && file.getDownloadUrl().length() > 0) {
