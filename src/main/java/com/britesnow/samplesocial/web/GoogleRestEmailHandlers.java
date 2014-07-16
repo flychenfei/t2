@@ -80,7 +80,13 @@ public class GoogleRestEmailHandlers {
         gmailRestService.deleteEmail(id);
         return WebResponse.success(true);
     }
-
+    
+    @WebPost("/gmailrest/trash")
+    public WebResponse trashEmail(@WebUser User user,
+                            @WebParam("id") String id, RequestContext rc) throws Exception {
+        gmailRestService.trashEmail(id);
+        return WebResponse.success(true);
+    }
 
     @WebPost("/gmailrest/send")
     public WebResponse sendMail(@WebUser User user,
@@ -111,8 +117,7 @@ public class GoogleRestEmailHandlers {
         gmailRestService.deleteLabel(id);
         return WebResponse.success(true);
     }
-
-
+    
     @WebPost("/gmailrest/labels/save")
     public WebResponse saveLabel(@WebUser User user,
                            @WebModel Map m, @WebParam("id") String id, @WebParam("name") String name, RequestContext rc) throws Exception {
