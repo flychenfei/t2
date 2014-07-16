@@ -230,7 +230,27 @@ public class GoogleDriveService {
 		}
         return true;
     }
-
+    
+    /**
+     * restore all of the user's trashed files
+     * 
+     * @return
+     */
+	public boolean restoreTrash() {
+		Pair<String,List<File>> pair = null;
+		List<File> results = null;
+		String nextPagetoken = null;
+		do {
+			pair = ListFiles(nextPagetoken,100,true);
+			nextPagetoken = pair.getFirst();
+			results = pair.getSecond();
+			for(File file:results){
+				untrashFile(file.getId());
+			}
+		} while (!Strings.isNullOrEmpty(nextPagetoken));
+		return true;
+	}
+    
     public InputStream download(String fileId){
     	File file = getFile(fileId);
     	if (file.getDownloadUrl() != null && file.getDownloadUrl().length() > 0) {
@@ -293,6 +313,34 @@ public class GoogleDriveService {
         return new Pair<String, List<Map>>(filelist.getNextPageToken(), results);
     }
 
+    /**
+     * search files based on the queryString ,see https://developers.google.com/drive/web/search-parameters
+     * @param nextPageToken
+     * @param pageSize
+     * @param queryString
+     * @return
+     */
+    private Pair<String,List<File>> ListFiles(String nextPageToken,Integer pageSize,boolean istrash){
+    	Files.List request = null;
+    	FileList filelist = null;
+        try {
+        	request = getDriverService().files().list();
+			if(!Strings.isNullOrEmpty(nextPageToken) && !nextPageToken.equals("0")){
+				request.setPageToken(nextPageToken);
+			}
+			request.setMaxResults(pageSize);
+			if(istrash){
+				request.setQ("trashed = true");
+			}else{
+				request.setQ("trashed = false");
+			}
+        	filelist = request.execute();
+			return new Pair<String,List<File>>(filelist.getNextPageToken(),filelist.getItems());
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return null;
+		}
+    }
     /**
      * format the files object, like date format
      * @param files

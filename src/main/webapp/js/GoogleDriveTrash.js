@@ -16,6 +16,17 @@
         },
 
         events: {
+        	"click;.btnRestoreTrash":function(e){
+        		var parma = {};
+        		app.googleDriveApi.restoreTrash(parma).done(function (success) {
+                    if(success){
+                    	alert("RestoreTrash success");
+                    }else{
+                    	alert("RestoreTrash fail");
+                    }
+                    brite.display("GoogleDriveTrash",".GoogleScreen-content");
+                });
+			},
 			"click;.btnEmptyTrash":function(e){
         		var parma = {};
         		app.googleDriveApi.emptyTrash(parma).done(function (success) {
