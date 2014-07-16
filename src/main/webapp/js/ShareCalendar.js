@@ -12,13 +12,18 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+            	view = this;
             	data = data || {};
                 if(data) {
                     this.calendarId = data;
+                    view.calendarId = this.calendarId;
                 }
                 app.googleApi.getShareCalendar(this.calendarId).done(function(data){
 	        		for(var i = 0; i < data.result.length; i++){
-		        		$e.find(".shared").append("<div class='sharedVal'>"+data.result[i]+"</div>");
+	        			var sharedVal=data.result[i].scopeValue;
+	        			var ruleId = data.result[i].ruleId;
+	        			var htmlVal=app.render("tmpl-ShareCalendar-item",{sharedVal:sharedVal,ruleId:ruleId});
+		        		$e.find(".shared").append(htmlVal);
 	        		}
 	        	});
                 var html = app.render("tmpl-ShareCalendar",data||{});
@@ -64,6 +69,19 @@
             },
 
             events:{
+            	"click;.sharedDel":function(event){
+            		data = {};
+            		data.calendarId = view.calendarId;
+					var $btn = $(event.currentTarget);
+					var $div = $btn.closest(".ShareCalendar-item");
+					data.ruleId = $div.attr("data-id"); 
+            		app.googleApi.deleteSharedCalendar(data).done(function (extradata) {
+						setTimeout((function() {
+							$(document).trigger("DO_REFRESH_CALENDAR");
+						}), 3000); 
+						view.close();
+                    });
+            	},
                 "btap; .ShareCalendarBtn":function () {
                     var view = this;
                     var $e = view.$el;

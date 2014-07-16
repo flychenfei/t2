@@ -108,19 +108,31 @@ public class GoogleCalendarsService {
            }
     }
     
-    public List getShareCalendar(String calendarId) {
+    public List<Map> getShareCalendar(String calendarId) {
         // TODO Auto-generated method stub
         try{
+            
             Acl acl = getCalendarsService().acl().list(calendarId).execute();
-            List list = new ArrayList();
+            List<Map> list = new ArrayList();
             for (AclRule rule : acl.getItems()) {
-              list.add(rule.getScope().getValue());
+                Map map = new HashMap();
+                map.put("scopeValue", rule.getScope().getValue());
+                map.put("ruleId", rule.getId());
+                list.add(map);
             }     
             return list;
         }catch(IOException e){
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public void deleteSharedCalendar(String calendarId,String ruleId){
+        try {
+            getCalendarsService().acl().delete(calendarId, ruleId).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     private Calendar getCalendarsService(){

@@ -127,6 +127,11 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/googleShareCalendars/get", params);
         }, 
+        deleteSharedCalendar:function(opts){
+        	var params = {"calendarId":opts.calendarId,"ruleId":opts.ruleId}
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/deleteSharedCalendar/delete", params);
+        },
         searchEmailsRest: function(opts) {
             var params = opts||{};
             params.method = "Get";

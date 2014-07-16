@@ -58,5 +58,11 @@ public class GoogleCalendarsHandlers {
         return WebResponse.success(googleCalendarsService.getShareCalendar(calendarId));
     }
     
+    @WebPost("/deleteSharedCalendar/delete")
+    public Object deleteSharedCalendar(@WebParam("calendarId") String calendarId, @WebParam("ruleId") String ruleId) throws Exception {
+        googleCalendarsService.deleteSharedCalendar(calendarId,ruleId);
+        return WebResponse.success();
+    }
+    
 
 }
