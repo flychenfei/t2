@@ -142,6 +142,11 @@ var app = app || {};
             params.method = "Post";
             return app.getJsonData(contextPath + "/gmailrest/delete", params);
         },
+        trashEmailRest: function(id) {
+            var params = {id: id};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmailrest/trash", params);
+        },
         getMailRest: function(id) {
             var params = {id: id};
             params.method = "Get";

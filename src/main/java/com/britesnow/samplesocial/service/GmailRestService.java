@@ -316,6 +316,14 @@ public class GmailRestService {
         }
     }
     
+    public void trashEmail(String messageId) {
+        try {
+            getGmailClient().users().messages().trash("me", messageId).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public List<Map> listLabels() throws Exception  {
         ListLabelsResponse response = getGmailClient().users().labels().list("me").execute();
         
