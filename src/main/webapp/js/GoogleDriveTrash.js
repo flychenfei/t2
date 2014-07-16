@@ -16,37 +16,40 @@
         },
 
         events: {
-        	"click;.btnUpload":function(e){
-        		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
+        	"click;.btnRestoreTrash":function(e){
+        		var parma = {};
+        		app.googleDriveApi.restoreTrash(parma).done(function (success) {
+                    if(success){
+                    	alert("RestoreTrash success");
+                    }else{
+                    	alert("RestoreTrash fail");
+                    }
+                    brite.display("GoogleDriveTrash",".GoogleScreen-content");
+                });
 			},
-			"click;.btnSearch":function(e){
-				  brite.display("InputValue", ".MainScreen", {
-				  title: 'Search File',
-				  fields: [
-				      {label:"FileName", name:'title', mandatory:true}
-				  ],
-				  callback: function (params) {
-				      brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-				            	  results: function(opts){
-				                     opts = opts||[];
-				                      $.extend(opts, params)
-				                     return app.googleDriveApi.searchFile(opts)
-				                 }
-				              });
-				          }});
-				  },
-				 "click;.restore":function(event){
-					    var parma = {};
-		            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-		                app.googleDriveApi.untrashFile(parma).done(function (success) {
-		                    if(success){
-		                    	alert("Restore success");
-		                    }else{
-		                    	alert("Restore fail");
-		                    }
-		                    brite.display("GoogleDriveTrash",".GoogleScreen-content");
-		                });
-				}
+			"click;.btnEmptyTrash":function(e){
+        		var parma = {};
+        		app.googleDriveApi.emptyTrash(parma).done(function (success) {
+                    if(success){
+                    	alert("EmptyTrash success");
+                    }else{
+                    	alert("EmptyTrash fail");
+                    }
+                    brite.display("GoogleDriveTrash",".GoogleScreen-content");
+                });
+			},
+			 "click;.restore":function(event){
+				    var parma = {};
+			    	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+			        app.googleDriveApi.untrashFile(parma).done(function (success) {
+			            if(success){
+			            	alert("Restore success");
+			            }else{
+			            	alert("Restore fail");
+			            }
+			            brite.display("GoogleDriveTrash",".GoogleScreen-content");
+			        });
+			}
         },
 
         docEvents: {
