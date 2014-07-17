@@ -18,14 +18,6 @@
                     this.calendarId = data;
                     view.calendarId = this.calendarId;
                 }
-                app.googleApi.getShareCalendar(this.calendarId).done(function(data){
-	        		for(var i = 0; i < data.result.length; i++){
-	        			var sharedVal=data.result[i].scopeValue;
-	        			var ruleId = data.result[i].ruleId;
-	        			var htmlVal=app.render("tmpl-ShareCalendar-item",{sharedVal:sharedVal,ruleId:ruleId});
-		        		$e.find(".shared").append(htmlVal);
-	        		}
-	        	});
                 var html = app.render("tmpl-ShareCalendar",data||{});
                 var $e = $(html);
                 return $e;
@@ -36,6 +28,27 @@
 				
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
+                
+                app.googleApi.getShareCalendar(this.calendarId).done(function(data){
+	        		for(var i = 0; i < data.result.length; i++){
+	        			var sharedVal=data.result[i].scopeValue;
+	        			var ruleId = data.result[i].ruleId;
+	        			if (ruleId !="default"){
+	        				if(sharedVal != view.calendarId){
+
+								var htmlVal = app.render("tmpl-ShareCalendar-item", {
+									sharedVal : sharedVal,
+									ruleId : ruleId
+								});
+								
+								$e.find(".shared").append(htmlVal);
+								if (sharedVal == data.primaryId) {
+									$e.find(".ShareCalendar-item[data-id='"+ruleId+"'] .sharedDel").addClass("hide");
+								}
+							}
+						}
+	        		}
+	        	});
             },
 
             close:function () {

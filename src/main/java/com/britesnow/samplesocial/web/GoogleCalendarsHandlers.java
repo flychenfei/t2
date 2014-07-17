@@ -55,7 +55,11 @@ public class GoogleCalendarsHandlers {
     
     @WebGet("/googleShareCalendars/get")
     public Object getShareCalendar(@WebParam("calendarId") String calendarId) throws Exception {
-        return WebResponse.success(googleCalendarsService.getShareCalendar(calendarId));
+        Pair<String, List<Map>> pair = googleCalendarsService.getShareCalendar(calendarId);
+        List<Map> map = pair.getSecond();
+        WebResponse result = WebResponse.success(map);
+        result.set("primaryId", pair.getFirst());
+        return result;
     }
     
     @WebPost("/deleteSharedCalendar/delete")
