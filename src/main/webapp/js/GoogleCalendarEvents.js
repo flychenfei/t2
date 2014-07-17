@@ -153,7 +153,7 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-remove' data-cmd='DELETE_CALENDAR'></div>";
+                    	return "<div class='icon-remove deleteEvent' data-cmd='DELETE_CALENDAR'></div>";
                     },
 					attrs: "style='width: 40px'"
                 }
