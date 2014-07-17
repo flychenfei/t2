@@ -27,6 +27,21 @@
         	"click;.btnUpload":function(e){
         		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
 			},
+			"click;.btnCreateFolder":function(e){
+				var parentId = $(e.target).attr("data-parentId");
+				brite.display("InputValue", ".MainScreen", {
+                    title: 'Create Folder',
+                    fields: [
+                        {label:"Folder Name", name:'folderName', mandatory:false}
+                    ],
+                    callback: function (params) {
+                    	var params = params || {};
+                    	alert(parentId);
+                    	params.parentId = parentId;
+                    	app.googleDriveApi.createFolder(params);
+                    	brite.display("GoogleDriveFiles",".GoogleScreen-content");
+                    }});
+			},
 			"click;.search":function(event){
 				var $form = $(event.target).closest(".search-form");
 				var params = {};
@@ -143,6 +158,10 @@
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
                 return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
+            },
+            onDone: function(Data){
+            	$(".btnUpload").attr({"data-parentId":Data.parentId});
+            	$(".btnCreateFolder").attr({"data-parentId":Data.parentId});
             },
             columnDef:[
                 {

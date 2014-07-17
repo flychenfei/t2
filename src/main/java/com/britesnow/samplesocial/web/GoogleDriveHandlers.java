@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 
 import com.britesnow.samplesocial.service.GoogleDriveService;
+import com.britesnow.samplesocial.util.GoogleDriveDataPack;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
@@ -28,11 +29,12 @@ public class GoogleDriveHandlers {
 
 
     @WebGet("/googleDrive/filelist")
-    public Object listFiles(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.list(null, nextPagetoken, pageSize, false);
-		List<Map> docsInfo = pair.getSecond();
+    public Object listFiles(@WebParam("parentld") String parentld,@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
+    	GoogleDriveDataPack results = googleDriveService.list(parentld, nextPagetoken, pageSize, false);
+		List<Map> docsInfo = results.getDetailData();
 		WebResponse result = WebResponse.success(docsInfo);
-		result.set("nextPageToken", pair.getFirst());
+		result.set("nextPageToken", results.getGeneralData().get("next"));
+		result.set("parentId", results.getGeneralData().get("parentId"));
     	return result;
     }
     
@@ -108,19 +110,20 @@ public class GoogleDriveHandlers {
     
     @WebGet("/googleDrive/trashlist")
     public Object listTrash(@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.list(null, nextPagetoken, pageSize,true);
-		List<Map> docsInfo = pair.getSecond();
+    	GoogleDriveDataPack results = googleDriveService.list(null, nextPagetoken, pageSize,true);
+    	List<Map> docsInfo = results.getDetailData();
 		WebResponse result = WebResponse.success(docsInfo);
-		result.set("nextPageToken", pair.getFirst());
+		result.set("nextPageToken", results.getGeneralData().get("next"));
     	return result;
     }
     
     @WebGet("/googleDrive/childList")
     public Object listChild(@WebParam("selfId") String selfId,@WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.list(selfId, nextPagetoken, pageSize, false);
-		List<Map> docsInfo = pair.getSecond();
+    	GoogleDriveDataPack results = googleDriveService.list(selfId, nextPagetoken, pageSize, false);
+    	List<Map> docsInfo = results.getDetailData();
 		WebResponse result = WebResponse.success(docsInfo);
-		result.set("nextPageToken", pair.getFirst());
+		result.set("nextPageToken", results.getGeneralData().get("next"));
+		result.set("parentId", results.getGeneralData().get("parentId"));
     	return result;
     }
     
@@ -135,6 +138,15 @@ public class GoogleDriveHandlers {
     @WebGet("/googleDrive/emptyTrash")
     public Object emptyTrash(){
     	if(googleDriveService.emptyTrash())
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    @WebGet("/googleDrive/createFolder")
+    public Object createFolder(@WebParam("folderName") String folderName, @WebParam("parentId") String parentId){
+    	System.out.println(parentId+"========"+folderName);
+    	if(googleDriveService.createFolder(parentId, folderName))
         	return WebResponse.success();
         else
         	return WebResponse.fail();

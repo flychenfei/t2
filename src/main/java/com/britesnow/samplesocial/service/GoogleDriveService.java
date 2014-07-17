@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.britesnow.samplesocial.util.GoogleDriveDataPack;
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.GenericUrl;
@@ -65,16 +67,23 @@ public class GoogleDriveService {
     	return searchFiles(nextPageToken, pageSize, query.toString());
     }
     
-    public Pair<String, List<Map>> list(String selfId, String nextPageToken, Integer pageSize, boolean trash){
+    public GoogleDriveDataPack list(String selfId, String nextPageToken, Integer pageSize, boolean trash){
     	StringBuilder query = new StringBuilder();
     	query.append("trashed=").append(trash);
     	if(!Strings.isNullOrEmpty(selfId)){
-    		if(query.length() != 0){
-    			query.append(" and '");
-    		}
-        	query.append(selfId).append("' in parents");
+        	query.append(" and '").append(selfId).append("' in parents");
+    	}else{
+    		query.append(" and 'root' in parents");
     	}
-    	return searchFiles(nextPageToken, pageSize, query.toString());
+    	Pair<String, List<Map>> pair = searchFiles(nextPageToken, pageSize, query.toString());
+    	Map<String,String> generalData = new HashMap<String,String>();
+    	generalData.put("next", pair.getFirst());
+    	if(!Strings.isNullOrEmpty(selfId)){
+    		generalData.put("parentId", selfId);
+    	}else if(pair.getSecond() != null && pair.getSecond().size() > 0 && pair.getSecond().get(0).get("parentId") != null){
+    		generalData.put("parentId", pair.getSecond().get(0).get("parentId").toString());
+    	}
+    	return new GoogleDriveDataPack(generalData, pair.getSecond());
     }
     
     public boolean uploadFile(FileItem fileItem){
@@ -143,6 +152,28 @@ public class GoogleDriveService {
             GenericUrl url = new GenericUrl(MULTIPARTTYPE);
             drive.getRequestFactory().buildPostRequest(url, content).execute();
           return true;
+        } catch (IOException e) {
+          e.printStackTrace();
+          return false;
+        }
+    }
+    
+    /**
+     * Move the file to the trash
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean createFolder (String parentId, String folderName){
+        try {
+        	File file = new File();
+        	file.setTitle(folderName);
+        	file.setMimeType("application/vnd.google-apps.folder");
+        	file.setParents(Arrays.asList(new ParentReference().setId(parentId)));
+            Insert insert = getDriverService().files().insert(file);
+            File result = insert.execute();
+            System.out.println(result.getId());
+            return true;
         } catch (IOException e) {
           e.printStackTrace();
           return false;
