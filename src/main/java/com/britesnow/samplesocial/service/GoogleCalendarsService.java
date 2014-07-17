@@ -55,7 +55,7 @@ public class GoogleCalendarsService {
     public Map getCalendar(String calendarId){
         try {
             Map eventMap = new HashMap();
-            com.google.api.services.calendar.model.Calendar calendar = getCalendarsService().calendars().get(calendarId).execute();getClass();
+            com.google.api.services.calendar.model.Calendar calendar = getCalendarsService().calendars().get(calendarId).execute();
             
             eventMap.put("id", calendar.getId());
             eventMap.put("summary", calendar.getSummary());
@@ -108,10 +108,12 @@ public class GoogleCalendarsService {
            }
     }
     
-    public List<Map> getShareCalendar(String calendarId) {
+    public Pair<String, List<Map>> getShareCalendar(String calendarId) {
         // TODO Auto-generated method stub
         try{
             
+            com.google.api.services.calendar.model.Calendar calendar = getCalendarsService().calendars().get("primary").execute();
+            String primaryId = calendar.getId();
             Acl acl = getCalendarsService().acl().list(calendarId).execute();
             List<Map> list = new ArrayList();
             for (AclRule rule : acl.getItems()) {
@@ -120,7 +122,7 @@ public class GoogleCalendarsService {
                 map.put("ruleId", rule.getId());
                 list.add(map);
             }     
-            return list;
+            return new Pair<String, List<Map>>(primaryId, list);
         }catch(IOException e){
             e.printStackTrace();
         }
