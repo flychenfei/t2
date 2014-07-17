@@ -37,7 +37,6 @@
                     ],
                     callback: function (params) {
                     	var params = params || {};
-                    	alert(parentId);
                     	params.parentId = parentId;
                     	app.googleDriveApi.createFolder(params);
                     	brite.display("GoogleDriveFiles",".GoogleScreen-content");

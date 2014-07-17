@@ -149,7 +149,6 @@ public class GoogleDriveHandlers {
     
     @WebGet("/googleDrive/createFolder")
     public Object createFolder(@WebParam("folderName") String folderName, @WebParam("parentId") String parentId){
-    	System.out.println(parentId+"========"+folderName);
     	if(googleDriveService.createFolder(parentId, folderName))
         	return WebResponse.success();
         else

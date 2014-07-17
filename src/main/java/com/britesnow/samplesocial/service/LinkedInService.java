@@ -35,14 +35,6 @@ public class LinkedInService {
         oAuthService = oauthServiceFactory.getOauthService(ServiceType.LinkedIn);
     }
 
-    private Token getToken(User user) {
-        SocialIdEntity soId = authService.getSocialIdEntity();
-        if (soId != null) {
-            return new Token(soId.getToken(), soId.getSecret());
-        }
-        throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
-    }
-
     /**
      * get user connections   by auth user
      * @param user  login user
@@ -59,18 +51,6 @@ public class LinkedInService {
         Response response = request.send();
         Map map = JsonUtil.toMapAndList(response.getBody());
         return map;
-    }
-
-    private OAuthRequest createRequest(Verb verb, String url) {
-        OAuthRequest request = new OAuthRequest(verb, url);
-        request.addHeader("x-li-format","json");
-        return request;
-    }
-
-    private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
-        int start = pageIndex*pageSize;
-        request.addQuerystringParameter("start", String.valueOf(start));
-        request.addQuerystringParameter("count", String.valueOf(pageSize));
     }
 
     /**
@@ -146,6 +126,26 @@ public class LinkedInService {
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
         return JsonUtil.toMapAndList(resp.getBody());
+    }
+
+    private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
+        int start = pageIndex*pageSize;
+        request.addQuerystringParameter("start", String.valueOf(start));
+        request.addQuerystringParameter("count", String.valueOf(pageSize));
+    }
+
+    private Token getToken(User user) {
+        SocialIdEntity soId = authService.getSocialIdEntity();
+        if (soId != null) {
+            return new Token(soId.getToken(), soId.getSecret());
+        }
+        throw new OauthException(oAuthService.getAuthorizationUrl(oAuthService.getRequestToken()));
+    }
+
+    private OAuthRequest createRequest(Verb verb, String url) {
+        OAuthRequest request = new OAuthRequest(verb, url);
+        request.addHeader("x-li-format","json");
+        return request;
     }
 
 }

@@ -66,7 +66,15 @@ public class GoogleDriveService {
     	}
     	return searchFiles(nextPageToken, pageSize, query.toString());
     }
-    
+    /**
+     * list files 
+     * 
+     * @param selfId
+     * @param nextPageToken
+     * @param pageSize
+     * @param trash
+     * @return
+     */
     public GoogleDriveDataPack list(String selfId, String nextPageToken, Integer pageSize, boolean trash){
     	StringBuilder query = new StringBuilder();
     	query.append("trashed=").append(trash);
@@ -86,6 +94,13 @@ public class GoogleDriveService {
     	return new GoogleDriveDataPack(generalData, pair.getSecond());
     }
     
+    /**
+     * upload file
+     * 
+     * @param parentId
+     * @param fileItem
+     * @return
+     */
     public boolean uploadFile(String parentId, FileItem fileItem){
     	if(fileItem.getSize() > 2000){
     		return multipartUploadFile(parentId, fileItem);
@@ -171,8 +186,7 @@ public class GoogleDriveService {
         	file.setMimeType("application/vnd.google-apps.folder");
         	file.setParents(Arrays.asList(new ParentReference().setId(parentId)));
             Insert insert = getDriverService().files().insert(file);
-            File result = insert.execute();
-            System.out.println(result.getId());
+            insert.execute();
             return true;
         } catch (IOException e) {
           e.printStackTrace();
@@ -306,15 +320,7 @@ public class GoogleDriveService {
         }
         return null;
       }
-    
-    private Drive getDriverService(){
-        HttpTransport httpTransport = new NetHttpTransport();
-        JacksonFactory jsonFactory = new JacksonFactory();
-        GoogleCredential credential = new GoogleCredential().setAccessToken(authService.getSocialIdEntity().getToken());
-        Drive service = new Drive.Builder(httpTransport, jsonFactory, credential).setApplicationName("Drive Test").build();
-        return service;
-    }
-    
+
     /**
      * search files based on the queryString ,see https://developers.google.com/drive/web/search-parameters
      * @param nextPageToken
@@ -346,6 +352,7 @@ public class GoogleDriveService {
 
     /**
      * search files based on the queryString ,see https://developers.google.com/drive/web/search-parameters
+     * 
      * @param nextPageToken
      * @param pageSize
      * @param queryString
@@ -423,4 +430,13 @@ public class GoogleDriveService {
     	DateTime dateTime = new DateTime(date);
 		return dateTime.toStringRfc3339();
     }
+    
+    private Drive getDriverService(){
+        HttpTransport httpTransport = new NetHttpTransport();
+        JacksonFactory jsonFactory = new JacksonFactory();
+        GoogleCredential credential = new GoogleCredential().setAccessToken(authService.getSocialIdEntity().getToken());
+        Drive service = new Drive.Builder(httpTransport, jsonFactory, credential).setApplicationName("Drive Test").build();
+        return service;
+    }
+    
 }
