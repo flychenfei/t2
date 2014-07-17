@@ -4,17 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.BodyPart;
-import javax.mail.FetchProfile;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
@@ -22,14 +19,6 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
-import javax.mail.search.AndTerm;
-import javax.mail.search.BodyTerm;
-import javax.mail.search.FromStringTerm;
-import javax.mail.search.ReceivedDateTerm;
-import javax.mail.search.RecipientStringTerm;
-import javax.mail.search.SearchTerm;
-import javax.mail.search.SentDateTerm;
-import javax.mail.search.SubjectTerm;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -56,52 +45,135 @@ public class GmailImapService {
     @Inject
     GoogleAuthService authService;
 
-    /**
-     * list mails
-     * @param user oauth user
-     * @param folderName   foldr name
-     * @param start   start
-     * @param count   count
-     * @return  pare of couf and messages
-     * @throws Exception
-     */
-    public Pair<Integer, List<MailInfo>> listMails(String folderName, int start, int count) throws Exception {
-        IMAPStore imap = getImapStore();
-
-        Folder inbox;
-        if (folderName == null) {
-            inbox = imap.getDefaultFolder();
-        } else {
-            inbox = imap.getFolder(folderName);
-        }
-
+    public Pair<Integer, List<MailInfo>> search(String subject, String from, String to, 
+    		String body, String sDate , String eDate, String srDate , String erDate,
+    		String label, String hasAttachment , String attachmentName , String cc ,
+    		String list, String hasCircle , String circle , String chatContent ,
+    		String unread,String category , String deliveredTo , String rfc822msgid ,
+    		Integer minSize, Integer maxSize, int start, int count) throws Exception  {
+    	
+        GmailStore imap = getGmailStore();
+    	Folder inbox = imap.getFolder("INBOX");
         inbox.open(Folder.READ_ONLY);
-        FetchProfile profile = new FetchProfile();
-        profile.add(FetchProfile.Item.ENVELOPE);
-        if (!inbox.isOpen()) {
-            inbox.open(Folder.READ_ONLY);
+    
+        StringBuffer searchTerms = new StringBuffer();
+        
+        if (subject != null) {
+        	searchTerms.append("subject:");
+        	searchTerms.append(subject);
         }
-        int total = inbox.getMessageCount();
-        List<MailInfo> mails = new ArrayList();
-        Message[] messages = null;
-        if (total > 0) {
-            Integer end = getEnd(start, count, total);
-            if(end != null){
-                
-                int finalStart = total + 1 - end;
-                int finalEnd = total + 1 - start;
-                
-                messages = inbox.getMessages(finalStart, finalEnd);
-            }
+        if (from != null) {
+        	searchTerms.append(" from:");
+        	searchTerms.append(from);
+        }
+        if (to != null) {
+        	searchTerms.append(" to:");
+        	searchTerms.append(to);
+        }
+        if (body != null) {
+        	searchTerms.append(" \"");
+        	searchTerms.append(body);
+        	searchTerms.append("\"");
+        }
+        if (sDate != null) {
+        	searchTerms.append(" after:");
+        	searchTerms.append(sDate);
+        }
+        if (eDate != null) {
+        	searchTerms.append(" before:");
+        	searchTerms.append(eDate);
+        }
+        if (srDate != null) {
+        	searchTerms.append(" after:");
+        	searchTerms.append(srDate);
+        }
+        if (erDate != null) {
+        	searchTerms.append(" before:");
+        	searchTerms.append(erDate);
+        }
+        if (label != null) {
+        	searchTerms.append(" label:");
+        	searchTerms.append(label);
+        }
+        if (hasAttachment !=null) {
+        	searchTerms.append(" has:attachment");
+        }
+        if (attachmentName != null) {
+        	searchTerms.append(" filename:");
+        	searchTerms.append(attachmentName);
+        }
+        if (cc != null) {
+        	searchTerms.append(" cc:");
+        	searchTerms.append(cc);
+        }
+        if (minSize != null) {
+        	searchTerms.append(" larger:");
+        	searchTerms.append(minSize.toString());
+        }
+        if (maxSize != null) {
+        	searchTerms.append(" smaller:");
+        	searchTerms.append(maxSize.toString());
+        }
+        if (list != null) {
+        	searchTerms.append(" list:");
+        	searchTerms.append(list);
+        }
+        if (hasCircle != null) {
+        	searchTerms.append(" has:circle");
+        }
+        if (circle != null) {
+        	searchTerms.append(" circle:");
+        	searchTerms.append(circle);
+        }
+        if (chatContent != null) {
+        	searchTerms.append(" is:chat ");
+        	searchTerms.append(chatContent);
+        }
+        if (unread != null) {
+        	searchTerms.append(" is:unread");
+        }
+        if (category != null) {
+        	searchTerms.append(" category:");
+        	searchTerms.append(category);
+        }
+        if (deliveredTo != null) {
+        	searchTerms.append(" deliveredTo:");
+        	searchTerms.append(deliveredTo);
+        }
+        if (rfc822msgid != null) {
+        	searchTerms.append(" rfc822msgid:");
+        	searchTerms.append(rfc822msgid);
         }
         
+        GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
+        
+        List<MailInfo> mails = new ArrayList();
+        Message[] messages = null;
+        
+    	int total = 0;
+        if (gmailSearchTerm != null) {
+        	Message[] msgs = inbox.search(gmailSearchTerm);
+            total = msgs.length;
+    
+            if (total > 0) {
+                Integer end = getEnd(start, count, total);
+                if (end != null) {
+                    int finalStart = total + 1 - end;
+                    int finalEnd = total + 1 - start;
+                    
+                    messages = new Message[finalEnd - finalStart + 1];
+                    for (int i = 0; i < messages.length; i++) {
+                        messages[i] = msgs[finalStart + i - 1];
+                    }
+                }
+            }
+        }
         if(messages != null){
             for (Message message : messages) {
                 MailInfo info = buildMailInfo(message);
-                mails.add(0,info);
+                mails.add(0, info);
             }
         }
-        
         if(inbox.isOpen()){
             inbox.close(true);
         }
@@ -260,7 +332,7 @@ public class GmailImapService {
     
     
     public boolean saveFolder(String folderName) throws Exception {
-        GmailStore imap = getImapsStore();
+        GmailStore imap = getGmailStore();
         Folder folder = null;
         folder = imap.getFolder(folderName);
         if (!folder.exists()) {
@@ -269,103 +341,6 @@ public class GmailImapService {
         return true;
     }
 
-    /**
-     * search mail
-     * @param user  auth user
-     * @param subject search object
-     * @param from    search from
-     * @param pageSize  page size
-     * @param pageIndex  page index
-     * @return   pair of count and mail info.
-     * @throws Exception
-     */
-	public Pair<Integer, List<MailInfo>> search(String subject, String from, String to, 
-			String body, Date sDate , Date eDate, Date srDate , Date erDate,
-			Integer minSize, Integer maxSize, int start, int count) throws Exception {
-	    
-        Folder inbox = null;
-        int total = 0;
-        IMAPStore imap = getImapsStore();
-        inbox = imap.getFolder("INBOX");
-        inbox.open(Folder.READ_ONLY);
-        List<SearchTerm> searchTerms = new ArrayList<SearchTerm>();
-        if (subject != null) {
-            SubjectTerm subjectTerm = new SubjectTerm(subject);
-            searchTerms.add(subjectTerm);
-        }
-        if (from != null) {
-            FromStringTerm fromStringTerm = new FromStringTerm(from);
-            searchTerms.add(fromStringTerm);
-        }
-        if (to != null) {
-            RecipientStringTerm recipientStringTerm = new RecipientStringTerm(RecipientType.TO, to);
-            searchTerms.add(recipientStringTerm);
-        }
-
-        if (body != null) {
-            BodyTerm bodyTerm = new BodyTerm(body);
-            searchTerms.add(bodyTerm);
-        }
-        if (sDate != null) {
-            SentDateTerm startSentDateTerm = new SentDateTerm(SentDateTerm.GE, sDate);
-            searchTerms.add(startSentDateTerm);
-        }
-        if (eDate != null) {
-            SentDateTerm endSentDateTerm = new SentDateTerm(SentDateTerm.LE, eDate);
-            searchTerms.add(endSentDateTerm);
-        }
-        if (srDate != null) {
-            ReceivedDateTerm startReceivedDateTerm = new ReceivedDateTerm(ReceivedDateTerm.GE, srDate);
-            searchTerms.add(startReceivedDateTerm);
-        }
-        if (erDate != null) {
-            ReceivedDateTerm endReceivedDateTerm = new ReceivedDateTerm(ReceivedDateTerm.LE, erDate);
-            searchTerms.add(endReceivedDateTerm);
-        }
-
-        // FIXME: hide this for now, it would scan all if add this SizeTerm
-        // if(minSize != 0){
-        // SizeTerm minSizeTerm = new SizeTerm(SizeTerm.GE, minSize);
-        // searchTerms.add(minSizeTerm);
-        // }
-        // if(maxSize != 0){
-        // SizeTerm maxSizeTerm = new SizeTerm(SizeTerm.LE, maxSize);
-        // searchTerms.add(maxSizeTerm);
-        // }
-        
-        List<MailInfo> mails = new ArrayList();
-        Message[] messages = null;
-        
-        if (searchTerms.size() > 0) {
-            Message[] msgs = inbox.search(new AndTerm(searchTerms.toArray(new SearchTerm[searchTerms.size()])));
-            total = msgs.length;
-
-            if (total > 0) {
-                Integer end = getEnd(start, count, total);
-                if (end != null) {
-                    messages = new Message[end - start + 1];
-                    int c = 0;
-                    for (int i = messages.length - 1; i >= 0; i--) {
-                        messages[c] = msgs[start + i - 1];
-                        c++;
-                    }
-                }
-            }
-        }
-        
-        if(messages != null){
-            for (Message message : messages) {
-                MailInfo info = buildMailInfo(message);
-                mails.add(0, info);
-            }
-        }
-        
-        if(inbox.isOpen()){
-            inbox.close(true);
-        }
-        
-        return new Pair<Integer, List<MailInfo>>(total, mails);
-    }
 
     /**
      * sent mail
@@ -409,142 +384,6 @@ public class GmailImapService {
     	return mailInfo;
     }
 
-    public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to, 
-			String body, String sDate , String eDate, String srDate , String erDate,
-			String label, String hasAttachment , String attachmentName , String cc ,
-			String list, String hasCircle , String circle , String chatContent ,
-			String unread,String category , String deliveredTo , String rfc822msgid ,
-			Integer minSize, Integer maxSize, int start, int count) throws Exception  {
-    	
-        GmailStore imap = getImapsStore();
-    	Folder inbox = imap.getFolder("INBOX");
-        inbox.open(Folder.READ_ONLY);
-
-        StringBuffer searchTerms = new StringBuffer();
-        
-        if (subject != null) {
-        	searchTerms.append("subject:");
-        	searchTerms.append(subject);
-        }
-        if (from != null) {
-        	searchTerms.append(" from:");
-        	searchTerms.append(from);
-        }
-        if (to != null) {
-        	searchTerms.append(" to:");
-        	searchTerms.append(to);
-        }
-        if (body != null) {
-        	searchTerms.append(" \"");
-        	searchTerms.append(body);
-        	searchTerms.append("\"");
-        }
-        if (sDate != null) {
-        	searchTerms.append(" after:");
-        	searchTerms.append(sDate);
-        }
-        if (eDate != null) {
-        	searchTerms.append(" before:");
-        	searchTerms.append(eDate);
-        }
-        if (srDate != null) {
-        	searchTerms.append(" after:");
-        	searchTerms.append(srDate);
-        }
-        if (erDate != null) {
-        	searchTerms.append(" before:");
-        	searchTerms.append(erDate);
-        }
-        if (label != null) {
-        	searchTerms.append(" label:");
-        	searchTerms.append(label);
-        }
-        if (hasAttachment !=null) {
-        	searchTerms.append(" has:attachment");
-        }
-        if (attachmentName != null) {
-        	searchTerms.append(" filename:");
-        	searchTerms.append(attachmentName);
-        }
-        if (cc != null) {
-        	searchTerms.append(" cc:");
-        	searchTerms.append(cc);
-        }
-        if (minSize != null) {
-        	searchTerms.append(" larger:");
-        	searchTerms.append(minSize.toString());
-        }
-        if (maxSize != null) {
-        	searchTerms.append(" smaller:");
-        	searchTerms.append(maxSize.toString());
-        }
-        if (list != null) {
-        	searchTerms.append(" list:");
-        	searchTerms.append(list);
-        }
-        if (hasCircle != null) {
-        	searchTerms.append(" has:circle");
-        }
-        if (circle != null) {
-        	searchTerms.append(" circle:");
-        	searchTerms.append(circle);
-        }
-        if (chatContent != null) {
-        	searchTerms.append(" is:chat ");
-        	searchTerms.append(chatContent);
-        }
-        if (unread != null) {
-        	searchTerms.append(" is:unread");
-        }
-        if (category != null) {
-        	searchTerms.append(" category:");
-        	searchTerms.append(category);
-        }
-        if (deliveredTo != null) {
-        	searchTerms.append(" deliveredTo:");
-        	searchTerms.append(deliveredTo);
-        }
-        if (rfc822msgid != null) {
-        	searchTerms.append(" rfc822msgid:");
-        	searchTerms.append(rfc822msgid);
-        }
-        
-        GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
-        
-        List<MailInfo> mails = new ArrayList();
-        Message[] messages = null;
-        
-    	int total = 0;
-        if (gmailSearchTerm != null) {
-        	Message[] msgs = inbox.search(gmailSearchTerm);
-            total = msgs.length;
-
-            if (total > 0) {
-                Integer end = getEnd(start, count, total);
-                if (end != null) {
-                    int finalStart = total + 1 - end;
-                    int finalEnd = total + 1 - start;
-                    
-                    messages = new Message[finalEnd - finalStart + 1];
-                    for (int i = 0; i < messages.length; i++) {
-                        messages[i] = msgs[finalStart + i - 1];
-                    }
-                }
-            }
-        }
-        if(messages != null){
-            for (Message message : messages) {
-                MailInfo info = buildMailInfo(message);
-                mails.add(0, info);
-            }
-        }
-        if(inbox.isOpen()){
-            inbox.close(true);
-        }
-        
-        return new Pair<Integer, List<MailInfo>>(total, mails);
-    }
-    
     private IMAPStore getImapStore() throws Exception {
         SocialIdEntity social = authService.getSocialIdEntity();
         if (social != null && social.getEmail() != null) {
@@ -553,7 +392,7 @@ public class GmailImapService {
         throw new IllegalArgumentException("access token is invalid");
     }
     
-    private GmailStore getImapsStore() throws Exception {
+    private GmailStore getGmailStore() throws Exception {
         SocialIdEntity social = authService.getSocialIdEntity();
         if(social != null && social.getEmail() != null){
             return emailAuthenticator.connectToGmailImap(social.getEmail(), social.getToken());
