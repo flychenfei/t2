@@ -63,17 +63,6 @@ public class GoogleEmailHandlers {
         }
     }
 
-    @WebGet("/gmail/list")
-    public WebResponse listEmails(@WebUser User user,
-                           @WebParam("folderName") String folderName,
-                           @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
-        
-    	Pair<Integer, List<MailInfo>> pair = gmailImapService.listMails("inbox", pageSize*pageIndex+1, pageSize);
-        List<MailInfo> mailInfos = pair.getSecond();
-
-        return WebResponse.success(mailInfos).set("result_count", pair.getFirst());
-    }
-
     @WebGet("/gmail/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") Integer id) throws Exception {
         MailInfo info = gmailImapService.getEmail(id);
@@ -113,45 +102,19 @@ public class GoogleEmailHandlers {
                         @WebParam("minSize") Integer minSize,@WebParam("maxSize") Integer maxSize,
                         @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex) throws Exception {
         
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date sDate,eDate,srDate,erDate;
-//        if(startDate != null){
-//           startDate = startDate + " 00:00:00";
-//           sDate = format.parse(startDate);
-//        }else{
-//        	 sDate = null;
-//        }
-//        if(endDate !=null){
-//            endDate = endDate + " 23:59:59";
-//            eDate = format.parse(endDate);
-//        }else{
-//            eDate = null;
-//        }
-//        if(startReceivedDate !=null){
-//        	startReceivedDate = startReceivedDate + " 00:00:00";
-//        	srDate = format.parse(startReceivedDate);
-//        }else{
-//            srDate = null;
-//        }
-//        if(endReceivedDate !=null){
-//        	endReceivedDate = endReceivedDate + " 23:59:59";
-//            erDate = format.parse(endReceivedDate);
-//        }else{
-//        	erDate = null;
-//        }
         if(minSize == null ){
         	minSize = 0;
         }
         if(maxSize == null){
         	maxSize = Integer.MAX_VALUE;
         }
-        if(hasAttachment.equalsIgnoreCase("false")){
+        if(hasAttachment == null || hasAttachment.equalsIgnoreCase("false")){
         	hasAttachment = null;
         }
-        if(unread.equalsIgnoreCase("false")){
+        if(unread == null || unread.equalsIgnoreCase("false")){
         	unread = null;
         }
-        if(hasCircle.equalsIgnoreCase("false")){
+        if(hasCircle == null || hasCircle.equalsIgnoreCase("false")){
         	hasCircle = null;
         }
         String regex = "^.*[\\s\\(\\){}\\|].*$";
@@ -162,9 +125,7 @@ public class GoogleEmailHandlers {
 	        }
         }
         
-//        Pair<Integer, List<MailInfo>> pair = gMailService.search(subject, from, to, body,
-//              sDate, eDate, srDate, erDate, minSize, maxSize, pageSize * pageIndex + 1, pageSize);
-    	Pair<Integer, List<MailInfo>> pair = gmailImapService.gmailSearch(subject, from, to, body,
+    	Pair<Integer, List<MailInfo>> pair = gmailImapService.search(subject, from, to, body,
     			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
     			attachmentName , cc , list,  hasCircle ,  circle ,  chatContent , unread,
     			category , deliveredTo , rfc822msgid , minSize, maxSize, pageSize * pageIndex + 1, pageSize);

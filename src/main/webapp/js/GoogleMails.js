@@ -3,11 +3,9 @@
 
     brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
-            if(data && data.search) {
-                this.search = data.search;
-            }else{
-                this.search = app.googleApi.getEmails;
-            }
+            this.search = function(opts) {
+				return app.googleApi.searchEmails(opts)
+			};
             return app.render("tmpl-GoogleMails");
         },
 

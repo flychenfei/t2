@@ -33,12 +33,6 @@ var app = app || {};
             var params = {"contactId": contactId, etag: etag};
             return app.getJsonData(contextPath + "/gcontact/delete", params);
         },
-        getEmails: function (opts) {
-            var params = {
-                method: "Get"
-            };
-            return app.getJsonData(contextPath + "/gmail/list", $.extend(params, opts || {}));
-        },
         getFolders: function () {
             var params = {method: "Get"};
             return app.getJsonData(contextPath + "/gmail/folders", params);
