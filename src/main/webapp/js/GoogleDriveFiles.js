@@ -25,7 +25,8 @@
 
         events: {
         	"click;.btnUpload":function(e){
-        		brite.display("GoogleDriveDialog",$("body"),{displayName:'Upload File'});
+        		var parentId = $(e.target).attr("data-parentId");
+        		brite.display("GoogleDriveDialog",$("body"),{parentId:parentId,displayName:'Upload File'});
 			},
 			"click;.btnCreateFolder":function(e){
 				var parentId = $(e.target).attr("data-parentId");

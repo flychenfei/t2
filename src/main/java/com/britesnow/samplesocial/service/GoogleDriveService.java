@@ -86,20 +86,20 @@ public class GoogleDriveService {
     	return new GoogleDriveDataPack(generalData, pair.getSecond());
     }
     
-    public boolean uploadFile(FileItem fileItem){
-    	if(fileItem.getSize() > 1000){
-    		return multipartUploadFile(fileItem);
+    public boolean uploadFile(String parentId, FileItem fileItem){
+    	if(fileItem.getSize() > 2000){
+    		return multipartUploadFile(parentId, fileItem);
     	}
     	if(fileItem.getName() == null){
-    		return simpleUploadFile(fileItem);
+    		return simpleUploadFile(parentId, fileItem);
     	}
     	File metadata = new File();
     	metadata.setTitle(fileItem.getName());
     	metadata.setMimeType(fileItem.getContentType());
+    	metadata.setParents(Arrays.asList(new ParentReference().setId(parentId)));
         try {
-            InputStreamContent content = new InputStreamContent("application/vnd.google-apps.drive-sdk", fileItem.getInputStream());
+            InputStreamContent content = new InputStreamContent(fileItem.getContentType(), fileItem.getInputStream());
             Insert insert = getDriverService().files().insert(metadata, content);
-            insert.put("uploadType", "multipart");
             insert.execute();
           return true;
         } catch (IOException e) {
@@ -113,7 +113,7 @@ public class GoogleDriveService {
      * uploadType=media
      * @return
      */
-    public boolean simpleUploadFile(FileItem fileItem){
+    public boolean simpleUploadFile(String parentId, FileItem fileItem){
     	 try {
              InputStreamContent content = new InputStreamContent(fileItem.getContentType(), fileItem.getInputStream());
              Drive drive = getDriverService();
@@ -131,7 +131,7 @@ public class GoogleDriveService {
      * uploadType=multipart
      * @return
      */
-    public boolean multipartUploadFile(FileItem fileItem){
+    public boolean multipartUploadFile(String parentId, FileItem fileItem){
         try {
         	MultipartContent content = new MultipartContent();
         	content.setMediaType(new HttpMediaType("multipart/related"));

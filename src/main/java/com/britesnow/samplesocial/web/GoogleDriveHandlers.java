@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.fileupload.FileItem;
 
 import com.britesnow.samplesocial.service.GoogleDriveService;
@@ -48,11 +50,13 @@ public class GoogleDriveHandlers {
     }
     
     @WebPost("/googleDrive/upload")
-	public WebResponse upload(@WebParam("file") FileItem file){
+	public WebResponse upload(@WebParam("data") String data, @WebParam("file") FileItem file){
+    	JSONObject jo = JSONObject.fromObject(data);
+    	String parentId = jo.getString("parentId");
     	if(file==null){
     		return WebResponse.fail();
     	}
-		if(googleDriveService.uploadFile(file)){
+		if(googleDriveService.uploadFile(parentId, file)){
 			return WebResponse.success();
 		}
 		return WebResponse.fail();
