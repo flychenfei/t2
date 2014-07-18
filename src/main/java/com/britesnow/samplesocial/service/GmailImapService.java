@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sun.mail.gimap.GmailRawSearchTerm;
 import com.sun.mail.gimap.GmailStore;
+import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -51,9 +52,9 @@ public class GmailImapService {
     		String list, String hasCircle , String circle , String chatContent ,
     		String unread,String category , String deliveredTo , String rfc822msgid ,
     		Integer minSize, Integer maxSize, int start, int count) throws Exception  {
-    	
-        GmailStore imap = getGmailStore();
-    	Folder inbox = imap.getFolder("INBOX");
+    	IMAPStore imap = getGmailStore();
+    	String folderName = getGmailFolderName(imap,"\\All");
+    	Folder inbox = imap.getFolder(folderName);
         inbox.open(Folder.READ_ONLY);
     
         StringBuffer searchTerms = new StringBuffer();
@@ -177,7 +178,7 @@ public class GmailImapService {
         if(inbox.isOpen()){
             inbox.close(true);
         }
-        
+        imap.close();
         return new Pair<Integer, List<MailInfo>>(total, mails);
     }
 
@@ -188,13 +189,48 @@ public class GmailImapService {
      * @throws Exception
      */
     public Folder[] listFolders() throws Exception {
-        IMAPStore imap = getImapStore();
-        return imap.getDefaultFolder().list();
+        IMAPStore imap = getGmailStore();
+        Folder[] folders = imap.getDefaultFolder().list("*");
+        imap.close();
+        return folders;
     }
     
     public Folder getFolder(String folderName) throws Exception {
-        IMAPStore imap = getImapStore();
+        IMAPStore imap = getGmailStore();
         return imap.getFolder(folderName);
+    }
+    
+    /**
+     * For gmail folders,
+     * LIST (\HasNoChildren) "/" "INBOX"
+     * LIST (\Noselect \HasChildren) "/" "[Gmail]"
+     * LIST (\HasNoChildren \All) "/" "[Gmail]/All Mail"
+     * LIST (\HasNoChildren \Drafts) "/" "[Gmail]/Drafts"
+     * LIST (\HasNoChildren \Important) "/" "[Gmail]/Important"
+     * LIST (\HasNoChildren \Sent) "/" "[Gmail]/Sent Mail"
+     * LIST (\HasNoChildren \Junk) "/" "[Gmail]/Spam"
+     * LIST (\HasNoChildren \Flagged) "/" "[Gmail]/Starred"
+     * LIST (\HasNoChildren \Trash) "/" "[Gmail]/Trash"
+     * LIST (\HasNoChildren) "/" "[Gmail]Trash"
+     * @param attribute
+     * @return
+     * @throws Exception
+     */
+    public String getGmailFolderName(IMAPStore imap, String attribute) throws Exception {
+        Folder[] folders = imap.getDefaultFolder().list("*");
+        String folder = null;
+        for (Folder f : folders) {
+            IMAPFolder imapFolder = (IMAPFolder) f;
+            for(String attr : imapFolder.getAttributes()) {
+                if (attribute != null && attribute.equals(attr)) {
+                    folder = f.getFullName();
+                }
+            }
+        }
+        if(folder != null){
+            return folder;
+        }
+        return null;
     }
 
     /**
@@ -205,8 +241,9 @@ public class GmailImapService {
      * @throws Exception
      */
     public MailInfo getEmail(int emailId) throws Exception {
-        IMAPStore imap = getImapStore();
-        Folder inbox = imap.getFolder("INBOX");
+        IMAPStore imap = getGmailStore();
+        String folderName = getGmailFolderName(imap,"\\All");
+        Folder inbox = imap.getFolder(folderName);
         if (!inbox.isOpen()) {
             inbox.open(Folder.READ_ONLY);
         }
@@ -267,8 +304,9 @@ public class GmailImapService {
     }
     
     public InputStream getAttachment(Integer emailId, Integer attachmentId) throws Exception {
-        IMAPStore imap = getImapStore();
-        Folder inbox = imap.getFolder("INBOX");
+        IMAPStore imap = getGmailStore();
+        String folderName = getGmailFolderName(imap,"\\All");
+        Folder inbox = imap.getFolder(folderName);
         if (!inbox.isOpen()) {
             inbox.open(Folder.READ_ONLY);
         }
@@ -296,6 +334,7 @@ public class GmailImapService {
             e.printStackTrace();
         }
 
+        imap.close();
         return null;
     }
 
@@ -306,12 +345,32 @@ public class GmailImapService {
      * @throws Exception
      */
     public void deleteEmail(int emailId) throws Exception {
-        IMAPStore imap = getImapStore();
-        Folder inbox = imap.getFolder("INBOX");
+        IMAPStore imap = getGmailStore();
+        String folderName = getGmailFolderName(imap,"\\All");
+        Folder inbox = imap.getFolder(folderName);
 
         inbox.open(Folder.READ_WRITE);
         Message msg = inbox.getMessage(emailId);
         msg.setFlag(Flags.Flag.DELETED, true);
+        inbox.close(true);
+        imap.close();
+    }
+    
+    public void trashEmail(int emailId) throws Exception {
+        IMAPStore imap = getGmailStore();
+        String folderName = getGmailFolderName(imap,"\\All");
+        Folder inbox = imap.getFolder(folderName);
+
+        inbox.open(Folder.READ_WRITE);
+        Message msg = inbox.getMessage(emailId);
+        String trashName = getGmailFolderName(imap,"\\Trash");
+        Folder trashFolder = imap.getFolder(trashName);
+        
+        // Just do copy, not do delete, the copy seems mean that move message
+        inbox.copyMessages(new Message[]{msg}, trashFolder);
+
+        inbox.close(false);
+        imap.close();
     }
 
     /**
@@ -322,12 +381,14 @@ public class GmailImapService {
      * @throws Exception
      */
     public boolean deleteFolder(String folderName) throws Exception {
-        IMAPStore imap = getImapStore();
+        IMAPStore imap = getGmailStore();
         Folder folder = imap.getFolder(folderName);
         if (folder.isOpen()) {
             folder.close(true);
         }
-        return folder.delete(true);
+        boolean success = folder.delete(true);
+        imap.close();
+        return success;
     }
     
     
@@ -338,6 +399,7 @@ public class GmailImapService {
         if (!folder.exists()) {
             folder.create(Folder.HOLDS_MESSAGES);
         }
+        imap.close();
         return true;
     }
 
@@ -384,14 +446,6 @@ public class GmailImapService {
     	return mailInfo;
     }
 
-    private IMAPStore getImapStore() throws Exception {
-        SocialIdEntity social = authService.getSocialIdEntity();
-        if (social != null && social.getEmail() != null) {
-            return emailAuthenticator.connectToImap(social.getEmail(), social.getToken());
-        }
-        throw new IllegalArgumentException("access token is invalid");
-    }
-    
     private GmailStore getGmailStore() throws Exception {
         SocialIdEntity social = authService.getSocialIdEntity();
         if(social != null && social.getEmail() != null){

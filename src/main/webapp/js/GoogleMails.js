@@ -52,6 +52,17 @@
 
         },
         docEvents: {
+        	"TRASH_EMAIL": function(event, extra){
+                var view = this;
+                if(extra.objId){
+                    app.googleApi.trashEmail(extra.objId).done(function(result){
+                        setTimeout(function(){
+                            showEmails.call(view);
+                        }, 3000)
+
+                    });
+                }
+            },
             "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
@@ -128,6 +139,12 @@
                         return "<div class='icon-share-alt'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
+                },{
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-trash'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL'"
                 }
             ],
             opts: {

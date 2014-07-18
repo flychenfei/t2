@@ -77,6 +77,13 @@ public class GoogleEmailHandlers {
         gmailImapService.deleteEmail(id);
         return WebResponse.success(true);
     }
+    
+    @WebPost("/gmail/trash")
+    public WebResponse trashEmail(@WebUser User user,
+                            @WebParam("id") Integer id, RequestContext rc) throws Exception {
+        gmailImapService.trashEmail(id);
+        return WebResponse.success(true);
+    }
 
 
     @WebPost("/gmail/send")
