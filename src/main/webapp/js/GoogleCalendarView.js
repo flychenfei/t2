@@ -99,12 +99,12 @@
 				calendarId:view.calendarId
 			};
 			app.googleApi.listCalendarEvents(opts).done(function(data){
-				
 				for(var i = 0; i < data.result.length; i++){
 					var event = data.result[i];
+					var color = event.backgroundColor;
 					var date = event.date.dateTime || event.date.date;
 					var d = new Date(date.value).format("yyyy-MM-dd");
-					$e.find("td[data-date='"+d+"'] .events").append("<div>"+event.summary+"</div>");
+					$e.find("td[data-date='"+d+"'] .events").append("<div style='color:"+color+"'>"+event.summary+"</div>");
 				}
 				
 			});
