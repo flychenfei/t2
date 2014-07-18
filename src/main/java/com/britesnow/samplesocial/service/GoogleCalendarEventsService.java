@@ -17,6 +17,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Event.Reminders;
 import com.google.api.services.calendar.model.EventAttendee;
@@ -74,6 +75,7 @@ public class GoogleCalendarEventsService {
         String pageToken = null;
         try {
             Events events = list.execute();
+            CalendarListEntry calendarListEntry = getCalendarService().calendarList().get(calendarId).execute();
             List<Event> items = events.getItems();
             List<Map> eventList = new ArrayList();
             for (Event event : items) {
@@ -84,6 +86,7 @@ public class GoogleCalendarEventsService {
                 eventMap.put("location", event.getLocation());
                 eventMap.put("status", event.getStatus());
                 eventMap.put("calendarId", event.getOrganizer().getEmail());
+                eventMap.put("backgroundColor", calendarListEntry.getBackgroundColor());
                 eventList.add(eventMap);
             }
             pageToken = events.getNextPageToken();
