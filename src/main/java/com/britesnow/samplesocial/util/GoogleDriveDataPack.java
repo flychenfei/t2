@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class GoogleDriveDataPack {
 
-	private Map<String,String> generalData = new HashMap<String,String>();
+	private Map<String,Object> generalData = new HashMap<String,Object>();
 	private List<Map> detailData = new ArrayList<Map>();
 	
-	public GoogleDriveDataPack(Map<String, String> generalData,
+	public GoogleDriveDataPack(Map<String, Object> generalData,
 			List<Map> detailData) {
 		super();
 		this.generalData = generalData;
@@ -20,7 +20,7 @@ public class GoogleDriveDataPack {
 	/**
 	 * @return the generalData
 	 */
-	public Map<String, String> getGeneralData() {
+	public Map<String, Object> getGeneralData() {
 		return generalData;
 	}
 

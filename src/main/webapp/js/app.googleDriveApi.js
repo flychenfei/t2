@@ -55,6 +55,12 @@ var app = app || {};
         	param = param || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/createFolder", param);
+        },
+        previousList: function(param){
+        	param = param || {};
+        	param.pageSize = param.pageSize || 10;
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/previousList", param);
         }
 	};
 })();

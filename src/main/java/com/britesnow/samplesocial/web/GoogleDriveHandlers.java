@@ -131,6 +131,17 @@ public class GoogleDriveHandlers {
     	return result;
     }
     
+    @WebGet("/googleDrive/previousList")
+    public Object listParent(@WebParam("currentId") String currentId, @WebParam("pageSize") Integer pageSize){
+    	GoogleDriveDataPack results = googleDriveService.listParent(currentId, pageSize);
+    	List<Map> docsInfo = results.getDetailData();
+		WebResponse result = WebResponse.success(docsInfo);
+		result.set("nextPageToken", results.getGeneralData().get("next"));
+		result.set("parentId", results.getGeneralData().get("parentId"));
+		result.set("previous", results.getGeneralData().get("previous"));
+    	return result;
+    }
+    
     @WebGet("/googleDrive/restoreTrash")
     public Object restoreTrash(){
     	if(googleDriveService.restoreTrash())

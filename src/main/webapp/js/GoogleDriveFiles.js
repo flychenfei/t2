@@ -24,12 +24,21 @@
         },
 
         events: {
+        	"click;.btnPrevious":function(e){
+        		var param = {}
+        		param.currentId = $(e.target).attr("data-currentId");
+        		brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+					results: function(){
+					    return app.googleDriveApi.previousList(param);
+				    }
+				});
+			},
         	"click;.btnUpload":function(e){
-        		var parentId = $(e.target).attr("data-parentId");
-        		brite.display("GoogleDriveDialog",$("body"),{parentId:parentId,displayName:'Upload File'});
+        		var currentId = $(e.target).attr("data-currentId");
+        		brite.display("GoogleDriveDialog",$("body"),{parentId:currentId,displayName:'Upload File'});
 			},
 			"click;.btnCreateFolder":function(e){
-				var parentId = $(e.target).attr("data-parentId");
+				var parentId = $(e.target).attr("data-currentId");
 				brite.display("InputValue", ".MainScreen", {
                     title: 'Create Folder',
                     fields: [
@@ -71,9 +80,9 @@
 				});
 			},
 			 "click;.trash":function(event){
-			    var parma = {};
-            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDriveApi.trashFile(parma).done(function (success) {
+			    var param = {};
+			    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+                app.googleDriveApi.trashFile(param).done(function (success) {
                     if(success){
                     	alert("Trash success");
                     }else{
@@ -83,9 +92,9 @@
                 });
 			},
 			 "click;.delete":function(event){
-				    var parma = {};
-	            	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-	                app.googleDriveApi.deleteFile(parma).done(function (success) {
+				    var param = {};
+				    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+	                app.googleDriveApi.deleteFile(param).done(function (success) {
 	                    if(success){
 	                    	alert("Delete success");
 	                    }else{
@@ -95,10 +104,10 @@
 	                });
 			},
 			"click;.copy":function(event){
-					var parma = {};
-					parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-					parma.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
-					app.googleDriveApi.copyFile(parma).done(function (success) {
+					var param = {};
+					param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+					param.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
+					app.googleDriveApi.copyFile(param).done(function (success) {
 		                    if(success){
 		                    	alert("Copy success");
 		                    }else{
@@ -109,16 +118,16 @@
 			},
 			"click;.fileSelf":function(event){
 				var view = this;
-				var parma = {};
-            	parma.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				var param = {};
+				param.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				mimeType = $(event.currentTarget).closest("tr").attr("data-mimeType");
             	if(mimeType == "application/vnd.google-apps.folder"){
-            		view.parma = parma;
+            		view.param = param;
             		openFolder.call(view);
             	}else{
-    			    parma.fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
-    			    parma.fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
-    			    view.parma = parma;
+            		param.fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
+            		param.fileUrl = $(event.currentTarget).closest("tr").attr("data-hasUrl");
+    			    view.param = param;
     			    download.call(view);
             	}
 		   }
@@ -135,18 +144,18 @@
     });
 
     function openFolder(){
-    	 var parma = this.parma || {};
+    	 var param = this.param || {};
     	 brite.display("GoogleDriveFiles",".GoogleScreen-content",{
 				results: function(){
-				    return app.googleDriveApi.childList(parma);
+				    return app.googleDriveApi.childList(param);
 			    }
 			});
     }
     
     function download(){
-    	var parma = this.parma || {};
-    	if(parma.selfId && parma.fileUrl == "true"){
-    		window.location.href=contextPath+"/googleDrive/download?fileId="+parma.selfId+"&fileName="+parma.fileName;
+    	var param = this.param || {};
+    	if(param.selfId && param.fileUrl == "true"){
+    		window.location.href=contextPath+"/googleDrive/download?fileId="+param.selfId+"&fileName="+param.fileName;
     	}else{
     		alert("This file is not support download!");
     	}
@@ -157,18 +166,22 @@
         return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-parentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
+                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-currentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
             },
-            onDone: function(Data){
-            	$(".btnUpload").attr({"data-parentId":Data.parentId});
-            	$(".btnCreateFolder").attr({"data-parentId":Data.parentId});
+            onDone: function(data){
+            	$(".btnPrevious").attr({"data-currentId":data.parentId});
+            	$(".btnUpload").attr({"data-currentId":data.parentId});
+            	$(".btnCreateFolder").attr({"data-currentId":data.parentId});
+            	if(data.previous === false){
+            		alert("Can't get the previous folder!");
+            	}
             },
             columnDef:[
                 {
                     text:"FileName",
                     attrs: "style='width:15%; word-break: break-word; cursor:pointer;'",
                     render:function(obj){
-                    	return "<a src=\"#\" class=\"fileSelf\"><span><img src=\"{0}\" alt=\"img\"></img><span>{1}</span></span></a>".format(obj.iconLink,obj.fileName);
+                    	return "<a src=\"#\" class=\"fileSelf\"><span><img src=\"{0}\" alt=\"img\"></img>&nbsp;&nbsp;<span>{1}</span></span></a>".format(obj.iconLink,obj.fileName);
                     	}
                 },
                 {

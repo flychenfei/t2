@@ -33,6 +33,7 @@ import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.Drive.Files.Insert;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.ParentList;
 import com.google.api.services.drive.model.ParentReference;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -84,7 +85,7 @@ public class GoogleDriveService {
     		query.append(" and 'root' in parents");
     	}
     	Pair<String, List<Map>> pair = searchFiles(nextPageToken, pageSize, query.toString());
-    	Map<String,String> generalData = new HashMap<String,String>();
+    	Map<String,Object> generalData = new HashMap<String,Object>();
     	generalData.put("next", pair.getFirst());
     	if(!Strings.isNullOrEmpty(selfId)){
     		generalData.put("parentId", selfId);
@@ -92,6 +93,26 @@ public class GoogleDriveService {
     		generalData.put("parentId", pair.getSecond().get(0).get("parentId").toString());
     	}
     	return new GoogleDriveDataPack(generalData, pair.getSecond());
+    }
+
+    /**
+     * list Previous parent files
+     * 
+     * @param selfId
+     * @param pageSize
+     * @return
+     */
+    public GoogleDriveDataPack listParent(String selfId,Integer pageSize){
+    	GoogleDriveDataPack results = null;
+    	String parentId = getParentId(selfId);
+    	if(Strings.isNullOrEmpty(parentId)){
+    		results = list(selfId, null, pageSize, false);
+    		results.getGeneralData().put("previous", false);
+    	}else{
+    		results = list(parentId, null, pageSize, false);
+    		results.getGeneralData().put("previous", true);
+    	}
+    	return results;
     }
     
     /**
@@ -315,6 +336,24 @@ public class GoogleDriveService {
     	      return null;
     	    }
 	}
+    
+    /**
+     * get [first] parentId by fileId
+     * 
+     * @param selfId
+     * @return
+     */
+    public String getParentId(String selfId){
+    	try {
+    	      ParentList parents = getDriverService().parents().list(selfId).execute();
+    	      for (ParentReference parent : parents.getItems()) {
+    	        return parent.getId();
+    	      }
+    	    } catch (IOException e) {
+    	      return null;
+    	    }
+		return null;
+    }
     
     private File getFile(String fileId) {
         try {
