@@ -153,8 +153,13 @@ public class GoogleDriveService {
         	content.setBoundary("__END_OF_PART__");
         	//take file metadata with json
         	JsonFactory jsonFactory = new JacksonFactory();
-        	Map<String,String> metadata = new HashMap<String,String>();
+        	Map<String,Object> metadata = new HashMap<String,Object>();
         	metadata.put("title", fileItem.getName());
+        	List<Map> parents = new ArrayList<Map>();
+        	Map parent = new HashMap<String,String>();
+        	parent.put("id", parentId);
+        	parents.add(parent);
+        	metadata.put("parents", parents);
         	JsonHttpContent jhc = new JsonHttpContent(jsonFactory, metadata);
         	jhc.setMediaType(new HttpMediaType("application/json"));
         	//file content
