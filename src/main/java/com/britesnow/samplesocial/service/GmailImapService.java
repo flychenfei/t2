@@ -355,6 +355,23 @@ public class GmailImapService {
         inbox.close(true);
         imap.close();
     }
+    
+    public void trashEmail(int emailId) throws Exception {
+        IMAPStore imap = getGmailStore();
+        String folderName = getGmailFolderName(imap,"\\All");
+        Folder inbox = imap.getFolder(folderName);
+
+        inbox.open(Folder.READ_WRITE);
+        Message msg = inbox.getMessage(emailId);
+        String trashName = getGmailFolderName(imap,"\\Trash");
+        Folder trashFolder = imap.getFolder(trashName);
+        
+        // Just do copy, not do delete, the copy seems mean that move message
+        inbox.copyMessages(new Message[]{msg}, trashFolder);
+
+        inbox.close(false);
+        imap.close();
+    }
 
     /**
      * delete folder

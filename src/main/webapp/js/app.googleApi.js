@@ -50,8 +50,12 @@ var app = app || {};
         deleteEmail: function (id) {
             var params = {id: id};
             params.method = "Post"
-
             return app.getJsonData(contextPath + "/gmail/delete", params);
+        },
+        trashEmail: function (id) {
+            var params = {id: id};
+            params.method = "Post"
+            return app.getJsonData(contextPath + "/gmail/trash", params);
         },
         getMail: function(id){
             var params = {id: id};
