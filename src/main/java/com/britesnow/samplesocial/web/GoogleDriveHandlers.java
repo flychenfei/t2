@@ -174,4 +174,12 @@ public class GoogleDriveHandlers {
         else
         	return WebResponse.fail();
     }
+
+    @WebGet("/googleDrive/touchFile")
+    public Object touchFile(@WebParam("fileId") String fileId){
+    	if(!Strings.isNullOrEmpty(fileId) && googleDriveService.touchFile(fileId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
 }

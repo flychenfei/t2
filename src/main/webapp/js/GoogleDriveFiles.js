@@ -135,6 +135,23 @@
             		openFolder.call(view);
                 });
 			},
+			"click;.touch":function(event){
+			    var view = this;
+			    var param = {};
+			    var parentId = $(".btnUpload").attr("data-currentId");
+			    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+                app.googleDriveApi.touchFile(param).done(function (result) {
+                    if(result.success === true){
+                    	alert("Touch success");
+                    }else{
+                    	alert("Touch fail");
+                    }
+                    var params = {};
+                	params.selfId = parentId;
+                	view.param = params;
+            		openFolder.call(view);
+                });
+			},
 			 "click;.delete":function(event){
 				    var view = this;
 				    var param = {};
@@ -271,9 +288,9 @@
                     render: function (obj) {
                     	var functionString = "";
                     	if(obj.mimeType == "application/vnd.google-apps.folder"){
-                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}else{
-                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}
                         return functionString;
                     }

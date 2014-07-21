@@ -360,6 +360,22 @@ public class GoogleDriveService {
       }
     
     /**
+     * Update a file's modified date.
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean touchFile(String fileId) {
+    	try {
+    	      getDriverService().files().touch(fileId).execute();
+    	      return true;
+    	    } catch (IOException e) {
+    	      e.printStackTrace();
+    	      return false;
+    	    }
+      }
+    
+    /**
      * get [first] parentId by fileId
      * 
      * @param selfId
