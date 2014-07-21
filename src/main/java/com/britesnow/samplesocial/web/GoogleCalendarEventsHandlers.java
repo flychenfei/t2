@@ -18,7 +18,7 @@ public class GoogleCalendarEventsHandlers {
     @Inject
     private GoogleCalendarEventsService googleCalendarEventsService;
 
-
+    
     @WebGet("/googleCalendarEvents/list")
     public Object listEvents(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  
                             @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") String pageIndex,
@@ -27,6 +27,23 @@ public class GoogleCalendarEventsHandlers {
         List<Map> map = pair.getSecond();
         WebResponse result = WebResponse.success(map);
         result.set("nextPageToken", pair.getFirst());
+        return result;
+    }
+
+    @WebGet("/googleCalendarEvents/listByCalendars")
+    public Object listByCalendars(@WebModel Map m,@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  
+                            @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") String pageIndex,
+                            @WebParam("calendarIds") String calendarId) throws Exception {
+        String[] calendarIds;
+        if (calendarId == null || calendarId.equals("")) {
+            calendarIds = new String[]{"primary"} ;
+        }else{
+            
+            calendarIds = calendarId.split(",");
+        }
+        
+        List<Map> eventsList = googleCalendarEventsService.listEventsByCalendars(pageIndex, pageSize, startDate, endDate,calendarIds);
+        WebResponse result = WebResponse.success(eventsList);
         return result;
     }
     

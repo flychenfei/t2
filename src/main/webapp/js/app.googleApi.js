@@ -80,6 +80,11 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/googleCalendarEvents/list", params);
         },
+		listByCalendars: function(opts) {
+			var params = opts || {};
+			params.method = "Get";
+			return app.getJsonData(contextPath + "/googleCalendarEvents/listByCalendars", params);
+		},
         getCalendarEvent: function(opts) {
             var params = opts||{};
             params.method = "Get";
