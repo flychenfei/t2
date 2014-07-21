@@ -21,6 +21,7 @@ import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -161,6 +162,14 @@ public class GoogleDriveHandlers {
     @WebGet("/googleDrive/createFolder")
     public Object createFolder(@WebParam("folderName") String folderName, @WebParam("parentId") String parentId){
     	if(googleDriveService.createFolder(parentId, folderName))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    @WebGet("/googleDrive/patchFile")
+    public Object patchFile(@WebParam("fileId") String fileId, @WebParam("title") String title, @WebParam("description") String description){
+    	if(!Strings.isNullOrEmpty(fileId) && googleDriveService.patchFile(fileId, title, description))
         	return WebResponse.success();
         else
         	return WebResponse.fail();

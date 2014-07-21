@@ -336,6 +336,28 @@ public class GoogleDriveService {
     	      return null;
     	    }
 	}
+  
+    /**
+     * get a file instance by fileId
+     * 
+     * @param fileId
+     * @return
+     */
+    public boolean patchFile(String fileId, String title, String description) {
+    	try {
+    	      File file = new File();
+    	      file.setTitle(title);
+    	      if(!Strings.isNullOrEmpty(description)){
+        	      file.setDescription(description);
+    	      }
+    	      Files.Patch patchRequest = getDriverService().files().patch(fileId, file);
+    	      patchRequest.execute();
+    	      return true;
+    	    } catch (IOException e) {
+    	      e.printStackTrace();
+    	      return false;
+    	    }
+      }
     
     /**
      * get [first] parentId by fileId
@@ -343,7 +365,7 @@ public class GoogleDriveService {
      * @param selfId
      * @return
      */
-    public String getParentId(String selfId){
+    private String getParentId(String selfId){
     	try {
     	      ParentList parents = getDriverService().parents().list(selfId).execute();
     	      for (ParentReference parent : parents.getItems()) {
@@ -355,6 +377,12 @@ public class GoogleDriveService {
 		return null;
     }
     
+    /**
+     * get a file instance by fileId
+     * 
+     * @param fileId
+     * @return
+     */
     private File getFile(String fileId) {
         try {
           File file = getDriverService().files().get(fileId).execute();

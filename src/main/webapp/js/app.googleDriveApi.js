@@ -61,6 +61,11 @@ var app = app || {};
         	param.pageSize = param.pageSize || 10;
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/previousList", param);
+        },
+        patchFile: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/patchFile", param);
         }
 	};
 })();

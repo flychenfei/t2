@@ -79,11 +79,33 @@
 				    }
 				});
 			},
-			 "click;.trash":function(event){
+			"click;.patch":function(event){
+				var view = this;
+				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				brite.display("InputValue", ".MainScreen", {
+                    title: 'Patch File',
+                    fields: [
+                        {label:"New Title", name:'title', mandatory:false},
+                        {label:"Description", name:"description", mandatory:false},
+                    ],
+                    callback: function (params) {
+                    	var params = params || {};
+                    	params.fileId = fileId;
+                    	app.googleDriveApi.patchFile(params).done(function (result) {
+                            if(result.success === true){
+                            	alert("Patch success");
+                            }else{
+                            	alert("Patch fail");
+                            }
+                            brite.display("GoogleDriveFiles",".GoogleScreen-content");
+                        });
+                    }});
+		   },
+		   "click;.trash":function(event){
 			    var param = {};
 			    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-                app.googleDriveApi.trashFile(param).done(function (success) {
-                    if(success){
+                app.googleDriveApi.trashFile(param).done(function (result) {
+                    if(result.success === true){
                     	alert("Trash success");
                     }else{
                     	alert("Trash fail");
@@ -94,8 +116,8 @@
 			 "click;.delete":function(event){
 				    var param = {};
 				    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-	                app.googleDriveApi.deleteFile(param).done(function (success) {
-	                    if(success){
+	                app.googleDriveApi.deleteFile(param).done(function (result) {
+	                    if(result.success === true){
 	                    	alert("Delete success");
 	                    }else{
 	                    	alert("Delete fail");
@@ -107,8 +129,8 @@
 					var param = {};
 					param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 					param.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
-					app.googleDriveApi.copyFile(param).done(function (success) {
-		                    if(success){
+					app.googleDriveApi.copyFile(param).done(function (result) {
+		                    if(result.success === true){
 		                    	alert("Copy success");
 		                    }else{
 		                    	alert("Copy fail");
@@ -217,9 +239,9 @@
                     render: function (obj) {
                     	var functionString = "";
                     	if(obj.mimeType == "application/vnd.google-apps.folder"){
-                    		functionString = "<span><a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}else{
-                    		functionString = "<span><a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}
                         return functionString;
                     }

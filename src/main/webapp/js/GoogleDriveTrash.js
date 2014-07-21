@@ -18,8 +18,8 @@
         events: {
         	"click;.btnRestoreTrash":function(e){
         		var parma = {};
-        		app.googleDriveApi.restoreTrash(parma).done(function (success) {
-                    if(success){
+        		app.googleDriveApi.restoreTrash(parma).done(function (result) {
+                    if(result.success === true){
                     	alert("RestoreTrash success");
                     }else{
                     	alert("RestoreTrash fail");
@@ -29,8 +29,8 @@
 			},
 			"click;.btnEmptyTrash":function(e){
         		var parma = {};
-        		app.googleDriveApi.emptyTrash(parma).done(function (success) {
-                    if(success){
+        		app.googleDriveApi.emptyTrash(parma).done(function (result) {
+                    if(result.success === true){
                     	alert("EmptyTrash success");
                     }else{
                     	alert("EmptyTrash fail");
@@ -41,8 +41,8 @@
 			 "click;.restore":function(event){
 				    var parma = {};
 			    	parma.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-			        app.googleDriveApi.untrashFile(parma).done(function (success) {
-			            if(success){
+			        app.googleDriveApi.untrashFile(parma).done(function (result) {
+			            if(result.success === true){
 			            	alert("Restore success");
 			            }else{
 			            	alert("Restore fail");
