@@ -10,13 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.batch.BatchRequest;
+import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Event.Reminders;
@@ -29,6 +37,7 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class GoogleCalendarEventsService {
+    private static Logger log = LoggerFactory.getLogger(GoogleCalendarEventsService.class);
 
     @Inject
     GoogleAuthService authService;
@@ -75,7 +84,6 @@ public class GoogleCalendarEventsService {
         String pageToken = null;
         try {
             Events events = list.execute();
-            CalendarListEntry calendarListEntry = getCalendarService().calendarList().get(calendarId).execute();
             List<Event> items = events.getItems();
             List<Map> eventList = new ArrayList();
             for (Event event : items) {
@@ -86,7 +94,6 @@ public class GoogleCalendarEventsService {
                 eventMap.put("location", event.getLocation());
                 eventMap.put("status", event.getStatus());
                 eventMap.put("calendarId", event.getOrganizer().getEmail());
-                eventMap.put("backgroundColor", calendarListEntry.getBackgroundColor());
                 eventList.add(eventMap);
             }
             pageToken = events.getNextPageToken();
@@ -96,6 +103,77 @@ public class GoogleCalendarEventsService {
         }
         
         return null;
+    }
+    
+    public  List<Map> listEventsByCalendars(String pageIndex, int pageSize,String startDate, String endDate, String[] calendarIds) throws IOException{
+        final List<Map> eventList = new ArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        if (calendarIds != null) {
+            CalendarList entries =  getCalendarService().calendarList().list().execute();
+            final List<CalendarListEntry> calendarEntries = entries.getItems();
+            BatchRequest batch = getCalendarService().batch();
+            JsonBatchCallback<Events> callback = new JsonBatchCallback<Events>() {
+                
+                public void onSuccess(Events events, HttpHeaders responseHeaders) {
+                    List<Event> items = events.getItems();
+                    for (Event event : items) {
+                        Map eventMap = new HashMap();
+                        eventMap.put("summary", event.getSummary());
+                        eventMap.put("id", event.getId());
+                        eventMap.put("date", event.getStart());
+                        eventMap.put("location", event.getLocation());
+                        eventMap.put("status", event.getStatus());
+                       
+                        for(CalendarListEntry entry : calendarEntries){
+                            if(entry.getId().equals(event.getOrganizer().getEmail())){
+                                eventMap.put("backgroundColor", entry.getBackgroundColor());
+                                break;
+                            }
+                        }
+                        
+                        eventList.add(eventMap);
+                    }
+                }
+
+                public void onFailure(GoogleJsonError e, HttpHeaders responseHeaders) {
+                    log.warn("Error Message: " + e.getMessage());
+                }
+            };
+            for (String calendarId : calendarIds) {
+                com.google.api.services.calendar.Calendar.Events.List list = getCalendarService().events().list(calendarId).setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
+
+                if(startDate != null && !startDate.equals("")){
+                    DateTime minTime = null;
+                    Date min = null;
+                    try {
+                        min = sdf.parse(startDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    minTime = new DateTime(min.getTime());
+                    list = list.setTimeMin(minTime);
+                }
+                
+                if(endDate != null && !endDate.equals("")){
+                    Date max = null;
+                    try {
+                        max = sdf.parse(endDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    DateTime maxTime = new DateTime(max.getTime());
+                    list = list.setTimeMax(maxTime);
+                }
+                
+                if(pageIndex != null && !pageIndex.equals("") && !pageIndex.equals("0")){
+                    list.setPageToken(pageIndex);
+                }
+                list.queue(batch, callback);
+            }
+            batch.execute();
+        }
+        return eventList;
     }
     
     public Map getEvent(String eventId,String calendarId){

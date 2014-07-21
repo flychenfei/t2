@@ -22,16 +22,16 @@
 			var view = this;
 			var $e = view.$el;
 
-			$calendar = $e.find(".calendar");
+			$calendar = $e.find(".calendarList");
 			app.googleApi.listCalendars().done(function(data) {
 				for (var i = 0; i < data.result.length; i++) {
 					var id = data.result[i].id;
 					var value = data.result[i].summary;
-					var selected = "";
+					var checked = "";
 					if (data.result[i].primary) {
-						selected = "selected";
+						checked = "checked";
 					}
-					$calendar.append("<option value='" + id + "' " + selected + ">" + value + "</option>");
+					$calendar.append("<div class='calendarItem'>"+"<input name = 'calendar' type = 'checkbox' "+checked+" id='"+id+"' />"+value+"" +"</div>");
 				}
 			});
 			showEvents.call(view);
@@ -65,7 +65,14 @@
 				view = this;
 				$e = view.$el;
 				var result = {};
-				view.calendarId = $e.find(".calendar").val();
+				var list = new Array(); 
+				var i = 0;
+				$e.find("input[name='calendar']:checked").each(function(
+				){
+					list[i] = $(this).attr("id");
+					i++;
+				});
+				view.list = list.join(",");
 				showEvents.call(view);
 			},
 
@@ -96,9 +103,9 @@
 				startDate:startDate.format("yyyy-MM-dd hh:mm:ss"),
 				endDate:endDate.format("yyyy-MM-dd hh:mm:ss"),
 				pageSize:100,
-				calendarId:view.calendarId
+				calendarIds:view.list
 			};
-			app.googleApi.listCalendarEvents(opts).done(function(data){
+			app.googleApi.listByCalendars(opts).done(function(data){
 				for(var i = 0; i < data.result.length; i++){
 					var event = data.result[i];
 					var color = event.backgroundColor;
