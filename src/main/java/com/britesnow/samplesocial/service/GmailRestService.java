@@ -1,6 +1,8 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -275,7 +278,7 @@ public class GmailRestService {
     	return mailInfo;
     }
     
-    public boolean sendMail(String subject, String content, String to) throws Exception {
+    public boolean sendMail(String subject, String content, String to, FileItem[] attachmentItems) throws Exception {
         String email = authService.getSocialIdEntity().getEmail();
         Gmail gmail = getGmailClient();
         Message message = new Message();
@@ -291,13 +294,69 @@ public class GmailRestService {
         raw.append("To:");
         raw.append(to);
         raw.append("\r\n");
-        raw.append("\r\n");
-        raw.append(content);
-        raw.append("\r\n");
+        
+//        raw.append("\r\n");
+//        raw.append(content);
+//        raw.append("\r\n");
+        
+        if(attachmentItems == null || attachmentItems.length == 0){
+            raw.append("\r\n");
+            raw.append(content);
+            raw.append("\r\n");
+        }else{
+            raw.append("Content-Type: multipart/mixed; boundary=\"splitline\"");
+            raw.append("\r\n");
+            raw.append("\r\n");
+            raw.append("--splitline");
+            raw.append("\r\n");
+            raw.append("Content-Type: text/plain; charset=\"UTF-8\"");
+            raw.append("\r\n");
+            raw.append("Content-Transfer-Encoding: 7bit");
+            raw.append("\r\n");
+            raw.append("\r\n");
+            raw.append(content);
+            raw.append("\r\n");
+
+            for(FileItem fileItem : attachmentItems){
+                raw.append("\r\n");
+                raw.append("--splitline");
+                raw.append("\r\n");
+                raw.append("Content-Type: "+fileItem.getContentType()+"; name=\""+fileItem.getName()+"\"");
+                raw.append("\r\n");
+                raw.append("Content-Transfer-Encoding: base64");
+                raw.append("\r\n");
+                raw.append("Content-Disposition: attachment; filename="+fileItem.getName());
+                raw.append("\r\n");
+
+                InputStream is = fileItem.getInputStream();
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                try {
+                    byte[] b = new byte[2048];
+                    while (is.read(b) != -1) {
+                        os.write(b);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                
+                is.close();
+                
+                raw.append("\r\n");
+                raw.append(Base64.encodeBase64String(os.toByteArray()));
+            }
+            
+            raw.append("\r\n");
+            raw.append("--splitline--");
+        }
+        
+        
+        
+        System.out.println(raw);
+        
+        
         
         String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
         message.setRaw(encodedEmail);
-        
         gmail.users().messages().send("me", message).execute();
         return true;
     }
