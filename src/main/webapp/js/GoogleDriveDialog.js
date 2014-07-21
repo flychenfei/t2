@@ -23,7 +23,13 @@
 				console.log($(":input[type='file']")[0].files[0]);
 				app.ajaxPost(contextPath+"/googleDrive/upload",{parentId:parentId},$(":input[type='file']")[0].files[0]).done(function(){
 					view.$el.remove();
-					brite.display("GoogleDriveFiles",".GoogleScreen-content");
+					var params = {};
+                	params.selfId = parentId;
+            		brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+        				results: function(){
+        				    return app.googleDriveApi.childList(params);
+        			    }
+        			});
 				});
 			}
 		}

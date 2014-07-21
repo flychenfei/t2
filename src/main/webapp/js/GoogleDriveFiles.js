@@ -38,6 +38,7 @@
         		brite.display("GoogleDriveDialog",$("body"),{parentId:currentId,displayName:'Upload File'});
 			},
 			"click;.btnCreateFolder":function(e){
+				var view = this;
 				var parentId = $(e.target).attr("data-currentId");
 				brite.display("InputValue", ".MainScreen", {
                     title: 'Create Folder',
@@ -47,8 +48,20 @@
                     callback: function (params) {
                     	var params = params || {};
                     	params.parentId = parentId;
-                    	app.googleDriveApi.createFolder(params);
-                    	brite.display("GoogleDriveFiles",".GoogleScreen-content");
+                    	app.googleDriveApi.createFolder(params).done(function (result) {
+                            if(result.success === true){
+                            	alert("CreateFolder success");
+                            }else{
+                            	alert("CreateFolder fail");
+                            }
+                            var params = {};
+                        	params.selfId = parentId;
+                        	brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+                				results: function(){
+                				    return app.googleDriveApi.childList(params);
+                			    }
+                			});
+                        });
                     }});
 			},
 			"click;.search":function(event){
@@ -81,6 +94,7 @@
 			},
 			"click;.patch":function(event){
 				var view = this;
+				var parentId = $(".btnUpload").attr("data-currentId");
 				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				brite.display("InputValue", ".MainScreen", {
                     title: 'Patch File',
@@ -88,21 +102,26 @@
                         {label:"New Title", name:'title', mandatory:false},
                         {label:"Description", name:"description", mandatory:false},
                     ],
-                    callback: function (params) {
-                    	var params = params || {};
-                    	params.fileId = fileId;
-                    	app.googleDriveApi.patchFile(params).done(function (result) {
+                    callback: function (param) {
+                    	var param = param || {};
+                    	param.fileId = fileId;
+                    	app.googleDriveApi.patchFile(param).done(function (result) {
                             if(result.success === true){
                             	alert("Patch success");
                             }else{
                             	alert("Patch fail");
                             }
-                            brite.display("GoogleDriveFiles",".GoogleScreen-content");
+                            var params = {};
+                        	params.selfId = parentId;
+                        	view.param = params;
+                    		openFolder.call(view);
                         });
                     }});
 		   },
 		   "click;.trash":function(event){
+			    var view = this;
 			    var param = {};
+			    var parentId = $(".btnUpload").attr("data-currentId");
 			    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
                 app.googleDriveApi.trashFile(param).done(function (result) {
                     if(result.success === true){
@@ -110,11 +129,16 @@
                     }else{
                     	alert("Trash fail");
                     }
-                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+                    var params = {};
+                	params.selfId = parentId;
+                	view.param = params;
+            		openFolder.call(view);
                 });
 			},
 			 "click;.delete":function(event){
+				    var view = this;
 				    var param = {};
+				    var parentId = $(".btnUpload").attr("data-currentId");
 				    param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 	                app.googleDriveApi.deleteFile(param).done(function (result) {
 	                    if(result.success === true){
@@ -122,11 +146,16 @@
 	                    }else{
 	                    	alert("Delete fail");
 	                    }
-	                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+	                    var params = {};
+                    	params.selfId = parentId;
+                    	view.param = params;
+                		openFolder.call(view);
 	                });
 			},
 			"click;.copy":function(event){
+				    var view = this;
 					var param = {};
+				    var parentId = $(".btnUpload").attr("data-currentId");
 					param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 					param.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
 					app.googleDriveApi.copyFile(param).done(function (result) {
@@ -135,7 +164,10 @@
 		                    }else{
 		                    	alert("Copy fail");
 		                    }
-		                    brite.display("GoogleDriveFiles",".GoogleScreen-content");
+		                    var params = {};
+	                    	params.selfId = parentId;
+	                    	view.param = params;
+	                		openFolder.call(view);
 		               });
 			},
 			"click;.fileSelf":function(event){
