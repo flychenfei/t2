@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+
 import com.britesnow.samplesocial.mail.MailInfo;
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GmailRestService;
@@ -91,8 +93,8 @@ public class GoogleRestEmailHandlers {
     @WebPost("/gmailrest/send")
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
-                           @WebParam("content") String content, @WebParam("to") String to, RequestContext rc) throws Exception {
-        gmailRestService.sendMail(subject, content, to);
+                           @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
+        gmailRestService.sendMail(subject, content, to,attachments);
         return WebResponse.success();
     }
     

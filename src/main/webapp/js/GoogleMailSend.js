@@ -21,6 +21,16 @@
 		},
 		
 		events : {
+	 		"btap; .addAttachment": function(){
+	 			var view = this;
+	 			var $e = view.$el;
+	 			$e.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
+	 		}, 
+	 		"btap; .removeAttachment": function(event){
+	 			var view = this;
+	 			var $e = view.$el;
+	 			var $btn = $(event.currentTarget).closest(".attachmentItem").remove();
+	 		}, 
 	 		"btap; .btnClose": function(){
 	 			var view = this;
 	 			view.close();
@@ -48,13 +58,17 @@
 		var to = $e.find("input[name='to']").val();
 		var subject = $e.find("input[name='subject']").val();
 		
+		var files = [];
+		$e.find("input[name='attachments']").each(function(){
+			files.push($(this)[0].files[0]);
+		});
 		// if mail id exist do update,else do create
 		if (view.type == 'rest') {
 			app.googleApi.sendMailRest({
 				to : to,
 				subject : subject,
 				content : content
-			}).done(function() {
+			},files).done(function() {
 				$(document).trigger("DO_REFRESH_MAIL");
 				view.close();
 			});

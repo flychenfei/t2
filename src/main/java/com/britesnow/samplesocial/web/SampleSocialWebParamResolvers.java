@@ -17,6 +17,19 @@ public class SampleSocialWebParamResolvers {
     public FileItem resolveFileItem(AnnotationMap annotationMap, Class paramType, RequestContext rc) {
         WebParam webParam = annotationMap.get(WebParam.class);
         return rc.getParamAs(webParam.value(), FileItem.class);
-    }    
+    }
+    
+    @WebParamResolver
+    public FileItem[] resolveFileItems(AnnotationMap annotationMap, Class paramType, RequestContext rc){
+        WebParam webParam = annotationMap.get(WebParam.class);
+        Object valueObject = rc.getParamMap().get(webParam.value());
+        if(valueObject == null || valueObject instanceof String){
+            return null;
+        }else if(valueObject.getClass().isArray()){
+            return (FileItem[]) valueObject;
+        }else{
+            return new FileItem[]{(FileItem) valueObject};
+        }
+    }
 
 }
