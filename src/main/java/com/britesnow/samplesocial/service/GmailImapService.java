@@ -1,13 +1,17 @@
 package com.britesnow.samplesocial.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -17,9 +21,12 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -413,7 +420,7 @@ public class GmailImapService {
      * @return  mail ok or not
      * @throws Exception
      */
-    public boolean sendMail(String subject, String content, String to) throws Exception {
+    public boolean sendMail(String subject, String content, String to, FileItem[] attachmentItems) throws Exception {
         SocialIdEntity idEntity = authService.getSocialIdEntity();
         if (idEntity != null) {
             String email = idEntity.getEmail();
@@ -424,10 +431,68 @@ public class GmailImapService {
             try {
                 msg.setFrom(new InternetAddress(email));
                 msg.setSubject(subject);
-                msg.setContent(content, "text/html;charset=UTF-8");
                 InternetAddress[] iaRecevers = new InternetAddress[1];
                 iaRecevers[0] = new InternetAddress(to);
                 msg.setRecipients(Message.RecipientType.TO, iaRecevers);
+                
+                if(attachmentItems == null || attachmentItems.length == 0){
+                    msg.setContent(content, "text/html;charset=UTF-8");
+                }else{
+                    
+                    MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                    mimeBodyPart.setContent(content, "text/html;charset=UTF-8");
+                    mimeBodyPart.setHeader("Content-Type", "text/html; charset=\"UTF-8\"");
+                    Multipart multipart = new MimeMultipart();
+                    multipart.addBodyPart(mimeBodyPart);
+                    
+                    for(final FileItem item : attachmentItems){
+                        
+                        mimeBodyPart = new MimeBodyPart();
+                        DataSource source = new DataSource(){
+                            @Override
+                            public String getContentType() {
+                                return item.getContentType();
+                            }
+
+                            @Override
+                            public InputStream getInputStream() throws IOException {
+                                return item.getInputStream();
+                            }
+
+                            @Override
+                            public String getName() {
+                                return item.getName();
+                            }
+
+                            @Override
+                            public OutputStream getOutputStream() throws IOException {
+                                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                                try {
+                                    byte[] b = new byte[2048];
+                                    while (this.getInputStream().read(b) != -1) {
+                                        os.write(b);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                return os;
+                            }
+                            
+                        };
+                        
+                        mimeBodyPart.setDataHandler(new DataHandler(source));
+                        mimeBodyPart.setFileName(MimeUtility.encodeText(item.getName()));
+                        mimeBodyPart.setHeader("Content-Type", item.getContentType() + "; name=\"" + MimeUtility.encodeText(item.getName()) + "\"");
+                        mimeBodyPart.setHeader("Content-Transfer-Encoding", "base64");
+                        
+                        multipart.addBodyPart(mimeBodyPart);
+                    }
+
+                    msg.setContent(multipart);
+                }
+                
+                
+                
                 transport.sendMessage(msg, msg.getAllRecipients());
                 return true;
             } catch (Exception e) {

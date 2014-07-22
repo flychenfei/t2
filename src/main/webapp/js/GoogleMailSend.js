@@ -77,7 +77,7 @@
 				to : to,
 				subject : subject,
 				content : content
-			}).done(function() {
+			},files).done(function() {
 				$(document).trigger("DO_REFRESH_MAIL");
 				view.close();
 			});

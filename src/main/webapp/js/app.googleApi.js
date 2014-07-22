@@ -62,8 +62,30 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmail/get", params);
         },
-        sendMail: function(params) {
-            return app.getJsonData(contextPath + "/gmail/send", params);
+        sendMail: function(opts, files) {
+            opts = opts || {};
+            files = files || [];
+            var dfd = $.Deferred();
+			var formData = new FormData();
+			
+			for(var key in opts){
+				formData.append(key, opts[key]);
+			}
+			
+			for(var i = 0; i < files.length; i++){
+				if(files[i]){
+					formData.append("files", files[i]);
+				}
+			}
+			
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', contextPath + "/gmail/send", true);
+			xhr.onload = function(e) {
+				var ret = eval("(" + this.response + ")").result;
+				dfd.resolve(ret);
+			};
+			xhr.send(formData);
+			return dfd.promise();
         },
         searchEmails: function(opts) {
             var params = opts||{};
