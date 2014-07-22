@@ -71,6 +71,16 @@ var app = app || {};
         	param = param || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/touchFile", param);
+        },
+        foldersInfo: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/foldersInfo", param);
+        },
+        moveFile: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/moveFile", param);
         }
 	};
 })();

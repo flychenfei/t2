@@ -182,4 +182,18 @@ public class GoogleDriveHandlers {
         else
         	return WebResponse.fail();
     }
+
+    @WebGet("/googleDrive/foldersInfo")
+    public Object foldersInfo(@WebParam("fileId") String fileId){
+    	List<Map> results = googleDriveService.foldersInfo(fileId);
+    	return WebResponse.success(results);
+    }
+
+    @WebGet("/googleDrive/moveFile")
+    public Object moveFile(@WebParam("fileId") String fileId, @WebParam("parentId") String parentId, @WebParam("moveId") String moveId){
+    	if(!Strings.isNullOrEmpty(fileId) && !Strings.isNullOrEmpty(parentId) &&!Strings.isNullOrEmpty(moveId) && googleDriveService.moveFile(fileId,parentId,moveId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
 }

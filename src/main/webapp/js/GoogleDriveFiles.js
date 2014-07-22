@@ -21,6 +21,7 @@
                  inputMask: true 
             });
             showFile.call(view);
+		    document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
         },
 
         events: {
@@ -190,7 +191,7 @@
 			"click;.fileSelf":function(event){
 				var view = this;
 				var param = {};
-				param.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				mimeType = $(event.currentTarget).closest("tr").attr("data-mimeType");
             	if(mimeType == "application/vnd.google-apps.folder"){
             		view.param = param;
@@ -201,9 +202,23 @@
     			    view.param = param;
     			    download.call(view);
             	}
+		   },
+       	   "mousedown;.contextMenu":function(e){
+			var fileId = $(event.target).closest("tr").attr("data-fileId");
+			var parentId = $(event.target).closest("tr").attr("data-currentId");
+    		   if(fileId && parentId && e.button==2){
+    			    var param = {};
+                  	app.googleDriveApi.foldersInfo(param).done(function (result) {
+                  		brite.display("DriveFolder", $("body"), {
+                  		   result:result.result,
+                  		   fileId:fileId,
+                  		   parentId:parentId
+                  		});
+                      });
+    			 }
+    		   return false;
 		   }
         },
-
         docEvents: {
             "DO_REFRESH_DOCS":function(){
                  var view = this;
@@ -237,7 +252,7 @@
         return brite.display("DataTable", ".files-container", {
         	dataProvider: {list: view.results},
         	rowAttrs: function (obj) {
-                return " data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-currentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
+                return "class=\"contextMenu\" data-fileId='{0}' data-fileName='{1}' data-hasUrl='{2}' data-currentId='{3}' data-mimeType='{4}'".format(obj.fileId,obj.fileName,obj.hasUrl||"false",obj.parentId||"",obj.mimeType)
             },
             onDone: function(data){
             	$(".btnPrevious").attr({"data-currentId":data.parentId});

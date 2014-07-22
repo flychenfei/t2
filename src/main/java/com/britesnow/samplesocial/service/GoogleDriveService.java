@@ -31,6 +31,8 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.Drive.Files.Insert;
+import com.google.api.services.drive.model.About;
+import com.google.api.services.drive.model.ChildReference;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.ParentList;
@@ -374,6 +376,105 @@ public class GoogleDriveService {
     	      return false;
     	    }
       }
+    
+    public List<Map> foldersInfo(String currentId){
+    	if(Strings.isNullOrEmpty(currentId)){
+    		currentId = userInfo().get("rootFolderId").toString();
+    	}
+    	List<Map> results = new ArrayList<Map>();
+		List<File> items = getFolderList(currentId);
+		for(File file:items){
+			Map<String,Object> item = new HashMap<String,Object>();
+			item.put("name", file.getTitle());
+			item.put("selfId", file.getId());
+			List<File> childs = getFolderList(file.getId());
+			if(childs != null && childs.size() > 0){
+				item.put("hasChild", true);
+			}else{
+				item.put("hasChild", false);
+			}
+			results.add(item);
+		}
+    	return results;
+    }
+    
+    public boolean moveFile(String fileId, String parentId, String moveToId){
+    	if(insertChildren(moveToId, fileId)){
+    		if(deleteChildren(parentId, fileId)){
+        		return true;
+        	}else{
+        		deleteChildren(moveToId, fileId);
+        	}
+    	}
+    	return false;
+    }
+    /**
+     * information about the current user
+     * 
+     * @return
+     */
+    private Map userInfo(){
+    	Map<String,String> useInfo = new HashMap<String,String>();
+    	try {
+			About about = getDriverService().about().get().execute();
+			useInfo.put("userName", about.getName());
+			useInfo.put("rootFolderId", about.getRootFolderId());
+			return useInfo;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return useInfo;
+		}
+    }
+    
+    /**
+     * Insert a file into a folder.
+     * 
+     * @param folderId
+     * @param fileId
+     * @return
+     */
+    private boolean insertChildren(String folderId,String fileId){
+    	ChildReference newChild = new ChildReference();
+        newChild.setId(fileId);
+        try {
+			getDriverService().children().insert(folderId, newChild).execute();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+    }
+    
+    /**
+     * Insert a file into a folder.
+     * 
+     * @param folderId
+     * @param fileId
+     * @return
+     */
+    private boolean deleteChildren(String folderId,String fileId){
+        try {
+			getDriverService().children().delete(folderId, fileId).execute();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+    }
+    
+    private List<File> getFolderList(String parentId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("trashed= false and '").append(parentId).append("' in parents and mimeType = 'application/vnd.google-apps.folder'");
+    	try {
+			Files.List request = getDriverService().files().list();
+			request.setQ(query.toString());
+			FileList filelist = request.execute();
+			return filelist.getItems();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
     
     /**
      * get [first] parentId by fileId
