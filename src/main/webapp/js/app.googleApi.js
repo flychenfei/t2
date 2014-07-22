@@ -135,6 +135,16 @@ var app = app || {};
             params.method = "Post";
             return app.getJsonData(contextPath + "/deleteSharedCalendar/delete", params);
         },
+        listSetting: function(opts) {
+            var params = opts||{};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendarSetting/list", params);
+        },
+        getSetting: function(settingId) {
+            var params = {settingId:settingId}
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/googleCalendarSetting/get", params);
+        }, 
         searchEmailsRest: function(opts) {
             var params = opts||{};
             params.method = "Get";

@@ -18,6 +18,9 @@
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateCalendar",null,{id:null});
 	        },
+        	"click;.btnSetting":function(e){
+	        	brite.display("GoogleCalendarSetting",null,{id:null});
+	        },	        
         	"click;.shareCalendar":function(event){
 	        	var $btn = $(event.currentTarget);
 	        	var $tr = $btn.closest("tr");

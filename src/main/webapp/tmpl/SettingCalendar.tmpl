@@ -1,0 +1,33 @@
+<script id="tmpl-SettingCalendar" type="text/html">
+<div class="SettingCalendar modal">
+	<div class='SettingCalendarDialogGlass'/>
+	<div class="SettingCalendar-header modal-header">
+        <h3>Calendar setting</h3>
+    </div>
+	<div class="SettingCalendar-content modal-body">
+		<div class="form form-horizontal">
+			<div class="control-group ">
+				<label class="control-label">
+					name:
+				</label>
+				<div class="controls">
+					{{#if id}}{{id}}{{/if}}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">
+					Value:
+				</label>
+				<div class = "controls">
+					{{#if value}}{{value}}{{/if}}
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+	<div class="SettingCalendar-footer modal-footer">
+    	<div class="btn btnClose">Close</div>
+    </div>
+</div>
+</script>
