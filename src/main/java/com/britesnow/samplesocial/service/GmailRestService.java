@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +36,7 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartBody;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.google.api.services.gmail.model.ModifyMessageRequest;
 import com.google.api.services.gmail.model.Thread;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -152,6 +154,8 @@ public class GmailRestService {
         final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
         
+        final List<Map> labels = listLabels();
+        
         if(messages != null){
             
             BatchRequest batch = gmail.batch();
@@ -159,6 +163,18 @@ public class GmailRestService {
 
                 public void onSuccess(Message message, HttpHeaders responseHeaders) {
                     MailInfo info = buildMailInfo(message);
+                    List<String> folderNames = new ArrayList();
+                    
+                    for(String id : info.getFolderIds()){
+                        for(Map label : labels){
+                            if(id.equals(label.get("id"))){
+                                folderNames.add((String) label.get("name"));
+                                break;
+                            }
+                        }
+                    }
+                    info.setFolderNames(folderNames);
+                    
                     mails.add(info);
                 }
 
@@ -203,6 +219,7 @@ public class GmailRestService {
         
         mailInfo.setId(message.getId());
         mailInfo.setThreadId(message.getThreadId());
+        mailInfo.setFolderIds(message.getLabelIds());
         if(message.getPayload() != null){
             
             if(message.getPayload().getHeaders() != null){
@@ -468,6 +485,15 @@ public class GmailRestService {
         MessagePartBody attachPart = getGmailClient().users().messages().attachments().get("me", messageId, attachmentId).execute();
         byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
         return fileByteArray;
+    }
+    
+    public void updateLabels(String messageId, String[] addLabels, String[] removeLabels){
+        ModifyMessageRequest mods = new ModifyMessageRequest().setAddLabelIds(Arrays.asList(addLabels)).setRemoveLabelIds(Arrays.asList(removeLabels));
+        try {
+            getGmailClient().users().messages().modify("me", messageId, mods).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     private String getContent(String body){
