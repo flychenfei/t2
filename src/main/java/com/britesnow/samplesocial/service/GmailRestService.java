@@ -152,6 +152,8 @@ public class GmailRestService {
         final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
         
+        final List<Map> labels = listLabels();
+        
         if(messages != null){
             
             BatchRequest batch = gmail.batch();
@@ -159,6 +161,18 @@ public class GmailRestService {
 
                 public void onSuccess(Message message, HttpHeaders responseHeaders) {
                     MailInfo info = buildMailInfo(message);
+                    List<String> folderNames = new ArrayList();
+                    
+                    for(String id : info.getFolderIds()){
+                        for(Map label : labels){
+                            if(id.equals(label.get("id"))){
+                                folderNames.add((String) label.get("name"));
+                                break;
+                            }
+                        }
+                    }
+                    info.setFolderNames(folderNames);
+                    
                     mails.add(info);
                 }
 
@@ -203,6 +217,7 @@ public class GmailRestService {
         
         mailInfo.setId(message.getId());
         mailInfo.setThreadId(message.getThreadId());
+        mailInfo.setFolderIds(message.getLabelIds());
         if(message.getPayload() != null){
             
             if(message.getPayload().getHeaders() != null){

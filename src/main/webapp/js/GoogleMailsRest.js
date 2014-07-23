@@ -130,6 +130,13 @@
                     }
                 },
                 {
+                    text: "Labels",
+                    render: function (obj) {
+                        return obj.folderNames.join(",");
+                    },
+                    attrs: "style='width: 20%'"
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-envelope'/>";

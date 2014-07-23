@@ -13,6 +13,8 @@ public class MailInfo {
     private String content;
     private List attachments = null;
     private String threadId;
+    private List<String> folderIds = null;
+    private List<String> folderNames = null;
 
     public MailInfo(Object id, Object date, String from, String subject) {
         this.id = id;
@@ -87,4 +89,26 @@ public class MailInfo {
     public void setThreadId(String threadId) {
         this.threadId = threadId;
     }
+
+
+    public List<String> getFolderIds() {
+        return folderIds;
+    }
+
+
+    public void setFolderIds(List<String> folderIds) {
+        this.folderIds = folderIds;
+    }
+
+
+    public List<String> getFolderNames() {
+        return folderNames;
+    }
+
+
+    public void setFolderNames(List<String> folderNames) {
+        this.folderNames = folderNames;
+    }
+
+    
 }
