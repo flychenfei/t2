@@ -1,8 +1,8 @@
-<script id="tmpl-CreateCalendarEvent" type="text/html">
-    <div class="CreateCalendarEvent">
-        <div class='CreateCalendarEventDialogGlass'/>
-        <div class="CreateCalendarEvent-content">
-            <h2>{{#if id}}Edit{{else}}Create{{/if}} Calendar Event</h2>
+<script id="tmpl-CopyCalendarEvent" type="text/html">
+    <div class="CopyCalendarEvent">
+        <div class='CopyCalendarEventEventDialogGlass'/>
+        <div class="CopyCalendarEvent-content">
+            <h2>Copy Calendar Event</h2>
 
             <div class="form form-horizontal">
                 <div class="control-group ">
@@ -43,14 +43,6 @@
 						</span>
 					</div>
 				</div>
-				<div class="control-group calendarOpt hide">
-					<label class="control-label">
-						Select Calendar:</label>
-					<div class="controls">
-						<select class = "calendar">
-						</select>
-					</div>
-				</div>
                 <div class="control-group ">
                     <label class="control-label">Summary:</label>
                     <div class="controls">
@@ -66,15 +58,21 @@
                         <input type ="text" class = "reminders" name = "reminders" value='{{#if minutes}}{{minutes}}{{else}}10{{/if}}' /> min
                     </div>
                 </div>
-                <div class="control-group ">
-                    <label class="control-label">Add the inviter:</label>
-                    <div class="controls">
-                        <input type ="text" class = "addInviter" name = "addInviter" title = "Enter email address" value='{{#if inviters}}{{inviters}}{{/if}}' />
-                    </div>
-                </div>
+  
+				<div class="control-group copyEvent">
+					<label class="control-label">
+						Copy To:
+					</label>
+					<div class="controls">
+						<select name="" class="copyTo">
+				
+						</select>
+					</div>
+				</div>
+            
                 
                 <div class="form-actions">
-                    <a href="#" class="btn btn-primary CreateCalendarEventBtn">{{#if id}}Update{{else}}Create{{/if}}</a>
+                    <a href="#" class="btn btn-primary CopyCalendarEventBtn">Save</a>
                     <a href="#" class="btn cancelBtn">Close</a>
                 </div>
             </div>

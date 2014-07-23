@@ -89,7 +89,22 @@
 						}), 3000); 
                     });
                 }
-            }
+            },
+	        "btap; .copyEvent": function(event){
+	        	var view = this;
+	        	var $btn = $(event.currentTarget);
+	        	var $tr = $btn.closest("tr");
+	        	var id = $tr.attr("data-obj_id");
+	        	var calendarId = $tr.attr("data-calendarId");
+                if (id) {
+                    app.googleApi.getCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
+                        if(data && data.result){
+                        	data.result.copy = true;
+                            brite.display("CopyCalendarEvent", null, data.result);
+                        }
+                    });
+                }
+           },            
         },
 
         docEvents: {
@@ -116,7 +131,7 @@
                     render: function (obj) {
                         return obj.summary;
                     },
-                    attrs: "style='width: 300px'"
+                    attrs: "style='width: 300'"
 
                 },
                 {
@@ -148,14 +163,21 @@
                     render:function(obj){
                     	return "<div class='icon-edit editEvent'></div>";
                     },
-					attrs: "style='width: 40px'"
+					attrs: "style='width: 10%'"
                 },
                 {
                     text:"",
                     render:function(obj){
                     	return "<div class='icon-remove deleteEvent' data-cmd='DELETE_CALENDAR'></div>";
                     },
-					attrs: "style='width: 40px'"
+					attrs: "style='width: 10%'"
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                    	return "<div class='copyEvent' style='cursor:pointer'>Copy</div>";
+                    },
+					attrs: "style='width: 10%'"
                 }
             ],
             opts: {

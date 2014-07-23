@@ -188,6 +188,7 @@ public class GoogleCalendarEventsService {
             eventMap.put("id", event.getId());
             eventMap.put("summary", event.getSummary());
             eventMap.put("reminders", event.getReminders());
+            eventMap.put("iCalUID", event.getICalUID());
             if(event.getEnd() != null && event.getEnd().getDateTime() != null){
                 eventMap.put("endTime", new Date(event.getEnd().getDateTime().getValue()).getTime());
             }
@@ -215,7 +216,8 @@ public class GoogleCalendarEventsService {
         return null;
     }
     
-    public void saveEvent(String eventId, String summary, String location, String startTime, String endTime, Integer min,String calendarId,String[] inviter){
+    public void saveEvent(String eventId, String summary, String location, String startTime,
+                            String endTime, Integer min,String calendarId,String[] inviter){
         try {
             boolean create = false;
             Event event = null;
@@ -294,6 +296,69 @@ public class GoogleCalendarEventsService {
             e.printStackTrace();
         }
     }
+    
+    public void saveCopyEvent(String summary, String location, String startTime,
+                            String endTime, Integer min,String copyTo,String iCalUID){
+        try {
+            Event event = new Event();
+            event.setSummary(summary);
+            event.setLocation(location);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            if (startTime != null && !startTime.equals("")) {
+                Date start = null;
+                try {
+                    start = sdf.parse(startTime);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                DateTime stime = new DateTime(start, TimeZone.getTimeZone("UTC"));
+                event.setStart(new EventDateTime().setDateTime(stime));
+            }else{
+                event.setStart(new EventDateTime().setDateTime(new DateTime(new Date(), TimeZone.getTimeZone("UTC"))));
+            }
+            
+            if (endTime != null && !endTime.equals("")) {
+                Date end = null;
+                try {
+                    end = sdf.parse(endTime);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                DateTime etime = new DateTime(end, TimeZone.getTimeZone("UTC"));
+                event.setEnd(new EventDateTime().setDateTime(etime));
+            }else{
+                event.setEnd(new EventDateTime().setDateTime(new DateTime(new Date(), TimeZone.getTimeZone("UTC"))));
+            }
+            
+            if (min != null && min > 0){
+                EventReminder eventReminder = new EventReminder();
+                eventReminder.setMethod("email");
+                eventReminder.setMinutes(min);
+                List<EventReminder> eventReminders = new ArrayList();
+                eventReminders.add(eventReminder);
+                
+                Reminders reminders = new Reminders();
+                reminders.setOverrides(eventReminders);
+                reminders.setUseDefault(false);
+                
+                event.setReminders(reminders);
+            }
+            
+
+            
+            event.setICalUID(iCalUID);
+            getCalendarService().events().calendarImport(copyTo, event).execute();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void deleteEvent(String eventId, String calendarId){
         try {
             if(calendarId == null || calendarId.equals("")){
