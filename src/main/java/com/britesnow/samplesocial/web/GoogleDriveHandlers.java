@@ -184,8 +184,8 @@ public class GoogleDriveHandlers {
     }
 
     @WebGet("/googleDrive/foldersInfo")
-    public Object foldersInfo(@WebParam("fileId") String fileId){
-    	List<Map> results = googleDriveService.foldersInfo(fileId);
+    public Object foldersInfo(@WebParam("parentId") String parentId){
+    	List<Map> results = googleDriveService.foldersInfo(parentId);
     	return WebResponse.success(results);
     }
 

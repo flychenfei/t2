@@ -204,17 +204,17 @@
             	}
 		   },
        	   "mousedown;.contextMenu":function(e){
+       		if($(".DriveFolder").length>0){
+       			alert("please hold!");
+       			return false;
+       		}
 			var fileId = $(event.target).closest("tr").attr("data-fileId");
 			var parentId = $(event.target).closest("tr").attr("data-currentId");
     		   if(fileId && parentId && e.button==2){
-    			    var param = {};
-                  	app.googleDriveApi.foldersInfo(param).done(function (result) {
-                  		brite.display("DriveFolder", $("body"), {
-                  		   result:result.result,
-                  		   fileId:fileId,
-                  		   parentId:parentId
-                  		});
-                      });
+    			   brite.display("DriveFolder", $("body"), {
+              		   fileId:fileId,
+              		   parentId:parentId
+              		});
     			 }
     		   return false;
 		   }

@@ -9,7 +9,12 @@
                 return app.render("tmpl-DriveFolder", {data:data});
             },
             postDisplay:function(){
-    			
+            	$(".move").addClass("disabled");
+            	param = {};
+            	app.googleDriveApi.foldersInfo(param).done(function (result) {
+            		 $("div.itemDiv").empty();
+             		 brite.display("DriveSubFolder",$("div.itemDiv"),{result:result.result,root:true});
+                 });
     		},
     		events:{
     			"click;.dialogCloseBtn":function(event){
@@ -19,18 +24,27 @@
     				this.$el.remove();
     			},
     			"click;.driveFolderPlus":function(event){
-    				alert("not implement!");
-    				/*var expandIco = $(event.target);
-    				var param = {};
-    				param.parentId = $(event.target).closest(".folderitem").attr("data-selfId");
-                  	app.googleDriveApi.foldersInfo(param).done(function (result) {
-                  		 result=result.result;
-                  		 brite.display("DriveSubFolder",$(expandIco).closest("div.itemDiv"),{result:result});
-                      });*/
+    				var expandIco = $(event.target);
+    				if(expandIco.attr("class")==="icon-plus"){
+        				var param = {};
+        				param.parentId = $(event.target).closest(".folderitem").attr("data-selfId");
+                      	app.googleDriveApi.foldersInfo(param).done(function (result) {
+                      		 brite.display("DriveSubFolder",$(expandIco).closest("div.itemDiv"),{result:result.result});
+                          });
+        				expandIco.removeClass("icon-plus").addClass("icon-minus");
+        				expandIco.closest(".folderitem").find(".icon-folder-close").removeClass("icon-folder-close").addClass("icon-folder-open");
+    				}else if(expandIco.attr("class")==="icon-minus"){
+    					var subFolder = $(expandIco).closest("div").next();
+    					$(subFolder).remove();
+        				expandIco.removeClass("icon-minus").addClass("icon-plus");
+        				expandIco.closest(".folderitem").find(".icon-folder-open").removeClass("icon-folder-open").addClass("icon-folder-close");
+    				}
     			},
     			"click;.foldername":function(event){
     				$(".foldername.select").toggleClass("select");
     				$(event.currentTarget).toggleClass("select");
+    				if($(".move").hasClass("disabled"))
+    					$(".move").removeClass("disabled");
     			},
     			"click;.move":function(event){
     				var moveBtn = $(event.target);

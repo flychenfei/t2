@@ -8,24 +8,14 @@
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
 			</div>
 			<div class="dialogBody" data-fileId="{{data.fileId}}" data-parentId="{{data.parentId}}">
-			 <div class="itemDiv">
+			 <div class="itemDivHead">
 			 	<div class="folderitem">
 			 		<span class="foldername">My Drive</span>
 			 	</div>
 			 </div>
-		 	{{#each data.result}}
-				<div class="itemDiv">
-					<div class="folderitem">
-					{{#if hasChild}}
-						<span class="driveFolderPlus"><i class="icon-plus"></i></span>
-					{{else}}
-						<span class="driveFolderMinus"><i class="icon-minus"></i></span>
-					{{/if}}
-						<span class=""><i class="icon-folder-close"></i></span>
-						<span class="foldername" data-selfId="{{selfId}}">{{name}}</span>
-					</div>
-				</div>
-			{{/each}}
+			<div class="itemDiv">
+				loading...
+			</div>
 		 	<div class="dialogBtns">
 				<button class="btn btn-primary move">Move</button>
 				<button class="btn btn-primary cancel">Cancel</button>
@@ -36,19 +26,23 @@
 </script>
 
 <script id="tmpl-DriveSubFolder" type="text/html">
+{{#if data.root}}
+	<div class="rootfolder itemDiv">
+{{else}}
 	<div class="subfolder itemDiv">
+{{/if}}
 		{{#each data.result}}
 				<div class="itemDiv">
-					<div class="folderitem" data-Id="{{selfId}}>
+					<div class="folderitem" data-selfId="{{selfId}}">
 					{{#if hasChild}}
-						<span class=""><i class="icon-plus"></i></span>
+						<span class="driveFolderPlus"><i class="icon-plus"></i></span>
 					{{else}}
-						<span class=""><i class="icon-minus"></i></span>
+						<span class="driveFolderMinus"></span>
 					{{/if}}
-						<span><i class="icon-folder-close"></i></span>
-						<span class="foldername">{{name}}</span>
+						<span class=""><i class="icon-folder-close"></i></span>
+						<span class="foldername" data-selfId="{{selfId}}">{{name}}</span>
 					</div>
 				</div>
-			{{/each}}
+		{{/each}}
 	</div>
 </script>
