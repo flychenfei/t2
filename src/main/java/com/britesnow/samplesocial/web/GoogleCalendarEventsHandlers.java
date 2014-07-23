@@ -55,11 +55,21 @@ public class GoogleCalendarEventsHandlers {
     @WebPost("/googleCalendarEvents/save")
     public Object saveEvents(@WebModel Map m, @WebParam("id") String id,  @WebParam("summary") String summary, 
                             @WebParam("location") String location,@WebParam("status") String status,@WebParam("startTime") String startTime,
-                            @WebParam("endTime") String endTime,@WebParam("reminders") Integer min,@WebParam("calendarId")String calendarId,@WebParam("inviters") String inviters) throws Exception {
+                            @WebParam("endTime") String endTime,@WebParam("reminders") Integer min,@WebParam("calendarId")String calendarId,
+                            @WebParam("inviters") String inviters) throws Exception {
         String[] inviter = inviters.split(",");
         googleCalendarEventsService.saveEvent(id, summary,location, startTime, endTime,min,calendarId,inviter);
         return WebResponse.success();
     }
+    @WebPost("/googleCopyCalendarEvents/save")
+    public Object saveCopyEvents(@WebParam("summary") String summary, 
+                            @WebParam("location") String location,@WebParam("startTime") String startTime,
+                            @WebParam("endTime") String endTime,@WebParam("reminders") Integer min,
+                            @WebParam("copyTo") String copyTo,@WebParam("iCalUID") String iCalUID) throws Exception {
+        googleCalendarEventsService.saveCopyEvent(summary,location, startTime, endTime,min,copyTo,iCalUID);
+        return WebResponse.success();
+    }
+    
     @WebPost("/googleCalendarEvents/delete")
     public Object deleteEvents(@WebModel Map m, @WebParam("id") String id,@WebParam("calendarId") String calendarId) throws Exception {
         googleCalendarEventsService.deleteEvent(id, calendarId);

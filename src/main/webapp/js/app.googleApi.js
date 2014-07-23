@@ -122,6 +122,11 @@ var app = app || {};
             params.method = "Post";
             return app.getJsonData(contextPath + "/googleCalendarEvents/delete", params);
         },
+        saveCopyCalendarEvent: function(opts) {
+            var params = opts||{};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/googleCopyCalendarEvents/save", params);
+        },
         listCalendars: function(opts) {
             var params = opts||{};
             params.method = "Get";
