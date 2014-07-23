@@ -80,8 +80,8 @@ public class GoogleDriveHandlers {
     }
     
     @WebGet("/googleDrive/copyFile")
-    public Object copyFile(@WebParam("fileId") String fileId, @WebParam("copyTitle") String copyTitle){
-    	if(googleDriveService.copyFile(fileId, copyTitle))
+    public Object copyFile(@WebParam("fileId") String fileId, @WebParam("parentId") String parentId, @WebParam("copyTitle") String copyTitle, @WebParam("targetId") String targetId){
+    	if(googleDriveService.copyFile(fileId, parentId, copyTitle, targetId))
         	return WebResponse.success();
         else
         	return WebResponse.fail();

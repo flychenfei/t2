@@ -260,17 +260,33 @@ public class GoogleDriveService {
      * @param fileId
      * @return
      */
-    public boolean copyFile(String fileId,String copyTitle){
+    public boolean copyFile(String fileId, String parentId, String copyTitle, String targetId){
+    	if(Strings.isNullOrEmpty(fileId) || Strings.isNullOrEmpty(parentId) || Strings.isNullOrEmpty(targetId))
+    		return false;
     	Drive service = getDriverService();
 		try {
 			  File copiedFile = new File();
 			  copiedFile.setTitle(copyTitle);
-			  service.files().copy(fileId, copiedFile).execute();
+			  File file =  service.files().copy(fileId, copiedFile).execute();
+			  if(!Strings.isNullOrEmpty(copyTitle)){
+				  patchFile(file.getId(),copyTitle,null);
+			  }
+			  if(targetId.equals("root")){
+				  targetId = userInfo().get("rootFolderId").toString();
+		      }
+			  if(!parentId.equals(targetId)){
+				  if(moveFile(file.getId(), parentId, targetId)){
+					  return true;
+				  }else {
+					  service.files().delete(file.getId()).execute();
+					  return false;
+				  }
+			  }
+			  return true;
 		    } catch (IOException e) {
 		     e.printStackTrace();
 		     return false;
 		}
-        return true;
     }
     
     /**
@@ -399,6 +415,13 @@ public class GoogleDriveService {
     }
     
     public boolean moveFile(String fileId, String parentId, String moveToId){
+    	if(Strings.isNullOrEmpty(fileId) || Strings.isNullOrEmpty(parentId) || Strings.isNullOrEmpty(moveToId))
+    		return false;
+    	if(moveToId.equals("root")){
+    		moveToId = userInfo().get("rootFolderId").toString();
+    	}
+    	if(parentId.equals(moveToId))
+    		return false;
     	if(insertChildren(moveToId, fileId)){
     		if(deleteChildren(parentId, fileId)){
         		return true;

@@ -10,6 +10,7 @@
             },
             postDisplay:function(){
             	$(".move").addClass("disabled");
+            	$(".copy").addClass("disabled");
             	param = {};
             	app.googleDriveApi.foldersInfo(param).done(function (result) {
             		 $("div.itemDiv").empty();
@@ -42,9 +43,11 @@
     			},
     			"click;.foldername":function(event){
     				$(".foldername.select").toggleClass("select");
-    				$(event.currentTarget).toggleClass("select");
+    				$(event.target).toggleClass("select");
     				if($(".move").hasClass("disabled"))
     					$(".move").removeClass("disabled");
+    				if($(".copy").hasClass("disabled"))
+    					$(".copy").removeClass("disabled");
     			},
     			"click;.move":function(event){
     				var moveBtn = $(event.target);
@@ -53,7 +56,7 @@
     				param.fileId = $(".dialogBody").attr("data-fileId");
     				param.parentId = $(".dialogBody").attr("data-parentId");
     				param.moveId = $(".foldername.select").attr("data-selfId");
-    				if(param.fileId === param.moveId){
+    				if(param.parentId === param.moveId){
     					alert("Can't move file to itself!");
     					return false;
     				}
@@ -69,6 +72,34 @@
     					view.$el.remove();
     					var params = {};
                     	params.selfId = param.parentId;
+                    	brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+            				results: function(){
+            				    return app.googleDriveApi.childList(params);
+            			    }
+            			});
+    				});
+    			},
+    			"click;.copy":function(event){
+    				var copyBtn = $(event.target);
+    				var view = this;
+    				var param = {};
+    				var parentId = $(".dialogBody").attr("data-parentId");
+    				param.fileId = $(".dialogBody").attr("data-fileId");
+    				param.parentId = $(".dialogBody").attr("data-parentId");
+    				param.copyTitle= $(".copyTitle").val();
+    				param.targetId = $(".foldername.select").attr("data-selfId");
+    				if($(copyBtn).hasClass("disabled"))
+    					return false;
+    				$(copyBtn).addClass("disabled");
+    				app.googleDriveApi.copyFile(param).done(function(result){
+    					 if(result.success === true){
+		                    	alert("copy success");
+		                    }else{
+		                    	alert("copy fail");
+		                    }
+    					view.$el.remove();
+    					var params = {};
+                    	params.selfId = parentId;
                     	brite.display("GoogleDriveFiles",".GoogleScreen-content",{
             				results: function(){
             				    return app.googleDriveApi.childList(params);

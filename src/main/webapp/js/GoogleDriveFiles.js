@@ -171,27 +171,23 @@
 	                });
 			},
 			"click;.copy":function(event){
-				    var view = this;
-					var param = {};
-				    var parentId = $(".btnUpload").attr("data-currentId");
-					param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
-					param.copyTitle = $(event.currentTarget).closest("tr").attr("data-fileName");
-					app.googleDriveApi.copyFile(param).done(function (result) {
-		                    if(result.success === true){
-		                    	alert("Copy success");
-		                    }else{
-		                    	alert("Copy fail");
-		                    }
-		                    var params = {};
-	                    	params.selfId = parentId;
-	                    	view.param = params;
-	                		openFolder.call(view);
-		               });
+				var view = this;
+				var param = {};
+			    var parentId = $(".btnUpload").attr("data-currentId");
+				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
+				brite.display("DriveFolder", $("body"), {
+ 				   move:false,
+ 				   displayName:'Copy to ...',
+ 				   fileName:fileName,
+           		   fileId:fileId,
+           		   parentId:parentId
+           		});
 			},
 			"click;.fileSelf":function(event){
 				var view = this;
 				var param = {};
-				param.fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
+				param.selfId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				mimeType = $(event.currentTarget).closest("tr").attr("data-mimeType");
             	if(mimeType == "application/vnd.google-apps.folder"){
             		view.param = param;
@@ -204,14 +200,12 @@
             	}
 		   },
        	   "mousedown;.contextMenu":function(e){
-       		if($(".DriveFolder").length>0){
-       			alert("please hold!");
-       			return false;
-       		}
 			var fileId = $(event.target).closest("tr").attr("data-fileId");
 			var parentId = $(event.target).closest("tr").attr("data-currentId");
     		   if(fileId && parentId && e.button==2){
     			   brite.display("DriveFolder", $("body"), {
+    				   move:true,
+    				   displayName:'Move to ...',
               		   fileId:fileId,
               		   parentId:parentId
               		});
