@@ -103,8 +103,21 @@ public class GoogleRestEmailHandlers {
         MailInfo info = gmailRestService.getEmail(id);
         return WebResponse.success(info);
     }
-
-
+    
+    @WebPost("/gmailrest/updateLabels")
+    public WebResponse updateLabels(@WebUser User user,
+                           @WebModel Map m, @WebParam("id") String messageId, @WebParam("addLabels") String addLabelsStr,@WebParam("removeLabels") String removeLabelsStr,  RequestContext rc) throws Exception {
+        String[] addLabels = new String[0];
+        String[] removeLabels = new String[0];
+        if(addLabelsStr != null && !addLabelsStr.equals("")){
+            addLabels = addLabelsStr.split(",");
+        }
+        if(removeLabelsStr != null && !removeLabelsStr.equals("")){
+            removeLabels = removeLabelsStr.split(",");
+        }
+        gmailRestService.updateLabels(messageId, addLabels, removeLabels);
+        return WebResponse.success();
+    }
     
     @WebGet("/gmailrest/labels/list")
     public WebResponse listLabels(@WebUser User user) throws Exception {

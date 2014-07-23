@@ -1,0 +1,36 @@
+<script id="tmpl-GoogleMailLabelsUpdate" type="text/html">
+    <div class="GoogleMailLabelsUpdate modal">
+        <div class="GoogleMailLabelsUpdate-header modal-header">
+            <div class="close btnClose"><i class="icon-remove"></i></div>
+            <h3>Update Labels</h3>
+        </div>
+        <div class="GoogleMailLabelsUpdate-content modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <div class="control-label">Subject:</div>
+                    <div class="controls">
+                        {{subject}}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">From:</div>
+                    <div class="controls">
+                        {{from}}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">Labels:</div>
+                    <div class="controls">
+                    	{{#each labels}}
+                    		<div><input type='checkbox' name='label' value='{{id}}' {{#if checked}}checked{{/if}} /> {{name}} </div>
+                    	{{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="GoogleMailLabelsUpdate-footer modal-footer">
+            <div class="btn btn-primary btnUpdate">Update</div>
+            <div class="btn btnClose">Close</div>
+        </div>
+    </div>
+</script>

@@ -236,6 +236,11 @@ var app = app || {};
             var params = {id:threadId};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmailrest/getThreadMails", params);
+        },
+        updateLabelsRest: function(opts) {
+            var params = opts || {};
+            params.method = "Post";
+            return app.getJsonData(contextPath + "/gmailrest/updateLabels", params);
         }
 	};
 })();

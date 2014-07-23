@@ -55,6 +55,12 @@
 				var $e = view.$el;
 				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
 				brite.display("GoogleThreadMails",null,{threadId:threadId});
+          },
+          "click; .updateLabels":function(event){
+				var view = this;
+				var $e = view.$el;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				brite.display("GoogleMailLabelsUpdate",null,{id:id});
           }
 
         },
@@ -95,6 +101,10 @@
 
                 })
 
+            },
+            "DO_REFRESH_MAIL": function(event, extra) {
+            	var view = this;
+				showEmails.call(view); 
             }
         },
 
@@ -132,7 +142,7 @@
                 {
                     text: "Labels",
                     render: function (obj) {
-                        return obj.folderNames.join(",");
+                        return "<a href='javascript:void(0)' class='updateLabels'>"+obj.folderNames.join(",")+"</a>";
                     },
                     attrs: "style='width: 20%'"
                 },
