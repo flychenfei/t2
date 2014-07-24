@@ -363,8 +363,9 @@ public class GoogleCalendarEventsService {
                 try {
                     start = sdf.parse(startTime);
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                }
+                if(start == null){
+                    start = new Date();
                 }
                 DateTime stime = new DateTime(start, TimeZone.getTimeZone("UTC"));
                 event.setStart(new EventDateTime().setDateTime(stime));
@@ -377,10 +378,11 @@ public class GoogleCalendarEventsService {
                 try {
                     end = sdf.parse(endTime);
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
-
+                if(end == null){
+                    end = new Date();
+                }
+                
                 DateTime etime = new DateTime(end, TimeZone.getTimeZone("UTC"));
                 event.setEnd(new EventDateTime().setDateTime(etime));
             }else{
