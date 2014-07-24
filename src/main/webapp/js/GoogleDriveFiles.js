@@ -21,7 +21,6 @@
                  inputMask: true 
             });
             showFile.call(view);
-		    document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
         },
 
         events: {
@@ -171,8 +170,6 @@
 	                });
 			},
 			"click;.copy":function(event){
-				var view = this;
-				var param = {};
 			    var parentId = $(".btnUpload").attr("data-currentId");
 				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
@@ -199,10 +196,10 @@
     			    download.call(view);
             	}
 		   },
-       	   "mousedown;.contextMenu":function(e){
+       	   "click;.move":function(e){
 			var fileId = $(event.target).closest("tr").attr("data-fileId");
 			var parentId = $(event.target).closest("tr").attr("data-currentId");
-    		   if(fileId && parentId && e.button==2){
+    		   if(fileId && parentId){
     			   brite.display("DriveFolder", $("body"), {
     				   move:true,
     				   displayName:'Move to ...',
@@ -297,9 +294,9 @@
                     render: function (obj) {
                     	var functionString = "";
                     	if(obj.mimeType == "application/vnd.google-apps.folder"){
-                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"move\">"+"move"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}else{
-                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
+                    		functionString = "<span><a src=\"#\" class=\"patch\">"+"patch"+"</a> <a src=\"#\" class=\"touch\">"+"touch"+"</a> <a src=\"#\" class=\"copy\">"+"copy"+"</a> <a src=\"#\" class=\"move\">"+"move"+"</a> <a src=\"#\" class=\"trash\">"+"trash"+"</a> <a src=\"#\" class=\"delete\">"+"delete"+"</a> </span>";
                     	}
                         return functionString;
                     }
