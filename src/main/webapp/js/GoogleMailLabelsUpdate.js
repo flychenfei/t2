@@ -79,7 +79,7 @@
 	 			};
 	 			console.log(opts);
 	 			app.googleApi.updateLabelsRest(opts).done(function(){
-	 				$(document).trigger("DO_REFRESH_MAIL");
+	 				$(document).trigger("DO_REFRESH_CURRENT_PAGE");
 	 				view.close();
 	 			});
 	 		}

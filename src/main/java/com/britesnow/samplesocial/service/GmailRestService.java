@@ -48,6 +48,8 @@ public class GmailRestService {
     GoogleAuthService authService;
     
     private Gmail gmail = null;
+    
+    private List<Map> cacheLabels = null;
 
     public Pair<String, List<MailInfo>> gmailSearch(String subject, String from, String to, 
     		String body, String sDate , String eDate, String srDate , String erDate,
@@ -154,7 +156,7 @@ public class GmailRestService {
         final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
         
-        final List<Map> labels = listLabels();
+        final List<Map> labels = listLabels(false);
         
         if(messages != null){
             
@@ -400,23 +402,30 @@ public class GmailRestService {
         }
     }
     
-    public List<Map> listLabels() throws Exception  {
-        ListLabelsResponse response = getGmailClient().users().labels().list("me").execute();
-        
-        List<Map> labelsList = new ArrayList();
-        List<Label> labels = response.getLabels();
-        
-        if(labels != null){
+    public List<Map> listLabels(boolean force) throws Exception  {
+        List<Map> labelsList = null;
+        if(cacheLabels == null || force){
+            ListLabelsResponse response = getGmailClient().users().labels().list("me").execute();
             
-            for (Label label : labels) {
-                Map labelInfo = new HashMap();
-                labelInfo.put("id", label.getId());
-                labelInfo.put("name", label.getName());
-                labelInfo.put("type", label.getType());
-                labelsList.add(labelInfo);
+            labelsList = new ArrayList();
+            List<Label> labels = response.getLabels();
+            
+            if(labels != null){
+                
+                for (Label label : labels) {
+                    Map labelInfo = new HashMap();
+                    labelInfo.put("id", label.getId());
+                    labelInfo.put("name", label.getName());
+                    labelInfo.put("type", label.getType());
+                    labelsList.add(labelInfo);
+                }
+                
             }
-            
+            cacheLabels = labelsList;
+        }else{
+            labelsList = cacheLabels;
         }
+        
         
         return labelsList;
     }

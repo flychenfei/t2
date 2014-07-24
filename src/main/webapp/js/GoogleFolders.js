@@ -19,10 +19,9 @@
         docEvents: {
             "EDIT_FOLDER":function(event, extraData){
                 if (extraData && extraData.objId) {
-                    var folderName = getGroupId(extraData.objId);
                     var $row = $(extraData.event.currentTarget).closest("tr");
                     var fullName = $row.attr("data-fullName");
-                    brite.display("CreateFolder", null, {folerName:folderName, fullName:fullName})
+                    brite.display("CreateFolder", null, {id:fullName, name:fullName})
                 }
             },
             "DELETE_FOLDER": function(event, extraData){
@@ -36,6 +35,10 @@
                         }
                     });
                 }
+            },
+            "DO_REFRESH_FOLDERS":function(){
+            	var view = this;
+            	showFolders.call(view);
             }
         },
 
@@ -62,7 +65,8 @@
             opts:{
                 htmlIfEmpty: "Not Folder found",
                 withPaging: false,
-                cmdDelete: "DELETE_FOLDER"
+                cmdDelete: "DELETE_FOLDER",
+                cmdEdit: "EDIT_FOLDER"
             }
         });
     }

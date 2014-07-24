@@ -46,8 +46,8 @@ public class GoogleEmailHandlers {
     }
     
     @WebPost("/gmail/folder/save")
-    public WebResponse saveFolder(@WebUser User user, @WebParam("name") String folderName, RequestContext rc) throws Exception {
-        boolean result = gmailImapService.saveFolder(folderName);
+    public WebResponse saveFolder(@WebUser User user, @WebParam("oldName") String oldFolderName, @WebParam("name") String folderName, RequestContext rc) throws Exception {
+        boolean result = gmailImapService.saveFolder(oldFolderName, folderName);
         if (result) {
             return WebResponse.success(result);
         }else {

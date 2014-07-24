@@ -399,12 +399,20 @@ public class GmailImapService {
     }
     
     
-    public boolean saveFolder(String folderName) throws Exception {
+    public boolean saveFolder(String oldFolderName, String folderName) throws Exception {
         GmailStore imap = getGmailStore();
         Folder folder = null;
-        folder = imap.getFolder(folderName);
-        if (!folder.exists()) {
-            folder.create(Folder.HOLDS_MESSAGES);
+        if(oldFolderName == null || oldFolderName.equals("")){
+            folder = imap.getFolder(folderName);
+            if (!folder.exists()) {
+                folder.create(Folder.HOLDS_MESSAGES);
+            }
+        }else{
+            Folder oldfolder = imap.getFolder(oldFolderName);
+            folder = imap.getFolder(folderName);
+            if(oldfolder.exists()){
+                oldfolder.renameTo(folder);
+            }
         }
         imap.close();
         return true;

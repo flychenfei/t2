@@ -245,7 +245,12 @@
                     }
                 }
             },
-            docEvents:{},
+            docEvents:{
+            	"DO_REFRESH_CURRENT_PAGE":function(){
+            		var view = this;
+            		refreshDataTable.call(view);
+            	}
+            },
             daoEvents:daoEvents
         });
 

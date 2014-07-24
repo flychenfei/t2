@@ -11,6 +11,7 @@
             emptyParent:false
         }, {
             create:function (data, config) {
+            	var view = this;
             	data = data || {};
                 if(data) {
                     this.id = data.id;
@@ -47,7 +48,7 @@
                 	if(view.type == 'rest'){
 	                    dfd = app.googleApi.saveLabelRest({id:view.id, name: input.val()});
                 	}else{
-                		dfd = app.googleApi.saveFolder({name: input.val()});
+                		dfd = app.googleApi.saveFolder({oldName:view.id, name: input.val()});
                 	}
                     dfd.done(function (extraData) {
                         setTimeout((function () {
