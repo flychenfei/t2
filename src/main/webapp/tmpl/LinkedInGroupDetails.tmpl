@@ -1,0 +1,24 @@
+<script id="tmpl-LinkedInGroupDetails" type="text/html">
+<div class="LinkedInGroupDetails">
+  <div class="GroupDetailsHead">
+	<div><span class="" ><img src="{{data.result.largeLogoUrl}}" alt="Logo"/></span><span class="" >ID:{{data.result.id}}</span><span class="" >{{data.result.name}}</span><span class="num-members">{{data.result.numMembers}} members</span></div>
+  </div>
+  <div class="GroupDetailsBody">
+  	<div><span class="ShortDescription" >ShortDescription: {{data.result.shortDescription}}</span></div>
+  	<div><span class="Description" >Description: {{data.result.description}}</span></div>
+  	<div><span class="" >Category: {{data.result.category.code}}</span><span class="" >Language locale of the group: {{data.result.locale}}</span><span class="" ><a target="_blank" href="{{data.result.siteGroupUrl}}">siteGroupUrl</a></span></div>
+    <div><span class="" >RelationToViewer: {{data.result.relationToViewer.membershipState.code}}</span>
+    	<span>Viewer's availableActions:
+    	{{#each data.result.relationToViewer.availableActions.values}}
+				{{code}}      
+		{{/each}}
+		</span>
+    </div>
+    <div><span class="" >AllowMemberInvites: {{data.result.allowMemberInvites}}</span></div>
+    <div><span class="" >OpenToNonMembers: {{data.result.isOpenToNonMembers}}</span></div>
+  </div>
+  <div class="posts-container">
+    
+  </div>
+</div>
+</script>

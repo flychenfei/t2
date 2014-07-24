@@ -8,6 +8,7 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Singleton
@@ -25,8 +26,13 @@ public class LinkedInHandlers {
     
     @WebGet("/linkedin/groups")
     public WebResponse getGroups(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
-        Map result = linkedInService.getGroups(user, pageIndex, pageSize);
-        WebResponse resp = WebResponse.success(result.get("values"));
+        Map result = linkedInService.groups(user, pageIndex, pageSize);
+        WebResponse resp;
+        if(result.get("values") != null){
+            resp = WebResponse.success(result.get("values"));
+        }else{
+            resp = WebResponse.success(new ArrayList());
+        }
         resp.set("result_count", result.get("_total"));
         return resp;
     }
@@ -59,4 +65,14 @@ public class LinkedInHandlers {
         resp.set("result_count", result.get("numResults"));
         return resp;
     }
+    
+    @WebGet("/linkedin/groupDetails")
+    public WebResponse getGroupDetails(@WebUser User user, @WebParam("groupId") String groupId) {
+        Map result = linkedInService.groupDetails(user, groupId);
+        if (result == null)
+        	return WebResponse.fail();
+        WebResponse resp = WebResponse.success(result);
+        return resp;
+    }
+    
 }
