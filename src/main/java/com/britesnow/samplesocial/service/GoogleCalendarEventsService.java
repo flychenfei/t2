@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -32,6 +33,10 @@ import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.FreeBusyRequest;
+import com.google.api.services.calendar.model.FreeBusyRequestItem;
+import com.google.api.services.calendar.model.FreeBusyResponse;
+import com.google.api.services.calendar.model.TimePeriod;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -124,7 +129,6 @@ public class GoogleCalendarEventsService {
                         eventMap.put("date", event.getStart());
                         eventMap.put("location", event.getLocation());
                         eventMap.put("status", event.getStatus());
-                       
                         for(CalendarListEntry entry : calendarEntries){
                             if(entry.getId().equals(event.getOrganizer().getEmail())){
                                 eventMap.put("backgroundColor", entry.getBackgroundColor());
@@ -173,6 +177,54 @@ public class GoogleCalendarEventsService {
             }
             batch.execute();
         }
+        return eventList;
+    }
+    
+    public  List<Map> listFreeBusy(String startDate, String endDate, String[] calendarIds) throws IOException{
+        List<Map> eventList = new ArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+            for (String calendarId : calendarIds) {
+                FreeBusyRequest request = new FreeBusyRequest();
+
+                if(startDate != null && !startDate.equals("")){
+                    DateTime minTime = null;
+                    Date min = null;
+                    try {
+                        min = sdf.parse(startDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    minTime = new DateTime(min.getTime());
+                    request.setTimeMin(minTime);
+                }
+                
+                if(endDate != null && !endDate.equals("")){
+                    Date max = null;
+                    try {
+                        max = sdf.parse(endDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    DateTime maxTime = new DateTime(max.getTime());
+                    request.setTimeMax(maxTime);
+                }
+                
+                FreeBusyRequestItem item = new FreeBusyRequestItem();
+                List<FreeBusyRequestItem> lt = new ArrayList();
+                lt.add(item.setId(calendarId));
+                request.setItems(lt);
+                
+                FreeBusyResponse fb = getCalendarService().freebusy().query(request).execute();
+                Iterator<TimePeriod> list = fb.getCalendars().get(calendarId).getBusy().iterator();
+                for(Iterator<TimePeriod> ite = list; ite.hasNext();){
+                    Map map = new HashMap();
+                    TimePeriod timePeriod = ite.next();
+                    map.put("start", timePeriod.getStart().getValue());
+                    map.put("end", timePeriod.getEnd().getValue());
+                    eventList.add(map);
+                }
+            }
         return eventList;
     }
     

@@ -115,6 +115,16 @@
 				}
 				
 			});
+			app.googleApi.listFreeBusy(opts).done(function(data){
+				for(var i = 0; i < data.result.length; i++){
+					var start = new Date(data.result[i].start);
+					var end = new Date(data.result[i].end);
+					for(var j = start.getDate(); j <= end.getDate(); j++){
+						$e.find("td[data-date-value='"+j+"']").addClass("busy");
+					}
+				}
+				
+			});
 			
 		}
         
@@ -163,9 +173,11 @@
 			for (var i = 0; i < endDateOfMonth.getDate(); i++) {
 				var date = new Date(firstDateOfMonth * 1 + i * 24 * 60 * 60 * 1000);
 				var dateStr = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate();
+				var dataValue = date.getDate();
 				var dateFormatStr = date.format("yyyy-MM-dd");
 				week[date.getDay()] = {
 					dateLabel : dateStr,
+					dataValue: dataValue,
 					dateObj : date,
 					dateStr : dateFormatStr
 				};

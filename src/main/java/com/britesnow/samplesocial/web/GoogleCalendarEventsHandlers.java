@@ -47,6 +47,21 @@ public class GoogleCalendarEventsHandlers {
         return result;
     }
     
+    @WebGet("/googleCalendarEvents/listFreeBusy")
+    public Object listFreeBusy(@WebParam("startDate") String startDate,@WebParam("endDate") String endDate,  
+                            @WebParam("calendarIds") String calendarId) throws Exception {
+        String[] calendarIds;
+        if (calendarId == null || calendarId.equals("")) {
+            calendarIds = new String[]{"primary"} ;
+        }else{
+            calendarIds = calendarId.split(",");
+        }
+        
+        List<Map> eventsList = googleCalendarEventsService.listFreeBusy(startDate, endDate,calendarIds);
+        WebResponse result = WebResponse.success(eventsList);
+        return result;
+    }
+    
     @WebGet("/googleCalendarEvents/get")
     public Object getEvents(@WebModel Map m, @WebParam("id") String id,@WebParam("calendarId") String calendarId) throws Exception {
         return WebResponse.success(googleCalendarEventsService.getEvent(id,calendarId));

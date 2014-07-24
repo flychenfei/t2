@@ -48,7 +48,7 @@
 </script>
 
 <script id="GoogleCalendarView-calendar-td" type="text/html">
-	<td  {{#if dateStr}}data-date='{{dateStr}}'{{/if}}>
+	<td  {{#if dateStr}}data-date='{{dateStr}}' data-date-value='{{dataValue}}'{{/if}}>
     <div class="date">{{#if dateLabel}} {{dateLabel}} {{else}}&nbsp;{{/if}}</div>
     <div class="events"></div>
   </td>
