@@ -43,7 +43,7 @@
         }
     });
     function showFolders() {
-        var folders = app.googleApi.listLabelsRest();
+        var folders = app.googleApi.listLabelsRest({force:true});
         return brite.display("DataTable", ".folders-container", {
             gridData: folders,
             rowAttrs: function(obj){ return "data-type='Folder' data-obj_id='{0}' data-name='{1}'".format(obj.id,obj.name)},

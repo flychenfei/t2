@@ -120,8 +120,11 @@ public class GoogleRestEmailHandlers {
     }
     
     @WebGet("/gmailrest/labels/list")
-    public WebResponse listLabels(@WebUser User user) throws Exception {
-        List<Map> labels = gmailRestService.listLabels();
+    public WebResponse listLabels(@WebUser User user, @WebParam("force") Boolean force) throws Exception {
+        if(force == null){
+            force = false;
+        }
+        List<Map> labels = gmailRestService.listLabels(force);
         WebResponse result = WebResponse.success(labels);
         return result;
     }
