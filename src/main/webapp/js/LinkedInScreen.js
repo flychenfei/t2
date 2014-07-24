@@ -46,7 +46,7 @@
             	  param.groupId = $detail.closest("tr").attr("data-groupId");
             	  app.linkedInApi.groupDetails(param).done(function (result) {
 	                    if(result.success === true){
-	                    	 brite.display("groupDetails", ".LinkedInScreen-content", {result:result.result});
+	                    	 brite.display("LinkedInGroupDetails", ".LinkedInScreen-content", {result:result.result});
 	                    }else{
 	                    	alert("can't get the details of group!");
 	                    }

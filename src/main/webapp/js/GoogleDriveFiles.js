@@ -173,7 +173,7 @@
 			    var parentId = $(".btnUpload").attr("data-currentId");
 				var fileId = $(event.currentTarget).closest("tr").attr("data-fileId");
 				var fileName = $(event.currentTarget).closest("tr").attr("data-fileName");
-				brite.display("DriveFolder", $("body"), {
+				brite.display("GoogleDriveFolder", $("body"), {
  				   move:false,
  				   displayName:'Copy to ...',
  				   fileName:fileName,
@@ -200,7 +200,7 @@
 			var fileId = $(event.target).closest("tr").attr("data-fileId");
 			var parentId = $(event.target).closest("tr").attr("data-currentId");
     		   if(fileId && parentId){
-    			   brite.display("DriveFolder", $("body"), {
+    			   brite.display("GoogleDriveFolder", $("body"), {
     				   move:true,
     				   displayName:'Move to ...',
               		   fileId:fileId,

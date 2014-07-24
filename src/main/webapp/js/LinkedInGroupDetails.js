@@ -1,6 +1,6 @@
 ;
 (function ($) {
-    brite.registerView("groupDetails",{emptyParent:true}, {
+    brite.registerView("LinkedInGroupDetails",{emptyParent:true}, {
         create: function (data, config) {
             return app.render("tmpl-LinkedInGroupDetails", {data:data});
         },
