@@ -38,7 +38,19 @@
                 }else if(menu == "groups"){
                     showGroups.call(view);
                 }
-
+              },
+              "click;.details":function(e){
+            	  var view = this;
+            	  var $detail = $(e.target);
+            	  var param = {};
+            	  param.groupId = $detail.closest("tr").attr("data-groupId");
+            	  app.linkedInApi.groupDetails(param).done(function (result) {
+	                    if(result.success === true){
+	                    	 brite.display("LinkedInGroupDetails", ".LinkedInScreen-content", {result:result.result});
+	                    }else{
+	                    	alert("can't get the details of group!");
+	                    }
+	                });
               }
             },
 
@@ -118,27 +130,30 @@
         function showGroups() {
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: app.linkedInApi.getGroups},
+                rowAttrs: function (obj) {
+                    return "data-groupId='{0}'".format(obj.group.id)
+                },
                 columnDef: [
                     {
                         text: "#",
                         render: function (obj, idx) {
                             return idx + 1
                         },
-                        attrs: "style='width: 20%'"
+                        attrs: "style='width: 10%'"
                     },
                     {
                         text: "GroupId",
                         render: function (obj) {
                         	return obj.group.id;
                         },
-                        attrs: "style='width: 20%'"
+                        attrs: "style='width: 15%'"
                     },
                     {
                         text: "Name",
                         render: function (obj) {
                             return obj.group.name;
                         },
-                        attrs: "style='width: 40%'"
+                        attrs: "style='width: 20%'"
 
                     },
                     {
@@ -146,8 +161,16 @@
                         render: function (obj) {
                             return obj.membershipState.code;
                         },
-                        attrs: "style='width: 20%'"
+                        attrs: "style='width: 15%'"
 
+                    },
+                    {
+                        text:"Operator",
+                        attrs: "style='width:40%; word-break: break-word; cursor:pointer;'",
+                        render: function (obj) {
+                        	var functionString = "<span><a src=\"#\" class=\"details\">"+"details"+"</a> </span>";
+                            return functionString;
+                        }
                     }
                 ],
                 opts: {

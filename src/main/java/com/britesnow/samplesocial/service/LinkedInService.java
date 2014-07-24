@@ -14,6 +14,7 @@ import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.util.JsonUtil;
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -24,6 +25,7 @@ public class LinkedInService {
 
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String Groups_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state)";
+    public static final String GROUPS_DETAIL_ENDPOINT = "http://api.linkedin.com/v1/groups/%s:(id,name,short-description,description,relation-to-viewer:(membership-state,available-actions),counts-by-category,is-open-to-non-members,category,website-url,locale,location:(country,postal-code),allow-member-invites,site-group-url,small-logo-url,large-logo-url,num-members)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
     public static final String PEOPLE_SEARCH_ENDPOINT = "http://api.linkedin.com/v1/people-search?keywords=%s";
@@ -60,7 +62,7 @@ public class LinkedInService {
      * @param pageSize   page size
      * @return  group map
      */
-    public Map getGroups(User user, Integer pageIndex, Integer pageSize) {
+    public Map groups(User user, Integer pageIndex, Integer pageSize) {
 
         OAuthRequest request = createRequest(Verb.GET, Groups_ENDPOINT);
 
@@ -128,6 +130,27 @@ public class LinkedInService {
         return JsonUtil.toMapAndList(resp.getBody());
     }
 
+    /**
+     * get group details by groupId
+     * 
+     * @param user
+     * @param pageIndex
+     * @param pageSize
+     * @param groupId
+     * @return
+     */
+    public Map groupDetails(User user, String groupId){
+    	if (Strings.isNullOrEmpty(groupId)) {
+    		return null;
+    	}
+    	OAuthRequest request = createRequest(Verb.GET, String.format(GROUPS_DETAIL_ENDPOINT, groupId));
+
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        Map map = JsonUtil.toMapAndList(response.getBody());
+        return map;
+    }
+    
     private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
         int start = pageIndex*pageSize;
         request.addQuerystringParameter("start", String.valueOf(start));

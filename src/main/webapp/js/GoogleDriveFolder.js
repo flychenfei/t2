@@ -1,12 +1,12 @@
 ;
 (function () {
-        brite.registerView("DriveFolder", {emptyParent:false}, {
+        brite.registerView("GoogleDriveFolder", {emptyParent:false}, {
             create:function (data, config) {
                 this.model = {};
                 if(data||data.callback) {
                     this.model.callback = data.callback;
                 }
-                return app.render("tmpl-DriveFolder", {data:data});
+                return app.render("tmpl-GoogleDriveFolder", {data:data});
             },
             postDisplay:function(){
             	$(".move").addClass("disabled");
@@ -14,7 +14,7 @@
             	param = {};
             	app.googleDriveApi.foldersInfo(param).done(function (result) {
             		 $("div.itemDiv").empty();
-             		 brite.display("DriveSubFolder",$("div.itemDiv"),{result:result.result,root:true});
+             		 brite.display("GoogleDriveSubFolder",$("div.itemDiv"),{result:result.result,root:true});
                  });
     		},
     		events:{
@@ -30,7 +30,7 @@
         				var param = {};
         				param.parentId = $(event.target).closest(".folderitem").attr("data-selfId");
                       	app.googleDriveApi.foldersInfo(param).done(function (result) {
-                      		 brite.display("DriveSubFolder",$(expandIco).closest("div.itemDiv"),{result:result.result});
+                      		 brite.display("GoogleDriveSubFolder",$(expandIco).closest("div.itemDiv"),{result:result.result});
                           });
         				expandIco.removeClass("icon-plus").addClass("icon-minus");
         				expandIco.closest(".folderitem").find(".icon-folder-close").removeClass("icon-folder-close").addClass("icon-folder-open");
