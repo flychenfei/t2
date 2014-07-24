@@ -107,6 +107,12 @@ var app = app || {};
 			params.method = "Get";
 			return app.getJsonData(contextPath + "/googleCalendarEvents/listByCalendars", params);
 		},
+		listFreeBusy: function(opts) {
+			var params = opts || {};
+			params.method = "Get";
+			return app.getJsonData(contextPath + "/googleCalendarEvents/listFreeBusy", params);
+		},
+				
         getCalendarEvent: function(opts) {
             var params = opts||{};
             params.method = "Get";
