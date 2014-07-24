@@ -36,6 +36,10 @@
                         }
                     });
                 }
+            },
+            "DO_REFRESH_FOLDERS":function(){
+            	var view = this;
+            	showFolders.call(view);
             }
         },
 
