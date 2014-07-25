@@ -75,4 +75,23 @@ public class LinkedInHandlers {
         return resp;
     }
     
+    @WebGet("/linkedin/groupPost")
+    public WebResponse getGroupPosts(@WebUser User user, @WebParam("groupId") String groupId, @WebParam("start") Integer start, @WebParam("count") Integer count) {
+        Map result = linkedInService.groupPost(user, groupId, start, count);
+        WebResponse resp;
+        if(result.get("values") != null){
+            resp = WebResponse.success(result.get("values"));
+            int remain =  Integer.parseInt(result.get("_total").toString())-(start+1)*count;
+            if( remain > 0 ){
+                resp.set("next", true);
+            }else{
+            	resp.set("next", false);
+            }
+        }else{
+            resp = WebResponse.success(new ArrayList());
+        }
+        resp.set("start", start);
+        resp.set("count", count);
+        return resp;
+    }
 }

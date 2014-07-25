@@ -1,7 +1,7 @@
 <script id="tmpl-LinkedInGroupDetails" type="text/html">
 <div class="LinkedInGroupDetails">
   <div class="GroupDetailsHead">
-	<div><span class="" ><img src="{{data.result.largeLogoUrl}}" alt="Logo"/></span><span class="" >ID:{{data.result.id}}</span><span class="" >{{data.result.name}}</span><span class="num-members">{{data.result.numMembers}} members</span></div>
+	<div><span class="" ><img src="{{data.result.largeLogoUrl}}" alt="Logo"/></span><span class="GroupId" data-groupId="{{data.result.id}}">ID:{{data.result.id}}</span><span class="" >{{data.result.name}}</span><span class="num-members">{{data.result.numMembers}} members</span></div>
   </div>
   <div class="GroupDetailsBody">
   	<div><span class="ShortDescription" >ShortDescription: {{data.result.shortDescription}}</span></div>
@@ -17,8 +17,39 @@
     <div><span class="" >AllowMemberInvites: {{data.result.allowMemberInvites}}</span></div>
     <div><span class="" >OpenToNonMembers: {{data.result.isOpenToNonMembers}}</span></div>
   </div>
-  <div class="posts-container">
-    
+  <div class="post-container">
+       Post is loading...
   </div>
+</div>
+</script>
+
+<script id="tmpl-LinkedInGroupPost" type="text/html">
+<div class="LinkedInGroupPost" >
+	<div class="GroupPostsHead" data-start="{{data.result.start}}" data-count="{{data.result.count}}">
+		{{#gt data.result.start 0}}
+			<span class="btn btnPreviousPage"><i class="icon-hand-left"></i>PreviousPage</span>
+		{{/gt}}
+		{{#if data.result.next}}
+			<span class="btn btnNextPage"><i class="icon-hand-right"></i>NextPage</span>
+		{{/if}}
+	</div>
+	<div class="GroupPostsBody">
+		{{#each data.result.result}}
+				<div class="postItemDiv" data-postId="{{id}}">
+					<div class="postHead"><span class="creatorImg" ><img src="{{creator.pictureUrl}}" alt="CreatorPicture"/></span><span class="creatorName">{{creator.firstName}} {{creator.lastName}}</span> <span class="headline">{{creator.headline}}</span><span class="url"><a target="_blank" href="{{siteGroupPostUrl}}">SITEGROUPPOSTURL</a></span></div>
+					<div class="postTitle"><span>TITLE: &nbsp;&nbsp;{{title}}</span> <span>type: &nbsp;&nbsp;{{type.code}}</span></div>
+					<div class="postSummary">SUMMARY: <br><textarea placeholder="no summary">{{summary}}</textarea></div>
+					{{#if attachment}}
+						<div class="postAttachment">
+							<span class="contentUrl" ><img src="{{attachment.imageUrl}}" alt="attachmentImg"/></span><br>
+							<span>{{attachment.title}}</span><br>
+							<span>{{attachment.contentDomain}}</span>
+							<span class="url"><a target="_blank" href="{{attachment.contentUrl}}">CONTENTURL</a></span><br>
+							<textarea placeholder="no summary">{{attachment.summary}}</textarea>
+						</div>
+					{{/if}}
+				</div>
+		{{/each}}
+	</div>
 </div>
 </script>

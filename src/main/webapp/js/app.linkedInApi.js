@@ -30,6 +30,13 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/groupDetails", param);
+        },
+        groupPost : function(param) {
+            param = param||{};
+            param.start = param.start || 0;
+            param.count = param.count || 10;
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/groupPost", param);
         }
 	};
 })();

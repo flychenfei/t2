@@ -24,12 +24,13 @@ public class LinkedInService {
     private LinkedInAuthService authService;
 
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
-    public static final String Groups_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state)";
-    public static final String GROUPS_DETAIL_ENDPOINT = "http://api.linkedin.com/v1/groups/%s:(id,name,short-description,description,relation-to-viewer:(membership-state,available-actions),counts-by-category,is-open-to-non-members,category,website-url,locale,location:(country,postal-code),allow-member-invites,site-group-url,small-logo-url,large-logo-url,num-members)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
     public static final String PEOPLE_SEARCH_ENDPOINT = "http://api.linkedin.com/v1/people-search?keywords=%s";
-
+    public static final String Groups_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state)";
+    public static final String GROUPS_DETAIL_ENDPOINT = "http://api.linkedin.com/v1/groups/%s:(id,name,short-description,description,relation-to-viewer:(membership-state,available-actions),counts-by-category,is-open-to-non-members,category,website-url,locale,location:(country,postal-code),allow-member-invites,site-group-url,small-logo-url,large-logo-url,num-members)";
+    public static final String GROUPS_POST_ENDPOINT = "http://api.linkedin.com/v1/groups/%s/posts:(id,type,creation-timestamp,title,summary,creator:(first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer,site-group-post-url)";
+    
     private OAuthService oAuthService;
 
     @Inject
@@ -145,6 +146,28 @@ public class LinkedInService {
     	}
     	OAuthRequest request = createRequest(Verb.GET, String.format(GROUPS_DETAIL_ENDPOINT, groupId));
 
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        Map map = JsonUtil.toMapAndList(response.getBody());
+        return map;
+    }
+    
+    /**
+     * get the post list by groupId
+     * 
+     * @param user
+     * @param groupId
+     * @param start
+     * @param count
+     * @return
+     */
+    public Map groupPost(User user, String groupId, Integer start, Integer count){
+    	if (Strings.isNullOrEmpty(groupId)) {
+    		return null;
+    	}
+    	OAuthRequest request = createRequest(Verb.GET, String.format(GROUPS_POST_ENDPOINT, groupId));
+
+    	addPageParameter(start, count, request);
         oAuthService.signRequest(getToken(user),request);
         Response response = request.send();
         Map map = JsonUtil.toMapAndList(response.getBody());

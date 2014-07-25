@@ -6,18 +6,34 @@
         },
 
         postDisplay: function (data, config) {
-        	
+        	var param = {};
+        	param.groupId = $(".GroupId").attr("data-groupId");
+        	app.linkedInApi.groupPost(param).done(function (result) {
+       		 $("div.post-container").empty();
+        		 brite.display("LinkedInGroupPost",$("div.post-container"),{result:result});
+            });
         },
 
         events: {
-        	"click;.btnPrevious":function(e){
+        	"click;.btnPreviousPage":function(e){
         		var param = {}
-        		param.currentId = $(e.target).attr("data-currentId");
-        		brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-					results: function(){
-					    return app.googleDriveApi.previousList(param);
-				    }
-				});
+        		param.groupId = $(".GroupId").attr("data-groupId");
+        		param.start = $(".GroupPostsHead").attr("data-start")-1;
+        		param.count = $(".GroupPostsHead").attr("data-count");
+        		app.linkedInApi.groupPost(param).done(function (result) {
+              		 $("div.post-container").empty();
+               		 brite.display("LinkedInGroupPost",$("div.post-container"),{result:result});
+                   });
+			},
+        	"click;.btnNextPage":function(e){
+        		var param = {}
+        		param.groupId = $(".GroupId").attr("data-groupId");
+        		param.start = $(".GroupPostsHead").attr("data-start")-0+1;
+        		param.count = $(".GroupPostsHead").attr("data-count");
+        		app.linkedInApi.groupPost(param).done(function (result) {
+              		 $("div.post-container").empty();
+               		 brite.display("LinkedInGroupPost",$("div.post-container"),{result:result});
+                   });
 			}
         },
         docEvents: {
