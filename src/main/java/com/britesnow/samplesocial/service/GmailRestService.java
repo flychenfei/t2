@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
@@ -190,18 +191,8 @@ public class GmailRestService {
 
                 public void onSuccess(Message message, HttpHeaders responseHeaders) {
                     MailInfo info = buildMailInfo(message);
-                    List<String> folderNames = new ArrayList();
-                    
-                    for(String id : info.getFolderIds()){
-                        for(Map label : labels){
-                            if(id.equals(label.get("id"))){
-                                folderNames.add((String) label.get("name"));
-                                break;
-                            }
-                        }
-                    }
+                    List<String> folderNames = labels.stream().filter(x -> info.getFolderIds().stream().anyMatch(y -> y.equals(x.get("id")))).map(o -> (String)o.get("name")).collect(Collectors.toList());
                     info.setFolderNames(folderNames);
-                    
                     mails.add(info);
                 }
 

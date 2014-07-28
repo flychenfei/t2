@@ -6,10 +6,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -201,10 +204,8 @@ public class GmailImapService {
             }
         }
         if(messages != null){
-            for (Message message : messages) {
-                MailInfo info = buildMailInfo(message);
-                mails.add(0, info);
-            }
+            Comparator<Message> comparator = (m1, m2) -> m1.getMessageNumber() > m2.getMessageNumber() ? 1 : -1;
+            mails = Stream.of(messages).sorted(comparator.reversed()).map(message -> buildMailInfo(message)).collect(Collectors.toList());
         }
         if(inbox.isOpen()){
             inbox.close(true);
@@ -523,8 +524,6 @@ public class GmailImapService {
                     msg.setContent(multipart);
                 }
                 
-                
-                
                 transport.sendMessage(msg, msg.getAllRecipients());
                 return true;
             } catch (Exception e) {
@@ -537,9 +536,14 @@ public class GmailImapService {
 
     }
 
-    public MailInfo buildMailInfo(Message message) throws MessagingException, UnsupportedEncodingException {
-        MailInfo mailInfo = new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
-            decodeText(message.getFrom()[0].toString()), message.getSubject());
+    public MailInfo buildMailInfo(Message message) {
+        MailInfo mailInfo = null;
+        try {
+            mailInfo = new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
+                decodeText(message.getFrom()[0].toString()), message.getSubject());
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            e.printStackTrace();
+        }
     	return mailInfo;
     }
 
