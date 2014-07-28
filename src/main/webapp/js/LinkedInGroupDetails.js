@@ -34,6 +34,15 @@
               		 $("div.post-container").empty();
                		 brite.display("LinkedInGroupPost",$("div.post-container"),{result:result});
                    });
+			},
+			"click;.comments":function(e){
+        		var param = {}
+        		var groupId = $(".GroupId").attr("data-groupId");
+        		param.postId = $(e.target).closest(".postItemDiv").attr("data-postId");
+        		app.linkedInApi.groupPostComments(param).done(function (result) {
+              		 $("div.post-container").empty();
+               		 brite.display("LinkedInGroupPostComment",$("div.post-container"),{groupId:groupId,postId:param.postId,result:result});
+                   });
 			}
         },
         docEvents: {

@@ -36,8 +36,8 @@
 	<div class="GroupPostsBody">
 		{{#each data.result.result}}
 				<div class="postItemDiv" data-postId="{{id}}">
-					<div class="postHead"><span class="creatorImg" ><img src="{{creator.pictureUrl}}" alt="CreatorPicture"/></span><span class="creatorName">{{creator.firstName}} {{creator.lastName}}</span> <span class="headline">{{creator.headline}}</span><span class="url"><a target="_blank" href="{{siteGroupPostUrl}}">SITEGROUPPOSTURL</a></span></div>
-					<div class="postTitle"><span>TITLE: &nbsp;&nbsp;{{title}}</span> <span>type: &nbsp;&nbsp;{{type.code}}</span></div>
+					<div class="postHead"><span class="creatorImg" ><img src="{{creator.pictureUrl}}" alt="CreatorPicture"/></span><span class="creatorName">{{creator.firstName}} {{creator.lastName}}</span> <span class="headline">{{title}}</span><span class="comments" ><a target="#">Comments</a></span>&nbsp;&nbsp;<span class="url"><a target="_blank" href="{{siteGroupPostUrl}}">SITEGROUPPOSTURL</a></span></div>
+					<div class="postTitle"><span>{{creator.headline}}</span> <span>type: &nbsp;&nbsp;{{type.code}}</span></div>
 					<div class="postSummary">SUMMARY: <br><textarea placeholder="no summary">{{summary}}</textarea></div>
 					{{#if attachment}}
 						<div class="postAttachment">

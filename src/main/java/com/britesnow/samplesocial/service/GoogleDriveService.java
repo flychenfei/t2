@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -597,33 +598,31 @@ public class GoogleDriveService {
      * @return
      */
     private List<Map> formatFiles(List<File> files){
-    	List<Map> results = new ArrayList<Map>();
-    	for(File file : files){
-			Map<String, String> item = new HashMap<String, String>();
-			item.put("fileId", file.getId());
-			item.put("iconLink", file.getIconLink());
-			item.put("fileName", file.getTitle());
-			item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
-			item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
-			item.put("mimeType", file.getMimeType());
-			item.put("url", file.getDownloadUrl());
-			if(file.getFileSize() != null){
-				item.put("fileSize", String.valueOf(file.getFileSize()));
-			}else{
-				item.put("fileSize", "NO Size");
-			}
-			if(file.getDownloadUrl() != null){
-				item.put("hasUrl", "true");
-			}
-			List<ParentReference> parentReferenceList = file.getParents();
-			if(parentReferenceList.size() != 0){
-				item.put("parentId", parentReferenceList.get(0).getId());
-			}
-			item.put("owner", file.getOwnerNames().get(0));
-			item.put("etag", file.getEtag());
-			results.add(item);
-		}
-    	return results;
+    	return files.stream().map(file->{
+            Map<String, String> item = new HashMap<>();
+            item.put("fileId", file.getId());
+            item.put("iconLink", file.getIconLink());
+            item.put("fileName", file.getTitle());
+            item.put("createTime", df.format(new Date(file.getCreatedDate().getValue())));
+            item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
+            item.put("mimeType", file.getMimeType());
+            item.put("url", file.getDownloadUrl());
+            if(file.getFileSize() != null){
+                item.put("fileSize", String.valueOf(file.getFileSize()));
+            }else{
+                item.put("fileSize", "NO Size");
+            }
+            if(file.getDownloadUrl() != null){
+                item.put("hasUrl", "true");
+            }
+            List<ParentReference> parentReferenceList = file.getParents();
+            if(parentReferenceList.size() != 0){
+                item.put("parentId", parentReferenceList.get(0).getId());
+            }
+            item.put("owner", file.getOwnerNames().get(0));
+            item.put("etag", file.getEtag());
+            return item;
+        }).collect(Collectors.toList());
     }
     
     private String formDate(String dateString, boolean isStart){

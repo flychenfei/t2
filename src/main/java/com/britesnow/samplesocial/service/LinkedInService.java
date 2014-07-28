@@ -29,7 +29,8 @@ public class LinkedInService {
     public static final String PEOPLE_SEARCH_ENDPOINT = "http://api.linkedin.com/v1/people-search?keywords=%s";
     public static final String Groups_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships:(group:(id,name),membership-state)";
     public static final String GROUPS_DETAIL_ENDPOINT = "http://api.linkedin.com/v1/groups/%s:(id,name,short-description,description,relation-to-viewer:(membership-state,available-actions),counts-by-category,is-open-to-non-members,category,website-url,locale,location:(country,postal-code),allow-member-invites,site-group-url,small-logo-url,large-logo-url,num-members)";
-    public static final String GROUPS_POST_ENDPOINT = "http://api.linkedin.com/v1/groups/%s/posts:(id,type,creation-timestamp,title,summary,creator:(first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer,site-group-post-url)";
+    public static final String GROUPS_POST_ENDPOINT = "http://api.linkedin.com/v1/groups/%s/posts:(id,type,creation-timestamp,title,summary,creator:(first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer,site-group-post-url)?order=recency";
+    public static final String GROUPS_POST_COMMENTS_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/comments:(id,creator:(first-name,last-name,picture-url),creation-timestamp,text,relation-to-viewer)";
     
     private OAuthService oAuthService;
 
@@ -135,8 +136,6 @@ public class LinkedInService {
      * get group details by groupId
      * 
      * @param user
-     * @param pageIndex
-     * @param pageSize
      * @param groupId
      * @return
      */
@@ -173,6 +172,29 @@ public class LinkedInService {
         Map map = JsonUtil.toMapAndList(response.getBody());
         return map;
     }
+    
+    /**
+     * get the post list by groupId
+     * 
+     * @param user
+     * @param groupId
+     * @param start
+     * @param count
+     * @return
+     */
+    public Map groupPostComments(User user, String postId, Integer start, Integer count){
+    	if (Strings.isNullOrEmpty(postId)) {
+    		return null;
+    	}
+    	OAuthRequest request = createRequest(Verb.GET, String.format(GROUPS_POST_COMMENTS_ENDPOINT, postId));
+
+    	addPageParameter(start, count, request);
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        Map map = JsonUtil.toMapAndList(response.getBody());
+        return map;
+    }
+    
     
     private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
         int start = pageIndex*pageSize;

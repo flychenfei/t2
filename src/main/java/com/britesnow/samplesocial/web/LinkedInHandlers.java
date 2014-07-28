@@ -1,5 +1,9 @@
 package com.britesnow.samplesocial.web;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.LinkedInService;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -7,9 +11,6 @@ import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 @Singleton
 public class LinkedInHandlers {
@@ -89,6 +90,34 @@ public class LinkedInHandlers {
             }
         }else{
             resp = WebResponse.success(new ArrayList());
+            resp.set("next", false);
+        }
+        resp.set("start", start);
+        resp.set("count", count);
+        return resp;
+    }
+    
+    @WebGet("/linkedin/groupPostComments")
+    public WebResponse getGroupPostComments(@WebUser User user, @WebParam("postId") String postId, @WebParam("start") Integer start, @WebParam("count") Integer count) {
+        Map result = linkedInService.groupPostComments(user, postId, start, count);
+        WebResponse resp;
+        if(result.get("values") != null){
+            resp = WebResponse.success(result.get("values"));
+            if(((List)result.get("values")).size()>0){
+            	resp.set("hasValue", true);
+            }else{
+            	resp.set("hasValue", false);
+            }
+            int remain =  Integer.parseInt(result.get("_total").toString())-(start+1)*count;
+            if( remain > 0 ){
+                resp.set("next", true);
+            }else{
+            	resp.set("next", false);
+            }
+        }else{
+            resp = WebResponse.success(new ArrayList());
+            resp.set("hasValue", false);
+            resp.set("next", false);
         }
         resp.set("start", start);
         resp.set("count", count);
