@@ -37,6 +37,13 @@ var app = app || {};
             param.count = param.count || 10;
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/groupPost", param);
+        },
+        groupPostComments : function(param) {
+            param = param||{};
+            param.start = param.start || 0;
+            param.count = param.count || 10;
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/groupPostComments", param);
         }
 	};
 })();

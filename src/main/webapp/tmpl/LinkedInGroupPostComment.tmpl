@@ -1,0 +1,31 @@
+<script id="tmpl-LinkedInGroupPostComment" type="text/html">
+<div class="LinkedInGroupPostComment">
+  <div class="GroupPostCommentHead">
+	<div class="Operator" data-groupId="{{data.groupId}}" data-postId="{{data.postId}}" data-start="{{data.result.start}}" data-count="{{data.result.count}}">
+		<span class="btn btnGroup"><i class="icon-chevron-left"></i>PreviousGroup</span>
+		{{#gt data.result.start 0}}
+			<span class="btn btnPreviousPage"><i class="icon-hand-left"></i>PreviousPage</span>
+		{{/gt}}
+		{{#if data.result.next}}
+			<span class="btn btnNextPage"><i class="icon-hand-right"></i>NextPage</span>
+		{{/if}}
+	</div>
+  </div>
+  <div class="GroupPostCommentBody">
+  	{{#if data.result.hasValue}}
+		{{#each data.result.result}}
+			<div class="postCommentItemDiv" data-commentId="{{id}}">
+				<div class="CommentCreator"><div class="creatorName">{{creator.firstName}} {{creator.lastName}}</div></div>
+				<div class="CommentText"><textarea placeholder="no summary">{{text}}</textarea></div>
+				<div class="UserOperatorToThisComment">
+					
+				</div>
+			</div>
+		{{/each}}
+	{{else}}
+		<div>There has none comments!<div>
+	{{/if}}
+	
+  </div>
+</div>
+</script>
