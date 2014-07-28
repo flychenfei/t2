@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
@@ -62,94 +63,118 @@ public class GmailRestService {
         if("0".equals(start)){
             start = "";
         }
+        
         StringBuilder query = new StringBuilder();
     
-        if (subject != null) {
+        Optional.ofNullable(subject).ifPresent((a) -> {
             query.append("subject:");
-            query.append(subject);
-        }
-        if (from != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(from).ifPresent((a) -> {
             query.append(" from:");
-            query.append(from);
-        }
-        if (to != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(to).ifPresent((a) -> {
             query.append(" to:");
-            query.append(to);
-        }
-        if (body != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(body).ifPresent((a) -> {
             query.append(" \"");
-            query.append(body);
+            query.append(a);
             query.append("\"");
-        }
-        if (sDate != null) {
+        });
+        
+        Optional.ofNullable(sDate).ifPresent((a) -> {
             query.append(" after:");
-            query.append(sDate);
-        }
-        if (eDate != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(eDate).ifPresent((a) -> {
             query.append(" before:");
-            query.append(eDate);
-        }
-        if (srDate != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(srDate).ifPresent((a) -> {
             query.append(" after:");
-            query.append(srDate);
-        }
-        if (erDate != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(erDate).ifPresent((a) -> {
             query.append(" before:");
-            query.append(erDate);
-        }
-        if (label != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(label).ifPresent((a) -> {
             query.append(" label:");
-        	query.append(label);
-        }
-        if (hasAttachment !=null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(hasAttachment).ifPresent((a) -> {
             query.append(" has:attachment");
-        }
-        if (attachmentName != null) {
+        });
+        
+        Optional.ofNullable(attachmentName).ifPresent((a) -> {
             query.append(" filename:");
-            query.append(attachmentName);
-        }
-        if (cc != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(cc).ifPresent((a) -> {
             query.append(" cc:");
-        	query.append(cc);
-        }
-        if (minSize != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(minSize.toString()).ifPresent((a) -> {
             query.append(" larger:");
-            query.append(minSize.toString());
-        }
-        if (maxSize != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(maxSize.toString()).ifPresent((a) -> {
             query.append(" smaller:");
-            query.append(maxSize.toString());
-        }
-        if (list != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(list).ifPresent((a) -> {
             query.append(" list:");
-            query.append(list);
-        }
-        if (hasCircle != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(hasCircle).ifPresent((a) -> {
             query.append(" has:circle");
-        }
-        if (circle != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(circle).ifPresent((a) -> {
             query.append(" circle:");
-            query.append(circle);
-        }
-        if (chatContent != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(chatContent).ifPresent((a) -> {
             query.append(" is:chat ");
-            query.append(chatContent);
-        }
-        if (unread != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(unread).ifPresent((a) -> {
             query.append(" is:unread");
-        }
-        if (category != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(category).ifPresent((a) -> {
             query.append(" category:");
-            query.append(category);
-        }
-        if (deliveredTo != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(deliveredTo).ifPresent((a) -> {
             query.append(" deliveredTo:");
-            query.append(deliveredTo);
-        }
-        if (rfc822msgid != null) {
+            query.append(a);
+        });
+        
+        Optional.ofNullable(rfc822msgid).ifPresent((a) -> {
             query.append(" rfc822msgid:");
-            query.append(rfc822msgid);
-        }
+            query.append(a);
+        });
         
         ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).setQ(query.toString()).execute();
         

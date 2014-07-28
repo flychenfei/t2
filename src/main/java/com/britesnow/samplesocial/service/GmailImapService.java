@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -64,96 +65,119 @@ public class GmailImapService {
     	Folder inbox = imap.getFolder(folderName);
         inbox.open(Folder.READ_ONLY);
     
-        StringBuffer searchTerms = new StringBuffer();
+        StringBuffer query = new StringBuffer();
         
-        if (subject != null) {
-        	searchTerms.append("subject:");
-        	searchTerms.append(subject);
-        }
-        if (from != null) {
-        	searchTerms.append(" from:");
-        	searchTerms.append(from);
-        }
-        if (to != null) {
-        	searchTerms.append(" to:");
-        	searchTerms.append(to);
-        }
-        if (body != null) {
-        	searchTerms.append(" \"");
-        	searchTerms.append(body);
-        	searchTerms.append("\"");
-        }
-        if (sDate != null) {
-        	searchTerms.append(" after:");
-        	searchTerms.append(sDate);
-        }
-        if (eDate != null) {
-        	searchTerms.append(" before:");
-        	searchTerms.append(eDate);
-        }
-        if (srDate != null) {
-        	searchTerms.append(" after:");
-        	searchTerms.append(srDate);
-        }
-        if (erDate != null) {
-        	searchTerms.append(" before:");
-        	searchTerms.append(erDate);
-        }
-        if (label != null) {
-        	searchTerms.append(" label:");
-        	searchTerms.append(label);
-        }
-        if (hasAttachment !=null) {
-        	searchTerms.append(" has:attachment");
-        }
-        if (attachmentName != null) {
-        	searchTerms.append(" filename:");
-        	searchTerms.append(attachmentName);
-        }
-        if (cc != null) {
-        	searchTerms.append(" cc:");
-        	searchTerms.append(cc);
-        }
-        if (minSize != null) {
-        	searchTerms.append(" larger:");
-        	searchTerms.append(minSize.toString());
-        }
-        if (maxSize != null) {
-        	searchTerms.append(" smaller:");
-        	searchTerms.append(maxSize.toString());
-        }
-        if (list != null) {
-        	searchTerms.append(" list:");
-        	searchTerms.append(list);
-        }
-        if (hasCircle != null) {
-        	searchTerms.append(" has:circle");
-        }
-        if (circle != null) {
-        	searchTerms.append(" circle:");
-        	searchTerms.append(circle);
-        }
-        if (chatContent != null) {
-        	searchTerms.append(" is:chat ");
-        	searchTerms.append(chatContent);
-        }
-        if (unread != null) {
-        	searchTerms.append(" is:unread");
-        }
-        if (category != null) {
-        	searchTerms.append(" category:");
-        	searchTerms.append(category);
-        }
-        if (deliveredTo != null) {
-        	searchTerms.append(" deliveredTo:");
-        	searchTerms.append(deliveredTo);
-        }
-        if (rfc822msgid != null) {
-        	searchTerms.append(" rfc822msgid:");
-        	searchTerms.append(rfc822msgid);
-        }
+        Optional.ofNullable(subject).ifPresent((a) -> {
+            query.append("subject:");
+            query.append(a);
+        });
         
-        GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(searchTerms.toString());
+        Optional.ofNullable(from).ifPresent((a) -> {
+            query.append(" from:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(to).ifPresent((a) -> {
+            query.append(" to:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(body).ifPresent((a) -> {
+            query.append(" \"");
+            query.append(a);
+            query.append("\"");
+        });
+        
+        Optional.ofNullable(sDate).ifPresent((a) -> {
+            query.append(" after:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(eDate).ifPresent((a) -> {
+            query.append(" before:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(srDate).ifPresent((a) -> {
+            query.append(" after:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(erDate).ifPresent((a) -> {
+            query.append(" before:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(label).ifPresent((a) -> {
+            query.append(" label:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(hasAttachment).ifPresent((a) -> {
+            query.append(" has:attachment");
+        });
+        
+        Optional.ofNullable(attachmentName).ifPresent((a) -> {
+            query.append(" filename:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(cc).ifPresent((a) -> {
+            query.append(" cc:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(minSize.toString()).ifPresent((a) -> {
+            query.append(" larger:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(maxSize.toString()).ifPresent((a) -> {
+            query.append(" smaller:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(list).ifPresent((a) -> {
+            query.append(" list:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(hasCircle).ifPresent((a) -> {
+            query.append(" has:circle");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(circle).ifPresent((a) -> {
+            query.append(" circle:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(chatContent).ifPresent((a) -> {
+            query.append(" is:chat ");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(unread).ifPresent((a) -> {
+            query.append(" is:unread");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(category).ifPresent((a) -> {
+            query.append(" category:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(deliveredTo).ifPresent((a) -> {
+            query.append(" deliveredTo:");
+            query.append(a);
+        });
+        
+        Optional.ofNullable(rfc822msgid).ifPresent((a) -> {
+            query.append(" rfc822msgid:");
+            query.append(a);
+        });
+        
+        GmailRawSearchTerm gmailSearchTerm = new GmailRawSearchTerm(query.toString());
         
         List<MailInfo> mails = new ArrayList();
         Message[] messages = null;
