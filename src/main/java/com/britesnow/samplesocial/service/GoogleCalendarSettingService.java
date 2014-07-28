@@ -1,10 +1,10 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -29,15 +29,14 @@ public class GoogleCalendarSettingService {
         String pageToken = null;
         try {
             settings = getCalendarsService().settings().list().setMaxResults(pageSize).execute();
-            List<Map> list = new ArrayList();
-            for (Setting setting : settings.getItems()) {
+            List<Map> list = settings.getItems().stream().map(setting -> {
                 Map map = new HashMap();
-                map.put("id", setting.getId());
-                map.put("value", setting.getValue());
-                map.put("etag", setting.getEtag());
-                map.put("kind", setting.getKind());
-                list.add(map);
-              }
+            map.put("id", setting.getId());
+            map.put("value", setting.getValue());
+            map.put("etag", setting.getEtag());
+            map.put("kind", setting.getKind());
+            return map;
+            }).collect(Collectors.toList());
             pageToken = settings.getNextPageToken();
             return new Pair<String, List<Map>>(pageToken, list);
         } catch (IOException e) {

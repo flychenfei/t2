@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ import com.google.api.services.calendar.model.FreeBusyResponse;
 import com.google.api.services.calendar.model.TimePeriod;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.stream.Stream;
 
 @Singleton
 public class GoogleCalendarEventsService {
@@ -50,9 +53,12 @@ public class GoogleCalendarEventsService {
     public Pair<String, List<Map>> listEvents(String pageIndex, int pageSize,String startDate, String endDate, String calendarId){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         com.google.api.services.calendar.Calendar.Events.List list = null;
-        if(calendarId == null || calendarId.equals("")){
-            calendarId = "primary";
-        }
+        
+        Optional<String> optional = Optional.ofNullable(calendarId);
+        calendarId = optional.orElse("primary");
+        optional = Optional.of(calendarId);
+        calendarId = optional.filter(x -> !"".equals(x)).orElse("primary");
+      
         try {
            list = getCalendarService().events().list(calendarId).setMaxResults(pageSize).setOrderBy("startTime").setSingleEvents(true);
         } catch (IOException e1) {
@@ -90,8 +96,8 @@ public class GoogleCalendarEventsService {
         try {
             Events events = list.execute();
             List<Event> items = events.getItems();
-            List<Map> eventList = new ArrayList();
-            for (Event event : items) {
+            
+            List<Map> eventList = items.stream().map(event -> {
                 Map eventMap = new HashMap();
                 eventMap.put("summary", event.getSummary());
                 eventMap.put("id", event.getId());
@@ -99,8 +105,9 @@ public class GoogleCalendarEventsService {
                 eventMap.put("location", event.getLocation());
                 eventMap.put("status", event.getStatus());
                 eventMap.put("calendarId", event.getOrganizer().getEmail());
-                eventList.add(eventMap);
-            }
+                return eventMap;
+            }).collect(Collectors.toList());
+            
             pageToken = events.getNextPageToken();
            return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
@@ -122,22 +129,19 @@ public class GoogleCalendarEventsService {
                 
                 public void onSuccess(Events events, HttpHeaders responseHeaders) {
                     List<Event> items = events.getItems();
-                    for (Event event : items) {
+                    
+                    List<Map> curEvents = items.stream().map(event -> {
                         Map eventMap = new HashMap();
                         eventMap.put("summary", event.getSummary());
                         eventMap.put("id", event.getId());
                         eventMap.put("date", event.getStart());
                         eventMap.put("location", event.getLocation());
                         eventMap.put("status", event.getStatus());
-                        for(CalendarListEntry entry : calendarEntries){
-                            if(entry.getId().equals(event.getOrganizer().getEmail())){
-                                eventMap.put("backgroundColor", entry.getBackgroundColor());
-                                break;
-                            }
-                        }
-                        
-                        eventList.add(eventMap);
-                    }
+                        calendarEntries.stream().filter(entry -> entry.getId().equals(event.getOrganizer().getEmail())).forEach(entry -> eventMap.put("backgroundColor", entry.getBackgroundColor()));
+                        return eventMap;
+                    }).collect(Collectors.toList());
+                    
+                    eventList.addAll(curEvents);
                 }
 
                 public void onFailure(GoogleJsonError e, HttpHeaders responseHeaders) {
@@ -330,12 +334,11 @@ public class GoogleCalendarEventsService {
             }
             
             if(inviter != null && inviter.length !=0){
-                List<EventAttendee> attendees = new ArrayList<EventAttendee>();
-                for(int i=0; i<inviter.length; i++){
+                List<EventAttendee> attendees = Stream.of(inviter).map(inv -> {
                     EventAttendee eventAtte = new EventAttendee();
-                    eventAtte.setEmail(inviter[i]);
-                    attendees.add(eventAtte);
-                }
+                    eventAtte.setEmail(inv);
+                    return eventAtte;
+                }).collect(Collectors.toList());
                 event.setAttendees(attendees);
             }
             

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -32,17 +33,16 @@ public class GoogleCalendarsService {
         try {
             CalendarList calendarList = getCalendarsService().calendarList().list().setPageToken(pageToken).setMaxResults(pageSize).execute();
             List<CalendarListEntry> items = calendarList.getItems();
-            List<Map> eventList = new ArrayList();
-            for (CalendarListEntry calendarListEntry : items) {
+            List<Map> eventList = items.stream().map(calendarListEntry -> {
                 Map eventMap = new HashMap();
-            
+                
                 eventMap.put("id", calendarListEntry.getId());
                 eventMap.put("summary", calendarListEntry.getSummary());
                 eventMap.put("accessRole", calendarListEntry.getAccessRole());
                 eventMap.put("primary", calendarListEntry.getPrimary());
-
-                eventList.add(eventMap);
-            }
+                return eventMap;
+            }).collect(Collectors.toList());
+            
             pageToken = calendarList.getNextPageToken();
            return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
@@ -115,13 +115,12 @@ public class GoogleCalendarsService {
             com.google.api.services.calendar.model.Calendar calendar = getCalendarsService().calendars().get("primary").execute();
             String primaryId = calendar.getId();
             Acl acl = getCalendarsService().acl().list(calendarId).execute();
-            List<Map> list = new ArrayList();
-            for (AclRule rule : acl.getItems()) {
+            List<Map> list = acl.getItems().stream().map(rule -> {
                 Map map = new HashMap();
                 map.put("scopeValue", rule.getScope().getValue());
                 map.put("ruleId", rule.getId());
-                list.add(map);
-            }     
+                return map;
+            }).collect(Collectors.toList());
             return new Pair<String, List<Map>>(primaryId, list);
         }catch(IOException e){
             e.printStackTrace();
