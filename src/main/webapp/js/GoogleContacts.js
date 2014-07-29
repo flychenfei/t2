@@ -17,9 +17,33 @@
         },
 
         events: {
-          "click;.btnAdd":function(e){
-             brite.display("CreateContact",null,{id:null});
-          }
+			"click;.btnAdd":function(e) {
+				brite.display("CreateContact", null, {
+					id : null
+				});
+			},
+
+			"btap; .inputValueBtn":function () {
+				var view = this;
+				var $e = view.$el;
+				var input = $e.find("input[name='contactName']");
+				if (input.val() == "") {
+					input.focus();
+					input.closest("div").addClass("error").find("span").html("Please enter value.");
+				} else {
+					var contactName = input.val();
+					view.search = function(opts) {
+						opts = opts || {};
+						opts.contactName = contactName;
+						return app.googleApi.searchContact(opts);
+					};
+					showContacts.call(view);
+					input.closest("div").removeClass("error");
+					input.closest("div").find("span").html("");
+				}
+			},
+
+
         },
 
         docEvents: {
