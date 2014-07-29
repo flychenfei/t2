@@ -43,6 +43,37 @@
               		 $("div.post-container").empty();
                		 brite.display("LinkedInGroupPostComment",$("div.post-container"),{groupId:groupId,postId:param.postId,result:result});
                    });
+			},
+			"click;.likeOperator":function(e){
+        		var param = {}
+        		var operator = $(e.target);
+    			param.postId = $(e.target).closest(".postItemDiv").attr("data-postId");
+        		if(operator.hasClass("like")){
+        			param.islike = true;
+        		}else if(operator.hasClass("Unlike")){
+        			param.islike = false;
+        		}else{
+        			return false;
+        		}
+        		app.linkedInApi.likeGroupPost(param).done(function (result) {
+	        			if(result.success === true){
+	        				if(param.islike === true){
+		                    	alert("Like success!");
+		                    	operator.text("Unlike");
+		                    }else{
+		                    	alert("UnLike success!");
+		                    	operator.text("like");
+		                    }
+	            			operator.toggleClass("like");
+	            			operator.toggleClass("Unlike");
+	                    }else{
+	                    	if(param.islike === true){
+		                    	alert("Like fail!");
+		                    }else{
+		                    	alert("Unlike fail!");
+		                    }
+	                    }
+                  });
 			}
         },
         docEvents: {

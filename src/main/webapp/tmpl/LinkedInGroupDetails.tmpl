@@ -48,6 +48,13 @@
 							<textarea placeholder="no summary">{{attachment.summary}}</textarea>
 						</div>
 					{{/if}}
+					<div class="postOperator"><span>
+						<a src="#" class="likeOperator
+						{{#if relationToViewer.isLiked}}Unlike">Unlike</a>
+						{{else}}like">like</a>
+						{{/if}}
+						</span>
+					</div>
 				</div>
 		{{/each}}
 	</div>

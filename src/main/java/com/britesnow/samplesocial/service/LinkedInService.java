@@ -32,6 +32,7 @@ public class LinkedInService {
     public static final String GROUPS_POST_ENDPOINT = "http://api.linkedin.com/v1/groups/%s/posts:(id,type,creation-timestamp,title,summary,creator:(first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer,site-group-post-url)?order=recency";
     public static final String GROUPS_POST_COMMENTS_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/comments:(id,creator:(first-name,last-name,picture-url),creation-timestamp,text,relation-to-viewer)";
     public static final String GROUPS_LEAVE_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships/%s";
+    public static final String GROUPS_POST_LIKE_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/relation-to-viewer/is-liked";
     
     private OAuthService oAuthService;
 
@@ -209,7 +210,27 @@ public class LinkedInService {
         Response response = request.send();
         return Strings.isNullOrEmpty(response.getBody());
     }
-
+    
+    /**
+     * set like or unlike to a post
+     * @param user
+     * @param postId
+     * @return
+     */
+    public boolean likeGroupPost(User user, String postId, boolean islike){
+    	OAuthRequest request = new OAuthRequest(Verb.PUT, String.format(GROUPS_POST_LIKE_ENDPOINT, postId));
+    	request.addHeader("x-li-format","json");
+    	if(islike){
+        	request.addPayload("true");
+    	}else{
+        	request.addPayload("false");
+    	}
+    	
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        return Strings.isNullOrEmpty(response.getBody());
+    }
+    
     private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
         int start = pageIndex*pageSize;
         request.addQuerystringParameter("start", String.valueOf(start));

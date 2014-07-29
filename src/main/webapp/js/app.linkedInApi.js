@@ -49,6 +49,11 @@ var app = app || {};
             param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/leaveGroup", param);
+        },
+        likeGroupPost : function(param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/likeGroupPost", param);
         }
 	};
 })();

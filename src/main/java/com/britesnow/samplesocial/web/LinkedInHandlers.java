@@ -125,12 +125,19 @@ public class LinkedInHandlers {
     }
     
     @WebGet("/linkedin/leaveGroup")
-    public WebResponse LeaveGroup(@WebUser User user, @WebParam("groupId") String groupId) {
+    public WebResponse leaveGroup(@WebUser User user, @WebParam("groupId") String groupId) {
         if(linkedInService.leaveGroup(user, groupId))
         	return WebResponse.success();
         else
         	return WebResponse.fail();
     }
     
+    @WebGet("/linkedin/likeGroupPost")
+    public WebResponse likeGroupPost(@WebUser User user, @WebParam("postId") String postId, @WebParam("islike") Boolean islike) {
+        if(linkedInService.likeGroupPost(user, postId, islike))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
     
 }
