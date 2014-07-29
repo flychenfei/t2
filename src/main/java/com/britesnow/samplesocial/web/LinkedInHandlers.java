@@ -123,4 +123,14 @@ public class LinkedInHandlers {
         resp.set("count", count);
         return resp;
     }
+    
+    @WebGet("/linkedin/leaveGroup")
+    public WebResponse LeaveGroup(@WebUser User user, @WebParam("groupId") String groupId) {
+        if(linkedInService.leaveGroup(user, groupId))
+        	return WebResponse.success();
+        else
+        	return WebResponse.fail();
+    }
+    
+    
 }

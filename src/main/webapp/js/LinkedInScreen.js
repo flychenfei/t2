@@ -51,6 +51,20 @@
 	                    	alert("can't get the details of group!");
 	                    }
 	                });
+              },
+              "click;.leave":function(e){
+            	  var view = this;
+            	  var $detail = $(e.target);
+            	  var param = {};
+            	  param.groupId = $detail.closest("tr").attr("data-groupId");
+            	  app.linkedInApi.leaveGroup(param).done(function (result) {
+	                    if(result.success === true){
+	                    	alert("Leave group success!");
+	                    }else{
+	                    	alert("Leave group fail!");
+	                    }
+	                    showGroups.call(view);
+	                });
               }
             },
 
@@ -168,7 +182,7 @@
                         text:"Operator",
                         attrs: "style='width:40%; word-break: break-word; cursor:pointer;'",
                         render: function (obj) {
-                        	var functionString = "<span><a src=\"#\" class=\"details\">"+"details"+"</a> </span>";
+                        	var functionString = "<span><a src=\"#\" class=\"details\">"+"details"+"</a> </span><span><a src=\"#\" class=\"leave\">"+"leave"+"</a> </span>";
                             return functionString;
                         }
                     }

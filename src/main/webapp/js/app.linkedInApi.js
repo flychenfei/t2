@@ -44,6 +44,11 @@ var app = app || {};
             param.count = param.count || 10;
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/groupPostComments", param);
+        },
+        leaveGroup : function(param) {
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/leaveGroup", param);
         }
 	};
 })();

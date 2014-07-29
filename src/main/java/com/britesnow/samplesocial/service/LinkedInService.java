@@ -31,6 +31,7 @@ public class LinkedInService {
     public static final String GROUPS_DETAIL_ENDPOINT = "http://api.linkedin.com/v1/groups/%s:(id,name,short-description,description,relation-to-viewer:(membership-state,available-actions),counts-by-category,is-open-to-non-members,category,website-url,locale,location:(country,postal-code),allow-member-invites,site-group-url,small-logo-url,large-logo-url,num-members)";
     public static final String GROUPS_POST_ENDPOINT = "http://api.linkedin.com/v1/groups/%s/posts:(id,type,creation-timestamp,title,summary,creator:(first-name,last-name,picture-url,headline),likes,attachment:(image-url,content-domain,content-url,title,summary),relation-to-viewer,site-group-post-url)?order=recency";
     public static final String GROUPS_POST_COMMENTS_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/comments:(id,creator:(first-name,last-name,picture-url),creation-timestamp,text,relation-to-viewer)";
+    public static final String GROUPS_LEAVE_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships/%s";
     
     private OAuthService oAuthService;
 
@@ -195,7 +196,20 @@ public class LinkedInService {
         return map;
     }
     
-    
+    /**
+     * Leave a group
+     * @param user
+     * @param groupId
+     * @return boolean
+     */
+    public boolean leaveGroup(User user, String groupId){
+    	OAuthRequest request = createRequest(Verb.DELETE, String.format(GROUPS_LEAVE_ENDPOINT, groupId));
+    	
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        return Strings.isNullOrEmpty(response.getBody());
+    }
+
     private void addPageParameter(Integer pageIndex, Integer pageSize, OAuthRequest request) {
         int start = pageIndex*pageSize;
         request.addQuerystringParameter("start", String.valueOf(start));
