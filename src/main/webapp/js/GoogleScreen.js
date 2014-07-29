@@ -27,6 +27,8 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "contacts"){
                   brite.display("GoogleContacts");
+                }else if(menu == "groups"){
+                  brite.display("GoogleGroups");
                 }else if(menu == "calendar-events"){
                   brite.display("GoogleCalendarEvents");
                 }else if(menu == "calendars"){
@@ -35,8 +37,6 @@
                   brite.display("GoogleMails");
                 }else if(menu == "mails_rest"){
                   brite.display("GoogleMailsRest");
-                }else if(menu == "groups"){
-                  brite.display("GoogleGroups");
                 }else if(menu == "folders"){
                   brite.display("GoogleFolders");
                 }else if(menu == "folders_rest"){
