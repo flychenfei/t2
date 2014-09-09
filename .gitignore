@@ -21,4 +21,4 @@ jcruncher-starter.sh
 
 out/
 .idea/
-.iml
+/*.iml
