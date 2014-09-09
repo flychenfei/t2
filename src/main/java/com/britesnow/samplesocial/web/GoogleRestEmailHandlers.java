@@ -98,6 +98,14 @@ public class GoogleRestEmailHandlers {
         return WebResponse.success();
     }
     
+    @WebPost("/gmailrest/forward")
+    public WebResponse forwardMail(@WebUser User user,
+                           @WebModel Map m, @WebParam("subject") String subject,
+                           @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
+        gmailRestService.sendMail(subject, content, to,attachments);
+        return WebResponse.success();
+    }
+    
     @WebGet("/gmailrest/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") String id) throws Exception {
         MailInfo info = gmailRestService.getEmail(id);
