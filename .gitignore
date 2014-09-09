@@ -18,3 +18,7 @@ src/main/webapp/css/
 apps/
 jcruncher-starter.bat
 jcruncher-starter.sh
+
+out/
+.idea/
+.iml
