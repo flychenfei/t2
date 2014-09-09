@@ -33,6 +33,7 @@ public class LinkedInService {
     public static final String GROUPS_POST_COMMENTS_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/comments:(id,creator:(first-name,last-name,picture-url),creation-timestamp,text,relation-to-viewer)";
     public static final String GROUPS_LEAVE_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships/%s";
     public static final String GROUPS_POST_LIKE_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/relation-to-viewer/is-liked";
+    public static final String PEOPLE_INFO_ENDPOINT = "http://api.linkedin.com/v1/people/%s:(first-name,last-name,headline,picture-url)";
     
     private OAuthService oAuthService;
 
@@ -129,6 +130,22 @@ public class LinkedInService {
         }
         OAuthRequest request = createRequest(Verb.GET, String.format(PEOPLE_SEARCH_ENDPOINT, keywork));
         addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response resp = request.send();
+        return JsonUtil.toMapAndList(resp.getBody());
+    }
+
+    /**
+     * 
+     * @param user
+     * @param userId
+     * @return
+     */
+    public Map userInfo(User user,String userId) {
+        if (userId == null) {
+            return null;
+        }
+        OAuthRequest request = createRequest(Verb.GET, String.format(PEOPLE_INFO_ENDPOINT, userId));
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
         return JsonUtil.toMapAndList(resp.getBody());

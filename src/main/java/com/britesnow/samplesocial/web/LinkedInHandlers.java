@@ -140,4 +140,9 @@ public class LinkedInHandlers {
         	return WebResponse.fail();
     }
     
+    @WebGet("/linkedin/getUserInfo")
+    public WebResponse userInfo(@WebUser User user, @WebParam("userId") String userId) {
+    	Map result = linkedInService.userInfo(user, userId);
+    	return WebResponse.success(result);
+    }
 }
