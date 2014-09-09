@@ -55,12 +55,12 @@ var app = app || {};
 			} else if (data && data.OAUTH_FAILED) {
 				//oauth fail
 				var count = failcount || 0;
-				if (count < 3) {
+				if (count < 1) {
 					var callback = function() {
 						count++;
 						app.getJsonData(url, params, count, dfd);
 					};
-					window.showModalDialog(data.oauthUrl);
+					window.open(data.oauthUrl, "newwindow", "width:400px;height:300px");
 					callback();
 				}
 				return;

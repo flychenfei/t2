@@ -3,7 +3,7 @@ var app = app || {};
 	app.oauth = {};
 	
 	app.oauth.authorize = function(service){
-    return window.showModalDialog(contextPath+"/authorize?service="+service);
+    return window.open(contextPath+"/authorize?service="+service);
 	}
 	
 	app.oauth.setToken = function(paramsStr,service){
