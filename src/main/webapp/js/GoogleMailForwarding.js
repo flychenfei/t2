@@ -1,7 +1,7 @@
 ;(function() {
 
 	/**
-	 * View: MailForwarding
+	 * View: GoogleMailForwarding
 	 *
 	 */
 	brite.registerView("GoogleMailForwarding", {
