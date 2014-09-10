@@ -23,6 +23,7 @@ public class LinkedInService {
     @Inject
     private LinkedInAuthService authService;
 
+    public static final String CURRENTUSERINFO_ENDPOINT = "https://api.linkedin.com/v1/people/~";
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
@@ -40,6 +41,22 @@ public class LinkedInService {
     @Inject
     public LinkedInService(OAuthServiceHelper oauthServiceFactory) {
         oAuthService = oauthServiceFactory.getOauthService(ServiceType.LinkedIn);
+    }
+
+    /**
+     * get current user information by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  user map
+     */
+    public Map getCurrentUserInfo(User user) {
+
+        OAuthRequest request = createRequest(Verb.GET, CURRENTUSERINFO_ENDPOINT);
+
+        oAuthService.signRequest(getToken(user), request);
+        Response resp = request.send();
+        return JsonUtil.toMapAndList(resp.getBody());
     }
 
     /**
@@ -98,7 +115,7 @@ public class LinkedInService {
     }
 
     /**
-     * search compan by auth user
+     * search company by auth user
      * @param user   user have auth
      * @param pageIndex  page index
      * @param pageSize   page size

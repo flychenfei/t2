@@ -1,6 +1,11 @@
 var app = app || {};
 (function() {
 	app.linkedInApi = {
+		getCurrentUserInfo: function(param){
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/currentUserInfo", param);
+        },
 		getConnections: function(param){
             param = param||{};
             param.method = "Get";

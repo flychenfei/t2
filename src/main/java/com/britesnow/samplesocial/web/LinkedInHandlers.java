@@ -17,6 +17,12 @@ public class LinkedInHandlers {
     @Inject
     private LinkedInService linkedInService;
 
+    @WebGet("/linkedin/currentUserInfo")
+    public WebResponse getCurrentUserInfo(@WebUser User user) {
+        Map result = linkedInService.getCurrentUserInfo(user);
+        return WebResponse.success(result);
+    }
+    
     @WebGet("/linkedin/connects")
     public WebResponse getConnects(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
         Map result = linkedInService.getConnections(user, pageIndex, pageSize);

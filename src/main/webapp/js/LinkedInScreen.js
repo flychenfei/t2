@@ -14,7 +14,7 @@
             postDisplay:function (data, config) {
                 var view = this;
                 var $e = view.$el;
-                showConnections.call(view);
+                showCurrentUserInfo.call(view);
             },
             events:{
               "btap;.nav li":function(e){
@@ -25,7 +25,9 @@
                 $li.addClass("active");
                 
                 var menu = $li.attr("data-nav");
-                if(menu == "connections"){
+                if(menu == "currentUserInfo"){
+                	showCurrentUserInfo.call(view);
+                }else if(menu == "connections"){
                   showConnections.call(view);
                 }else if(menu == "search"){
                     var list = [
@@ -109,6 +111,13 @@
             }
             
         });
+        
+        function showCurrentUserInfo() {
+        	app.linkedInApi.getCurrentUserInfo().done(function (result) {
+        		brite.display("LinkedInCurrentUserInfo", ".LinkedInScreen-content", {result:result.result});
+        	});
+        }
+        
         function showConnections() {
             brite.display("DataTable", ".LinkedInScreen-content",{
                 dataProvider: {list: app.linkedInApi.getConnections},
@@ -146,7 +155,7 @@
                         render: function(){
                             return "<div class='userInfo icon-user'/>"
                         },
-                        attrs: "style='width:40px;cursor:pointer'  data-cmd='USER_INFO'"
+                        attrs: "style='width:50px;text-align:center;cursor:pointer'  data-cmd='USER_INFO'"
                     }
                 ],
                 opts: {

@@ -1,0 +1,22 @@
+<script id="tmpl-LinkedInCurrentUserInfo" type="text/html">
+	<div class="LinkedInCurrentUserInfo">
+		<table class="table table-striped">
+			<tr>
+				<td>First Name:</td>
+				<td>{{data.result.firstName}}</td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td>{{data.result.lastName}}</td>
+			</tr>
+			<tr>
+				<td>Headline:</td>
+				<td>{{data.result.headline}}</td>
+			</tr>
+			<tr>
+				<td>Home Page:</td>
+				<td><a href="{{data.result.siteStandardProfileRequest.url}}">{{data.result.siteStandardProfileRequest.url}}</a></td>
+			</tr>
+		</table>
+	</div>
+</script>
