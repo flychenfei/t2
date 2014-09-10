@@ -88,7 +88,18 @@
 
                 })
 
+            },
+            "FORWARDING_EMAIL": function(event, extra) {
+                app.googleApi.getMail(extra.objId).done(function(data){
+                    if(data.success){
+                        console.log(data);
+                        brite.display("GoogleMailForwarding", "body",data.result);
+                    }
+
+                })
+
             }
+            
         },
 
         daoEvents: {
@@ -127,19 +138,29 @@
                     render: function (obj) {
                         return obj.subject
                     }
-                },{
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-envelope'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
-                },{
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-step-forward'/>"
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL'"
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-share-alt'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
-                },{
+                },
+                {
                     text: "",
                     render: function(){
                         return "<div class='icon-trash'/>";
