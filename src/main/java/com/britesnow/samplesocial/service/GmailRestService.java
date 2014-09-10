@@ -335,6 +335,8 @@ public class GmailRestService {
 //        raw.append("\r\n");
         
         if(attachmentItems == null || attachmentItems.length == 0){
+        	raw.append("Content-Type: text/html");
+        	raw.append("\r\n");
             raw.append("\r\n");
             raw.append(content);
             raw.append("\r\n");
