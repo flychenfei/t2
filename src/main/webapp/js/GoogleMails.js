@@ -149,7 +149,7 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='icon-step-forward'/>"
+                        return "<div class='icon-share'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL'"
                 },
