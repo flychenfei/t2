@@ -146,7 +146,7 @@
                         render: function(){
                             return "<div class='userInfo icon-user'/>"
                         },
-                        attrs: "style='width:40px;cursor:pointer'  data-cmd='USER_INFO'"
+                        attrs: "style='width:50px;text-align:center;cursor:pointer'  data-cmd='USER_INFO'"
                     }
                 ],
                 opts: {
