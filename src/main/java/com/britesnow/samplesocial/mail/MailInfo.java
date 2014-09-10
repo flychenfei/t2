@@ -11,6 +11,7 @@ public class MailInfo {
     private String from;
     private String subject;
     private String content;
+    private List cc = null;
     private List attachments = null;
     private String threadId;
     private List<String> folderIds = null;
@@ -108,6 +109,16 @@ public class MailInfo {
 
     public void setFolderNames(List<String> folderNames) {
         this.folderNames = folderNames;
+    }
+
+
+    public List getCc() {
+        return cc;
+    }
+
+
+    public void setCc(List cc) {
+        this.cc = cc;
     }
 
     
