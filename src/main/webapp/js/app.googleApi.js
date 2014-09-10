@@ -203,17 +203,16 @@ var app = app || {};
             files = files || [];
             var dfd = $.Deferred();
 			var formData = new FormData();
-			
+
 			for(var key in opts){
 				formData.append(key, opts[key]);
 			}
-			
+
 			for(var i = 0; i < files.length; i++){
 				if(files[i]){
 					formData.append("files", files[i]);
 				}
 			}
-			
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', contextPath + "/gmailrest/send", true);
 			xhr.onload = function(e) {
@@ -222,6 +221,28 @@ var app = app || {};
 			};
 			xhr.send(formData);
 			return dfd.promise();
+        },
+        forwardMailRest: function(opts, files) {
+            opts = opts || {};
+            files = files || [];
+            var dfd = $.Deferred();
+            var formData = new FormData();
+            for(var key in opts){
+                formData.append(key, opts[key]);
+            }
+            for(var i = 0; i < files.length; i++){
+                if(files[i]){
+                    formData.append("files", files[i]);
+                }
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', contextPath + "/gmailrest/forward", true);
+            xhr.onload = function(e) {
+                var ret = eval("(" + this.response + ")").result;
+                dfd.resolve(ret);
+            };
+            xhr.send(formData);
+            return dfd.promise();
         },
         listLabelsRest: function(opts) {
             var params = opts||{};

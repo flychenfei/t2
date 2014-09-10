@@ -91,11 +91,22 @@
                 var data = {id: extra.objId, type:'rest'};
                 brite.display("GoogleMailInfo", "body", data);
             },
-            "REPLAY_EMAIL": function(event, extra) {
+            "FORWARD_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
                     	var opt = data.result || {};
                     	opt.type = "rest";
+                        brite.display("GoogleMailForward", "body",opt);
+                    }
+
+                })
+
+            },
+            "REPLAY_EMAIL": function(event, extra) {
+                app.googleApi.getMailRest(extra.objId).done(function(data){
+                    if(data.success){
+                        var opt = data.result || {};
+                        opt.type = "rest";
                         brite.display("GoogleMailSend", "body",opt);
                     }
 
@@ -152,6 +163,13 @@
                         return "<div class='icon-envelope'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='icon-share'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARD_EMAIL'"
                 },
                 {
                     text: "",
