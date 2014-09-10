@@ -65,6 +65,15 @@
 	                    }
 	                    showGroups.call(view);
 	                });
+              },
+              "click;.userInfo":function(e){
+            	  var view = this;
+            	  var $detail = $(e.target);
+            	  var param = {};
+            	  param.userId = $detail.closest("tr").attr("data-obj_id");
+            	  app.linkedInApi.userInfo(param).done(function (result) {
+            		  brite.display("LinkedInUserInfo", ".MainScreen", {title:"Show UserInfo", result:result.result});
+	                });
               }
             },
 
@@ -131,6 +140,13 @@
                         render: function (obj) {
                             return obj.industry || "";
                         }
+                    },
+                    {
+                        text: "Info",
+                        render: function(){
+                            return "<div class='userInfo icon-user'/>"
+                        },
+                        attrs: "style='width:40px;cursor:pointer'  data-cmd='USER_INFO'"
                     }
                 ],
                 opts: {
