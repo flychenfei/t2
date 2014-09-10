@@ -24,6 +24,14 @@
 						{{sendDate}}
 					</div>
 				</div>
+				<div class="control-group {{#if hideCC}}hide{{/if}}">
+					<div class="control-label">CC:</div>
+					<div class="controls">
+						{{#each cc}}
+							{{ccMail}}
+						{{/each}}
+					</div>
+				</div>
 				<div class="control-group {{#if hideAttachments}}hide{{/if}}">
 					<div class="control-label">Attachment:</div>
 					<div class="controls">

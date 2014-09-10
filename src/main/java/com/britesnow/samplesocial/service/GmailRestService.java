@@ -248,6 +248,16 @@ public class GmailRestService {
                     if(header.getName().equals("From")){
                         mailInfo.setFrom(header.getValue());
                     }
+                    if(header.getName().equals("Cc")){
+                    	String[] cc = header.getValue().split(",");
+                    	List ccList = new ArrayList();
+                    	for(String value : cc){
+                    		Map map = new HashMap();
+                            map.put("ccMail", value);
+                    		ccList.add(map);
+                    	}
+                        mailInfo.setCc(ccList);
+                    }
                     if(header.getName().equals("Date")){
                         try {
                             mailInfo.setDate(df.parse(String.valueOf(header.getValue())).getTime());
