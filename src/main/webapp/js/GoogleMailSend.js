@@ -76,6 +76,7 @@
 		} else {
 			app.googleApi.sendMail({
 				to : to,
+				cc : cc,
 				subject : subject,
 				content : content
 			},files).done(function() {
