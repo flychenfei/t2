@@ -23,7 +23,7 @@ public class LinkedInService {
     @Inject
     private LinkedInAuthService authService;
 
-    public static final String CURRENTUSERINFO_ENDPOINT = "https://api.linkedin.com/v1/people/~";
+    public static final String CURRENTUSERINFO_ENDPOINT = "http://api.linkedin.com/v1/people/~:(first-name,last-name,headline,site-standard-profile-request:(url),picture-url)";
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
