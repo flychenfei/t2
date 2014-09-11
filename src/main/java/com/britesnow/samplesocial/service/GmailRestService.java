@@ -252,9 +252,7 @@ public class GmailRestService {
                     	String[] cc = header.getValue().split(",");
                     	List ccList = new ArrayList();
                     	for(String value : cc){
-                    		Map map = new HashMap();
-                            map.put("ccMail", value);
-                    		ccList.add(map);
+                    		ccList.add(value);
                     	}
                         mailInfo.setCc(ccList);
                     }

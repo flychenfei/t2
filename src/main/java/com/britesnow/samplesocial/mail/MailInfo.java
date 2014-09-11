@@ -13,7 +13,7 @@ public class MailInfo {
     private String from;
     private String subject;
     private String content;
-    private List cc = null;
+    private List<String> cc = null;
     private List attachments = null;
     private String threadId;
     private List<String> folderIds = null;
@@ -121,12 +121,12 @@ public class MailInfo {
     }
 
 
-    public List getCc() {
+    public List<String> getCc() {
         return cc;
     }
 
 
-    public void setCc(List cc) {
+    public void setCc(List<String> cc) {
         this.cc = cc;
     }
 
