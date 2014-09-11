@@ -91,8 +91,8 @@ public class GoogleEmailHandlers {
     @WebPost("/gmail/send")
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject,
-                           @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments, RequestContext rc) throws Exception {
-        gmailImapService.sendMail(subject, content, to, attachments);
+                           @WebParam("content") String content, @WebParam("to") String to,@WebParam("cc") String cc, @WebParam("files") FileItem[] attachments, RequestContext rc) throws Exception {
+        gmailImapService.sendMail(subject, content, to, cc, attachments);
         return WebResponse.success();
     }
 

@@ -450,10 +450,11 @@ public class GmailImapService {
      * @param subject  mail subject
      * @param content  mail content
      * @param to  mail to
+     * @param cc  mail cc
      * @return  mail ok or not
      * @throws Exception
      */
-    public boolean sendMail(String subject, String content, String to, FileItem[] attachmentItems) throws Exception {
+    public boolean sendMail(String subject, String content, String to,String cc, FileItem[] attachmentItems) throws Exception {
         SocialIdEntity idEntity = authService.getSocialIdEntity();
         if (idEntity != null) {
             String email = idEntity.getEmail();
@@ -467,6 +468,10 @@ public class GmailImapService {
                 InternetAddress[] iaRecevers = new InternetAddress[1];
                 iaRecevers[0] = new InternetAddress(to);
                 msg.setRecipients(Message.RecipientType.TO, iaRecevers);
+
+                InternetAddress[] ccRecevers = new InternetAddress[1];
+                ccRecevers[0] = new InternetAddress(cc);
+                msg.setRecipients(Message.RecipientType.CC, ccRecevers);
                 
                 if(attachmentItems == null || attachmentItems.length == 0){
                     msg.setContent(content, "text/html;charset=UTF-8");

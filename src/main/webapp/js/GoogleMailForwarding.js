@@ -37,6 +37,7 @@
 	 		}, 
 	 		"btap; .btnCreate": function(){
 	 			forwardingMail.call(this);
+	 			view.close();
 	 		}
 		},
 
@@ -56,6 +57,7 @@
 
 		var content = $e.find("textarea[name='content']").val();
 		var to = $e.find("input[name='to']").val();
+		var cc = $e.find("input[name='cc']").val();
 		var subject = $e.find("input[name='subject']").val();
 		
 		var files = [];
@@ -65,6 +67,7 @@
 		
 		app.googleApi.sendMail({
 			to : to,
+			cc : cc,
 			subject : subject,
 			content : content
 		},files).done(function() {
