@@ -56,6 +56,7 @@
 
 		var content = $e.find("textarea[name='content']").val();
 		var to = $e.find("input[name='to']").val();
+		var cc = $e.find("input[name='cc']").val();
 		var subject = $e.find("input[name='subject']").val();
 		var files = [];
 		if(to == ""){
@@ -71,6 +72,7 @@
 		// if mail id exist do update,else do create
 		app.googleApi.forwardMailRest({
 			to : to,
+			cc : cc,
 			subject : subject,
 			content : content
 		},files).done(function() {

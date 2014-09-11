@@ -56,8 +56,8 @@
 
 		var content = $e.find("textarea[name='content']").val();
 		var to = $e.find("input[name='to']").val();
+		var cc = $e.find("input[name='cc']").val();
 		var subject = $e.find("input[name='subject']").val();
-		
 		var files = [];
 		$e.find("input[name='attachments']").each(function(){
 			files.push($(this)[0].files[0]);
@@ -66,6 +66,7 @@
 		if (view.type == 'rest') {
 			app.googleApi.sendMailRest({
 				to : to,
+				cc : cc,
 				subject : subject,
 				content : content
 			},files).done(function() {

@@ -321,7 +321,7 @@ public class GmailRestService {
     	return mailInfo;
     }
     
-    public boolean sendMail(String subject, String content, String to, FileItem[] attachmentItems) throws Exception {
+    public boolean sendMail(String subject, String content, String to, String cc, FileItem[] attachmentItems) throws Exception {
         String email = authService.getSocialIdEntity().getEmail();
         Gmail gmail = getGmailClient();
         Message message = new Message();
@@ -337,6 +337,11 @@ public class GmailRestService {
         raw.append("To:");
         raw.append(to);
         raw.append("\r\n");
+        if(!cc.equals(null) && cc.length() > 0){
+        	raw.append("Cc:");
+            raw.append(cc);
+            raw.append("\r\n");
+        }
         
 //        raw.append("\r\n");
 //        raw.append(content);

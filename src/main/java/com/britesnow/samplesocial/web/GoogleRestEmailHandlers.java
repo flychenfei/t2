@@ -92,17 +92,17 @@ public class GoogleRestEmailHandlers {
 
     @WebPost("/gmailrest/send")
     public WebResponse sendMail(@WebUser User user,
-                           @WebModel Map m, @WebParam("subject") String subject,
+                           @WebModel Map m, @WebParam("subject") String subject, @WebParam("cc") String cc,
                            @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
-        gmailRestService.sendMail(subject, content, to,attachments);
+    	gmailRestService.sendMail(subject, content, to, cc, attachments);
         return WebResponse.success();
     }
     
     @WebPost("/gmailrest/forward")
     public WebResponse forwardMail(@WebUser User user,
-                           @WebModel Map m, @WebParam("subject") String subject,
+                           @WebModel Map m, @WebParam("subject") String subject, @WebParam("cc") String cc,
                            @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
-        gmailRestService.sendMail(subject, content, to,attachments);
+        gmailRestService.sendMail(subject, content, to, cc, attachments);
         return WebResponse.success();
     }
     
