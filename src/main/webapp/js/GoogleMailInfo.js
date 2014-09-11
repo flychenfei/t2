@@ -33,9 +33,9 @@
 				if (!mail || !mail.attachments || mail.attachments.length == 0) {
 					mail.hideAttachments = true;
 				}
-				if (!mail || !mail.cc || mail.cc.length == 0) {
-					mail.hideCC = true;
-				}
+                if (!mail || !mail.cc || mail.cc.length == 0) {
+                    mail.hideCC = true;
+                }
 				var recDate = new Date(mail.date);
                 mail.sendDate = recDate.format("yyyy-MM-dd hh:mm:ss")
 				var $html = app.render("tmpl-GoogleMailInfo",mail);

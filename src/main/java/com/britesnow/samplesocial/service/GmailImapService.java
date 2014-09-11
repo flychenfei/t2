@@ -540,7 +540,7 @@ public class GmailImapService {
         MailInfo mailInfo = null;
         try {
             mailInfo = new MailInfo(message.getMessageNumber(), message.getSentDate().getTime(),
-                decodeText(message.getFrom()[0].toString()), message.getSubject());
+                decodeText(message.getFrom()[0].toString()),message.getSubject(),message.getRecipients(Message.RecipientType.CC));
         } catch (UnsupportedEncodingException | MessagingException e) {
             e.printStackTrace();
         }

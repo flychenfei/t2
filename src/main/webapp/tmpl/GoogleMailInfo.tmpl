@@ -18,7 +18,7 @@
 						{{from}}
 					</div>
 				</div>
-				<div class="control-group">
+                <div class="control-group">
 					<div class="control-label">Date:</div>
 					<div class="controls">
 						{{sendDate}}
@@ -27,9 +27,7 @@
 				<div class="control-group {{#if hideCC}}hide{{/if}}">
 					<div class="control-label">CC:</div>
 					<div class="controls">
-						{{#each cc}}
-							{{ccMail}}
-						{{/each}}
+					    {{cc}}
 					</div>
 				</div>
 				<div class="control-group {{#if hideAttachments}}hide{{/if}}">

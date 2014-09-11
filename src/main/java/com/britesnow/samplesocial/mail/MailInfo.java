@@ -1,8 +1,10 @@
 package com.britesnow.samplesocial.mail;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.Address;
 import javax.mail.Message;
 
 public class MailInfo {
@@ -17,11 +19,18 @@ public class MailInfo {
     private List<String> folderIds = null;
     private List<String> folderNames = null;
 
-    public MailInfo(Object id, Object date, String from, String subject) {
+    public MailInfo(Object id, Object date, String from, String subject, Address[] ccAddress) {
         this.id = id;
         this.date = date;
         this.from = from;
         this.subject = subject;
+        if(ccAddress != null && ccAddress.length >0){
+            ArrayList cc = new ArrayList<String>();
+            for(Address address : ccAddress){
+                cc.add(address.toString());
+            }
+            this.cc = cc;
+        }
     }
 
 
@@ -74,6 +83,7 @@ public class MailInfo {
         return content;
     }
 
+
     public List getAttachments() {
         return attachments;
     }
@@ -90,7 +100,6 @@ public class MailInfo {
     public void setThreadId(String threadId) {
         this.threadId = threadId;
     }
-
 
     public List<String> getFolderIds() {
         return folderIds;
