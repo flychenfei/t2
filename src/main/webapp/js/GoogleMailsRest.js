@@ -3,23 +3,27 @@
 
     brite.registerView("GoogleMailsRest",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
-        	this.search = function(opts) {
-				return app.googleApi.searchEmailsRest(opts)
-			};
+            var view = this;
+        	data = data || {};
+            view.folderName = data.folderName;
+            this.search = function(opts) {
+                opts.label = view.folderName
+                return app.googleApi.searchEmailsRest(opts)
+            };
             return app.render("tmpl-GoogleMailsRest");
         },
 
         postDisplay: function (data, config) {
             var view = this;
             var $e = view.$el;
-            
+
 			$e.find('.datetimepicker').datetimepicker({
 				format : 'yyyy-MM-dd',
 				language : 'en',
 				pickDate : true,
 				pickTime : true,
 				inputMask : true
-			}); 
+			});
 
             showEmails.call(view);
         },
@@ -43,11 +47,13 @@
 
 				view.search = function(opts) {
 					opts = opts || [];
+                    //this way, the label input name will be overide, make sure try to combine them to search
+                    opts.label = view.folderName
 					$.extend(opts, result)
 					return app.googleApi.searchEmailsRest(opts)
 				};
 
-				showEmails.call(view); 
+				showEmails.call(view);
 
           },
           "click; .currentThread":function(event){
@@ -124,6 +130,7 @@
     });
     function showEmails() {
         var view = this;
+        var $e = view.$el;
         return brite.display("DataTable", ".mails-container", {
             dataProvider: {list: view.search},
             rowAttrs: function(obj){ return "data-thread-id={0}".format(obj.threadId)},
@@ -206,6 +213,21 @@
                 dataOpts: {
                 	withResultCount:false
                 }
+            }
+        }).done(function(){
+            var $mailsFolder = $e.closest('.GoogleMailsRest').find(".mails-folder");
+            var $tfoot = $e.closest('.GoogleMailsRest').find(".mails-container .tfoot");
+            if(typeof view.folderName != "undefined" && view.folderName != null){
+                if($tfoot.length > 0){
+                    $mailsFolder.removeClass('notHaveFooter');
+                }else{
+                    $mailsFolder.addClass('notHaveFooter');
+                }
+                $mailsFolder.show();
+                $mailsFolder.find(".folderName").html(view.folderName);
+            }else{
+                $mailsFolder.hide();
+                $mailsFolder.removeClass('notHaveFooter');
             }
         });
     }

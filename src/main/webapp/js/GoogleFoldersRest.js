@@ -14,7 +14,11 @@
         events: {
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateFolder",null,{type:'rest', id:null});
-	        }
+	        },
+            "click; .link" : function(event){
+                var folderName = $(event.currentTarget).closest("tr").attr("data-obj_id");
+                brite.display("GoogleMailsRest",null,{folderName:folderName});
+            }
         },
 
         docEvents: {
@@ -54,7 +58,9 @@
             columnDef:[
                 {
                     text:"Name",
-                    render:function(obj){return obj.name}
+                    render: function (obj) {
+                        return "<a href='javascript:void(0)' class='link'>"+obj.name+"</a>";
+                    }
 
                 },
                 {
