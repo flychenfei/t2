@@ -14,6 +14,10 @@
 		events: {
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateFolder",null,{id:null});
+	        },
+	        "click;.folderClass":function(e){
+	            var folderName =  $(e.currentTarget).closest("tr").attr("data-obj_id")
+	            brite.display("GoogleMails",".GoogleScreen-content",{folderName:folderName});
 	        }
         },
         docEvents: {
@@ -53,13 +57,14 @@
             columnDef:[
                 {
                     text:"#",
-                    render: function(obj, idx){return idx + 1},
-                    attrs:"style='width: 10%'"
+                    attrs:"style='width: 10%;  cursor:pointer;'",
+                    render: function(obj, idx){return idx + 1}
                 },
                 {
                     text:"Name",
-                    render:function(obj){return obj.fullName}
-
+                    render:function(obj){
+                            return "<a src=\"#\" class=\"folderClass\"><span>{0}</span></a>".format(obj.fullName);
+                            }
                 }
             ],
             opts:{

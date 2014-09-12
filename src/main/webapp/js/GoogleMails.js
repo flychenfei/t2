@@ -3,16 +3,20 @@
 
     brite.registerView("GoogleMails",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
+            var view = this;
+            data = data || {};
+            view.folderName = data.folderName;
             this.search = function(opts) {
+                opts.label = view.folderName;
 				return app.googleApi.searchEmails(opts)
 			};
-            return app.render("tmpl-GoogleMails");
+            return app.render("tmpl-GoogleMails",{folderName:view.folderName});
         },
 
         postDisplay: function (data, config) {
             var view = this;
             var $e = view.$el;
-            
+
             $e.find('.datetimepicker').datetimepicker({ 
                 format: 'yyyy-MM-dd', 
                 language: 'en', 
@@ -44,6 +48,7 @@
                 view.search = function(opts) {
                   opts = opts || [];
                   $.extend(opts, result)
+                  opts.label = view.folderName;
                   return app.googleApi.searchEmails(opts)
                 };
                 
