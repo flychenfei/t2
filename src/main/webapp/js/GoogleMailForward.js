@@ -31,6 +31,16 @@
 	 			var $e = view.$el;
 	 			var $btn = $(event.currentTarget).closest(".attachmentItem").remove();
 	 		},
+	 		"btap; .addCC": function(){
+	 			var view = this;
+	 			var $e = view.$el;
+	 			$e.find(".cc").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+	 		},
+	 		"btap; .removeCC": function(event){
+	 			var view = this;
+	 			var $e = view.$el;
+	 			$(event.currentTarget).closest(".ccItem").remove();
+	 		},
 	 		"btap; .btnClose": function(){
 	 			var view = this;
 	 			view.close();
@@ -56,7 +66,15 @@
 
 		var content = $e.find("textarea[name='content']").val();
 		var to = $e.find("input[name='to']").val();
-		var cc = $e.find("input[name='cc']").val();
+		var cc = "";
+		$e.find("input[name='cc']").each(function(i){
+			var val = $(this).val();
+			if(i > 0){
+				cc = cc + "," + val;
+			}else{
+				cc = val;
+			}
+		});
 		var subject = $e.find("input[name='subject']").val();
 		var files = [];
 		if(to == ""){
