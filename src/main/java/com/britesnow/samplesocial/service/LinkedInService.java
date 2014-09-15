@@ -24,6 +24,7 @@ public class LinkedInService {
     private LinkedInAuthService authService;
 
     public static final String CURRENTUSERINFO_ENDPOINT = "http://api.linkedin.com/v1/people/~:(first-name,last-name,headline,site-standard-profile-request:(url),picture-url)";
+    public static final String JOBBOOKMARKS_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks:(job:(company:(name),description,location-description))";
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
@@ -59,6 +60,24 @@ public class LinkedInService {
         return JsonUtil.toMapAndList(resp.getBody());
     }
 
+    /**
+     * get user jobbookmarks   by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  user map
+     */
+    public Map getJobBookmarks(User user, Integer pageIndex, Integer pageSize) {
+
+        OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKS_ENDPOINT);
+
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user),request);
+        Response response = request.send();
+        Map map = JsonUtil.toMapAndList(response.getBody());
+        return map;
+    }
+    
     /**
      * get user connections   by auth user
      * @param user  login user
