@@ -6,6 +6,11 @@ var app = app || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/currentUserInfo", param);
         },
+		getJobBookmarks: function(param){
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/jobbookmarks", param);
+        },
 		getConnections: function(param){
             param = param||{};
             param.method = "Get";

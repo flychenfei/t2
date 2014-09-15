@@ -22,6 +22,19 @@ public class LinkedInHandlers {
         Map result = linkedInService.getCurrentUserInfo(user);
         return WebResponse.success(result);
     }
+  
+    @WebGet("/linkedin/jobbookmarks")
+    public WebResponse getJobBookmarks(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
+        Map result = linkedInService.getJobBookmarks(user, pageIndex, pageSize);
+        WebResponse resp;
+        if(result.get("values") != null){
+            resp = WebResponse.success(result.get("values"));
+        }else{
+            resp = WebResponse.success(new ArrayList());
+        }
+        resp.set("result_count", result.get("_total"));
+        return resp;
+    }
     
     @WebGet("/linkedin/connects")
     public WebResponse getConnects(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {

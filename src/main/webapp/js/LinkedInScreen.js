@@ -27,6 +27,8 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "currentUserInfo"){
                 	showCurrentUserInfo.call(view);
+                }else if(menu == "jobbookmarks"){
+                  showJobBookmarks.call(view);
                 }else if(menu == "connections"){
                   showConnections.call(view);
                 }else if(menu == "search"){
@@ -116,6 +118,47 @@
         	app.linkedInApi.getCurrentUserInfo().done(function (result) {
         		brite.display("LinkedInCurrentUserInfo", ".LinkedInScreen-content", {result:result.result});
         	});
+        }
+ 
+        function showJobBookmarks() {
+            brite.display("DataTable", ".LinkedInScreen-content",{
+                dataProvider: {list: app.linkedInApi.getJobBookmarks},
+                columnDef: [
+                    {
+                        text: "#",
+                        render: function (obj, idx) {
+                            return idx + 1
+                        },
+                        attrs: "style='width: 5%'"
+                    },
+                    {
+                        text: "company",
+                        render: function (obj) {
+                            return obj.job.company.name;
+                        },
+                        attrs: "style='width: 20%'"
+
+                    },
+                    {
+                        text: "Description",
+                        render: function (obj) {
+                            return obj.job.description
+                        },
+                        attrs: "style='width: 45%'"
+                    },
+                    {
+                        text: "Location",
+                        render: function (obj) {
+                            return obj.job.locationDescription
+                        }
+                    },
+                ],
+                opts: {
+                    htmlIfEmpty: "Not Job Bookmarks found",
+                    withPaging: true,
+                    withCmdDelete:false
+                }
+            });
         }
         
         function showConnections() {
