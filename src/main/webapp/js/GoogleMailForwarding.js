@@ -21,6 +21,16 @@
 		},
 		
 		events : {
+		    "btap; .addCC": function(){
+		        var view = this;
+		        var $e = view.$el;
+		        $e.find(".ccItems").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+		    },
+            "btap; .removeCC": function(event){
+                var view = this;
+                var $e = view.$el;
+                var $btn = $(event.currentTarget).closest(".ccItem").remove();
+                },
 	 		"btap; .addAttachment": function(){
 	 			var view = this;
 	 			var $e = view.$el;
