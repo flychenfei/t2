@@ -112,6 +112,7 @@
     });
     function showEmails() {
         var view = this;
+        var $e = view.$el;
         return brite.display("DataTable", ".mails-container", {
             dataProvider: {list: view.search},
             columnDef: [
@@ -177,6 +178,14 @@
                 htmlIfEmpty: "Not emails found",
                 withPaging: true,
                 cmdDelete: "DELETE_EMAIL"
+            }
+        }).done(function(){
+            var $mailsFolder = $e.closest('.GoogleMails').find(".imapMails-folder");
+            if(typeof view.folderName != "undefined" && view.folderName != null){
+                $mailsFolder.css("display","block");
+                $mailsFolder.find(".folderName").html(view.folderName);
+            }else{
+                $mailsFolder.hide();
             }
         });
     }
