@@ -78,9 +78,9 @@
 		var subject = $e.find("input[name='subject']").val();
 		var files = [];
 		if(to == ""){
-			$e.find("input[name='to']").css("border", "1px solid red");
+			$e.find("input[name='to']").addClass('errorInput');
 			window.setTimeout(function(){
-				$e.find("input[name='to']").css("border", "1px solid #dddddd");
+				$e.find("input[name='to']").removeClass('errorInput');
 			},1000);
 			return;
 		}
