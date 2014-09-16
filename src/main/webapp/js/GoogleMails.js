@@ -180,12 +180,14 @@
                 cmdDelete: "DELETE_EMAIL"
             }
         }).done(function(){
-            var $mailsFolder = $e.closest('.GoogleMails').find(".imapMails-folder");
+            var $mailsFolder = $e.find(".imapMails-folder");
             if(typeof view.folderName != "undefined" && view.folderName != null){
-                $mailsFolder.css("display","block");
+                $mailsFolder.show();
                 $mailsFolder.find(".folderName").html(view.folderName);
             }else{
                 $mailsFolder.hide();
+
+
             }
         });
     }
