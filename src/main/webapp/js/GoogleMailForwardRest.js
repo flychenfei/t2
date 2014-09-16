@@ -1,10 +1,10 @@
 ;(function() {
 
 	/**
-	 * View: GoogleMailForward
+	 * View: GoogleMailForwardRest
 	 *
 	 */
-	brite.registerView("GoogleMailForward", {
+	brite.registerView("GoogleMailForwardRest", {
 		loadTmpl : true,
 		parent : "body"
 	}, {
@@ -14,7 +14,7 @@
 			data = data || {};
 			view.type = data.type;
 			var dfd = $.Deferred();
-			var $html = app.render("tmpl-GoogleMailForward",data);
+			var $html = app.render("tmpl-GoogleMailForwardRest",data);
 			//show a screen to prevent use click other places
 			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body"); 
 			return $html;

@@ -102,7 +102,7 @@
                     if(data.success){
                     	var opt = data.result || {};
                     	opt.type = "rest";
-                        brite.display("GoogleMailForward", "body",opt);
+                        brite.display("GoogleMailForwardRest", "body",opt);
                     }
 
                 })
