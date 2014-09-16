@@ -70,6 +70,14 @@
 	                    showGroups.call(view);
 	                });
               },
+              "click;.bookmark":function(e){
+            	  var view = this;
+            	  var param = {};
+            	  param.id = $(e.currentTarget).attr("id");
+            	  app.linkedInApi.removebookmark(param).done(function (result) {
+            		  showJobBookmarks.call(view);
+	                });
+              },
               "click;.userInfo":function(e){
             	  var view = this;
             	  var $detail = $(e.target);
@@ -152,11 +160,18 @@
                             return obj.job.locationDescription
                         }
                     },
+                    {
+                        text: "Action",
+                        render: function (obj) {
+                            return "<a href='#'><div class='bookmark' id=\""+obj.job.id+"\">Remove Bookmark</div></a>"
+                        },
+                        attrs: "style='width: 15%' ata-cmd='REMOVE_BOOKMARK'"
+                    },
                 ],
                 opts: {
                     htmlIfEmpty: "Not Job Bookmarks found",
                     withPaging: true,
-                    withCmdDelete:false
+                    withCmdDelete:false,
                 }
             });
         }
