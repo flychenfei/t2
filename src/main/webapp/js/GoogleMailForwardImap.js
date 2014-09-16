@@ -1,10 +1,10 @@
 ;(function() {
 
 	/**
-	 * View: GoogleMailForwarding
+	 * View: GoogleMailForwardImap
 	 *
 	 */
-	brite.registerView("GoogleMailForwarding", {
+	brite.registerView("GoogleMailForwardImap", {
 		loadTmpl : true,
 		parent : "body"
 	}, {
@@ -14,7 +14,7 @@
 			data = data || {};
 			view.type = data.type;
 			var dfd = $.Deferred();
-			var $html = app.render("tmpl-GoogleMailForwarding",data);
+			var $html = app.render("tmpl-GoogleMailForwardImap",data);
 			//show a screen to prevent use click other places
 			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body"); 
 			return $html;
@@ -46,7 +46,7 @@
 	 			view.close();
 	 		}, 
 	 		"btap; .btnCreate": function(){
-	 			forwardingMail.call(this);
+	 			forwardMailImap.call(this);
 	 			view.close();
 	 		}
 		},
@@ -61,7 +61,7 @@
 	});
 
 	// --------- View Private Methods --------- //
-	function forwardingMail() {
+	function forwardMailImap() {
 		var view = this;
 		var $e = view.$el;
 
