@@ -98,7 +98,7 @@
                 app.googleApi.getMail(extra.objId).done(function(data){
                     if(data.success){
                         console.log(data);
-                        brite.display("GoogleMailForwarding", "body",data.result);
+                        brite.display("GoogleMailForwardImap", "body",data.result);
                     }
 
                 })
