@@ -11,6 +11,11 @@ var app = app || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/jobbookmarks", param);
         },
+        removebookmark: function(param){
+            param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/removebookmark", param);
+        },
 		getConnections: function(param){
             param = param||{};
             param.method = "Get";

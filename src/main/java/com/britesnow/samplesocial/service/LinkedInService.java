@@ -24,7 +24,8 @@ public class LinkedInService {
     private LinkedInAuthService authService;
 
     public static final String CURRENTUSERINFO_ENDPOINT = "http://api.linkedin.com/v1/people/~:(first-name,last-name,headline,site-standard-profile-request:(url),picture-url)";
-    public static final String JOBBOOKMARKS_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks:(job:(company:(name),description,location-description))";
+    public static final String JOBBOOKMARKS_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks:(job:(id,company:(name),description,location-description))";
+    public static final String REMOVEJOBBOOKMARK_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks/%s";
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
@@ -76,6 +77,21 @@ public class LinkedInService {
         Response response = request.send();
         Map map = JsonUtil.toMapAndList(response.getBody());
         return map;
+    }
+    
+    /**
+     * remove user's jobbookmark   by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  user map
+     */
+    public void removeBookmark(User user, String bookid) {
+        String text=String.format(REMOVEJOBBOOKMARK_ENDPOINT, bookid);
+        System.out.println(text);
+        OAuthRequest request = createRequest(Verb.DELETE, String.format(REMOVEJOBBOOKMARK_ENDPOINT, bookid));
+        oAuthService.signRequest(getToken(user), request);
+        Response resp = request.send();
     }
     
     /**

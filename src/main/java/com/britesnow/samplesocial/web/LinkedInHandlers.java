@@ -36,6 +36,11 @@ public class LinkedInHandlers {
         return resp;
     }
     
+    @WebGet("/linkedin/removebookmark")
+    public void removeBookmark(@WebUser User user, @WebParam("id") String bookid) {
+         linkedInService.removeBookmark(user,bookid);
+    }
+    
     @WebGet("/linkedin/connects")
     public WebResponse getConnects(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
         Map result = linkedInService.getConnections(user, pageIndex, pageSize);
