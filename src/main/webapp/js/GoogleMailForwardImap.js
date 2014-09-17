@@ -64,12 +64,26 @@
 	function forwardMailImap() {
 		var view = this;
 		var $e = view.$el;
-
+		var haveNullVal = false;
+		//remove the alert message
+		$e.find(".alert").remove();
 		var content = $e.find("textarea[name='content']").val();
+		if(content == ""){
+			$e.find("textarea[name='content']").closest('.controls').append('<div class="alert alert-danger" role="alert">Enter Content</div>');
+			haveNullVal = true;
+		}
 		var to = $e.find("input[name='to']").val();
+		if(to == ""){
+			$e.find("input[name='to']").closest('.controls').append('<div class="alert alert-danger" role="alert">Enter To</div>');
+			haveNullVal = true;
+		}
 		var cc = $e.find("input[name='cc']").val();
 		var subject = $e.find("input[name='subject']").val();
-		
+		if(subject == ""){
+			$e.find("input[name='subject']").closest('.controls').append('<div class="alert alert-danger" role="alert">Enter Subject</div>');
+			haveNullVal = true;
+		}
+		if(haveNullVal)return;
 		var files = [];
 		$e.find("input[name='attachments']").each(function(){
 			files.push($(this)[0].files[0]);
