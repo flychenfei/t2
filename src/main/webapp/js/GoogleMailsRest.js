@@ -67,6 +67,11 @@
 				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("GoogleMailLabelsUpdate",null,{id:id});
+          },
+          "btap; .searchCondition":function(){
+                var view = this;
+                var $e = view.$el;
+               $e.find(".search-mails-container").toggleClass("hide");
           }
 
         },

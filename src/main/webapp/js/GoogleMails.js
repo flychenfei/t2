@@ -53,6 +53,11 @@
                 };
                 
                 showEmails.call(view);
+          },
+          "btap; .searchCondition":function () {
+                var view = this;
+                var $e = view.$el;
+                    $e.find(".search-mails-container").toggleClass("hide");
           }
 
         },
@@ -103,7 +108,7 @@
 
                 })
 
-            }
+            },
             
         },
 
