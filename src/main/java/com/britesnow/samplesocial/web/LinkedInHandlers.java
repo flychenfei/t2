@@ -9,6 +9,7 @@ import com.britesnow.samplesocial.service.LinkedInService;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
+import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -41,6 +42,11 @@ public class LinkedInHandlers {
          linkedInService.removeBookmark(user,bookid);
     }
     
+    @WebPost("/linkedin/addbookmark")
+    public void addBookmark(@WebUser User user, @WebParam("id") String bookid) {
+         linkedInService.addBookmark(user,bookid);
+    }
+
     @WebGet("/linkedin/connects")
     public WebResponse getConnects(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
         Map result = linkedInService.getConnections(user, pageIndex, pageSize);
