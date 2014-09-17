@@ -1,7 +1,10 @@
 package com.britesnow.samplesocial.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -26,6 +29,7 @@ public class LinkedInService {
     public static final String CURRENTUSERINFO_ENDPOINT = "http://api.linkedin.com/v1/people/~:(first-name,last-name,headline,site-standard-profile-request:(url),picture-url)";
     public static final String JOBBOOKMARKS_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks:(job:(id,company:(name),description,location-description))";
     public static final String REMOVEJOBBOOKMARK_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks/%s";
+    public static final String ADDJOBBOOKMARK_ENDPOINT = "https://api.linkedin.com/v1/people/~/job-bookmarks";
     public static final String CONNECTION_ENDPOINT = "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,industry)";
     public static final String JOB_ENDPOINT = "http://api.linkedin.com/v1/job-search?keywords=%s";
     public static final String COMPANY_ENDPOINT = "http://api.linkedin.com/v1/company-search?keywords=%s";
@@ -87,11 +91,39 @@ public class LinkedInService {
      * @return  user map
      */
     public void removeBookmark(User user, String bookid) {
-        String text=String.format(REMOVEJOBBOOKMARK_ENDPOINT, bookid);
-        System.out.println(text);
         OAuthRequest request = createRequest(Verb.DELETE, String.format(REMOVEJOBBOOKMARK_ENDPOINT, bookid));
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
+    }
+    
+    /**
+     * add a jobbookmark   by auth user
+     * @param user  login user
+     * @param pageIndex  page index
+     * @param pageSize   page size
+     * @return  user map
+     */
+    public void addBookmark(User user, String bookid) {
+
+    	OAuthRequest request = createRequest(Verb.POST, ADDJOBBOOKMARK_ENDPOINT);
+    	
+    	request.addHeader("Content-Type", "application/json");
+    	request.addHeader("x-li-format", "json");
+    	HashMap jsonMap = new HashMap();
+
+    	JSONObject contentObject = new JSONObject();
+    	contentObject.put("id", bookid);	 
+    	jsonMap.put("job", contentObject);
+    	 
+    	request.addPayload(JSONValue.toJSONString(jsonMap));
+    	 
+    	oAuthService.signRequest(getToken(user),request);
+    	Response response = request.send();
+    	 
+    	// again no body - just headers
+    	System.out.println(response.getBody());
+    	System.out.println(response.getHeaders().toString());
+    	
     }
     
     /**

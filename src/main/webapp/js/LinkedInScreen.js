@@ -78,6 +78,14 @@
             		  showJobBookmarks.call(view);
 	                });
               },
+              "click;.addbookmark":function(e){
+            	  var view = this;
+            	  var param = {};
+            	  param.id = $(e.currentTarget).attr("id");
+            	  app.linkedInApi.addbookmark(param).done(function (result) {
+            		  showJobBookmarks.call(view);
+	                });
+              },
               "click;.userInfo":function(e){
             	  var view = this;
             	  var $detail = $(e.target);
@@ -312,7 +320,14 @@
                         render: function (obj) {
                             return obj.locationDescription || "";
                         }
-                    }
+                    },
+                    {
+                        text: "Action",
+                        render: function (obj) {
+                            return "<a href='#'><div class='addbookmark' id=\""+obj.id+"\">Save as Bookmark</div></a>"
+                        },
+                        attrs: "style='width: 15%' ata-cmd='ADD_BOOKMARK'"
+                    },
                 ],
                 opts: {
                     htmlIfEmpty: "Not Jobs found",
