@@ -24,7 +24,7 @@
 	 		"btap; .addAttachment": function(){
 	 			var view = this;
 	 			var $e = view.$el;
-	 			$e.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
+	 			$e.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment glyphicon glyphicon-remove'></span></div>");
 	 		}, 
 	 		"btap; .removeAttachment": function(event){
 	 			var view = this;
@@ -34,7 +34,7 @@
 	 		"btap; .addCC": function(){
 	 			var view = this;
 	 			var $e = view.$el;
-	 			$e.find(".cc").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+	 			$e.find(".cc").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC glyphicon glyphicon-remove'></span></div>");
 	 		},
 	 		"btap; .removeCC": function(event){
 	 			var view = this;

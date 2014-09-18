@@ -83,21 +83,21 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='icon-edit' data-cmd='EDIT_CALENDAR'></div>";
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-edit' data-cmd='EDIT_CALENDAR'></div>";
                     },
 					attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='icon-remove' data-cmd='DELETE_CALENDAR'></div>";
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-remove' data-cmd='DELETE_CALENDAR'></div>";
                     },
 					attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-share shareCalendar' style='cursor:pointer'></div>";
+                    	return "<div class='glyphicon glyphicon-share shareCalendar' style='cursor:pointer'></div>";
                     },
 					attrs: "style='width: 40px'"
                 }               

@@ -26,19 +26,19 @@
     			},
     			"click;.driveFolderPlus":function(event){
     				var expandIco = $(event.target);
-    				if(expandIco.attr("class")==="icon-plus"){
+    				if(expandIco.attr("class")==="glyphicon glyphicon-plus"){
         				var param = {};
         				param.parentId = $(event.target).closest(".folderitem").attr("data-selfId");
                       	app.googleDriveApi.foldersInfo(param).done(function (result) {
                       		 brite.display("GoogleDriveSubFolder",$(expandIco).closest("div.itemDiv"),{result:result.result});
                           });
-        				expandIco.removeClass("icon-plus").addClass("icon-minus");
-        				expandIco.closest(".folderitem").find(".icon-folder-close").removeClass("icon-folder-close").addClass("icon-folder-open");
-    				}else if(expandIco.attr("class")==="icon-minus"){
+        				expandIco.removeClass("glyphicon glyphicon-plus").addClass("glyphicon glyphicon-minus");
+        				expandIco.closest(".folderitem").find(".glyphicon glyphicon-folder-close").removeClass("glyphicon glyphicon-folder-close").addClass("glyphicon glyphicon-folder-open");
+    				}else if(expandIco.attr("class")==="glyphicon glyphicon-minus"){
     					var subFolder = $(expandIco).closest("div").next();
     					$(subFolder).remove();
-        				expandIco.removeClass("icon-minus").addClass("icon-plus");
-        				expandIco.closest(".folderitem").find(".icon-folder-open").removeClass("icon-folder-open").addClass("icon-folder-close");
+        				expandIco.removeClass("glyphicon glyphicon-minus").addClass("glyphicon glyphicon-plus");
+        				expandIco.closest(".folderitem").find(".glyphicon glyphicon-folder-open").removeClass("glyphicon glyphicon-folder-open").addClass("glyphicon glyphicon-folder-close");
     				}
     			},
     			"click;.foldername":function(event){

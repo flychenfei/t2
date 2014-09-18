@@ -45,7 +45,7 @@
                 var input = $e.find("input[name='email']");
                 if (input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter valid contact name.");
+                    input.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
                 } else {
                     app.googleApi.createContact(data).done(function (extraData) {
                         setTimeout((function () {
