@@ -70,12 +70,24 @@
 	                    showGroups.call(view);
 	                });
               },
-              "click;.bookmark":function(e){
-            	  var view = this;
+              "click;.removebookmark":function(e){
+            	  var view = $(this);
+            	  var $e = (e.currentTarget);
             	  var param = {};
             	  param.id = $(e.currentTarget).attr("id");
             	  app.linkedInApi.removebookmark(param).done(function (result) {
             		  showJobBookmarks.call(view);
+	                });
+              },
+              "click;.bookmark":function(e){
+            	  var view = $(this);
+            	  var $e = (e.currentTarget);
+            	  var param = {};
+            	  param.id = $(e.currentTarget).attr("id");
+            	  app.linkedInApi.removebookmark(param).done(function (result) {
+            		  $(e.currentTarget).html("Save As Bookmark");
+            		  $(e.currentTarget).removeClass("bookmark");
+            		  $(e.currentTarget).addClass("addbookmark");
 	                });
               },
               "click;.addbookmark":function(e){
@@ -83,7 +95,9 @@
             	  var param = {};
             	  param.id = $(e.currentTarget).attr("id");
             	  app.linkedInApi.addbookmark(param).done(function (result) {
-            		  showJobBookmarks.call(view);
+            		  $(e.currentTarget).html("Remove Bookmark");
+            		  $(e.currentTarget).removeClass("addbookmark");
+            		  $(e.currentTarget).addClass("bookmark");
 	                });
               },
               "click;.userInfo":function(e){
@@ -171,7 +185,7 @@
                     {
                         text: "Action",
                         render: function (obj) {
-                            return "<a href='#'><div class='bookmark' id=\""+obj.job.id+"\">Remove Bookmark</div></a>"
+                            return "<a href='#'><div class='removebookmark' id=\""+obj.job.id+"\">Remove Bookmark</div></a>"
                         },
                         attrs: "style='width: 15%' ata-cmd='REMOVE_BOOKMARK'"
                     },
@@ -324,9 +338,9 @@
                     {
                         text: "Action",
                         render: function (obj) {
-                            return "<a href='#'><div class='addbookmark' id=\""+obj.id+"\">Save as Bookmark</div></a>"
+                        	return obj.check;
                         },
-                        attrs: "style='width: 15%' ata-cmd='ADD_BOOKMARK'"
+                        attrs: "style='width: 15%'"
                     },
                 ],
                 opts: {
