@@ -68,7 +68,7 @@
                 var input = $e.find("input[name='newAccessPerson']");
                 if (input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter Access.");
+                    input.closest("div").addClass("has-error").find("span").html("Please enter Access.");
                 } else {
                     app.googleApi.saveShareCalendar(data).done(function (extraData) {
                         setTimeout((function () {
