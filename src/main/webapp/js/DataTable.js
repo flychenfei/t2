@@ -464,14 +464,14 @@
                 html += "</td>";
             }
             if(view.opts.cmdEdit){
-                html += "<td data-cmd='" + view.opts.cmdEdit + "'><div class='icon-edit'/></td>"
+                html += "<td data-cmd='" + view.opts.cmdEdit + "'><div class='glyphicon glyphicon-edit'/></td>"
             }else if(view.opts.withCmdEdit) {
-                html += "<td data-cmd='cmdEdit'><div class='icon-edit'/></td>"
+                html += "<td data-cmd='cmdEdit'><div class='glyphicon glyphicon-edit'/></td>"
             }
             if(view.opts.cmdDelete){
-                html += "<td data-cmd='" + view.opts.cmdDelete + "'><div class='icon-remove'/></td>"
+                html += "<td data-cmd='" + view.opts.cmdDelete + "'><div class='glyphicon glyphicon-remove'/></td>"
             }else if(view.opts.withCmdDelete) {
-                html += "<td data-cmd='cmdDelete'><div class='icon-remove'/></td>"
+                html += "<td data-cmd='cmdDelete'><div class='glyphicon glyphicon-remove'/></td>"
             }
             html += "</tr>";
             return html;
