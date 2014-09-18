@@ -153,28 +153,28 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='icon-envelope'/>"
+                        return "<div class='glyphicon glyphicon-envelope'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='icon-share'/>"
+                        return "<div class='glyphicon glyphicon-share'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='icon-share-alt'/>"
+                        return "<div class='glyphicon glyphicon-share-alt'/>"
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='icon-trash'/>";
+                        return "<div class='glyphicon glyphicon-trash'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL'"
                 }

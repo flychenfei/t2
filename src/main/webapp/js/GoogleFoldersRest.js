@@ -66,14 +66,14 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return obj.type == 'system' ? "" : "<div class='icon-edit' data-cmd='EDIT_FOLDER'></div>";
+                    	return obj.type == 'system' ? "" : "<div class='glyphicon glyphicon-edit' data-cmd='EDIT_FOLDER'></div>";
                     },
 					attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return obj.type == 'system' ? "" : "<div class='icon-remove' data-cmd='DELETE_FOLDER'></div>";
+                    	return obj.type == 'system' ? "" : "<div class='glyphicon glyphicon-remove' data-cmd='DELETE_FOLDER'></div>";
                     },
 					attrs: "style='width: 40px'"
                 }

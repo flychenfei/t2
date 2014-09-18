@@ -58,7 +58,7 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-cog getSetting' style='cursor:pointer'></div>";
+                    	return "<div class='glyphicon glyphicon-cog getSetting' style='cursor:pointer'></div>";
                     },
 					attrs: "style='width: 10%'"
                 }

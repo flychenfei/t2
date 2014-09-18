@@ -1,26 +1,26 @@
 <script id="tmpl-GoogleDriveFiles" type="text/html">
 <div class="GoogleDriveFiles">
   <div>
-	<span class="btn btnPrevious"><i class="icon-arrow-up"></i>Previous</span>
-	<span class="btn btnUpload"><i class="icon-upload"></i>Upload</span>
-	<span class="btn btnCreateFolder"><i class="icon-plus"></i>CreateFolder</span>
+	<span class="btn btn-default btnPrevious"><i class="glyphicon glyphicon-arrow-up"></i>Previous</span>
+	<span class="btn btn-default btnUpload"><i class="glyphicon glyphicon-upload"></i>Upload</span>
+	<span class="btn btn-default btnCreateFolder"><i class="glyphicon glyphicon-plus"></i>CreateFolder</span>
   </div>
       
   <div class="search-form">
   	<input type="text" placeholder="keyword" name="keyword" class="keyword"/>
   	<div class="search-type">
   		<div class="search-type-item">
-	  		<label for="title">Title</label>
+	  		<div class="title">Title</div>
 	  		<input id="title" type="radio" name="searchType" value="title"  checked/>
   		</div>
   		
   		<div class="search-type-item">
-	  		<label for="fullText">Full Text</label>
+	  		<div class="title">Full Text</div>
 	  		<input id="fullText" type="radio" name="searchType" value="fullText"/>
   		</div>
   		
   		<div class="search-type-item">
-	  		<label for="mimeType">mimeType</label>
+	  		<div class="title">mimeType</div>
 	  		<input id="mimeType" type="radio" name="searchType" value="mimeType"/>
   		</div>
   	 </div>
@@ -29,7 +29,7 @@
           <div class="input-append datetimepicker date"> 
             <input type="text" name = "startDate">
             <span class="add-on"> 
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+                <i class="glyphicon glyphicon-calendar"></i>
             </span> 
           </div>
       </div>
@@ -38,7 +38,7 @@
         <div class="input-append datetimepicker date"> 
             <input type="text" name = "endDate">
             <span class="add-on"> 
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+                <i class="glyphicon glyphicon-calendar"></i>
             </span> 
           </div>
       </div>

@@ -43,7 +43,7 @@
                 var input = $e.find("input[name='name']");
                 if (input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter valid folder name.");
+                    input.closest("div").addClass("has-error").find("span").html("Please enter valid folder name.");
                 } else {
                 	if(view.type == 'rest'){
 	                    dfd = app.googleApi.saveLabelRest({id:view.id, name: input.val()});
