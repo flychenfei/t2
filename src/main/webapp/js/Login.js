@@ -58,17 +58,15 @@
 			var $e = view.$el;
 			var username = $e.find("input[name='username']");
 			var password = $e.find("input[name='password']");
-			$e.find("*").removeClass("error");
-			$e.find(".help-inline").empty();
+			$e.find("div.alert").remove();
 			if (username.val() == "") {
 				username.focus();
-				username.closest("div").addClass("error").find("span").html("Please enter valid user name");
-			} else if (password.val() == "") {
+				username.closest('div').append('<div class="alert alert-danger" role="alert">Please enter valid username</div>');
+			}else if (password.val() == "") {
 				password.focus();
-				password.closest("div").addClass("error").find("span").html("Please enter valid password");
-			} else {
+				password.closest('div').append('<div class="alert alert-danger" role="alert">Please enter valid password</div>');
+			}else{
 				login(username.val(), password.val()).done(function(user) {
-					console.log(user);
 					if ( typeof user == "object") {
 						window.location = contextPath;
 					}
