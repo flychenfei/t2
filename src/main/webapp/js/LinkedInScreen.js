@@ -100,7 +100,7 @@
             		  $(e.currentTarget).addClass("bookmark");
 	                });
               },
-              "click;.userInfo":function(e){
+              "click;.glyphicon-user":function(e){
             	  var view = this;
             	  var $detail = $(e.target);
             	  var param = {};
@@ -233,7 +233,7 @@
                     {
                         text: "Info",
                         render: function(){
-                            return "<div class='userInfo icon-user'/>"
+                            return "<div class='glyphicon glyphicon-user'/>"
                         },
                         attrs: "style='width:50px;text-align:center;cursor:pointer'  data-cmd='USER_INFO'"
                     }
