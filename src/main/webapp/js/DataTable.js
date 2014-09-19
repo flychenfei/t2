@@ -276,7 +276,7 @@
                 if (data.hasOwnProperty("numOfPages")) {
                     view.numOfPages = data.numOfPages;
                 } else {
-                    var resultCount = data.result_count || data.result.length;
+                    var resultCount = data.result_count || (typeof data.result == "undefined" ? 0 : data.result.length);
                     view.resultCount = resultCount;
                     view.numOfPages = Math.ceil(resultCount / opts.pageSize);
                 }
