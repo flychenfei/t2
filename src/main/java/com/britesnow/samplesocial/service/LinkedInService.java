@@ -97,7 +97,7 @@ public class LinkedInService {
     public void removeBookmark(User user, String bookid) {
         OAuthRequest request = createRequest(Verb.DELETE, String.format(REMOVEJOBBOOKMARK_ENDPOINT, bookid));
         oAuthService.signRequest(getToken(user), request);
-        Response resp = request.send();
+        request.send();
     }
     
     /**
@@ -107,28 +107,24 @@ public class LinkedInService {
      * @param pageSize   page size
      * @return  user map
      */
-    public void addBookmark(User user, String bookid) {
+	public void addBookmark(User user, String bookid) {
 
-    	OAuthRequest request = createRequest(Verb.POST, ADDJOBBOOKMARK_ENDPOINT);
-    	
-    	request.addHeader("Content-Type", "application/json");
-    	request.addHeader("x-li-format", "json");
-    	HashMap jsonMap = new HashMap();
+		OAuthRequest request = createRequest(Verb.POST, ADDJOBBOOKMARK_ENDPOINT);
 
-    	JSONObject contentObject = new JSONObject();
-    	contentObject.put("id", bookid);	 
-    	jsonMap.put("job", contentObject);
-    	 
-    	request.addPayload(JSONValue.toJSONString(jsonMap));
-    	 
-    	oAuthService.signRequest(getToken(user),request);
-    	Response response = request.send();
-    	 
-    	// again no body - just headers
-    	System.out.println(response.getBody());
-    	System.out.println(response.getHeaders().toString());
-    	
-    }
+		request.addHeader("Content-Type", "application/json");
+		request.addHeader("x-li-format", "json");
+		HashMap jsonMap = new HashMap();
+
+		JSONObject contentObject = new JSONObject();
+		contentObject.put("id", bookid);
+		jsonMap.put("job", contentObject);
+
+		request.addPayload(JSONValue.toJSONString(jsonMap));
+
+		oAuthService.signRequest(getToken(user), request);
+		request.send();
+
+	}
     
     /**
      * get user connections   by auth user
@@ -137,16 +133,16 @@ public class LinkedInService {
      * @param pageSize   page size
      * @return  user map
      */
-    public Map getConnections(User user, Integer pageIndex, Integer pageSize) {
+	public Map getConnections(User user, Integer pageIndex, Integer pageSize) {
 
-        OAuthRequest request = createRequest(Verb.GET, CONNECTION_ENDPOINT);
+		OAuthRequest request = createRequest(Verb.GET, CONNECTION_ENDPOINT);
 
-        addPageParameter(pageIndex, pageSize, request);
-        oAuthService.signRequest(getToken(user),request);
-        Response response = request.send();
-        Map map = JsonUtil.toMapAndList(response.getBody());
-        return map;
-    }
+		addPageParameter(pageIndex, pageSize, request);
+		oAuthService.signRequest(getToken(user), request);
+		Response response = request.send();
+		Map map = JsonUtil.toMapAndList(response.getBody());
+		return map;
+	}
 
     /**
      * get user groups   by auth user
@@ -175,57 +171,62 @@ public class LinkedInService {
      * @return  job map
      */
     public Map searchJobs(User user, Integer pageIndex, Integer pageSize, String keywork) {
-        if (keywork == null) {
-            keywork = "hibernate";
-        }
-        OAuthRequest request = createRequest(Verb.GET, String.format(JOB_ENDPOINT, keywork));
+    	
         int bookmarkIdTotal;
         ArrayList<String>  bookmarkIdArray = new ArrayList<String> ();
         ArrayList<String>  jobsIdArray = new ArrayList<String> ();
         
+        if (keywork == null) {
+            keywork = "hibernate";
+        }
+        
+        OAuthRequest request = createRequest(Verb.GET, String.format(JOB_ENDPOINT, keywork));
+
+        
         //get the job bookmarkIDs list
         JSONArray BookmarkId = (JSONArray)jobmarkId(user).get("values");
         bookmarkIdTotal = Integer.parseInt(String.valueOf(jobmarkId(user).get("_total")));
+        
         for(int i=0;i<bookmarkIdTotal;i++){
-        JSONObject s = BookmarkId.getJSONObject(i); 
-        JSONObject m = (JSONObject)s.get("job");
-        bookmarkIdArray.add(i, String.valueOf(m.get("id")));
+            JSONObject s = BookmarkId.getJSONObject(i); 
+            JSONObject m = (JSONObject)s.get("job");
+            bookmarkIdArray.add(i, String.valueOf(m.get("id")));
         }
+        
         
        //get the job jobsIDs list
         addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
+        
         Map result = JsonUtil.toMapAndList(resp.getBody());
         Map jobs = (Map) result.get("jobs");
         JSONArray list = (JSONArray)jobs.get("values");
-        for(int i=0;i<pageSize;i++){
+        
+        for(int i=0;i<list.size();i++){
             JSONObject s = list.getJSONObject(i);
             jobsIdArray.add(i, String.valueOf(s.get("id")));
         }
-        System.out.println(bookmarkIdArray);
-        System.out.println(jobsIdArray);
         
       //Check if jobsIds have saved
         if(bookmarkIdTotal != 0){
-            for(int i=0;i<pageSize;i++){
+            for(int i=0;i<list.size();i++){
             	for(int j=0;j<bookmarkIdTotal;j++){
-            		if(jobsIdArray.get(i) == jobsIdArray.get(j)){
+            		if(jobsIdArray.get(i).equals(bookmarkIdArray.get(j))){
             			list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"bookmark\" id=\""+jobsIdArray.get(i)+"\">Remove Bookmark</div></a>");
             			break;
             		}
-            		else{
             			list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"addbookmark\" id=\""+jobsIdArray.get(i)+"\">Save as Bookmark</div></a>");
-            			break;
-            		}
             	}
             }
         }
+        
         else{
-        	for(int i=0;i<pageSize;i++){
+        	for(int i=0;i<list.size();i++){
         		list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"addbookmark\" id=\""+jobsIdArray.get(i)+"\">Save as Bookmark</div></a>");
         	}
         }
+        
         return result;
     }
     
