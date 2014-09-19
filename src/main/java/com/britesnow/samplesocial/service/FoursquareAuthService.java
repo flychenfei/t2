@@ -79,6 +79,7 @@ public class FoursquareAuthService implements AuthService {
         try {
 
             api = (FoursquareApi) foursquareApi.clone();
+            api.setVersion("20140606");
             if (soid != null) {
                 api.setoAuthToken(soid.getToken());
             }
