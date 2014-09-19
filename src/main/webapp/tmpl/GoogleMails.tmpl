@@ -1,6 +1,6 @@
 <script id="tmpl-GoogleMails" type="text/html">
   <div class="GoogleMails">
-    <div><span class="btn searchCondition">Search condition</span></div>
+    <div><span class="btn btn-default searchCondition">Search condition</span></div>
     <div class="search-mails-container">
       <div class="control-group">
         Subject: <input type="text"  name="subject"  placeholder="input value"><span class="help-inline" ></span>
@@ -25,7 +25,7 @@
           <div class="input-append datetimepicker date"> 
             <input type="text" name = "startReceivedDate">
             <span class="add-on"> 
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+                <i class="glyphicon glyphicon-calendar"></i>
             </span> 
           </div>
       </div>
@@ -34,7 +34,7 @@
         <div class="input-append datetimepicker date"> 
             <input type="text" name = "endReceivedDate">
             <span class="add-on"> 
-                <i data-time-icon="icon-time" data-date-icon="icon-calendar" ></i> 
+                <i class="glyphicon glyphicon-calendar"></i>
             </span> 
           </div>
       </div>
@@ -42,13 +42,13 @@
         Label: <input type="text"  name="label"  placeholder="input value"><span class="help-inline" ></span>
       </div>
       <div class="control-group">
-        Has Attachment: <input type="checkbox"  class="checkbox" name="hasAttachment" ><span class="help-inline" ></span>
+        <span class="leftLabel">Has Attachment:</span> <input type="checkbox"  class="checkbox" name="hasAttachment" ><span class="help-inline" ></span>
       </div>
       <div class="control-group">
-        Has Circle: <input type="checkbox" class="checkbox"  name="hasCircle" ><span class="help-inline" ></span>
+        <span class="leftLabel">Has Circle:</span> <input type="checkbox" class="checkbox"  name="hasCircle" ><span class="help-inline" ></span>
       </div>
       <div class="control-group">
-        Is Unread: <input type="checkbox" class="checkbox"  name="unread" ><span class="help-inline" ></span>
+        <span class="leftLabel">Is Unread:</span> <input type="checkbox" class="checkbox"  name="unread" ><span class="help-inline" ></span>
       </div>
       <div class="control-group">
         Attachment Name: <input type="text"  name="attachmentName"  placeholder="input value"><span class="help-inline" ></span>
@@ -78,7 +78,7 @@
       
       
       <div>
-        <a href="#" class="btn inputValueBtn">search</a>
+        <a href="#" class="btn btn-default inputValueBtn">search</a>
       </div>
     </div>
     <div class="imapMails-folder">

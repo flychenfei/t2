@@ -16,14 +16,14 @@
 							{{#equal type "dir"}}
 							<div>
 								<span data-path="{{path}}" data-type="{{type}}" class="filename">
-								  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
-								  <i class="download icon-download"></i>
+								  <i class="glyphicon glyphicon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+								  <i class="download glyphicon glyphicon-circle-arrow-down"></i>
 								</span>
 							</div>
 							{{else}}
 							<div>
 								<span data-path="{{path}}" data-type="{{type}}" class="filename">
-									<i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+									<i class="glyphicon glyphicon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
 								</span>
 							</div>
 							{{/equal}}
@@ -65,13 +65,13 @@
 			{{#equal type "dir"}}
 			<div>
 				<span data-path="{{path}}" data-type="{{type}}" class="filename">
-				  <i class="icon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+				  <i class="glyphicon glyphicon-folder-close fileitem"></i><a href="javascript:void(0)">{{name}}</a>
 				</span>
 			</div>
 			{{else}}
 			<div>
 				<span data-path="{{path}}" data-type="{{type}}" class="filename">
-					<i class="icon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
+					<i class="glyphicon glyphicon-file fileitem"></i><a href="javascript:void(0)">{{name}}</a>
 				</span>
 			</div>
 			{{/equal}}

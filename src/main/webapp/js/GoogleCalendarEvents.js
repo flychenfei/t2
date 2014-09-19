@@ -161,14 +161,14 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-edit editEvent'></div>";
+                    	return "<div class='glyphicon glyphicon-edit editEvent'></div>";
                     },
 					attrs: "style='width: 10%'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='icon-remove deleteEvent' data-cmd='DELETE_CALENDAR'></div>";
+                    	return "<div class='glyphicon glyphicon-remove deleteEvent' data-cmd='DELETE_CALENDAR'></div>";
                     },
 					attrs: "style='width: 10%'"
                 },

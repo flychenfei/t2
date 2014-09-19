@@ -51,14 +51,14 @@
                         {name:"searchContact",label:"Search Contact"}
                     ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
-                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
+                    $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
                 }else if(menu == "drive"){
                 	var list = [
                                 {name:"file",label:"Files"},
                                 {name:"trash",label:"Trash"}
                             ];
                     brite.display("Dropdown",null,{$target:$li,list:list});
-                    $li.find("i").removeClass("icon-chevron-down").addClass("icon-chevron-up");
+                    $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
                 }
               }
             },
@@ -68,7 +68,7 @@
                     var view = this;
                     var $e = view.$el;
                     var $li = $e.find("li[data-nav='actions']");
-                    $li.find("i").removeClass("icon-chevron-up").addClass("icon-chevron-down");
+                    $li.find("i").removeClass("glyphicon glyphicon-chevron-up").addClass("glyphicon glyphicon-chevron-down");
                 },
                 "DO_ON_DROP_DOWN_CLICK":function(event, name) {
                     switch (name) {
