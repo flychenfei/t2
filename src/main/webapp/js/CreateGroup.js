@@ -39,7 +39,7 @@
                 var input = $e.find("input[name='name']");
                 if (input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter valid group name.");
+                    input.closest("div").addClass("has-error").find("span").html("Please enter valid group name.");
                 } else {
                     if(view.groupId) {
                         dfd = app.googleApi.createGroup({groupId:view.groupId,etag:view.etag, groupName: input.val()})

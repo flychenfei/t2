@@ -5,16 +5,17 @@
 		<h2>Create New Access Person</h2>
 
 		<div class="form form-horizontal">
-			<div class="control-group ">
-				<label class="control-label">
+			<div class="form-group ">
+				<label class="col-sm-4 control-label">
 					New Access Person:
 				</label>
 				<div class="controls">
-					<input type ="text" class = "newAccessPerson" name = "newAccessPerson" />
+					<input type ="text"  class="form-control newAccessPerson" name = "newAccessPerson" />
+					<span class="help-inline"></span>
 				</div>
 			</div>
-			<div class="control-group">
-				<lable class="control-label">
+			<div class="form-group">
+				<lable class="col-sm-4 control-label">
 					role:
 				</lable>
 				<div class = "controls">
@@ -27,8 +28,8 @@
 					</select>
 				</div>
 			</div>		
-			<div class="control-group">
-				<lable class="control-label">
+			<div class="form-group">
+				<lable class="col-sm-4 control-label">
 					type:
 				</lable>
 				<div class = "controls">
@@ -40,8 +41,8 @@
 					</select>
 				</div>
 			</div>
-			<div class="control-group">
-				<lable class="control-label">
+			<div class="form-group">
+				<lable class="col-sm-4 control-label">
 					shared:
 				</lable>
 				<div class="controls shared">
@@ -50,7 +51,7 @@
 			</div>		
 			<div class="form-actions">
 				<a href="#" class="btn btn-primary ShareCalendarBtn">Save</a>
-				<a href="#" class="btn cancelBtn">Close</a>
+				<a href="#" class="btn btn-default cancelBtn">Close</a>
 			</div>
 		</div>
 	</div>
@@ -59,6 +60,6 @@
 <script id="tmpl-ShareCalendar-item" type="text/html">
 	<div class="ShareCalendar-item" data-id={{ruleId}}>
 		<span class="sharedVal">{{sharedVal}}</span>
-		<div class ="icon-remove sharedDel"></div>
+		<div class ="glyphicon glyphicon-remove sharedDel"></div>
 	</div>
 </script>
