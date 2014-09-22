@@ -53,7 +53,7 @@
                 "DO_ON_DROPDOWN_CLOSE":function(){
                     var view = this;
                     var $e = view.$el;
-                    var $li = $e.find("li[data-nav='actions']");
+                    var $li = $e.find("li[data-nav='search']");
                     $li.find("i").removeClass("glyphicon glyphicon-chevron-up").addClass("glyphicon glyphicon-chevron-down");
                 },
                 "DO_ON_DROP_DOWN_CLICK":function(event, name) {
