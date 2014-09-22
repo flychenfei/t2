@@ -130,10 +130,12 @@
                             brite.display("InputValue", ".MainScreen",{title:'Search Company',callback:function(keywork){
                                 showCompanys(keywork);
                             }});
+                            break;
                         case "searchPeople":
                             brite.display("InputValue", ".MainScreen",{title:'Search People',callback:function(keywork){
                                 showPeoples(keywork);
                             }});
+                            break;
                         default:
                     }
                 }
