@@ -43,20 +43,25 @@
             		}else if(menu == "dropbox"){
                         brite.display("DropboxScreen");
             		}else if(menu == "oauth"){
-            		  var list = [
-            		    {name:"linkedin",label:"Connect to LinkedIn"},
-            		    {name:"google",label:"Connect to Google"},
-            		    {name:"salesforce",label:"Connect to SalesForce"},
-            		    {name:"github",label:"Connect to Github"},
-            		    {name:"dropbox",label:"Connect to Dropbox"},
-            		    {name:"twitter",label:"Connect to Twitter"},
-            		    {name:"facebook",label:"Connect to Facebook"},
-            		    {name:"foursquare",label:"Connect to FourSquare"},
-            		    {name:"live",label:"Connect to Live"},
-            		    {name:"yahoo",label:"Connect to Yahoo"}
-            		  ];
-            		  brite.display("Dropdown",null,{$target:$li,list:list});
-            		  $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
+                  if($li.find("i").hasClass('glyphicon glyphicon-chevron-down')){
+                    var list = [
+                      {name:"linkedin",label:"Connect to LinkedIn"},
+                      {name:"google",label:"Connect to Google"},
+                      {name:"salesforce",label:"Connect to SalesForce"},
+                      {name:"github",label:"Connect to Github"},
+                      {name:"dropbox",label:"Connect to Dropbox"},
+                      {name:"twitter",label:"Connect to Twitter"},
+                      {name:"facebook",label:"Connect to Facebook"},
+                      {name:"foursquare",label:"Connect to FourSquare"},
+                      {name:"live",label:"Connect to Live"},
+                      {name:"yahoo",label:"Connect to Yahoo"}
+                    ];
+                    brite.display("Dropdown",null,{$target:$li,list:list});
+                    $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
+                  }else{
+                    $e.closest('body').find(".Dropdown").remove();
+                    $li.find("i").removeClass("glyphicon glyphicon-chevron-up").addClass("glyphicon glyphicon-chevron-down");
+                  }
             		}
 
             	}
