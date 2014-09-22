@@ -68,7 +68,9 @@
                     var view = this;
                     var $e = view.$el;
                     var $li = $e.find("li[data-nav='actions']");
+                    var $Li = $e.find("li[data-nav='drive']");
                     $li.find("i").removeClass("glyphicon glyphicon-chevron-up").addClass("glyphicon glyphicon-chevron-down");
+                    $Li.find("i").removeClass("glyphicon glyphicon-chevron-up").addClass("glyphicon glyphicon-chevron-down");
                 },
                 "DO_ON_DROP_DOWN_CLICK":function(event, name) {
                     switch (name) {
