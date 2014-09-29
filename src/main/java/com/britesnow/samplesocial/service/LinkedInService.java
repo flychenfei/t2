@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -170,31 +171,20 @@ public class LinkedInService {
      * @param keywork    keywork to search
      * @return  job map
      */
-    public Map searchJobs(User user, Integer pageIndex, Integer pageSize, String keywork) {
+	@SuppressWarnings("unchecked")
+	public Map searchJobs(User user, Integer pageIndex, Integer pageSize, String keywork) {
     	
-        int bookmarkIdTotal;
-        ArrayList<String>  bookmarkIdArray = new ArrayList<String> ();
-        ArrayList<String>  jobsIdArray = new ArrayList<String> ();
-        
+    	ArrayList<JSONObject> bookmark = new ArrayList<JSONObject>();
+    	ArrayList<JSONObject> bookmarkIdTotal = new ArrayList<JSONObject>();
+    	ArrayList<JSONObject> resultBookmark = new ArrayList<JSONObject>();
+    	
         if (keywork == null) {
             keywork = "hibernate";
         }
         
         OAuthRequest request = createRequest(Verb.GET, String.format(JOB_ENDPOINT, keywork));
-
         
-        //get the job bookmarkIDs list
-        JSONArray BookmarkId = (JSONArray)jobmarkId(user).get("values");
-        bookmarkIdTotal = Integer.parseInt(String.valueOf(jobmarkId(user).get("_total")));
-        
-        for(int i=0;i<bookmarkIdTotal;i++){
-            JSONObject s = BookmarkId.getJSONObject(i); 
-            JSONObject m = (JSONObject)s.get("job");
-            bookmarkIdArray.add(i, String.valueOf(m.get("id")));
-        }
-        
-        
-       //get the job jobsIDs list
+        //get the job jobsIDs list
         addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
         Response resp = request.send();
@@ -203,29 +193,42 @@ public class LinkedInService {
         Map jobs = (Map) result.get("jobs");
         JSONArray list = (JSONArray)jobs.get("values");
         
-        for(int i=0;i<list.size();i++){
-            JSONObject s = list.getJSONObject(i);
-            jobsIdArray.add(i, String.valueOf(s.get("id")));
+        if(list == null){
+        	return result;
         }
         
-      //Check if jobsIds have saved
-        if(bookmarkIdTotal != 0){
-            for(int i=0;i<list.size();i++){
-            	for(int j=0;j<bookmarkIdTotal;j++){
-            		if(jobsIdArray.get(i).equals(bookmarkIdArray.get(j))){
-            			list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"bookmark\" id=\""+jobsIdArray.get(i)+"\">Remove Bookmark</div></a>");
-            			break;
-            		}
-            			list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"addbookmark\" id=\""+jobsIdArray.get(i)+"\">Save as Bookmark</div></a>");
-            	}
-            }
+        resultBookmark = (ArrayList<JSONObject>) list.stream().collect(Collectors.toList());
+        
+
+        //get the job bookmarkIDs list. And if it's null,just return map
+        JSONArray BookmarkId = (JSONArray)jobmarkId(user).get("values");
+        if(BookmarkId == null){
+        	resultBookmark.stream().forEach(p -> {
+    			p.put("check", "addbookmark");
+    			p.put("mark", "Save as Bookmark");
+        	});
+        	return result;
         }
         
-        else{
-        	for(int i=0;i<list.size();i++){
-        		list.getJSONObject(i).put("check", "<a href=\"#\"><div class=\"addbookmark\" id=\""+jobsIdArray.get(i)+"\">Save as Bookmark</div></a>");
-        	}
-        }
+        bookmark = (ArrayList<JSONObject>) BookmarkId.stream().collect(Collectors.toList());
+        bookmark.stream().forEach(p -> {
+        	bookmarkIdTotal.add((JSONObject) p.get("job"));
+        });
+        
+        
+        //do a mark if it has saved
+        	resultBookmark.stream().forEach(p1 -> {
+        		bookmarkIdTotal.stream().forEach(p2 -> {
+        			if((p1.get("id")).equals  (p2.get("id"))){
+        				p1.put("check", "bookmark");
+        				p1.put("mark", "Remove Bookmark");
+        			}
+        		});
+        		if(!p1.containsKey("check")){
+        			p1.put("check", "addbookmark");
+        			p1.put("mark", "Save as Bookmark");
+        		}
+        	});
         
         return result;
     }

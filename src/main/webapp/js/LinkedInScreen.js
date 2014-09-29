@@ -340,7 +340,7 @@
                     {
                         text: "Action",
                         render: function (obj) {
-                        	return obj.check;
+                        	return "<a href='#'><div class='"+obj.check+"' id=\""+obj.id+"\">"+obj.mark+"</div></a>";
                         },
                         attrs: "style='width: 15%'"
                     },
