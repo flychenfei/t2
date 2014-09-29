@@ -34,6 +34,7 @@ public class TwitterExample
     System.out.println("And paste the verifier here");
     System.out.print(">>");
     Verifier verifier = new Verifier(in.nextLine());
+    in.close();
     System.out.println();
 
     // Trade the Request Token and Verfier for the Access Token
