@@ -4,6 +4,16 @@
 .classpath
 .project
 .settings
+
+# remove intellij stuff
+out/
+*.iml
+.idea/
+
+# Ignore sublime text files
+*.sublime-project
+*.sublime-workspace
+
 # since we use Maven, ant buil.xml will be private for each developers
 #  (if they need their own scripts to do some stuff)
 build.xml
@@ -18,7 +28,3 @@ src/main/webapp/css/
 apps/
 jcruncher-starter.bat
 jcruncher-starter.sh
-
-out/
-.idea/
-/*.iml
