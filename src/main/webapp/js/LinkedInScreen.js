@@ -14,7 +14,9 @@
             postDisplay:function (data, config) {
                 var view = this;
                 var $e = view.$el;
-                showCurrentUserInfo.call(view);
+                app.linkedInApi.getCurrentUserInfo().done(function (result) {
+            		brite.display("LinkedInCurrentUserInfo", ".LinkedInScreen-content", {result:result.result});
+            	});
             },
             events:{
               "btap;.nav li":function(e){
@@ -26,11 +28,13 @@
                 
                 var menu = $li.attr("data-nav");
                 if(menu == "currentUserInfo"){
-                	showCurrentUserInfo.call(view);
+                	app.linkedInApi.getCurrentUserInfo().done(function (result) {
+                		brite.display("LinkedInCurrentUserInfo", ".LinkedInScreen-content", {result:result.result});
+                	});
                 }else if(menu == "jobbookmarks"){
-                  showJobBookmarks.call(view);
+                  brite.display("LinkedInJobBookmarks");
                 }else if(menu == "connections"){
-                  showConnections.call(view);
+                  brite.display("LinkedInConnections");
                 }else if(menu == "search"){
                     var list = [
                         {name:"searchJobs",label:"Search Jobs"},
@@ -40,7 +44,7 @@
                     brite.display("Dropdown",null,{$target:$li,list:list});
                     $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
                 }else if(menu == "groups"){
-                    showGroups.call(view);
+                	brite.display("LinkedInGroups");
                 }
               },
               "click;.details":function(e){
@@ -76,7 +80,7 @@
             	  var param = {};
             	  param.id = $(e.currentTarget).attr("id");
             	  app.linkedInApi.removebookmark(param).done(function (result) {
-            		  showJobBookmarks.call(view);
+            		  brite.display("LinkedInJobBookmarks");
 	                });
               },
               "click;.bookmark":function(e){
@@ -123,17 +127,17 @@
                     switch (name) {
                         case "searchJobs":
                             brite.display("InputValue",".MainScreen", {title:'Search Job',callback:function(keywork){
-                                showJobs(keywork);
+                            	brite.display("LinkedInJobs",".LinkedInScreen-content",{keywork:keywork.name});
                             }});
                             break;
                         case "searchCompany":
                             brite.display("InputValue", ".MainScreen",{title:'Search Company',callback:function(keywork){
-                                showCompanys(keywork);
+                            	brite.display("LinkedInCompanys",".LinkedInScreen-content",{keywork:keywork.name});
                             }});
                             break;
                         case "searchPeople":
                             brite.display("InputValue", ".MainScreen",{title:'Search People',callback:function(keywork){
-                                showPeoples(keywork);
+                            	brite.display("LinkedInPeoples",".LinkedInScreen-content",{keywork:keywork.name});
                             }});
                             break;
                         default:
@@ -145,285 +149,5 @@
             }
             
         });
-        
-        function showCurrentUserInfo() {
-        	app.linkedInApi.getCurrentUserInfo().done(function (result) {
-        		brite.display("LinkedInCurrentUserInfo", ".LinkedInScreen-content", {result:result.result});
-        	});
-        }
- 
-        function showJobBookmarks() {
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: app.linkedInApi.getJobBookmarks},
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 5%'"
-                    },
-                    {
-                        text: "company",
-                        render: function (obj) {
-                            return obj.job.company.name;
-                        },
-                        attrs: "style='width: 20%'"
-
-                    },
-                    {
-                        text: "Description",
-                        render: function (obj) {
-                            return obj.job.description
-                        },
-                        attrs: "style='width: 45%'"
-                    },
-                    {
-                        text: "Location",
-                        render: function (obj) {
-                            return obj.job.locationDescription
-                        }
-                    },
-                    {
-                        text: "Action",
-                        render: function (obj) {
-                            return "<a href='#'><div class='removebookmark' id=\""+obj.job.id+"\">Remove Bookmark</div></a>"
-                        },
-                        attrs: "style='width: 15%' ata-cmd='REMOVE_BOOKMARK'"
-                    },
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Job Bookmarks found",
-                    withPaging: true,
-                    withCmdDelete:false,
-                }
-            });
-        }
-        
-        function showConnections() {
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: app.linkedInApi.getConnections},
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 5%'"
-                    },
-                    {
-                        text: "First Name",
-                        render: function (obj) {
-                            return obj.firstName;
-                        },
-                        attrs: "style='width: 20%'"
-
-                    },
-                    {
-                        text: "Last Name",
-                        render: function (obj) {
-                            return obj.lastName
-                        },
-                        attrs: "style='width: 25%'"
-                    },
-                    {
-                        text: "Industry",
-                        render: function (obj) {
-                            return obj.industry || "";
-                        }
-                    },
-                    {
-                        text: "Info",
-                        render: function(){
-                            return "<div class='glyphicon glyphicon-user'/>"
-                        },
-                        attrs: "style='width:50px;text-align:center;cursor:pointer'  data-cmd='USER_INFO'"
-                    }
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Connections found",
-                    withPaging: true,
-                    cmdDelete: "DELETE_CONNECTIONS"
-                }
-            });
-        }
-
-        function showGroups() {
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: app.linkedInApi.getGroups},
-                rowAttrs: function (obj) {
-                    return "data-groupId='{0}'".format(obj.group.id)
-                },
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 10%'"
-                    },
-                    {
-                        text: "GroupId",
-                        render: function (obj) {
-                        	return obj.group.id;
-                        },
-                        attrs: "style='width: 15%'"
-                    },
-                    {
-                        text: "Name",
-                        render: function (obj) {
-                            return obj.group.name;
-                        },
-                        attrs: "style='width: 20%'"
-
-                    },
-                    {
-                        text: "MembershipState",
-                        render: function (obj) {
-                            return obj.membershipState.code;
-                        },
-                        attrs: "style='width: 15%'"
-
-                    },
-                    {
-                        text:"Operator",
-                        attrs: "style='width:40%; word-break: break-word; cursor:pointer;'",
-                        render: function (obj) {
-                        	var functionString = "<span><a src=\"#\" class=\"details\">"+"details"+"</a> </span><span><a src=\"#\" class=\"leave\">"+"leave"+"</a> </span>";
-                            return functionString;
-                        }
-                    }
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Groups found",
-                    withPaging: true,
-                    withCmdDelete:false
-                }
-            });
-        }
-        
-        function showJobs(keywork) {
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: function(params){
-                    params.keywork = keywork.name;
-                    return app.linkedInApi.searchJobs(params);
-                }},
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 5%'"
-                    },
-                    {
-                        text: "Company",
-                        render: function (obj) {
-                            return obj.company.name;
-                        },
-                        attrs: "style='width: 20%'"
-
-                    },
-                    {
-                        text: "Description",
-                        render: function (obj) {
-                            return obj.descriptionSnippet;
-                        },
-                        attrs: "style='width: 50%'"
-                    },
-                    {
-                        text: "Location",
-                        render: function (obj) {
-                            return obj.locationDescription || "";
-                        }
-                    },
-                    {
-                        text: "Action",
-                        render: function (obj) {
-                        	return "<a href='#'><div class='"+obj.check+"' id=\""+obj.id+"\">"+obj.mark+"</div></a>";
-                        },
-                        attrs: "style='width: 15%'"
-                    },
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Jobs found",
-                    withPaging: true,
-                    withCmdDelete:false
-                }
-            });
-        }
-
-        function showCompanys(keywork) {
-            var view = this;
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: function(params){
-                    params.keywork = keywork.name;
-                   return app.linkedInApi.searchCompanys(params);
-                }},
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 5%'"
-                    },
-                    {
-                        text: "Name",
-                        render: function (obj) {
-                            return obj.name;
-                        },
-                        attrs: "style='width: 20%'"
-
-                    }
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Companys found",
-                    withPaging: true,
-                    withCmdDelete:false
-                }
-            });
-        }
-
-        function showPeoples(keywork) {
-            var view = this;
-            brite.display("DataTable", ".LinkedInScreen-content",{
-                dataProvider: {list: function(params){
-                    params.keywork = keywork.name;
-                   return app.linkedInApi.searchPeoples(params);
-                }},
-                columnDef: [
-                    {
-                        text: "#",
-                        render: function (obj, idx) {
-                            return idx + 1
-                        },
-                        attrs: "style='width: 5%'"
-                    },
-                    {
-                        text: "First Name",
-                        render: function (obj) {
-                            return obj.firstName;
-                        },
-                        attrs: "style='width: 30%'"
-
-                    },
-                    {
-                        text: "Last Name",
-                        render: function (obj) {
-                            return obj.lastName;
-                        }
-
-                    }
-                ],
-                opts: {
-                    htmlIfEmpty: "Not Peoples found",
-                    withPaging: true,
-                    withCmdDelete:false
-                }
-            });
-        }
     })(jQuery);
-
-
 })();
