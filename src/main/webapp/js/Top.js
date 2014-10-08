@@ -43,7 +43,7 @@
             		}else if(menu == "dropbox"){
                         brite.display("DropboxScreen");
             		}else if(menu == "oauth"){
-                  if($li.find("i").hasClass('glyphicon glyphicon-chevron-down')){
+                  if($li.find("i").hasClass('glyphicon-chevron-down')){
                     var list = [
                       {name:"linkedin",label:"Connect to LinkedIn"},
                       {name:"google",label:"Connect to Google"},
