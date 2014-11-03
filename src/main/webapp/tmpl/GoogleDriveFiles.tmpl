@@ -1,53 +1,59 @@
 <script id="tmpl-GoogleDriveFiles" type="text/html">
 <div class="GoogleDriveFiles">
-  <div>
-	<span class="btn btn-default btnPrevious"><i class="glyphicon glyphicon-arrow-up"></i>Previous</span>
-	<span class="btn btn-default btnUpload"><i class="glyphicon glyphicon-upload"></i>Upload</span>
-	<span class="btn btn-default btnCreateFolder"><i class="glyphicon glyphicon-plus"></i>CreateFolder</span>
-  </div>
-      
-  <div class="search-form">
-  	<div><input type="text" placeholder="keyword" name="keyword" class="keyword"/></div>
-  	<div class="search-type">
-  		<div class="search-type-item">
-	  		<div class="title">Title</div>
-	  		<input id="title" type="radio" name="searchType" value="title"  checked/>
-  		</div>
-  		
-  		<div class="search-type-item">
-	  		<div class="title">Full Text</div>
-	  		<input id="fullText" type="radio" name="searchType" value="fullText"/>
-  		</div>
-  		
-  		<div class="search-type-item">
-	  		<div class="title">mimeType</div>
-	  		<input id="mimeType" type="radio" name="searchType" value="mimeType"/>
-  		</div>
-  	 </div>
-  	 <div class="date-group">
-            Start  Date
-          <div class="input-append datetimepicker date"> 
-            <input type="text" name = "startDate">
-            <span class="add-on"> 
-                <i class="glyphicon glyphicon-calendar"></i>
-            </span> 
-          </div>
-      </div>
-      <div class="date-group">
-            End   Date
-        <div class="input-append datetimepicker date"> 
-            <input type="text" name = "endDate">
-            <span class="add-on"> 
-                <i class="glyphicon glyphicon-calendar"></i>
-            </span> 
-          </div>
-      </div>
-  	<div>
-  		<input type="button" class="search" value="Search" class="btn btn-default"/>
-  	</div>
-  </div>
-  <div class="files-container">
-    
-  </div>
+	<div>
+		<span class="btn btn-default btnPrevious"><i class="glyphicon glyphicon-arrow-up"></i>Previous</span>
+		<span class="btn btn-default btnUpload"><i class="glyphicon glyphicon-upload"></i>Upload</span>
+		<span class="btn btn-default btnCreateFolder"><i class="glyphicon glyphicon-plus"></i>CreateFolder</span>
+	</div>
+			
+	<div class="search-form">
+		<div>
+			<input type="text" placeholder="keyword" name="keyword" class="keyword"/>
+			<div class="search-type">
+				<div class="search-type-item">
+					<div class="title">Title</div>
+					<input id="title" type="radio" name="searchType" value="title"  checked/>
+				</div>
+					
+				<div class="search-type-item">
+					<div class="title">Full Text</div>
+					<input id="fullText" type="radio" name="searchType" value="fullText"/>
+				</div>
+					
+				<div class="search-type-item">
+					<div class="title">mimeType</div>
+					<input id="mimeType" type="radio" name="searchType" value="mimeType"/>
+				</div>
+			</div>
+		</div>
+
+		<div class="date-container">
+			<div class="date-group">
+				Start Date :
+				<div class="input-append datetimepicker date"> 
+					<input type="text" name = "startDate">
+						<span class="add-on"> 
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span> 
+				</div>
+			</div>
+			<div class="date-group">
+				End Date:
+				<div class="input-append datetimepicker date"> 
+					<input type="text" name = "endDate">
+					<span class="add-on"> 
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span> 
+				</div>
+			</div>
+		</div>
+		
+		<div>
+			<input type="button" class="search" value="Search" class="btn btn-default"/>
+		</div>
+	</div>
+	<div class="files-container">
+		
+	</div>
 </div>
 </script>
