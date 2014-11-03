@@ -291,8 +291,7 @@ public class GmailRestService {
                                     body = part.getParts().get(1).getBody().getData();
                                 }
                             }
-                            
-                            
+
                             String attachmentId = part.getBody().getAttachmentId();
                             if(attachmentId != null && !attachmentId.equals("")){
                                 Map map = new HashMap();
@@ -314,10 +313,8 @@ public class GmailRestService {
                 mailInfo.setContent(getContent(body));
             }
             mailInfo.setAttachments(attachments);
-            
         }
-        
-        
+
     	return mailInfo;
     }
     
@@ -398,13 +395,7 @@ public class GmailRestService {
             raw.append("\r\n");
             raw.append("--splitline--");
         }
-        
-        
-        
-        System.out.println(raw);
-        
-        
-        
+
         String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
         message.setRaw(encodedEmail);
         gmail.users().messages().send("me", message).execute();
@@ -456,8 +447,6 @@ public class GmailRestService {
         }else{
             labelsList = cacheLabels;
         }
-        
-        
         return labelsList;
     }
     
@@ -537,7 +526,7 @@ public class GmailRestService {
     }
     
     private String getContent(String body){
-        
+
         body.replaceAll("-", "+");
         body.replaceAll("_", "/");
         body.replaceAll(",", "=");

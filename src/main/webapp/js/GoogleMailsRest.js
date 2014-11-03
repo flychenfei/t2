@@ -146,7 +146,7 @@
                         var recDate = new Date(obj.date);
                         return recDate.format("yyyy-MM-dd hh:mm:ss");
                     },
-                    attrs: "style='width: 20%'"
+                    attrs: "style='width: 15%'"
 
                 },
                 {
@@ -154,7 +154,7 @@
                     render: function (obj) {
                         return obj.from;
                     },
-                    attrs: "style='width: 25%'"
+                    attrs: "style='width: 15%'"
                 },
                 {
                     text: "Subject",
@@ -209,7 +209,7 @@
                     render: function(){
                         return "<a href-'javascript:void(0)' class='currentThread'>Current Thread</a>";
                     },
-                    attrs: "style='width:140px;cursor:pointer'"
+                    attrs: "style='width:120px;cursor:pointer'"
                 }
             ],
             opts: {
