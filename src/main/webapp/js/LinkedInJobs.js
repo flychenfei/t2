@@ -6,21 +6,12 @@
         },
 
         postDisplay: function (data, config) {
-        	var view = this;
-        	showJobs(data.keywork).call(view);
-        },
-
-        events: {
-        	
-        },
-        docEvents: {
-           
-        },
-        daoEvents: {
+        	showJobs.call(this, data.keywork);
         }
     });
     
     function showJobs(keywork) {
+    	var view = this;
         brite.display("DataTable", ".LinkedInScreen-content",{
             dataProvider: {list: function(params){
                 params.keywork = keywork.name;
@@ -30,7 +21,7 @@
                 {
                     text: "#",
                     render: function (obj, idx) {
-                        return idx + 1
+                        return idx + 1;
                     },
                     attrs: "style='width: 5%'"
                 },
@@ -61,7 +52,7 @@
                     	return "<a href='#'><div class='"+obj.check+"' id=\""+obj.id+"\">"+obj.mark+"</div></a>";
                     },
                     attrs: "style='width: 15%'"
-                },
+                }
             ],
             opts: {
                 htmlIfEmpty: "Not Jobs found",

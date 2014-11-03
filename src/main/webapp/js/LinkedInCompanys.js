@@ -7,16 +7,7 @@
 
         postDisplay: function (data, config) {
         	var view = this;
-        	showCompanys(data.keywork).call(view);
-        },
-
-        events: {
-        	
-        },
-        docEvents: {
-           
-        },
-        daoEvents: {
+        	showCompanys.call(this, data.keywork);
         }
     });
     

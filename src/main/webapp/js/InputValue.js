@@ -62,7 +62,6 @@
                             var fieldVal = input.val();
                             if(fieldVal !== ""){
                                result[val.name] = fieldVal;
-                               console.log(result);
                             }
                         }
                     }

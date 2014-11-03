@@ -27,24 +27,23 @@ public class LinkedInHandlers {
     @WebGet("/linkedin/jobbookmarks")
     public WebResponse getJobBookmarks(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
         Map result = linkedInService.getJobBookmarks(user, pageIndex, pageSize);
-        WebResponse resp;
         if(result.get("values") != null){
-            resp = WebResponse.success(result.get("values"));
+        	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
         }else{
-            resp = WebResponse.success(new ArrayList());
+        	return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
         }
-        resp.set("result_count", result.get("_total"));
-        return resp;
     }
     
     @WebGet("/linkedin/removebookmark")
-    public void removeBookmark(@WebUser User user, @WebParam("id") String bookid) {
+    public WebResponse removeBookmark(@WebUser User user, @WebParam("id") String bookid) {
          linkedInService.removeBookmark(user,bookid);
+         return WebResponse.success();
     }
     
     @WebPost("/linkedin/addbookmark")
-    public void addBookmark(@WebUser User user, @WebParam("id") String bookid) {
+    public WebResponse addBookmark(@WebUser User user, @WebParam("id") String bookid) {
          linkedInService.addBookmark(user,bookid);
+         return WebResponse.success();
     }
 
     @WebGet("/linkedin/connects")

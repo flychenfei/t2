@@ -7,16 +7,7 @@
 
         postDisplay: function (data, config) {
         	var view = this;
-        	showPeoples(data.keywork).call(view);
-        },
-
-        events: {
-        	
-        },
-        docEvents: {
-           
-        },
-        daoEvents: {
+        	showPeoples.call(this, data.keywork);
         }
     });
     
@@ -25,7 +16,7 @@
         brite.display("DataTable", ".LinkedInScreen-content",{
             dataProvider: {list: function(params){
                 params.keywork = keywork.name;
-               return app.linkedInApi.searchPeoples(params);
+                return app.linkedInApi.searchPeoples(params);
             }},
             columnDef: [
                 {
@@ -40,15 +31,15 @@
                     render: function (obj) {
                         return obj.firstName;
                     },
-                    attrs: "style='width: 30%'"
+                    attrs: "style='width: 40%'"
 
                 },
                 {
                     text: "Last Name",
                     render: function (obj) {
                         return obj.lastName;
-                    }
-
+                    },
+                    attrs: "style='width: 45%'"
                 }
             ],
             opts: {
