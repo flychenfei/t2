@@ -1,143 +1,130 @@
 
-.dataTable  h3{
-  border: none;
-}
-.dataTable table{
-  border:1px solid #000;
-}
-.dataTable  .listHead{
-  margin-bottom:0px;
-  border-collapse:collapse;
-  border:1px solid #000;
-}
-.dataTable .listHead th{
-  background:#cccccc;
-  border:1px solid #000;
-}
-.dataTable .listItem{
-  overflow:auto;
-  width: 100%;
-  margin-bottom: 5px;
-  border-collapse:collapse;
-  border:1px solid #000;
-}
-.dataTable .listItem td{
-  border:1px solid #000;
+.dataTable{
+	h3{
+		border: none;
+	}
+	table{
+		border:1px solid #000;
+	}
+	.listHead{
+		margin-bottom:0px;
+		border-collapse:collapse;
+		border:1px solid #000;
+		th{
+			background:#cccccc;
+			border:1px solid #000;
+		}
+	}
+	.listItem{
+		overflow:auto;
+		width: 100%;
+		margin-bottom: 5px;
+		border-collapse:collapse;
+		border:1px solid #000;
+		td{
+			border:1px solid #000;
+		}
+	}
+	.tfoot {
+		display:block;
+		float:right;
+		margin-right: 20px;
+		margin-top: 20px;
+		margin-bottom: 10px;
+		position: relative;
+			.info{
+			line-height:30px;
+			margin-right:20px
+			}
+			.nums{
+				float:right;
+				border:1px solid #dddddd;
+				.num{
+					display:block;
+					float:left;
+					border-right:1px solid #dddddd;
+					height:30px;
+					line-height:30px;
+					text-align:center;
+					min-width:30px;
+					.action{
+						color:#0088cc;
+						cursor:pointer;
+					}
+					.num:last-child{
+						border-right:0px solid #dddddd;
+					}
+					tbody tr td.info{
+						background-color: #f9f9f9;
+					}
+				}
+			}
+	}
+	.thead-ico {
+		display:inline-block;
+		margin-right:5px;
+		margin-left: 5px;
+		
+	}
+	.tree-ico {
+		display:inline-block;
+		margin-right:5px;
+		margin-left: 5px;
+		float:left;
+	}
+	th[data-action=sort] {
+		cursor: pointer;
+	}
+	td[data-cmd] {
+		width: 50px;
+	}
+	td {
+		overflow: hidden;
+	}
+	.spacer {
+		display:inline-block; 
+		width:32px;
+		height:10px;
+	}
+	.img {
+		width:30px;
+		height:30px;
+		margin:-7px 0 -10px 0;
+	}
+	.icon-remove,.icon-edit {
+		cursor: pointer;
+	}
+	.navLink, .actionLink{
+		color: #5588bb;
+	}
+	td.info{
+		color: #777;
+		padding: 10px;
+		text-align: center;
+		border-bottom: none;
+		width:100%;
+	}
+	.showRows{
+		line-height:30px;
+		display: block;
+		float:left;
+		margin-right:20px
+	}
+	.goto{
+		line-height:30px;
+		display: block;
+		float:left;
+		margin-right:20px
+	}
+
+	input[name='gotoPage']{
+		width:50px;
+		height:30px;
+	}
+	select[name='pageSize']{
+		width:80px;
+		height: 30px;
+	}
 }
 
-.dataTable .tfoot {
-  display:block;
-  float:right;
-	margin-right: 20px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-	position: relative;
-}
 
-	
-.dataTable .thead-ico {
-	display:inline-block;
-	margin-right:5px;
-	margin-left: 5px;
-	
-}
-
-.dataTable .tree-ico {
-	display:inline-block;
-	margin-right:5px;
-	margin-left: 5px;
-	float:left;
-}
-
-.dataTable th[data-action=sort] {
-	cursor: pointer;
-}
-.dataTable td[data-cmd] {
-	width: 50px;
-}
-
-.dataTable td {
-  overflow: hidden;
-}
-
-.dataTable .spacer {
-	display:inline-block; 
-	width:32px;
-	height:10px;
-}
-.dataTable .img {
-	width:30px;
-	height:30px;
-	margin:-7px 0 -10px 0;
-}
-
-.dataTable .icon-remove, .dataTable .icon-edit {
-    cursor: pointer;
-}
-
-.dataTable .navLink, .dataTable .actionLink{
-	color: #5588bb;
-}
-
-.dataTable td.info{
-	color: #777;
-	padding: 10px;
-	text-align: center;
-	border-bottom: none;
-	width:100%;
-}
-.dataTable .showRows{
-  display: block;
-  float:left;
-  margin-right:20px
-}
-.dataTable .goto{
-  line-height:30px;
-  display: block;
-  float:left;
-  margin-right:20px
-}
-.dataTable .info{
-  line-height:30px;
-  margin-right:20px
-}
-.dataTable input[name='gotoPage']{
-  width:50px;
-  height:30px;
-}
-.dataTable select[name='pageSize']{
-  width:80px;
-  height: 30px;
-}
-.dataTable .nums{
-  float:right;
-  border:1px solid #dddddd;
-}
-.dataTable .nums .num{
-  display:block;
-  float:left;
-  border-right:1px solid #dddddd;
-  height:30px;
-  line-height:30px;
-  text-align:center;
-  min-width:30px;
-}
-.dataTable .nums .num{
-  display:block;
-  float:left;
-  border-right:1px solid #dddddd;
-  height:30px;
-  line-height:30px;
-  text-align:center;
-  min-width:30px;
-}
-.dataTable .nums .num.action{
-  color:#0088cc;
-  cursor:pointer;
-}
-.dataTable .nums .num:last-child{
-  border-right:0px solid #dddddd;
-}
-.table tbody tr td.info{
-   background-color: #f9f9f9;
-}

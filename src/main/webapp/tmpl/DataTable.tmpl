@@ -1,89 +1,89 @@
 <script id="tmpl-DataTable" type="text/html">
-    <div class="dataTable">
+	<div class="dataTable">
 
-    </div>
+	</div>
 </script>
 
 <script id="tmpl-DataTable-Content" type="text/html">
-    <div class="DataTable-container">
-            <table class="table table-striped">
-                <thead class="listHead">
-                </thead>
-                <tbody class="listItem">
-                </tbody>
-            </table>
-    </div>
+	<div class="DataTable-container">
+		<table class="table table-striped">
+			<thead class="listHead">
+			</thead>
+			<tbody class="listItem">
+			</tbody>
+		</table>
+	</div>
 </script>
 
 <script id="tmpl-DataTable-Foot" type="text/html">
-    <div class="tfoot">
-        {{#gt pageCount 1}}
-        <span class="goto">
-          <span class="gotoBtn">Go to:</span>
-          <input name="gotoPage" type="text" value="{{pageNum}}" />
-        </span>
-        {{/gt}}
-        <span class="showRows">
-          Show Rows
-          <select name="pageSize">
-          <option {{#equal pageSize 5}}selected{{/equal}}>5</option>
-          <option {{#equal pageSize 10}}selected{{/equal}}>10</option>
-          <option {{#equal pageSize 15}}selected{{/equal}}>15</option>
-          <option {{#equal pageSize 25}}selected{{/equal}}>25</option>
-          <option {{#equal pageSize 50}}selected{{/equal}}>50</option>
-          <option {{#equal pageSize 100}}selected{{/equal}}>100</option>
-          <option {{#equal pageSize 500}}selected{{/equal}}>500</option>
-          </select>
-        </span>
-        <span class="info">{{startRows}} - {{endRows}} of {{sizeCount}}</span>
-        {{#gt pageCount 1}}
-          <span class="nums">
-            <span class="num prevStart {{#unless isFirst}}action{{/unless}}">&lt;&lt;</span>
-            <span class="num prev {{#unless isFirst}}action{{/unless}}">&lt;</span>
-            {{#lt pageNum 3}}
-              {{#gt pageCount 6}} 
-                {{#each getArrayFrom1To6}}
-                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
-                {{/each}}
-              {{else}}
-                {{#each getArrayFrom1ToPC }}
-                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
-                {{/each}}
-              {{/gt}}
-            {{else}}
-              {{#gtt pageCount pageNum 3 }}
-                {{#each getArrayFromPr2ToPa3}}
-                  <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
-                {{/each}}
-              {{else}}
-                {{#gt pageCount 6}}
-                  {{#each getArrayFromPCr6ToPC}}
-                    <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
-                  {{/each}}
-                {{else}}
-                  {{#each getArrayFrom1ToPC}}
-                    <span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
-                  {{/each}}
-                {{/gt}}
-              {{/gtt}}
-            {{/lt}}
-            <span class="num next {{#unless isLast}}action{{/unless}}">&gt;</span>
-            <span class="num nextEnd {{#unless isLast}}action{{/unless}}">&gt;&gt;</span>
-          </span>
-        {{/gt}}
-    </div>
+	<div class="tfoot">
+		{{#gt pageCount 1}}
+			<span class="goto">
+				<span class="gotoBtn">Go to:</span>
+				<input name="gotoPage" type="text" value="{{pageNum}}" />
+			</span>
+		{{/gt}}
+		<span class="showRows">
+			Show Rows
+			<select name="pageSize">
+				<option {{#equal pageSize 5}}selected{{/equal}}>5</option>
+				<option {{#equal pageSize 10}}selected{{/equal}}>10</option>
+				<option {{#equal pageSize 15}}selected{{/equal}}>15</option>
+				<option {{#equal pageSize 25}}selected{{/equal}}>25</option>
+				<option {{#equal pageSize 50}}selected{{/equal}}>50</option>
+				<option {{#equal pageSize 100}}selected{{/equal}}>100</option>
+				<option {{#equal pageSize 500}}selected{{/equal}}>500</option>
+			</select>
+		</span>
+		<span class="info">{{startRows}} - {{endRows}} of {{sizeCount}}</span>
+		{{#gt pageCount 1}}
+			<span class="nums">
+				<span class="num prevStart {{#unless isFirst}}action{{/unless}}">&lt;&lt;</span>
+				<span class="num prev {{#unless isFirst}}action{{/unless}}">&lt;</span>
+					{{#lt pageNum 3}}
+						{{#gt pageCount 6}} 
+							{{#each getArrayFrom1To6}}
+								<span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+							{{/each}}
+						{{else}}
+							{{#each getArrayFrom1ToPC }}
+								<span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+							{{/each}}
+						{{/gt}}
+						{{else}}
+						{{#gtt pageCount pageNum 3 }}
+								{{#each getArrayFromPr2ToPa3}}
+									<span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+								{{/each}}
+						{{else}}
+							{{#gt pageCount 6}}
+								{{#each getArrayFromPCr6ToPC}}
+									<span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+								{{/each}}
+							{{else}}
+								{{#each getArrayFrom1ToPC}}
+									<span class="num pageNum {{#notEqual this.num ../pageNum}}action{{/notEqual}}" data-num='{{this.num}}'>{{this.num}}</span> 
+								{{/each}}
+							{{/gt}}
+						{{/gtt}}
+					{{/lt}}
+					<span class="num next {{#unless isLast}}action{{/unless}}">&gt;</span>
+					<span class="num nextEnd {{#unless isLast}}action{{/unless}}">&gt;&gt;</span>
+			</span>
+		{{/gt}}
+	</div>
 </script>
 
 <script id="tmpl-DataTable-Foot-without-pageNum" type="text/html">
-    <div class="tfoot">
-          <span class="nums">
-          	{{#if prevPageToken}}
-            <span class="num prev action" data-pageToken="prevPageToken">&lt;&lt; Prev</span>
-          	{{/if}}
-          	{{#if nextPageToken}}
-            <span class="num next action" data-pageToken="nextPageToken">Next &gt;&gt;</span>
-          	{{/if}}
-          </span>
-    </div>
+	<div class="tfoot">
+		<span class="nums">
+			{{#if prevPageToken}}
+				<span class="num prev action" data-pageToken="prevPageToken">&lt;&lt; Prev</span>
+			{{/if}}
+						{{#if nextPageToken}}
+						<span class="num next action" data-pageToken="nextPageToken">Next &gt;&gt;</span>
+						{{/if}}
+					</span>
+		</div>
 </script>
 
