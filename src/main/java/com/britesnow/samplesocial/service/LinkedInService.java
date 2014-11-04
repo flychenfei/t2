@@ -376,7 +376,23 @@ public class LinkedInService {
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());
     }
-
+    
+    /**
+     * get suggests followed company by auth user
+     * 
+     * @param user
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    public Map suggestsFollowedCompanys(User user, Integer pageIndex, Integer pageSize) {
+        OAuthRequest request = createRequest(Verb.GET, SUGGESTED_COMPANYS_ENDPOINT);
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return JsonUtil.toMapAndList(response.getBody());
+    }
+    
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
 

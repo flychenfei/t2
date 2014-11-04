@@ -94,7 +94,19 @@ public class LinkedInHandlers {
         	return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
         }
     }
-
+    
+    @WebGet("/linkedin/suggestsFollowedCompanys")
+    public WebResponse suggestsFollowedCompanys(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
+                                  @WebParam("pageSize") Integer pageSize) {
+        Map result = linkedInService.suggestsFollowedCompanys(user, pageIndex, pageSize);
+        System.out.println(result);
+        if(result.get("values") != null){
+        	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
+        }else{
+        	return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
+        }
+    }
+    
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

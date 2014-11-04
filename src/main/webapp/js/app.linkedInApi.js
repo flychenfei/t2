@@ -84,6 +84,11 @@ var app = app || {};
         	param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/followedCompanys", param);
+        },
+        suggestsFollowedCompanys : function(param) {
+        	param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/suggestsFollowedCompanys", param);
         }
 	};
 })();
