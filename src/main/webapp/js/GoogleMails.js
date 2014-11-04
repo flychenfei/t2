@@ -155,28 +155,28 @@
                     render: function(){
                         return "<div class='glyphicon glyphicon-envelope'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO'"
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO' title='Show Info'"
                 },
                 {
                     text: "",
                     render: function(){
                         return "<div class='glyphicon glyphicon-share'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL'"
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL' title='Forward Email'"
                 },
                 {
                     text: "",
                     render: function(){
                         return "<div class='glyphicon glyphicon-share-alt'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL'"
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL' title='Replay Email'"
                 },
                 {
                     text: "",
                     render: function(){
                         return "<div class='glyphicon glyphicon-trash'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL'"
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
                 }
             ],
             opts: {
