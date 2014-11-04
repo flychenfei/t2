@@ -196,4 +196,13 @@ public class GoogleDriveHandlers {
         else
         	return WebResponse.fail();
     }
+    
+    @WebGet("/googleDrive/updateStarred")
+    public Object updateStarred(@WebParam("fileId") String fileId, @WebParam("starred") Boolean starred){
+        if(googleDriveService.updateStarred(fileId, starred))
+            return WebResponse.success();
+        else
+            return WebResponse.fail();
+    }
+    
 }

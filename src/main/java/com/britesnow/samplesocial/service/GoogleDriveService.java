@@ -35,6 +35,7 @@ import com.google.api.services.drive.Drive.Files.Insert;
 import com.google.api.services.drive.model.About;
 import com.google.api.services.drive.model.ChildReference;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.File.Labels;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.ParentList;
 import com.google.api.services.drive.model.ParentReference;
@@ -432,6 +433,29 @@ public class GoogleDriveService {
     	}
     	return false;
     }
+    
+    
+    public boolean updateStarred(String fileId, Boolean starred) {
+        // TODO Auto-generated method stub
+        try {
+            Drive service = getDriverService();
+            File file = service.files().get(fileId).execute();
+            Labels labels = new Labels();
+            if(starred){
+                labels.setStarred(starred);
+            }else{
+                labels.setStarred(starred);
+            }
+            file.setLabels(labels);
+            
+            File updatedFile = service.files().update(fileId, file).execute();
+            return true;
+        } catch (IOException e) {
+          e.printStackTrace();
+          return false;
+        }
+    }
+    
     /**
      * information about the current user
      * 
@@ -650,4 +674,6 @@ public class GoogleDriveService {
         return service;
     }
     
+  
+
 }

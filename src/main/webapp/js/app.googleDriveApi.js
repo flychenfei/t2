@@ -81,6 +81,13 @@ var app = app || {};
         	param = param || {};
             param.method = "Get";
             return app.getJsonData(contextPath + "/googleDrive/moveFile", param);
+        },
+        updateStarred: function(param){
+        	param = param || {};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/googleDrive/updateStarred", param);
         }
+        
+        
 	};
 })();
