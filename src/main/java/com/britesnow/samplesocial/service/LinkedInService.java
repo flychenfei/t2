@@ -47,6 +47,8 @@ public class LinkedInService {
     public static final String GROUPS_LEAVE_ENDPOINT = "http://api.linkedin.com/v1/people/~/group-memberships/%s";
     public static final String GROUPS_POST_LIKE_ENDPOINT = "http://api.linkedin.com/v1/posts/%s/relation-to-viewer/is-liked";
     public static final String PEOPLE_INFO_ENDPOINT = "http://api.linkedin.com/v1/people/%s:(first-name,last-name,headline,picture-url)";
+    public static final String FOLLOWED_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies:(id,name,universal-name,website-url,logo-url,locations,description,num-followers)";
+    public static final String SUGGESTED_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/suggestions/to-follow/companies:(id,name,universal-name,website-url,logo-url,locations,description,num-followers)";
     
     private OAuthService oAuthService;
 
@@ -227,8 +229,8 @@ public class LinkedInService {
         OAuthRequest request = createRequest(Verb.GET, String.format(COMPANY_ENDPOINT, keywork));
         addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
-        Response resp = request.send();
-        return JsonUtil.toMapAndList(resp.getBody());
+        Response response = request.send();
+        return JsonUtil.toMapAndList(response.getBody());
     }
 
     /**
@@ -359,6 +361,22 @@ public class LinkedInService {
         return Strings.isNullOrEmpty(response.getBody());
     }
     
+    /**
+     * get followed company by auth user
+     * 
+     * @param user
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    public Map followedCompanys(User user, Integer pageIndex, Integer pageSize) {
+        OAuthRequest request = createRequest(Verb.GET, FOLLOWED_COMPANYS_ENDPOINT);
+        addPageParameter(pageIndex, pageSize, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return JsonUtil.toMapAndList(response.getBody());
+    }
+
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
 

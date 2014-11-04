@@ -57,14 +57,11 @@ public class LinkedInHandlers {
     @WebGet("/linkedin/groups")
     public WebResponse getGroups(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,@WebParam("pageSize") Integer pageSize) {
         Map result = linkedInService.groups(user, pageIndex, pageSize);
-        WebResponse resp;
         if(result.get("values") != null){
-            resp = WebResponse.success(result.get("values"));
+        	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
         }else{
-            resp = WebResponse.success(new ArrayList());
+        	return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
         }
-        resp.set("result_count", result.get("_total"));
-        return resp;
     }
     
     @WebGet("/linkedin/jobs")
@@ -86,6 +83,18 @@ public class LinkedInHandlers {
         resp.set("result_count", result.get("numResults"));
         return resp;
     }
+    
+    @WebGet("/linkedin/followedCompanys")
+    public WebResponse followedCompanys(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
+                                  @WebParam("pageSize") Integer pageSize) {
+        Map result = linkedInService.followedCompanys(user, pageIndex, pageSize);
+        if(result.get("values") != null){
+        	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
+        }else{
+        	return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
+        }
+    }
+
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

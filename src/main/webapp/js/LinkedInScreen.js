@@ -45,6 +45,8 @@
                     $li.find("i").removeClass("glyphicon glyphicon-chevron-down").addClass("glyphicon glyphicon-chevron-up");
                 }else if(menu == "groups"){
                 	brite.display("LinkedInGroups");
+                }else if(menu == "companys"){
+                	brite.display("LinkedInCompanys");
                 }
               },
               "click;.details":function(e){
@@ -127,17 +129,17 @@
                     switch (name) {
                         case "searchJobs":
                             brite.display("InputValue",".MainScreen", {title:'Search Job',callback:function(keywork){
-                            	brite.display("LinkedInJobs",".LinkedInScreen-content",{keywork:keywork.name});
+                            	searchJobs.call(this, keywork.name);
                             }});
                             break;
                         case "searchCompany":
                             brite.display("InputValue", ".MainScreen",{title:'Search Company',callback:function(keywork){
-                            	brite.display("LinkedInCompanys",".LinkedInScreen-content",{keywork:keywork.name});
+                            	searchCompanys.call(this, keywork.name);
                             }});
                             break;
                         case "searchPeople":
                             brite.display("InputValue", ".MainScreen",{title:'Search People',callback:function(keywork){
-                            	brite.display("LinkedInPeoples",".LinkedInScreen-content",{keywork:keywork.name});
+                            	searchPeoples.call(this, keywork.name);
                             }});
                             break;
                         default:
@@ -149,5 +151,131 @@
             }
             
         });
+        
+    //----------------------- private method --------------------
+    function searchJobs(keywork) {
+    	var view = this;
+        brite.display("DataTable", ".LinkedInScreen-content",{
+            dataProvider: {list: function(params){
+                params.keywork = keywork.name;
+                return app.linkedInApi.searchJobs(params);
+            }},
+            columnDef: [
+                {
+                    text: "#",
+                    render: function (obj, idx) {
+                        return idx + 1;
+                    },
+                    attrs: "style='width: 5%'"
+                },
+                {
+                    text: "Company",
+                    render: function (obj) {
+                        return obj.company.name;
+                    },
+                    attrs: "style='width: 20%'"
+
+                },
+                {
+                    text: "Description",
+                    render: function (obj) {
+                        return obj.descriptionSnippet;
+                    },
+                    attrs: "style='width: 50%'"
+                },
+                {
+                    text: "Location",
+                    render: function (obj) {
+                        return obj.locationDescription || "";
+                    }
+                },
+                {
+                    text: "Action",
+                    render: function (obj) {
+                    	return "<a href='#'><div class='"+obj.check+"' id=\""+obj.id+"\">"+obj.mark+"</div></a>";
+                    },
+                    attrs: "style='width: 15%'"
+                }
+            ],
+            opts: {
+                htmlIfEmpty: "Not Jobs found",
+                withPaging: true,
+                withCmdDelete:false
+            }
+        });
+    }
+    
+    function searchCompanys(keywork) {
+        var view = this;
+        brite.display("DataTable", ".LinkedInScreen-content",{
+            dataProvider: {list: function(params){
+                params.keywork = keywork.name;
+               return app.linkedInApi.searchCompanys(params);
+            }},
+            columnDef: [
+                {
+                    text: "#",
+                    render: function (obj, idx) {
+                        return idx + 1
+                    },
+                    attrs: "style='width: 5%'"
+                },
+                {
+                    text: "Name",
+                    render: function (obj) {
+                        return obj.name;
+                    },
+                    attrs: "style='width: 20%'"
+
+                }
+            ],
+            opts: {
+                htmlIfEmpty: "Not Companys found",
+                withPaging: true,
+                withCmdDelete:false
+            }
+        });
+    }
+    
+    function searchPeoples(keywork) {
+        var view = this;
+        brite.display("DataTable", ".LinkedInScreen-content",{
+            dataProvider: {list: function(params){
+                params.keywork = keywork.name;
+                return app.linkedInApi.searchPeoples(params);
+            }},
+            columnDef: [
+                {
+                    text: "#",
+                    render: function (obj, idx) {
+                        return idx + 1
+                    },
+                    attrs: "style='width: 5%'"
+                },
+                {
+                    text: "First Name",
+                    render: function (obj) {
+                        return obj.firstName;
+                    },
+                    attrs: "style='width: 40%'"
+
+                },
+                {
+                    text: "Last Name",
+                    render: function (obj) {
+                        return obj.lastName;
+                    },
+                    attrs: "style='width: 45%'"
+                }
+            ],
+            opts: {
+                htmlIfEmpty: "Not Peoples found",
+                withPaging: true,
+                withCmdDelete:false
+            }
+        });
+    }
+    //----------------------- /private method --------------------
+    
     })(jQuery);
 })();
