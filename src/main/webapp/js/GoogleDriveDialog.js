@@ -20,16 +20,15 @@
 				if($(uploadBtn).hasClass("disabled"))
 					return false;
 				$(uploadBtn).toggleClass("disabled");
-				console.log($(":input[type='file']")[0].files[0]);
 				app.ajaxPost(contextPath+"/googleDrive/upload",{parentId:parentId},$(":input[type='file']")[0].files[0]).done(function(){
 					view.$el.remove();
 					var params = {};
-                	params.selfId = parentId;
-            		brite.display("GoogleDriveFiles",".GoogleScreen-content",{
-        				results: function(){
-        				    return app.googleDriveApi.childList(params);
-        			    }
-        			});
+					params.selfId = parentId;
+					brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+						results: function(){
+							return app.googleDriveApi.childList(params);
+						}
+					});
 				});
 			}
 		}

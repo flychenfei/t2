@@ -1,33 +1,38 @@
 <script id="tmpl-GoogleDriveFolder" type="text/html">
- <div class="GoogleDriveFolder">
-	  <div class="dialogBackground">
+<div class="GoogleDriveFolder">
+	<div class="dialogBackground">
+	</div>
+	<div class="dialogContent">
+		<div class="dialogHead">
+			<span class="dialogTitle">{{data.displayName}}</span>
+			<span class="close dialogBtns dialogCloseBtn">&times;</span>
 		</div>
-		<div class="dialogContent">
-			<div class="dialogHead">
-				<span class="dialogTitle">{{data.displayName}}</span>
-				<span class="close dialogBtns dialogCloseBtn">&times;</span>
-			</div>
+		
 			{{#if data.move}}
 			{{else}}
-				<div class="copyTitleDiv"><span class="copyTitleSpan">New Title</span><span class="copyTitleSpan"><input type="text" class="copyTitle" value="CopyOf{{data.fileName}}" /></span></div>
+				<div class="copyTitleDiv">
+					<span class="copyTitleSpan">New Title</span>
+					<span class="copyTitleSpan">
+					<input type="text" class="copyTitle" value="CopyOf{{data.fileName}}" /></span>
+				</div>
 			{{/if}}
-			<div class="dialogBody" data-fileId="{{data.fileId}}" data-parentId="{{data.parentId}}">
-			 <div class="itemDivHead">
-			 	<div class="folderitem">
-			 		<span class="foldername" data-selfId="root">My Drive</span>
-			 	</div>
-			 </div>
+		<div class="dialogBody" data-fileId="{{data.fileId}}" data-parentId="{{data.parentId}}">
+			<div class="itemDivHead">
+				<div class="folderitem">
+					<span class="foldername" data-selfId="root">My Drive</span>
+				</div>
+			</div>
 			<div class="itemDiv">
 				loading...
 			</div>
-		 	<div class="dialogBtns">
-			 	{{#if data.move}}
+			<div class="dialogBtns">
+				{{#if data.move}}
 					<button class="btn btn-primary move">Move</button>
 				{{else}}
 					<button class="btn btn-primary copy">Copy</button>
 				{{/if}}
-				<button class="btn btn-primary cancel">Cancel</button>
-	 		</div>
+					<button class="btn btn-primary cancel">Cancel</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -39,18 +44,18 @@
 {{else}}
 	<div class="subfolder itemDiv">
 {{/if}}
-		{{#each data.result}}
-				<div class="itemDiv">
-					<div class="folderitem" data-selfId="{{selfId}}">
-					{{#if hasChild}}
-						<span class="driveFolderPlus"><i class="glyphicon glyphicon-plus"></i></span>
-					{{else}}
-						<span class="driveFolderMinus"></span>
-					{{/if}}
-						<span class=""><i class="glyphicon glyphicon-folder-close"></i></span>
-						<span class="foldername" data-selfId="{{selfId}}">{{name}}</span>
-					</div>
-				</div>
-		{{/each}}
+	{{#each data.result}}
+		<div class="itemDiv">
+			<div class="folderitem" data-selfId="{{selfId}}">
+				{{#if hasChild}}
+					<span class="driveFolderPlus"><i class="glyphicon glyphicon-plus"></i></span>
+				{{else}}
+					<span class="driveFolderMinus"></span>
+				{{/if}}
+					<span class=""><i class="glyphicon glyphicon-folder-close"></i></span>
+					<span class="foldername" data-selfId="{{selfId}}">{{name}}</span>
+			</div>
+		</div>
+	{{/each}}
 	</div>
 </script>
