@@ -11,7 +11,15 @@
         },
 
         events: {
-        	
+        	"click;.removebookmark":function(e){
+          	  var view = $(this);
+          	  var $e = (e.currentTarget);
+          	  var param = {};
+          	  param.id = $(e.currentTarget).attr("id");
+          	  app.linkedInApi.removebookmark(param).done(function (result) {
+          		  brite.display("LinkedInJobBookmarks");
+	                });
+            }
         },
         docEvents: {
            
@@ -21,7 +29,7 @@
     });
     
     function showJobBookmarks() {
-    	brite.display("DataTable", ".LinkedInScreen-content",{
+    	brite.display("DataTable", ".LinkedInJobBookmarks",{
             dataProvider: {list: app.linkedInApi.getJobBookmarks},
             columnDef: [
                 {

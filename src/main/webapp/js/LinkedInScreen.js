@@ -49,50 +49,14 @@
                 	brite.display("LinkedInCompanys");
                 }
               },
-              "click;.details":function(e){
-            	  var view = this;
-            	  var $detail = $(e.target);
-            	  var param = {};
-            	  param.groupId = $detail.closest("tr").attr("data-groupId");
-            	  app.linkedInApi.groupDetails(param).done(function (result) {
-	                    if(result.success === true){
-	                    	 brite.display("LinkedInGroupDetails", ".LinkedInScreen-content", {result:result.result});
-	                    }else{
-	                    	alert("can't get the details of group!");
-	                    }
-	                });
-              },
-              "click;.leave":function(e){
-            	  var view = this;
-            	  var $detail = $(e.target);
-            	  var param = {};
-            	  param.groupId = $detail.closest("tr").attr("data-groupId");
-            	  app.linkedInApi.leaveGroup(param).done(function (result) {
-	                    if(result.success === true){
-	                    	alert("Leave group success!");
-	                    }else{
-	                    	alert("Leave group fail!");
-	                    }
-	                    showGroups.call(view);
-	                });
-              },
               "click;.removebookmark":function(e){
             	  var view = $(this);
             	  var $e = (e.currentTarget);
             	  var param = {};
             	  param.id = $(e.currentTarget).attr("id");
             	  app.linkedInApi.removebookmark(param).done(function (result) {
-            		  brite.display("LinkedInJobBookmarks");
-	                });
-              },
-              "click;.bookmark":function(e){
-            	  var view = $(this);
-            	  var $e = (e.currentTarget);
-            	  var param = {};
-            	  param.id = $(e.currentTarget).attr("id");
-            	  app.linkedInApi.removebookmark(param).done(function (result) {
             		  $(e.currentTarget).html("Save As Bookmark");
-            		  $(e.currentTarget).removeClass("bookmark");
+            		  $(e.currentTarget).removeClass("removebookmark");
             		  $(e.currentTarget).addClass("addbookmark");
 	                });
               },
@@ -103,7 +67,7 @@
             	  app.linkedInApi.addbookmark(param).done(function (result) {
             		  $(e.currentTarget).html("Remove Bookmark");
             		  $(e.currentTarget).removeClass("addbookmark");
-            		  $(e.currentTarget).addClass("bookmark");
+            		  $(e.currentTarget).addClass("removebookmark");
 	                });
               },
               "click;.glyphicon-user":function(e){

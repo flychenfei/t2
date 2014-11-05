@@ -11,7 +11,34 @@
         },
 
         events: {
-        	
+        	"click;.details":function(e){
+          	  var view = this;
+          	  var $detail = $(e.target);
+          	  var param = {};
+          	  param.groupId = $detail.closest("tr").attr("data-groupId");
+          	  app.linkedInApi.groupDetails(param).done(function (result) {
+	                    if(result.success === true){
+	                    	 brite.display("LinkedInGroupDetails", ".LinkedInGroups", {result:result.result});
+	                    }else{
+	                    	alert("can't get the details of group!");
+	                    }
+	                });
+            },
+            "click;.leave":function(e){
+          	  var view = this;
+          	  var $detail = $(e.target);
+          	  var param = {};
+          	  param.groupId = $detail.closest("tr").attr("data-groupId");
+          	  app.linkedInApi.leaveGroup(param).done(function (result) {
+	                    if(result.success === true){
+	                    	alert("Leave group success!");
+	                    }else{
+	                    	alert("Leave group fail!");
+	                    }
+	                    showGroups.call(view);
+	                });
+            }
+            
         },
         docEvents: {
            
@@ -21,7 +48,7 @@
     });
     
     function showGroups() {
-        brite.display("DataTable", ".LinkedInScreen-content",{
+        brite.display("DataTable", ".LinkedInGroups",{
             dataProvider: {list: app.linkedInApi.getGroups},
             rowAttrs: function (obj) {
                 return "data-groupId='{0}'".format(obj.group.id)
