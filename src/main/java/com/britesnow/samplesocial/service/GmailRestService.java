@@ -43,6 +43,9 @@ import com.google.api.services.gmail.model.Thread;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 @Singleton
 public class GmailRestService {
     private static Logger log = LoggerFactory.getLogger(GmailRestService.class);
@@ -523,6 +526,51 @@ public class GmailRestService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+//    public Message insertMessage(String messageId) throws MessagingException, IOException {
+//        Message message = null;
+//        message = getGmailClient().users().messages().get("me", messageId).execute();
+//        Message messageInsert = new Message();
+//        System.out.println(message.getRaw());
+//        messageInsert.setRaw(message.getRaw());
+//        getGmailClient().users().messages().insert("me", message).execute();
+//        return message;
+//    }
+
+    public Message insertMessage(String messageId) throws MessagingException, IOException {
+        Message message = createMessageWithEmail();
+        message = getGmailClient().users().messages().insert("me", message).execute();
+        System.out.println("Message id: " + message.getId());
+        System.out.println(message.toPrettyString());
+        return message;
+    }
+
+    public Message createMessageWithEmail() throws MessagingException, IOException {
+        String subject = "test insert email";
+        String email = "wgq9058@gmail.com";
+        String to = "905867322@qq.com";
+        String content = "just a test for insert";
+        StringBuilder raw = new StringBuilder();
+        raw.append("Subject:");
+        raw.append(subject);
+        raw.append("\r\n");
+        raw.append("From:");
+        raw.append(email);
+        raw.append("\r\n");
+        raw.append("To:");
+        raw.append(to);
+        raw.append("\r\n");
+        raw.append("Content-Type: text/html");
+        raw.append("\r\n");
+        raw.append("\r\n");
+        raw.append(content);
+        raw.append("\r\n");
+        String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
+
+        Message message = new Message();
+        message.setRaw(encodedEmail);
+        return message;
     }
     
     private String getContent(String body){

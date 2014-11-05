@@ -108,8 +108,14 @@ public class GoogleRestEmailHandlers {
     
     @WebGet("/gmailrest/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") String id) throws Exception {
-        MailInfo info = gmailRestService.getEmail(id);
-        return WebResponse.success(info);
+        gmailRestService.getEmail(id);
+        return WebResponse.success();
+    }
+
+    @WebGet("/gmailrest/insert")
+    public WebResponse insertEmail(@WebUser User user, @WebParam("id") String id) throws Exception {
+        gmailRestService.insertMessage(id);
+        return WebResponse.success();
     }
     
     @WebPost("/gmailrest/updateLabels")

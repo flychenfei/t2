@@ -124,6 +124,14 @@
                 })
 
             },
+            "INSERT_EMAIL": function(event, extra) {
+                var view = this;
+                app.googleApi.insertMailRest(extra.objId).done(function(data){
+                    if(data.success){
+                        showEmails.call(view);
+                    }
+                })
+            },
             "DO_REFRESH_MAIL": function(event, extra) {
             	var view = this;
 				showEmails.call(view); 
@@ -203,6 +211,13 @@
                         return "<div class='glyphicon glyphicon-trash'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='glyphicon glyphicon-import'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='INSERT_EMAIL' title='Insert Email'"
                 },
                 {
                     text: "",

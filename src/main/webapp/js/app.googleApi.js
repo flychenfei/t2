@@ -198,6 +198,11 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmailrest/get", params);
         },
+        insertMailRest: function(id) {
+            var params = {id: id};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/insert", params);
+        },
         sendMailRest: function(opts, files) {
             opts = opts || {};
             files = files || [];
