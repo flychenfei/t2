@@ -94,6 +94,11 @@ var app = app || {};
         	param = param||{};
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/company/startFollowing", param);
+        },
+        StopFollowingCompany : function(param) {
+        	param = param||{};
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/company/stopFollowing", param);
         }
 	};
 })();

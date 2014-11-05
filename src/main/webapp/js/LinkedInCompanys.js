@@ -29,6 +29,18 @@
                     	alert("Following failed!");
                     }
                 });
+        	},
+        	"btap; .StopFollowing":function (e) {
+        		var view = this;
+                var param = {};
+                param.companyId = $(e.target).closest("tr").attr("data-companyId");
+                app.linkedInApi.StopFollowingCompany(param).done(function (result) {
+                    if(result.success === true){
+                    	showFollowedCompanys.call(this);
+                    }else{
+                    	alert("Stop following failed!");
+                    }
+                });
         	}
         	
         }
@@ -102,6 +114,14 @@
                                 return obj.numFollowers;
                             },
                             attrs: "style='width: 5%'"
+                        },
+                        {
+                            text: "Operator",
+                            render: function (obj) {
+                            	var functionString = "<span><a src=\"#\" class=\"StopFollowing\">Stop Following</a></span>";
+                                return functionString;
+                            },
+                            attrs: "style='width: 10%; cursor:pointer;'"
                         }
                     ],
             opts: {

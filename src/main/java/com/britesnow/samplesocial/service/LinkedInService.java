@@ -413,7 +413,23 @@ public class LinkedInService {
 		Response response = request.send();
 		return Strings.isNullOrEmpty(response.getBody());
     }
-
+    
+    /**
+     * stop following a company by auth user
+     * @param user
+     * @param companyId
+     * @return
+     */
+    public boolean stopFollowingCompany(User user, String companyId) {
+    	if (Strings.isNullOrEmpty(companyId)) {
+    		return false;
+    	}
+        OAuthRequest request = createRequest(Verb.DELETE, String.format(STOPFOLLOWING_COMPANYS_ENDPOINT, companyId));
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return Strings.isNullOrEmpty(response.getBody());
+    }
+    
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
 

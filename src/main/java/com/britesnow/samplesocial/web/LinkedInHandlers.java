@@ -114,7 +114,16 @@ public class LinkedInHandlers {
         	return WebResponse.fail();
         }
     }
-
+    
+    @WebGet("/linkedin/company/stopFollowing")
+    public WebResponse stopFollowingCompany(@WebUser User user, @WebParam("companyId") String companyId) {
+        if(linkedInService.stopFollowingCompany(user, companyId)){
+        	return WebResponse.success();
+        }else{
+        	return WebResponse.fail();
+        }
+    }
+    
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {
