@@ -42,8 +42,11 @@ public class GoogleDriveHandlers {
     }
     
     @WebGet("/googleDrive/search")
-    public Object searchFile(@WebParam("keyword") String keyword, @WebParam("searchType") String searchType, @WebParam("startDate") String startDate, @WebParam("endDate") String endDate, @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize){
-    	Pair<String, List<Map>> pair = googleDriveService.searchFile(keyword, searchType, startDate, endDate, nextPagetoken, pageSize);
+    public Object searchFile(@WebParam("keyword") String keyword, @WebParam("searchType") String searchType, 
+                            @WebParam("startDate") String startDate, @WebParam("endDate") String endDate, 
+                            @WebParam("pageIndex") String nextPagetoken,@WebParam("pageSize") Integer pageSize,
+                            @WebParam("starred") Boolean starred){
+    	Pair<String, List<Map>> pair = googleDriveService.searchFile(keyword, searchType, startDate, endDate, nextPagetoken, pageSize, starred);
 		List<Map> docsInfo = pair.getSecond();
 		WebResponse result = WebResponse.success(docsInfo);
 		result.set("nextPageToken", pair.getFirst());

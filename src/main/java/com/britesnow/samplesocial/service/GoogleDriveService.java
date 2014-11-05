@@ -52,23 +52,29 @@ public class GoogleDriveService {
     private static String MEDIATYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media";
     private static String MULTIPARTTYPE = "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart";
     
-    public Pair<String, List<Map>> searchFile(String keyword, String searchType, String startDate,String endDate,String nextPageToken, Integer pageSize){
+    public Pair<String, List<Map>> searchFile(String keyword, String searchType, String startDate,String endDate,String nextPageToken, Integer pageSize, Boolean starred){
     	StringBuilder query = new StringBuilder();
-    	if(!Strings.isNullOrEmpty(keyword)){
-        	query.append(searchType).append(" contains '").append(keyword).append("'");
+    	if(starred != null){
+    	    query.append("starred=").append(starred);
+    	}else{
+    	    if(!Strings.isNullOrEmpty(keyword)){
+                query.append(searchType).append(" contains '").append(keyword).append("'");
+            }
+            if(!Strings.isNullOrEmpty(startDate)){
+                if(query.length() != 0){
+                    query.append(" and");
+                }
+                query.append(" modifiedDate >= '").append(formDate(startDate,true)).append("'");
+            }
+            if(!Strings.isNullOrEmpty(endDate)){
+                if(query.length() != 0){
+                    query.append(" and");
+                }
+                query.append(" modifiedDate <= '").append(formDate(endDate,false)).append("'");
+            }
     	}
-    	if(!Strings.isNullOrEmpty(startDate)){
-    		if(query.length() != 0){
-    			query.append(" and");
-    		}
-        	query.append(" modifiedDate >= '").append(formDate(startDate,true)).append("'");
-    	}
-		if(!Strings.isNullOrEmpty(endDate)){
-			if(query.length() != 0){
-    			query.append(" and");
-    		}
-	    	query.append(" modifiedDate <= '").append(formDate(endDate,false)).append("'");
-    	}
+    	
+		
     	return searchFiles(nextPageToken, pageSize, query.toString());
     }
     /**

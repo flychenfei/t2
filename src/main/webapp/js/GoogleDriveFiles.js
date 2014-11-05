@@ -62,7 +62,19 @@
 								}
 							});
 						});
-					}});
+					}
+				});
+			},
+			"click;.btnStarred":function(event){
+				var params= {};
+				params.starred = true;
+				brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+					results: function(){
+						return app.googleDriveApi.searchFile(params);
+					}
+				});
+
+
 			},
 			"click;.search":function(event){
 				var $form = $(event.target).closest(".search-form");
@@ -86,6 +98,7 @@
 				if(endDate){
 					params.endDate = endDate;
 				}
+
 				brite.display("GoogleDriveFiles",".GoogleScreen-content",{
 					results: function(){
 						return app.googleDriveApi.searchFile(params);
