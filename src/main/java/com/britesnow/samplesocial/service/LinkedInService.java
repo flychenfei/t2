@@ -49,6 +49,8 @@ public class LinkedInService {
     public static final String PEOPLE_INFO_ENDPOINT = "http://api.linkedin.com/v1/people/%s:(first-name,last-name,headline,picture-url)";
     public static final String FOLLOWED_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies:(id,name,universal-name,website-url,logo-url,locations,description,num-followers)";
     public static final String SUGGESTED_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/suggestions/to-follow/companies:(id,name,universal-name,website-url,logo-url,locations,description,num-followers)";
+    public static final String STARTFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies";
+    public static final String STOPFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies/id=%s";
     
     private OAuthService oAuthService;
 
@@ -201,7 +203,7 @@ public class LinkedInService {
     	resultBookmark.stream().forEach(p1 -> {
     		bookmarkIdTotal.stream().forEach(p2 -> {
     			if((p1.get("id")).equals(p2.get("id"))){
-    				p1.put("check", "bookmark");
+    				p1.put("check", "removebookmark");
     				p1.put("mark", "Remove Bookmark");
     			}
     		});
@@ -393,6 +395,25 @@ public class LinkedInService {
         return JsonUtil.toMapAndList(response.getBody());
     }
     
+    /**
+     * following a company by auth user
+     * @param user
+     * @param companyId
+     * @return
+     */
+    public boolean startFollowingCompany(User user, String companyId) {
+    	if (Strings.isNullOrEmpty(companyId)) {
+    		return false;
+    	}
+    	OAuthRequest request = createRequest(Verb.POST, STARTFOLLOWING_COMPANYS_ENDPOINT);
+		HashMap jsonMap = new HashMap();
+		jsonMap.put("id", Integer.valueOf(companyId));
+		request.addPayload(JSONValue.toJSONString(jsonMap));
+		oAuthService.signRequest(getToken(user), request);
+		Response response = request.send();
+		return Strings.isNullOrEmpty(response.getBody());
+    }
+
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
 

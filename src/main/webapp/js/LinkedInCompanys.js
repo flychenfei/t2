@@ -17,8 +17,21 @@
         	"btap; .suggests-followed-companys":function () {
                 var view = this;
                 showSuggestsFollowedCompanys.call(this);
+        	},
+        	"btap; .StartFollowing":function (e) {
+                var view = this;
+                var param = {};
+                param.companyId = $(e.target).closest("tr").attr("data-companyId");
+                app.linkedInApi.StartFollowingCompany(param).done(function (result) {
+                    if(result.success === true){
+                        showSuggestsFollowedCompanys.call(this);
+                    }else{
+                    	alert("Following failed!");
+                    }
+                });
         	}
-        },
+        	
+        }
     });
     
 	//----------------------- private method --------------------
@@ -28,6 +41,9 @@
             dataProvider: {list: function(params){
                return app.linkedInApi.followedCompanys(params);
             }},
+            rowAttrs: function (obj) {
+                return "data-companyId='{0}'".format(obj.id)
+            },
             columnDef: [
                         {
                             text: "#",
@@ -77,7 +93,7 @@
                             render: function (obj) {
                                 return obj.description;
                             },
-                            attrs: "style='width: 50%'"
+                            attrs: "style='width: 40%'"
 
                         },
                         {
@@ -102,6 +118,9 @@
             dataProvider: {list: function(params){
                return app.linkedInApi.suggestsFollowedCompanys(params);
             }},
+            rowAttrs: function (obj) {
+                return "data-companyId='{0}'".format(obj.id)
+            },
             columnDef: [
                         {
                             text: "#",
@@ -150,7 +169,7 @@
                             render: function (obj) {
                                 return obj.description;
                             },
-                            attrs: "style='width: 10%; word-break: break-word; white-space: normal;'"
+                            attrs: "style='width: 40%; word-break: break-word; white-space: normal;'"
                         },
                         {
                             text: "Followers Number",
@@ -158,6 +177,14 @@
                                 return obj.numFollowers;
                             },
                             attrs: "style='width: 5%'"
+                        },
+                        {
+                            text: "Operator",
+                            render: function (obj) {
+                            	var functionString = "<span><a src=\"#\" class=\"StartFollowing\">Start Following</a></span>";
+                                return functionString;
+                            },
+                            attrs: "style='width: 10%; cursor:pointer;'"
                         }
                     ],
             opts: {
