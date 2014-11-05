@@ -623,7 +623,7 @@ public class GoogleDriveService {
      */
     private List<Map> formatFiles(List<File> files){
     	return files.stream().map(file->{
-            Map<String, String> item = new HashMap<>();
+            Map<String, Object> item = new HashMap<>();
             item.put("fileId", file.getId());
             item.put("iconLink", file.getIconLink());
             item.put("fileName", file.getTitle());
@@ -631,6 +631,7 @@ public class GoogleDriveService {
             item.put("updateTime", df.format(new Date(file.getModifiedDate().getValue())));
             item.put("mimeType", file.getMimeType());
             item.put("url", file.getDownloadUrl());
+            item.put("starred", file.getLabels().getStarred());
             if(file.getFileSize() != null){
                 item.put("fileSize", String.valueOf(file.getFileSize()));
             }else{

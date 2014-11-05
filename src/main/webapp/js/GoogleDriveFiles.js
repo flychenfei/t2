@@ -92,26 +92,25 @@
 					}
 				});
 			},
-	        "btap; .starEvent": function(event){
-	        	var view = this;
-	        	var $e = view.$el;
-	        	var $btn = $(event.currentTarget);
-	        	$btn.toggleClass("active");
-	        	var $active = $e.find(".starEvent.active");
-	        	if($active.length > 0){
-	        		$btn.removeClass("glyphicon-star-empty").addClass("glyphicon-star");
+			"btap; .starEvent": function(event){
+				var view = this;
+				var $e = view.$el;
+				var $btn = $(event.currentTarget);
+				$btn.toggleClass("active");
+				var $tr = $btn.closest("tr");
+				var $activeBtn = $tr.find(".starEvent.active");
+				if($activeBtn.length > 0){
+					$btn.removeClass("glyphicon-star-empty").addClass("glyphicon-star");
 					starred = true;
 				}else{
 					$btn.removeClass("glyphicon-star").addClass("glyphicon-star-empty");
 					starred = false;
 				}
-
-	        	var $tr = $btn.closest("tr");
-	        	var fileId = $tr.attr("data-fileid");
-                if (fileId) {
-                    app.googleDriveApi.updateStarred({fileId:fileId, starred:starred});
-                }
-           },			
+				var fileId = $tr.attr("data-fileid");
+				if (fileId) {
+					app.googleDriveApi.updateStarred({fileId:fileId, starred:starred});
+				}
+			},
 			"click;.patch":function(event){
 				var view = this;
 				var parentId = $(".btnUpload").attr("data-currentId");
@@ -274,13 +273,13 @@
 				}
 			},
 			columnDef:[
-                {
-                    text:"",
-                    render:function(obj){
-                    	return "<div class='glyphicon glyphicon-star-empty starEvent'></div>";
-                    },
+				{
+					text:"",
+					render:function(obj){
+						return (obj.starred) ? "<div class='glyphicon glyphicon-star starEvent active'></div>" : "<div class='glyphicon glyphicon-star-empty starEvent'></div>";
+					},
 					attrs: "style='width: 2%'"
-                },			
+				},
 				{
 					text:"FileName",
 					attrs: "style='width:15%; word-break: break-word; cursor:pointer;'",
