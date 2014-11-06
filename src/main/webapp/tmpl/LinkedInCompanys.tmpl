@@ -5,9 +5,41 @@
 		<button class="btn btn-primary suggests-followed-companys">Suggests Followed Companys</button>
 	</div>
 	<div class="LinkedInCompanys-body">
-		<div class="Companys-list">
-		
-		</div>
 	</div>
+</div>
+</script>
+
+<script id="tmpl-LinkedInCompanyLists" type="text/html">
+<div class="LinkedInCompanys">
+	<div class="CompanyTotal">Sum:{{total}}</div>
+	<table class="table table-bordered table-hover">
+		<tr class="active">
+			<th>NUmber</th>
+			<th>Name</th>
+			<th>UniversalName</th>
+			<th>Website</th>
+			<th>Location</th>
+			<th>Description</th>
+			<th>Followers Number</th>
+			<th>Operator</th>
+		</tr>
+			
+		{{#each result}}
+		<tr data-companyId="{{id}}" >
+			<td class="number with5">{{number}}</td>
+			<td class="companyname with10">{{name}}</td>
+			<td class="universalName with10">{{universalName}}</td>
+			<td class="website with10"><a href="{{websiteUrl}}" target="_blank" class="fileSelf">{{websiteUrl}}</a></td>
+			<td class="location with10">{{location}}</td>
+			<td class="description with30">{{description}}</td>
+			<td class="numFollowers with5">{{numFollowers}}</td>
+			{{#if isfollowing}}
+			<td class="operator with10"><span><a src="#" class="StopFollowing">Stop Following</a></span></td>
+			{{else}}
+			<td class="operator with10"><span><a src="#" class="StartFollowing">Start Following</a></span></td>
+			{{/if}}
+		</tr>
+		{{/each}}
+	</table>
 </div>
 </script>

@@ -367,13 +367,10 @@ public class LinkedInService {
      * get followed company by auth user
      * 
      * @param user
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
-    public Map followedCompanys(User user, Integer pageIndex, Integer pageSize) {
+    public Map followedCompanys(User user) {
         OAuthRequest request = createRequest(Verb.GET, FOLLOWED_COMPANYS_ENDPOINT);
-        addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());
@@ -383,13 +380,10 @@ public class LinkedInService {
      * get suggests followed company by auth user
      * 
      * @param user
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
-    public Map suggestsFollowedCompanys(User user, Integer pageIndex, Integer pageSize) {
+    public Map suggestsFollowedCompanys(User user) {
         OAuthRequest request = createRequest(Verb.GET, SUGGESTED_COMPANYS_ENDPOINT);
-        addPageParameter(pageIndex, pageSize, request);
         oAuthService.signRequest(getToken(user), request);
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());

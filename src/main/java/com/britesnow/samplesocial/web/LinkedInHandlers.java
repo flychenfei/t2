@@ -85,9 +85,8 @@ public class LinkedInHandlers {
     }
     
     @WebGet("/linkedin/followedCompanys")
-    public WebResponse followedCompanys(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
-                                  @WebParam("pageSize") Integer pageSize) {
-        Map result = linkedInService.followedCompanys(user, pageIndex, pageSize);
+    public WebResponse followedCompanys(@WebUser User user) {
+        Map result = linkedInService.followedCompanys(user);
         if(result.get("values") != null){
         	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
         }else{
@@ -96,9 +95,8 @@ public class LinkedInHandlers {
     }
     
     @WebGet("/linkedin/suggestsFollowedCompanys")
-    public WebResponse suggestsFollowedCompanys(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
-                                  @WebParam("pageSize") Integer pageSize) {
-        Map result = linkedInService.suggestsFollowedCompanys(user, pageIndex, pageSize);
+    public WebResponse suggestsFollowedCompanys(@WebUser User user) {
+        Map result = linkedInService.suggestsFollowedCompanys(user);
         if(result.get("values") != null){
         	return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
         }else{
