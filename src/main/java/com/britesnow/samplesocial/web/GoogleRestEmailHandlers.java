@@ -108,13 +108,14 @@ public class GoogleRestEmailHandlers {
     
     @WebGet("/gmailrest/get")
     public WebResponse getEmail(@WebUser User user, @WebParam("id") String id) throws Exception {
-        gmailRestService.getEmail(id);
-        return WebResponse.success();
+        MailInfo info = gmailRestService.getEmail(id);
+        return WebResponse.success(info);
     }
 
-    @WebGet("/gmailrest/insert")
-    public WebResponse insertEmail(@WebUser User user, @WebParam("id") String id) throws Exception {
-        gmailRestService.insertMessage(id);
+    @WebPost("/gmailrest/insert")
+    public WebResponse insertEmail(@WebUser User user, @WebModel Map m, @WebParam("subject") String subject, @WebParam("cc") String cc,
+                                   @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
+        gmailRestService.insertMessage(subject, content, to, cc, attachments);
         return WebResponse.success();
     }
     

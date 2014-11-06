@@ -120,15 +120,15 @@
                         opt.type = "rest";
                         brite.display("GoogleMailSend", "body",opt);
                     }
-
                 })
-
             },
             "INSERT_EMAIL": function(event, extra) {
-                var view = this;
-                app.googleApi.insertMailRest(extra.objId).done(function(data){
+                app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
-                        showEmails.call(view);
+                        var opt = data.result || {};
+                        opt.type = "rest";
+                        opt.isInsert = true;
+                        brite.display("GoogleMailSend", "body",opt);
                     }
                 })
             },

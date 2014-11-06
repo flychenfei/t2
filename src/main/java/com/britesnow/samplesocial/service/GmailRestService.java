@@ -324,83 +324,7 @@ public class GmailRestService {
     public boolean sendMail(String subject, String content, String to, String cc, FileItem[] attachmentItems) throws Exception {
         String email = authService.getSocialIdEntity().getEmail();
         Gmail gmail = getGmailClient();
-        Message message = new Message();
-        
-        StringBuilder raw = new StringBuilder();
-        
-        raw.append("Subject:");
-        raw.append(subject);
-        raw.append("\r\n");
-        raw.append("From:");
-        raw.append(email);
-        raw.append("\r\n");
-        raw.append("To:");
-        raw.append(to);
-        raw.append("\r\n");
-        if(!cc.equals(null) && cc.length() > 0){
-        	raw.append("Cc:");
-            raw.append(cc);
-            raw.append("\r\n");
-        }
-        
-//        raw.append("\r\n");
-//        raw.append(content);
-//        raw.append("\r\n");
-        
-        if(attachmentItems == null || attachmentItems.length == 0){
-        	raw.append("Content-Type: text/html");
-        	raw.append("\r\n");
-            raw.append("\r\n");
-            raw.append(content);
-            raw.append("\r\n");
-        }else{
-            raw.append("Content-Type: multipart/mixed; boundary=\"splitline\"");
-            raw.append("\r\n");
-            raw.append("\r\n");
-            raw.append("--splitline");
-            raw.append("\r\n");
-            raw.append("Content-Type: text/plain; charset=\"UTF-8\"");
-            raw.append("\r\n");
-            raw.append("Content-Transfer-Encoding: 7bit");
-            raw.append("\r\n");
-            raw.append("\r\n");
-            raw.append(content);
-            raw.append("\r\n");
-
-            for(FileItem fileItem : attachmentItems){
-                raw.append("\r\n");
-                raw.append("--splitline");
-                raw.append("\r\n");
-                raw.append("Content-Type: "+fileItem.getContentType()+"; name=\""+fileItem.getName()+"\"");
-                raw.append("\r\n");
-                raw.append("Content-Transfer-Encoding: base64");
-                raw.append("\r\n");
-                raw.append("Content-Disposition: attachment; filename="+fileItem.getName());
-                raw.append("\r\n");
-
-                InputStream is = fileItem.getInputStream();
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                try {
-                    byte[] b = new byte[2048];
-                    while (is.read(b) != -1) {
-                        os.write(b);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                
-                is.close();
-                
-                raw.append("\r\n");
-                raw.append(Base64.encodeBase64String(os.toByteArray()));
-            }
-            
-            raw.append("\r\n");
-            raw.append("--splitline--");
-        }
-
-        String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
-        message.setRaw(encodedEmail);
+        Message message = createMessageRaw(email, subject, content, to, cc, attachmentItems);
         gmail.users().messages().send("me", message).execute();
         return true;
     }
@@ -528,29 +452,17 @@ public class GmailRestService {
         }
     }
 
-//    public Message insertMessage(String messageId) throws MessagingException, IOException {
-//        Message message = null;
-//        message = getGmailClient().users().messages().get("me", messageId).execute();
-//        Message messageInsert = new Message();
-//        System.out.println(message.getRaw());
-//        messageInsert.setRaw(message.getRaw());
-//        getGmailClient().users().messages().insert("me", message).execute();
-//        return message;
-//    }
-
-    public Message insertMessage(String messageId) throws MessagingException, IOException {
-        Message message = createMessageWithEmail();
+    public Message insertMessage(String subject, String content, String to, String cc, FileItem[] attachmentItems) throws MessagingException, IOException {
+        String email = authService.getSocialIdEntity().getEmail();
+        Message message = createMessageRaw(email, subject, content, to, cc, attachmentItems);
         message = getGmailClient().users().messages().insert("me", message).execute();
         System.out.println("Message id: " + message.getId());
         System.out.println(message.toPrettyString());
         return message;
     }
 
-    public Message createMessageWithEmail() throws MessagingException, IOException {
-        String subject = "test insert email";
-        String email = "wgq9058@gmail.com";
-        String to = "905867322@qq.com";
-        String content = "just a test for insert";
+    public Message createMessageRaw(String email,String subject, String content, String to, String cc, FileItem[] attachmentItems) throws MessagingException, IOException {
+        Message message = new Message();
         StringBuilder raw = new StringBuilder();
         raw.append("Subject:");
         raw.append(subject);
@@ -561,14 +473,61 @@ public class GmailRestService {
         raw.append("To:");
         raw.append(to);
         raw.append("\r\n");
-        raw.append("Content-Type: text/html");
-        raw.append("\r\n");
-        raw.append("\r\n");
-        raw.append(content);
-        raw.append("\r\n");
-        String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
+        if(!cc.equals(null) && cc.length() > 0){
+            raw.append("Cc:");
+            raw.append(cc);
+            raw.append("\r\n");
+        }
 
-        Message message = new Message();
+        if(attachmentItems == null || attachmentItems.length == 0){
+            raw.append("Content-Type: text/html");
+            raw.append("\r\n");
+            raw.append("\r\n");
+            raw.append(content);
+            raw.append("\r\n");
+        }else{
+            raw.append("Content-Type: multipart/mixed; boundary=\"splitline\"");
+            raw.append("\r\n");
+            raw.append("\r\n");
+            raw.append("--splitline");
+            raw.append("\r\n");
+            raw.append("Content-Type: text/plain; charset=\"UTF-8\"");
+            raw.append("\r\n");
+            raw.append("Content-Transfer-Encoding: 7bit");
+            raw.append("\r\n");
+            raw.append("\r\n");
+            raw.append(content);
+            raw.append("\r\n");
+
+            for(FileItem fileItem : attachmentItems){
+                raw.append("\r\n");
+                raw.append("--splitline");
+                raw.append("\r\n");
+                raw.append("Content-Type: "+fileItem.getContentType()+"; name=\""+fileItem.getName()+"\"");
+                raw.append("\r\n");
+                raw.append("Content-Transfer-Encoding: base64");
+                raw.append("\r\n");
+                raw.append("Content-Disposition: attachment; filename="+fileItem.getName());
+                raw.append("\r\n");
+
+                InputStream is = fileItem.getInputStream();
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                try {
+                    byte[] b = new byte[2048];
+                    while (is.read(b) != -1) {
+                        os.write(b);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                is.close();
+                raw.append("\r\n");
+                raw.append(Base64.encodeBase64String(os.toByteArray()));
+            }
+            raw.append("\r\n");
+            raw.append("--splitline--");
+        }
+        String encodedEmail = Base64.encodeBase64URLSafeString(raw.toString().getBytes());
         message.setRaw(encodedEmail);
         return message;
     }

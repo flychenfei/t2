@@ -198,10 +198,29 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmailrest/get", params);
         },
-        insertMailRest: function(id) {
-            var params = {id: id};
-            params.method = "Get";
-            return app.getJsonData(contextPath + "/gmailrest/insert", params);
+        insertMailRest: function(opts, files) {
+            opts = opts || {};
+            files = files || [];
+            var dfd = $.Deferred();
+            var formData = new FormData();
+
+            for(var key in opts){
+                formData.append(key, opts[key]);
+            }
+
+            for(var i = 0; i < files.length; i++){
+                if(files[i]){
+                    formData.append("files", files[i]);
+                }
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', contextPath + "/gmailrest/insert", true);
+            xhr.onload = function(e) {
+                var ret = eval("(" + this.response + ")").result;
+                dfd.resolve(ret);
+            };
+            xhr.send(formData);
+            return dfd.promise();
         },
         sendMailRest: function(opts, files) {
             opts = opts || {};

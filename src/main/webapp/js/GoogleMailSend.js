@@ -44,7 +44,10 @@
 	 		"btap; .btnClose": function(){
 	 			var view = this;
 	 			view.close();
-	 		}, 
+	 		},
+	 		"btap; .btnInsert": function(){
+	 			sendMail.call(this, true);
+	 		},
 	 		"btap; .btnCreate": function(){
 	 			sendMail.call(this);
 	 		}
@@ -60,7 +63,7 @@
 	});
 
 	// --------- View Private Methods --------- //
-	function sendMail() {
+	function sendMail(isInsert) {
 		var view = this;
 		var $e = view.$el;
 		var haveNullVal = false;
@@ -95,9 +98,9 @@
 		$e.find("input[name='attachments']").each(function(){
 			files.push($(this)[0].files[0]);
 		});
-		// if mail id exist do update,else do create
-		if (view.type == 'rest') {
-			app.googleApi.sendMailRest({
+
+		if(isInsert){
+			app.googleApi.insertMailRest({
 				to : to,
 				cc : cc,
 				subject : subject,
@@ -106,19 +109,30 @@
 				$(document).trigger("DO_REFRESH_MAIL");
 				view.close();
 			});
-		} else {
-			app.googleApi.sendMail({
-				to : to,
-				cc : cc,
-				subject : subject,
-				content : content
-			},files).done(function() {
-				$(document).trigger("DO_REFRESH_MAIL");
-				view.close();
-			});
+		}else{
+			// if mail id exist do update,else do create
+			if (view.type == 'rest') {
+				app.googleApi.sendMailRest({
+					to : to,
+					cc : cc,
+					subject : subject,
+					content : content
+				},files).done(function() {
+					$(document).trigger("DO_REFRESH_MAIL");
+					view.close();
+				});
+			} else {
+				app.googleApi.sendMail({
+					to : to,
+					cc : cc,
+					subject : subject,
+					content : content
+				},files).done(function() {
+					$(document).trigger("DO_REFRESH_MAIL");
+					view.close();
+				});
+			}
 		}
-
-
 	}
 
 	// --------- /View Private Methods --------- //
