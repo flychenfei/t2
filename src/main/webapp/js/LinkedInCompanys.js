@@ -41,8 +41,12 @@
                     	alert("Stop following failed!");
                     }
                 });
-        	}
-        	
+        	},
+        	"btap; .companyUpdates":function (e) {
+                var view = this;
+                var companyId = $(e.target).closest("tr").attr("data-companyId");
+                showCompanysUpdates.call(view,companyId);
+            }
         }
     });
     
@@ -107,6 +111,79 @@
         $content.append($renderContent);
     }
 
+    function showCompanysUpdates(companyId) {
+        var view = this;
+        brite.display("DataTable", ".LinkedInCompanys-body",{
+            dataProvider: {list: function(params){
+                params.companyId = companyId;
+                return app.linkedInApi.CompanyUpdates(params);
+            }},
+            rowAttrs: function (obj) {
+                return "data-companyId='{0}' data-companyCommentId='{1}'".format(obj.id,obj.updateContent.companyStatusUpdate.share.id)
+            },
+            columnDef: [
+                        {
+                            text: "#",
+                            render: function (obj, idx) {
+                                return idx + 1
+                            },
+                            attrs: "style='width: 5%'"
+                        },
+                        {
+                            text: "CompanyName",
+                            render: function (obj) {
+                                return obj.updateContent.company.name;
+                            },
+                            attrs: "style='width: 10%'"
+
+                        },
+                        {
+                            text: "Comment Theme",
+                            render: function (obj) {
+                                return obj.updateContent.companyStatusUpdate.share.comment;
+                            },
+                            attrs: "style='width: 30%'"
+
+                        },
+                        {
+                            text: "Content Description",
+                            render: function (obj) {
+                                return obj.updateContent.companyStatusUpdate.share.content.description;
+                            },
+                            attrs: "style='width: 30%'"
+
+                        },
+                        {
+                            text: "eyebrowUrl",
+                            render: function (obj) {
+                                var strUrl = "<span><a href=\""+obj.updateContent.companyStatusUpdate.share.content.eyebrowUrl+"\" target=\"_blank\">view</a></span>";
+                                return strUrl;
+                            },
+                            attrs: "style='width: 1%'"
+                        },
+                        {
+                            text: "IsLike",
+                            render: function (obj) {
+                                return obj.isLikable
+                            },
+                            attrs: "style='width: 5%'"
+                        },
+                        {
+                            text: "Visibility",
+                            render: function (obj) {
+                                return obj.updateContent.companyStatusUpdate.share.visibility.code;
+                            },
+                            attrs: "style='width: 5%'"
+                        }
+
+                    ],
+            opts: {
+                htmlIfEmpty: "Not Company Updates found",
+                withPaging: true,
+                withCmdDelete:false
+            }
+        });
+    }
     //----------------------- /private method --------------------
     
 })(jQuery);

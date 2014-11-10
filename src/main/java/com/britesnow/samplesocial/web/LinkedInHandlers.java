@@ -13,6 +13,8 @@ import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import javax.swing.text.html.parser.DTDConstants;
+
 @Singleton
 public class LinkedInHandlers {
     @Inject
@@ -121,7 +123,21 @@ public class LinkedInHandlers {
         	return WebResponse.fail();
         }
     }
-    
+
+    @WebGet("/linkedin/company/companyUpdates")
+    public WebResponse GetCompanyUpdates(@WebUser User user, @WebParam("companyId") String companyId, @WebParam("pageIndex") Integer pageIndex,
+                                         @WebParam("pageSize") Integer pageSize) {
+        Map result = linkedInService.companyUpdates(user, companyId, pageIndex, pageSize);
+        if(result == null){
+            return WebResponse.fail();
+        }
+        if(result.get("values") != null){
+            return WebResponse.success(result.get("values")).set("result_count", result.get("_total"));
+        }else{
+            return WebResponse.success(new ArrayList()).set("result_count", result.get("_total"));
+        }
+    }
+
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

@@ -51,7 +51,8 @@ public class LinkedInService {
     public static final String SUGGESTED_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/suggestions/to-follow/companies:(id,name,universal-name,website-url,logo-url,locations,description,num-followers)";
     public static final String STARTFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies";
     public static final String STOPFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies/id=%s";
-    
+    public static final String UPDATE_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/companies/%s/updates?event-type=status-update";
+
     private OAuthService oAuthService;
 
     @Inject
@@ -62,8 +63,6 @@ public class LinkedInService {
     /**
      * get current user information by auth user
      * @param user  login user
-     * @param pageIndex  page index
-     * @param pageSize   page size
      * @return  user map
      */
     public Map getCurrentUserInfo(User user) {
@@ -91,8 +90,6 @@ public class LinkedInService {
     /**
      * remove user's jobbookmark   by auth user and bookid
      * @param user  login user
-     * @param pageIndex  page index
-     * @param pageSize   page size
      * @return  user map
      */
     public void removeBookmark(User user, String bookid) {
@@ -104,8 +101,6 @@ public class LinkedInService {
     /**
      * add a jobbookmark   by auth user
      * @param user  login user
-     * @param pageIndex  page index
-     * @param pageSize   page size
      * @return  user map
      */
 	public void addBookmark(User user, String bookid) {
@@ -309,10 +304,10 @@ public class LinkedInService {
     }
     
     /**
-     * get the post list by groupId
+     * get the post Comments list by postId
      * 
      * @param user
-     * @param groupId
+     * @param postId
      * @param start
      * @param count
      * @return
@@ -349,6 +344,7 @@ public class LinkedInService {
      * set like or unlike to a post
      * @param user
      * @param postId
+     * @param islike
      * @return
      */
     public boolean likeGroupPost(User user, String postId, boolean islike){
@@ -423,7 +419,27 @@ public class LinkedInService {
         Response response = request.send();
         return Strings.isNullOrEmpty(response.getBody());
     }
-    
+
+    /**
+     * get the updates of company by auth user and companyId
+     *
+     * @param user
+     * @param companyId
+     * @param start
+     * @param count
+     * @return
+     */
+    public Map companyUpdates(User user, String companyId, Integer start, Integer count) {
+        if (Strings.isNullOrEmpty(companyId)) {
+            return null;
+        }
+        OAuthRequest request = createRequest(Verb.GET, String.format(UPDATE_COMPANYS_ENDPOINT, companyId));
+        addPageParameter(start, count, request);
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return JsonUtil.toMapAndList(response.getBody());
+    }
+
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
 
