@@ -13,21 +13,7 @@
 		postDisplay:function(){
 			var view = this;
 			var $e = view.$el;
-			$(".move").addClass("disabled");
-			$(".copy").addClass("disabled");
-			param = {};
-			app.googleDriveApi.foldersInfo(param).done(function (result) {
-				$("div.itemDiv").empty();
-				brite.display("GoogleDriveSubFolder",$("div.itemDiv"),{result:result.result,root:true}).done(function(){
-					for (var i = 0; i < result.result.length; i++){
-						var selfId = result.result[i].selfId;
-						var filedId = view.filedId;
-						if(selfId == filedId){
-							$e.find(".rootfolder .folderitem[data-selfid='"+selfId+"']").addClass("hide");
-						}
-					}
-				});
-			});
+			refresh.call(view);
 		},
 		events:{
 			"click;.dialogCloseBtn":function(event){
@@ -60,6 +46,44 @@
 					$(".move").removeClass("disabled");
 				if($(".copy").hasClass("disabled"))
 					$(".copy").removeClass("disabled");
+			},
+			"click;.newFolder":function(e){
+				var view = this;
+				var $e = view.$el;
+				var parentId = $(e.target).closest(".dialogBody").attr("data-parentid");
+				var selfId = $e.find(".itemDiv .select").attr("data-selfid");
+
+				brite.display("InputValue", ".dialogContent", {
+					title: 'Create Folder',
+					fields: [
+						{label:"Folder Name", name:'folderName', mandatory:false}
+					],
+					callback: function (params) {
+						var params = params || {};
+						if(selfId.length > 0){
+							params.parentId = selfId;
+						}else{
+							params.parentId = parentId;
+						}
+						
+						app.googleDriveApi.createFolder(params).done(function (result) {
+							if(result.success === true){
+								alert("CreateFolder success");
+								refresh.call(view);
+							}else{
+								alert("CreateFolder fail");
+							}
+							var params = {};
+							params.selfId = parentId;
+
+							brite.display("GoogleDriveFiles",".GoogleScreen-content",{
+								results: function(){
+									return app.googleDriveApi.childList(params);
+								}
+							});
+						});
+					}
+				});
 			},
 			"click;.move":function(event){
 				var moveBtn = $(event.target);
@@ -121,4 +145,24 @@
 			}
 		}
 		});
+	// --------- Private Methods--------- //
+	function refresh(data){
+		var view = this;
+		var $e = view.$el;
+			$(".move").addClass("disabled");
+			$(".copy").addClass("disabled");
+			param = {};
+			app.googleDriveApi.foldersInfo(param).done(function (result) {
+				$("div.itemDiv").empty();
+				brite.display("GoogleDriveSubFolder",$("div.itemDiv"),{result:result.result,root:true}).done(function(){
+					for (var i = 0; i < result.result.length; i++){
+						var selfId = result.result[i].selfId;
+						var filedId = view.filedId;
+						if(selfId == filedId){
+							$e.find(".rootfolder .folderitem[data-selfid='"+selfId+"']").addClass("hide");
+						}
+					}
+				});
+			});		
+	}
 	})();
