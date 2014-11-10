@@ -350,6 +350,14 @@ public class GmailRestService {
             e.printStackTrace();
         }
     }
+
+    public void untrashEmail(String messageId) {
+        try {
+            getGmailClient().users().messages().untrash("me", messageId).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
     public List<Map> listLabels(boolean force) throws Exception  {
         List<Map> labelsList = null;

@@ -90,6 +90,13 @@ public class GoogleRestEmailHandlers {
         return WebResponse.success(true);
     }
 
+    @WebPost("/gmailrest/untrash")
+    public WebResponse untrashEmail(@WebUser User user,
+                                  @WebParam("id") String id, RequestContext rc) throws Exception {
+        gmailRestService.untrashEmail(id);
+        return WebResponse.success(true);
+    }
+
     @WebPost("/gmailrest/send")
     public WebResponse sendMail(@WebUser User user,
                            @WebModel Map m, @WebParam("subject") String subject, @WebParam("cc") String cc,

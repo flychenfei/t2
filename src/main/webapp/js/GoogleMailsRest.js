@@ -16,6 +16,7 @@
         postDisplay: function (data, config) {
             var view = this;
             var $e = view.$el;
+            view.isSearchTrashEmail = false;
 
 			$e.find('.datetimepicker').datetimepicker({
 				format : 'yyyy-MM-dd',
@@ -34,8 +35,13 @@
 				var $e = view.$el;
 				//view.submit();
 				var result = {};
+                view.isSearchTrashEmail = false;
 				$e.find(".search-mails-container :text").each(function() {
 					if ($(this).val() !== "") {
+                        if($(this).attr("name") == "label"){
+                            var labelVals = $(this).val().toLowerCase();
+                            if(labelVals === "trash")view.isSearchTrashEmail = true;
+                        }
 						result[$(this).attr("name")] = $(this).val();
 					}
 				});
@@ -84,6 +90,16 @@
                             showEmails.call(view);
                         }, 3000)
 
+                    });
+                }
+            },
+            "UNTRASH_EMAIL": function(event, extra){
+                var view = this;
+                if(extra.objId){
+                    app.googleApi.untrashEmailRest(extra.objId).done(function(result){
+                        setTimeout(function(){
+                            showEmails.call(view);
+                        }, 3000)
                     });
                 }
             },
@@ -208,9 +224,9 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-trash'/>";
+                        return view.isSearchTrashEmail ? "<div class='glyphicon glyphicon-transfer'/>" : "<div class='glyphicon glyphicon-trash'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
+                    attrs: view.isSearchTrashEmail ? "style='width:40px;cursor:pointer'  data-cmd='UNTRASH_EMAIL' title='UnTrash Email'" : "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
                 },
                 {
                     text: "",
