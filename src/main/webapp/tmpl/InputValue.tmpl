@@ -1,32 +1,31 @@
 <script id="tmpl-InputValue" type="text/html">
-    <div class="InputValue">
+	<div class="InputValue">
 		<div class='InputValueDialogGlass' />
-	    <div class="InputValue-content">
-	        <h2>{{title}}</h2>
-	        <div class="form">
-                {{#each fields }}
-		          <div class="control-group">
-			        {{#if label}}
-				  		<label>{{label}}:</label>
-				  		<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
-			  		{{else}}
-			  		<label>{{datelabel}}:</label>
-				  		<div class="input-append datetimepicker date"> 
-					      <input type="text" name="{{name}}">
-					      <span class="add-on"> 
-					          <i class="glyphicon glyphicon-calendar"></i>
-					      </span> 
-					    </div>
-				    {{/if}}
-			  		<br/>
-			  		</div>
-                {{/each}}
-		  		<div>
-		    		<a href="#" class="btn btn-primary inputValueBtn">OK</a>
-		    		<a href="#" class="btn btn-default cancelBtn">Close</a>
-		  		</div>
-	        </div>
+		<div class="InputValue-content">
+			<h2>{{title}}</h2>
+			<div class="form">
+				{{#each fields }}
+					<div class="control-group">
+					{{#if label}}
+						<label>{{label}}:</label>
+						<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
+					{{else}}
+						<label>{{datelabel}}:</label>
+						<div class="input-append datetimepicker date"> 
+							<input type="text" name="{{name}}">
+							<span class="add-on"> 
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span> 
+						</div>
+					{{/if}}
+					<br/>
+					</div>
+				{{/each}}
+				<div>
+					<a href="#" class="btn btn-primary inputValueBtn">OK</a>
+					<a href="#" class="btn btn-default cancelBtn">Close</a>
+				</div>
 			</div>
-	    </div>
-    </div>
+		</div>
+	</div>
 </script>
