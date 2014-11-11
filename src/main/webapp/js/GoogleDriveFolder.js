@@ -51,7 +51,7 @@
 				var view = this;
 				var $e = view.$el;
 				var parentId = $(e.target).closest(".dialogBody").attr("data-parentid");
-				var selfId = $e.find(".itemDiv .select").attr("data-selfid");
+				var selfId = $e.find(".dialogBody .select").attr("data-selfid");
 
 				brite.display("InputValue", ".dialogContent", {
 					title: 'Create Folder',
