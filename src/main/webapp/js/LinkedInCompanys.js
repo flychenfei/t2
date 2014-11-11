@@ -46,6 +46,25 @@
                 var view = this;
                 var companyId = $(e.target).closest("tr").attr("data-companyId");
                 showCompanysUpdates.call(view,companyId);
+            },
+            "btap; .commentUpdates":function (e) {
+                var view = this;
+                var updateKey = $(e.target).closest("tr").attr("data-updateKey");
+                brite.display("InputValue", ".MainScreen",
+                    {title:'Commenting On Updates',
+                    fields:[{label: "Comment", name: 'comment'}],callback:function(data){
+                            var params = {};
+                            params.updateKey = updateKey;
+                            params.comment = data.comment;
+                            console.log(params);
+                            app.linkedInApi.CommentCompanyUpdates(params).done(function (result) {
+                                if(result.success === true){
+                                    alert("Commenting On Updates success!");
+                                }else{
+                                    alert("Commenting On Updates failed!");
+                                }
+                            });
+                    }});
             }
         }
     });
@@ -119,7 +138,7 @@
                 return app.linkedInApi.CompanyUpdates(params);
             }},
             rowAttrs: function (obj) {
-                return "data-companyId='{0}' data-companyCommentId='{1}'".format(obj.id,obj.updateContent.companyStatusUpdate.share.id)
+                return "data-updateKey='{0}' data-companyCommentId='{1}' ".format(obj.updateKey,obj.updateContent.companyStatusUpdate.share.id)
             },
             columnDef: [
                         {
@@ -142,7 +161,7 @@
                             render: function (obj) {
                                 return obj.updateContent.companyStatusUpdate.share.comment;
                             },
-                            attrs: "style='width: 30%'"
+                            attrs: "style='width: 20%'"
 
                         },
                         {
@@ -150,7 +169,7 @@
                             render: function (obj) {
                                 return obj.updateContent.companyStatusUpdate.share.content.description;
                             },
-                            attrs: "style='width: 30%'"
+                            attrs: "style='width: 25%'"
 
                         },
                         {
@@ -162,11 +181,11 @@
                             attrs: "style='width: 1%'"
                         },
                         {
-                            text: "IsLike",
+                            text: "IsCommentable",
                             render: function (obj) {
-                                return obj.isLikable
+                                return obj.isCommentable
                             },
-                            attrs: "style='width: 5%'"
+                            attrs: "style='width: 5%;'"
                         },
                         {
                             text: "Visibility",
@@ -174,6 +193,17 @@
                                 return obj.updateContent.companyStatusUpdate.share.visibility.code;
                             },
                             attrs: "style='width: 5%'"
+                        },
+                        {
+                            text: "operator",
+                            render: function (obj) {
+                                var operStr = "";
+                                if(obj.isCommentable === true){
+                                    operStr = operStr.concat("<span><a src=\"#\" class=\"commentUpdates cursor\">Commenting</a></span>");
+                                }
+                                return operStr;
+                            },
+                            attrs: "style='width: 5%;'"
                         }
 
                     ],

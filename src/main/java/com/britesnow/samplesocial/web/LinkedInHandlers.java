@@ -138,6 +138,16 @@ public class LinkedInHandlers {
         }
     }
 
+    @WebGet("/linkedin/company/commentCompanyUpdates")
+    public WebResponse commentCompanyUpdates(@WebUser User user, @WebParam("updateKey") String updateKey, @WebParam("comment") String commentContent) {
+        boolean result = linkedInService.commentingCompanyShare(user, updateKey, commentContent);
+        if(result){
+            return WebResponse.success();
+        }else{
+            return WebResponse.fail();
+        }
+    }
+
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

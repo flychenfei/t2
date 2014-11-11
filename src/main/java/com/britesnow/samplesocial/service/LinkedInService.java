@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.appengine.repackaged.com.google.common.base.Flag;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -52,6 +53,7 @@ public class LinkedInService {
     public static final String STARTFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies";
     public static final String STOPFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies/id=%s";
     public static final String UPDATE_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/companies/%s/updates?event-type=status-update";
+    public static final String COMMENTING_COMPANYS_SHARE_ENDPOINT = "https://api.linkedin.com/v1/people/~/network/updates/key=%s/update-comments";
 
     private OAuthService oAuthService;
 
@@ -82,7 +84,7 @@ public class LinkedInService {
     public Map getJobBookmarks(User user, Integer pageIndex, Integer pageSize) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKS_ENDPOINT);
         addPageParameter(pageIndex, pageSize, request);
-        oAuthService.signRequest(getToken(user),request);
+        oAuthService.signRequest(getToken(user), request);
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());
     }
@@ -277,7 +279,7 @@ public class LinkedInService {
     		return null;
     	}
     	OAuthRequest request = createRequest(Verb.GET, String.format(GROUPS_DETAIL_ENDPOINT, groupId));
-        oAuthService.signRequest(getToken(user),request);
+        oAuthService.signRequest(getToken(user), request);
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());
     }
@@ -440,9 +442,21 @@ public class LinkedInService {
         return JsonUtil.toMapAndList(response.getBody());
     }
 
+    public boolean commentingCompanyShare(User user, String updateKey, String commentContent){
+        if (Strings.isNullOrEmpty(updateKey) || Strings.isNullOrEmpty(commentContent)){
+            return false;
+        }
+        OAuthRequest request = createRequest(Verb.POST, String.format(COMMENTING_COMPANYS_SHARE_ENDPOINT, updateKey.trim()));
+        HashMap jsonMap = new HashMap();
+        jsonMap.put("comment", commentContent.trim());
+        request.addPayload(JSONValue.toJSONString(jsonMap));
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return Strings.isNullOrEmpty(response.getBody());
+    }
+
     private Map jobmarkId(User user) {
         OAuthRequest request = createRequest(Verb.GET, JOBBOOKMARKId_ENDPOINT);
-
         oAuthService.signRequest(getToken(user),request);
         Response response = request.send();
         return JsonUtil.toMapAndList(response.getBody());
@@ -464,7 +478,6 @@ public class LinkedInService {
 
     private OAuthRequest createRequest(Verb verb, String url) {
         OAuthRequest request = new OAuthRequest(verb, url);
-		request.addHeader("Content-Type", "application/json");
         request.addHeader("x-li-format","json");
         return request;
     }
