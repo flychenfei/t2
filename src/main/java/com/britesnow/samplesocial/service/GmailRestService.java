@@ -42,9 +42,7 @@ import com.google.api.services.gmail.model.ModifyMessageRequest;
 import com.google.api.services.gmail.model.Thread;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 @Singleton
 public class GmailRestService {
@@ -458,6 +456,13 @@ public class GmailRestService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Message importMessage(String subject, String content, String to, String cc, FileItem[] attachmentItems) throws Exception {
+        String email = authService.getSocialIdEntity().getEmail();
+        Message message = createMessageRaw(email, subject, content, to, cc, attachmentItems);
+        message = getGmailClient().users().messages().gmailImport("me", message).execute();
+        return message;
     }
 
     public Message insertMessage(String subject, String content, String to, String cc, FileItem[] attachmentItems) throws MessagingException, IOException {

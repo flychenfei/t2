@@ -203,6 +203,30 @@ var app = app || {};
             params.method = "Get";
             return app.getJsonData(contextPath + "/gmailrest/get", params);
         },
+        importMailRest: function(opts, files) {
+            opts = opts || {};
+            files = files || [];
+            var dfd = $.Deferred();
+            var formData = new FormData();
+
+            for(var key in opts){
+                formData.append(key, opts[key]);
+            }
+
+            for(var i = 0; i < files.length; i++){
+                if(files[i]){
+                    formData.append("files", files[i]);
+                }
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', contextPath + "/gmailrest/import", true);
+            xhr.onload = function(e) {
+                var ret = eval("(" + this.response + ")").result;
+                dfd.resolve(ret);
+            };
+            xhr.send(formData);
+            return dfd.promise();
+        },
         insertMailRest: function(opts, files) {
             opts = opts || {};
             files = files || [];

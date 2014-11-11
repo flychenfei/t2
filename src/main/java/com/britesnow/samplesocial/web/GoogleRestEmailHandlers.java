@@ -125,7 +125,14 @@ public class GoogleRestEmailHandlers {
         gmailRestService.insertMessage(subject, content, to, cc, attachments);
         return WebResponse.success();
     }
-    
+
+    @WebPost("/gmailrest/import")
+    public WebResponse importEmail(@WebUser User user, @WebModel Map m, @WebParam("subject") String subject, @WebParam("cc") String cc,
+                                   @WebParam("content") String content, @WebParam("to") String to, @WebParam("files") FileItem[] attachments,RequestContext rc) throws Exception {
+        gmailRestService.importMessage(subject, content, to, cc, attachments);
+        return WebResponse.success();
+    }
+
     @WebPost("/gmailrest/updateLabels")
     public WebResponse updateLabels(@WebUser User user,
                            @WebModel Map m, @WebParam("id") String messageId, @WebParam("addLabels") String addLabelsStr,@WebParam("removeLabels") String removeLabelsStr,  RequestContext rc) throws Exception {

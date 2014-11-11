@@ -46,8 +46,11 @@
 	 			view.close();
 	 		},
 	 		"btap; .btnInsert": function(){
-	 			sendMail.call(this, true);
+	 			sendMail.call(this, true, false);
 	 		},
+			"btap; .btnImport": function(){
+				sendMail.call(this, false, true);
+			},
 	 		"btap; .btnCreate": function(){
 	 			sendMail.call(this);
 	 		}
@@ -63,7 +66,7 @@
 	});
 
 	// --------- View Private Methods --------- //
-	function sendMail(isInsert) {
+	function sendMail(isInsert, isImport) {
 		var view = this;
 		var $e = view.$el;
 		var haveNullVal = false;
@@ -101,6 +104,16 @@
 
 		if(isInsert){
 			app.googleApi.insertMailRest({
+				to : to,
+				cc : cc,
+				subject : subject,
+				content : content
+			},files).done(function() {
+				$(document).trigger("DO_REFRESH_MAIL");
+				view.close();
+			});
+		}else if(isImport){
+			app.googleApi.importMailRest({
 				to : to,
 				cc : cc,
 				subject : subject,

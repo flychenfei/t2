@@ -148,6 +148,16 @@
                     }
                 })
             },
+            "IMPORT_EMAIL": function(event, extra) {
+                app.googleApi.getMailRest(extra.objId).done(function(data){
+                    if(data.success){
+                        var opt = data.result || {};
+                        opt.type = "rest";
+                        opt.isImport = true;
+                        brite.display("GoogleMailSend", "body",opt);
+                    }
+                })
+            },
             "DO_REFRESH_MAIL": function(event, extra) {
             	var view = this;
 				showEmails.call(view); 
@@ -170,7 +180,7 @@
                         var recDate = new Date(obj.date);
                         return recDate.format("yyyy-MM-dd hh:mm:ss");
                     },
-                    attrs: "style='width: 15%'"
+                    attrs: "style='width: 12%'"
 
                 },
                 {
@@ -178,7 +188,7 @@
                     render: function (obj) {
                         return obj.from;
                     },
-                    attrs: "style='width: 15%'"
+                    attrs: "style='width: 12%'"
                 },
                 {
                     text: "Subject",
@@ -231,9 +241,16 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-import'/>";
+                        return "<div class='glyphicon glyphicon-saved'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='INSERT_EMAIL' title='Insert Email'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='glyphicon glyphicon-import'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='IMPORT_EMAIL' title='Import Email'"
                 },
                 {
                     text: "",

@@ -6,7 +6,11 @@
                 {{#if isInsert}}
                     Insert Mail
                 {{else}}
-                    {{#if subject }} Reply Mail [{{subject}}] {{else}} New Mail {{/if}}
+                    {{#if isImport}}
+                        Import Mail
+                    {{else}}
+                        {{#if subject }} Reply Mail [{{subject}}] {{else}} New Mail {{/if}}
+                    {{/if}}
                 {{/if}}
             </h3>
         </div>
@@ -15,7 +19,7 @@
                 <div class="control-group">
                     <div class="control-label">Subject:</div>
                     <div class="controls">
-                        <input type='text' name="subject" {{#if subject }} value="{{#if isInsert}}Insert:{{else}}re:{{/if}} {{subject}}" {{/if}} />
+                        <input type='text' name="subject" {{#if subject }} value="{{#if isInsert}}Insert:{{else}} {{#if isImport}}Import:{{else}}re:{{/if}}{{/if}} {{subject}}" {{/if}} />
                     </div>
                 </div>
                 <div class="control-group">
@@ -50,7 +54,11 @@
             {{#if isInsert}}
                 <div class="btn btn-primary btnInsert">Insert</div>
             {{else}}
-                <div class="btn btn-primary btnCreate">Send</div>
+                {{#if isImport}}
+                    <div class="btn btn-primary btnImport">Import</div>
+                {{else}}
+                    <div class="btn btn-primary btnCreate">Send</div>
+                {{/if}}
             {{/if}}
             <div class="btn btn-default btnClose">Close</div>
         </div>
