@@ -148,7 +148,8 @@
 							view.param = params;
 							openFolder.call(view);
 						});
-					}});
+					}
+				});
 			},
 			"click;.trash":function(event){
 				var view = this;
@@ -229,8 +230,8 @@
 				}
 			},
 			"click;.move":function(e){
-			var fileId = $(event.target).closest("tr").attr("data-fileId");
-			var parentId = $(event.target).closest("tr").attr("data-currentId");
+				var fileId = $(event.target).closest("tr").attr("data-fileId");
+				var parentId = $(event.target).closest("tr").attr("data-currentId");
 				if(fileId && parentId){
 					brite.display("GoogleDriveFolder", $("body"), {
 						move:true,
@@ -240,6 +241,67 @@
 					});
 				}
 				return false;
+			},
+
+			// add drag event
+			"bdragstart; tr.contextMenu td:nth-child(2)" : function(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				var view = this;
+				var $e = view.$el;
+				var $tr= $(event.currentTarget).closest("tr");
+				var $dragDiv = $("<div id='dragDiv' data-currentid='"+$tr.attr("data-currentid")+"' data-id='"+$tr.attr("data-fileid")+"' data-name='"+$tr.attr("data-filename")+"'>drag: <span class='file' >"+$tr.attr("data-filename")+"</span></div>");
+
+				$e.append($dragDiv);
+
+				$dragDiv.offset({
+					left: event.bextra.pageX,
+					top: event.bextra.pageY
+				});
+
+			},
+			"bdragmove; tr.contextMenu td:nth-child(2)" : function(event) {
+				event.stopPropagation();
+				event.preventDefault();
+				var view = this;
+				var $e = view.$el;
+				var $dragDiv = $e.find("#dragDiv");
+				$dragDiv.offset({
+					left: event.bextra.pageX,
+					top: event.bextra.pageY
+				});
+
+				$e.find(".dataTable .table-striped tbody tr td:nth-child(2)").removeClass("holderSpace");
+				$e.find(".dataTable .table-striped tbody tr td:nth-child(2)").each(function(idx, td) {
+					var $td = $(td);
+					var tpos = $td.offset();
+					if (event.bextra.pageY > tpos.top && event.bextra.pageY < tpos.top + $td.outerHeight() 
+						&& event.bextra.pageY > tpos.left && event.bextra.pageY < tpos.left + $td.outerWidth()
+						&& $td.closest("tr").attr("data-mimetype") == 'application/vnd.google-apps.folder') {
+						$td.addClass("holderSpace");
+					}
+				});
+			},
+			"bdragend; tr.contextMenu td:nth-child(2)" : function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				var view = this;
+				var $e = view.$el;
+				var $dragDiv = $e.find("#dragDiv");
+
+				if($e.find(".dataTable .holderSpace").size() > 0){
+					var $holder = $e.find(".dataTable .holderSpace");
+					var $holderTr = $holder.closest("tr");
+					var param = {};
+					param.fileId = $dragDiv.attr("data-id");
+					param.moveId = $holderTr.attr("data-fileid");
+					param.parentId = $dragDiv.attr("data-currentid");
+					app.googleDriveApi.moveFile(param).done(function(result){				
+						showFile.call(view);
+					});
+				}
+				$dragDiv.remove();
+				$e.find(".dataTable .table-striped tbody tr td:nth-child(2)").removeClass("holderSpace");
 			}
 		},
 		docEvents: {
