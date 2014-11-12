@@ -65,6 +65,27 @@
                                 }
                             });
                     }});
+            },
+            "btap; .likeUpdates":function (e) {
+                var view = this;
+                var $operator = $(e.target);
+                var param = {};
+                param.updateKey = $operator.closest("tr").attr("data-updateKey");
+                param.like = $operator.attr("value");
+                app.linkedInApi.LikeCompanyUpdates(param).done(function (result) {
+                    if(result.success === true){
+                        alert("Operator success!");
+                        if(param.like == "like"){
+                            $operator.attr("value","dislike");
+                            $operator.text("dislike");
+                        }else{
+                            $operator.attr("value","like");
+                            $operator.text("like");
+                        }
+                    }else{
+                        alert("Operator failed!");
+                    }
+                });
             }
         }
     });
@@ -138,13 +159,13 @@
                 return app.linkedInApi.CompanyUpdates(params);
             }},
             rowAttrs: function (obj) {
-                return "data-updateKey='{0}' data-companyCommentId='{1}' ".format(obj.updateKey,obj.updateContent.companyStatusUpdate.share.id)
+                return "data-updateKey='{0}' data-companyCommentId='{1}'".format(obj.updateKey, obj.updateContent.companyStatusUpdate.share.id)
             },
             columnDef: [
                         {
                             text: "#",
                             render: function (obj, idx) {
-                                return idx + 1
+                                return idx + 1;
                             },
                             attrs: "style='width: 5%'"
                         },
@@ -181,9 +202,20 @@
                             attrs: "style='width: 1%'"
                         },
                         {
-                            text: "IsCommentable",
+                            text: "Some Authority",
                             render: function (obj) {
-                                return obj.isCommentable
+                                var authStr = "";
+                                if(obj.isCommentable === true){
+                                    authStr = authStr.concat("<span class=\"word-break span-block\">isCommentable: true</span>");
+                                }else{
+                                    authStr = authStr.concat("<span class=\"word-break span-block\">isCommentable: false</span>");
+                                }
+                                if(obj.isLikable === true){
+                                    authStr = authStr.concat("<span class=\"word-break span-block\">isLikable: true</span>");
+                                }else{
+                                    authStr = authStr.concat("<span class=\"word-break span-block\">isLikable: false</span>");
+                                }
+                                return authStr;
                             },
                             attrs: "style='width: 5%;'"
                         },
@@ -201,6 +233,16 @@
                                 if(obj.isCommentable === true){
                                     operStr = operStr.concat("<span><a src=\"#\" class=\"commentUpdates cursor\">Commenting</a></span>");
                                 }
+                                if(obj.isLikable === true){
+                                    if(obj.isLiked === true){
+                                        operStr = operStr.concat("<span><a src=\"#\" class=\"likeUpdates cursor\" value=\"like\">like</a></span>");
+                                    }else{
+                                        operStr = operStr.concat("<span><a src=\"#\" class=\"likeUpdates cursor\" value=\"dislike\">dislike</a></span>");
+                                    }
+                                }
+                                if (operStr.length < 1) {
+                                    operStr = "No Operator!";
+                                };
                                 return operStr;
                             },
                             attrs: "style='width: 5%;'"

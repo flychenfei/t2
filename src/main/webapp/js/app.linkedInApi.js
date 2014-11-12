@@ -109,6 +109,12 @@ var app = app || {};
             param = param;
             param.method = "Get";
             return app.getJsonData(contextPath + "/linkedin/company/commentCompanyUpdates", param);
+        },
+        LikeCompanyUpdates : function(param) {
+            alert(param.like);
+            param = param;
+            param.method = "Get";
+            return app.getJsonData(contextPath + "/linkedin/company/likeCompanyUpdates", param);
         }
 	};
 })();

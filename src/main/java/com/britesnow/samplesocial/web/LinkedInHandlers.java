@@ -148,6 +148,16 @@ public class LinkedInHandlers {
         }
     }
 
+    @WebGet("/linkedin/company/likeCompanyUpdates")
+    public WebResponse likeCompanyUpdates(@WebUser User user, @WebParam("updateKey") String updateKey, @WebParam("like") String like) {
+        boolean result = linkedInService.likingCompanyShare(user, updateKey, like);
+        if(result){
+            return WebResponse.success();
+        }else{
+            return WebResponse.fail();
+        }
+    }
+
     @WebGet("/linkedin/searchPeople")
     public WebResponse searchPeople(@WebUser User user, @WebParam("pageIndex") Integer pageIndex,
                                   @WebParam("pageSize") Integer pageSize, @WebParam("keywork") String keywork) {

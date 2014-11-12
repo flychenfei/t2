@@ -54,6 +54,7 @@ public class LinkedInService {
     public static final String STOPFOLLOWING_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/people/~/following/companies/id=%s";
     public static final String UPDATE_COMPANYS_ENDPOINT = "https://api.linkedin.com/v1/companies/%s/updates?event-type=status-update";
     public static final String COMMENTING_COMPANYS_SHARE_ENDPOINT = "https://api.linkedin.com/v1/people/~/network/updates/key=%s/update-comments";
+    public static final String LIKING_COMPANYS_SHARE_ENDPOINT = "https://api.linkedin.com/v1/people/~/network/updates/key=%s/is-liked";
 
     private OAuthService oAuthService;
 
@@ -442,6 +443,14 @@ public class LinkedInService {
         return JsonUtil.toMapAndList(response.getBody());
     }
 
+    /**
+     * commenting on a company share with  updateKey
+     *
+     * @param user
+     * @param updateKey
+     * @param commentContent
+     * @return
+     */
     public boolean commentingCompanyShare(User user, String updateKey, String commentContent){
         if (Strings.isNullOrEmpty(updateKey) || Strings.isNullOrEmpty(commentContent)){
             return false;
@@ -450,6 +459,31 @@ public class LinkedInService {
         HashMap jsonMap = new HashMap();
         jsonMap.put("comment", commentContent.trim());
         request.addPayload(JSONValue.toJSONString(jsonMap));
+        oAuthService.signRequest(getToken(user), request);
+        Response response = request.send();
+        return Strings.isNullOrEmpty(response.getBody());
+    }
+
+    /**
+     * like or dislike on a company share with  updateKey
+     *
+     * @param user
+     * @param updateKey
+     * @param like
+     * @return
+     */
+    public boolean likingCompanyShare(User user, String updateKey, String like){
+        if (Strings.isNullOrEmpty(updateKey) || Strings.isNullOrEmpty(like)){
+            return false;
+        }
+        OAuthRequest request = createRequest(Verb.PUT, String.format(LIKING_COMPANYS_SHARE_ENDPOINT, updateKey.trim()));
+        if("like".equals(like)){
+            request.addPayload("true");
+        }else if("dislike".equals(like)){
+            request.addPayload("false");
+        }else{
+            return false;
+        }
         oAuthService.signRequest(getToken(user), request);
         Response response = request.send();
         return Strings.isNullOrEmpty(response.getBody());
