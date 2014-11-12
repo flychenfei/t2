@@ -35,29 +35,47 @@
                 //view.submit();
                 var result = {};
                 $e.find(".search-mails-container :text").each(function(){
-                  if($(this).val() !== ""){
-                    result[$(this).attr("name")] = $(this).val();
-                  }
+                    if($(this).val() !== ""){
+                        result[$(this).attr("name")] = $(this).val();
+                    }
                 });
                 $e.find(".search-mails-container .checkbox").each(function(){
                     if($(this).val() !== ""){
-                      result[$(this).attr("name")] = $(this).prop("checked");
+                        result[$(this).attr("name")] = $(this).prop("checked");
                     }
-                  });
-                
+                });
                 view.search = function(opts) {
-                  opts = opts || [];
-                  $.extend(opts, result)
-                  opts.label = view.folderName;
-                  return app.googleApi.searchEmails(opts)
+                    opts = opts || [];
+                    $.extend(opts, result)
+                    opts.label = view.folderName;
+                    return app.googleApi.searchEmails(opts)
                 };
-                
                 showEmails.call(view);
           },
+          "btap; .cleanSearchBtn":function(event){
+                var view = this;
+                var $e = view.$el;
+                $e.find(".search-mails-container :text").each(function() {
+                    if ($(this).val() !== "") {
+                        $(this).val("");
+                    }
+                });
+                $e.find(".search-mails-container .checkbox").each(function() {
+                    if ($(this).val() !== "") {
+                        $(this).prop("checked", false);
+                    }
+                });
+                view.search = function(opts) {
+                    opts = opts || [];
+                    opts.label = view.folderName;
+                    return app.googleApi.searchEmails(opts)
+                };
+                showEmails.call(view);
+            },
           "btap; .searchCondition":function () {
                 var view = this;
                 var $e = view.$el;
-                    $e.find(".search-mails-container").toggleClass("hide");
+                $e.find(".search-mails-container").toggleClass("hide");
           }
 
         },
