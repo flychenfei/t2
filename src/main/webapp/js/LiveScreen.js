@@ -28,8 +28,8 @@
                 var menu = $li.attr("data-nav");
                 if(menu == "userInfo"){
                   brite.display("LiveUserInfo");
-                }else if(menu == "outLook"){
-                  brite.display("LiveOutLook");
+                }else if(menu == "contacts"){
+                  brite.display("LiveContacts");
                 }
               }
             },
