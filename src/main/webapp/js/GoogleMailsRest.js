@@ -30,7 +30,7 @@
         },
 
         events: {
-          "btap; .inputValueBtn":function () {
+            "btap; .inputValueBtn":function () {
 				var view = this;
 				var $e = view.$el;
 				//view.submit();
@@ -61,24 +61,44 @@
 
 				showEmails.call(view);
 
-          },
-          "click; .currentThread":function(event){
+            },
+            "btap; .cleanSearchBtn":function(event){
+                var view = this;
+                var $e = view.$el;
+                $e.find(".search-mails-container :text").each(function() {
+                    if ($(this).val() !== "") {
+                        $(this).val("");
+                    }
+                });
+                $e.find(".search-mails-container .checkbox").each(function() {
+                    if ($(this).val() !== "") {
+                        $(this).prop("checked", false);
+                    }
+                });
+                view.search = function(opts) {
+                    opts = opts || [];
+                    opts.label = view.folderName
+                    return app.googleApi.searchEmailsRest(opts)
+                };
+                showEmails.call(view);
+            },
+            "click; .currentThread":function(event){
 				var view = this;
 				var $e = view.$el;
 				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
 				brite.display("GoogleThreadMails",null,{threadId:threadId});
-          },
-          "click; .updateLabels":function(event){
+            },
+            "click; .updateLabels":function(event){
 				var view = this;
 				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("GoogleMailLabelsUpdate",null,{id:id});
-          },
-          "btap; .searchCondition":function(){
+            },
+            "btap; .searchCondition":function(){
                 var view = this;
                 var $e = view.$el;
                $e.find(".search-mails-container").toggleClass("hide");
-          }
+            }
 
         },
         docEvents: {
