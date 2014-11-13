@@ -38,4 +38,14 @@ public class OutLookHandlers {
 
     }
 
+    @WebGet("/live/OutLook/getUserAblums")
+    public WebResponse getUserAblums(@WebUser User user)  {
+        if (user != null) {
+            Map ablumsList = outLookService.getUserAblums();
+            return WebResponse.success(ablumsList);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
 }

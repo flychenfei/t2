@@ -30,6 +30,8 @@
                   brite.display("LiveUserInfo");
                 }else if(menu == "contacts"){
                   brite.display("LiveContacts");
+                }else if(menu == "ablums"){
+                  brite.display("LiveAblums");
                 }
               }
             },

@@ -17,6 +17,7 @@ public class OutLookService {
 
     public static final String PROFILE_ENDPOINT = "https://apis.live.net/v5.0/me";
     public static final String CONTACTLIST_ENDPOINT = "https://apis.live.net/v5.0/me/contacts";
+    public static final String ALBUMLIST_ENDPOINT = "https://apis.live.net/v5.0/me/albums";
     /**
      * get user info
      * @return user info map
@@ -34,6 +35,17 @@ public class OutLookService {
      */
     public Map getUserContacts() {
         OAuthRequest request = oAuthService.createRequest(Verb.GET, CONTACTLIST_ENDPOINT);
+        Response response = request.send();
+        Map profile = JsonUtil.toMapAndList(response.getBody());
+        return profile;
+    }
+
+    /**
+     * get user ablum lists
+     * @return
+     */
+    public Map getUserAblums() {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, ALBUMLIST_ENDPOINT);
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
