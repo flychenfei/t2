@@ -9,14 +9,28 @@
 			showContacts.call(view);
 		},
 		events:{
+			"click;.btnAdd":function(e){
+				brite.display("LiveCreateContact", null, {id: null});
+			},
 			
-		}
+		},
+        docEvents: {
+            "DO_REFRESH_CONTACT":function(){
+                 var view = this;
+                 showContacts.call(view);
+            },
+            "EDIT_CONTACT": function(event, extraData){
+                if (extraData && extraData.objId) {
+                    brite.display("LiveCreateContact", null, {id: extraData.objId});
+                }
+            }
+         }
 	});
 
 	function showContacts() {
 		var view = this;
 		var listFunction = function(){
-			return app.liveOutLookApi.getUserContactlist().pipe(function(result){
+			return app.liveContactApi.getUserContactlist().pipe(function(result){
 				return {result: result.result.data};
 			});
 		}
@@ -42,15 +56,43 @@
 					render: function (obj) {
 						return obj.updated_time;
 					},
-					attrs: "style='width: 400px'"
+					attrs: "style='width: 200px'"
 
 				},
+				{
+					text: "Birthday Day",
+					render: function (obj) {
+						return obj.birth_day;
+					},
+					attrs: "style='width: 10%'"
+				},
+				{
+					text: "Birthday Month",
+					render: function (obj) {
+						return obj.birth_month;
+					},
+					attrs: "style='width: 10%'"
+				},
+				{
+					text: "Friend",
+					render: function (obj) {
+						return obj.is_friend;
+					},
+					attrs: "style='width: 10%'"
+				},
+				{
+					text: "Favorite",
+					render: function (obj) {
+						return obj.is_favorite;
+					},
+					attrs: "style='width: 10%'"
+				}
 			],
 			opts: {
 				htmlIfEmpty: "Not contacts found",
 				withPaging: false,
 				withCmdDelete: false,
-				withCmdEdit: false
+				cmdEdit: "EDIT_CONTACT"
 			}
 		});
 	}
