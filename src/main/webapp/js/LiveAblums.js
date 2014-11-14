@@ -9,8 +9,16 @@
 			showAblums.call(view);
 		},
 		events:{
-			
-		}
+			"click;.btnAdd":function(e){
+				brite.display("LiveCreateAblum", null, {id: null});
+			},
+		},
+		docEvents: {
+            "DO_REFRESH_ABLUM":function(){
+                 var view = this;
+                 showAblums.call(view);
+            }
+         }
 	});
 
 	function showAblums() {
@@ -75,7 +83,7 @@
 				}
 			],
 			opts: {
-				htmlIfEmpty: "Not contacts found",
+				htmlIfEmpty: "Not ablums found",
 				withPaging: false,
 				withCmdDelete: false,
 				withCmdEdit: false

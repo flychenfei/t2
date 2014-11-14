@@ -4,7 +4,15 @@ var app = app || {};
 		getUserAblums : function() {
 			var param = {};
 			param.method = "Get";
-			return app.getJsonData(contextPath + "/live/OutLook/getUserAblums", param);
-		}
+			return app.getJsonData(contextPath + "/liveAblum/getUserAblums", param);
+		},
+		getAblum : function() {
+			var param = {};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/liveAblum/getAblum", param);
+		},
+		"saveAblum": function (ablum) {
+            return app.getJsonData(contextPath + "/liveAblum/saveAblum", ablum);
+        }
 	}
 })();
