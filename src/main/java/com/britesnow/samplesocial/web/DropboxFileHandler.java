@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 
-import com.britesnow.samplesocial.model.User;
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.DropboxFileService;
 import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.web.RequestContext;

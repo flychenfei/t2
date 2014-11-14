@@ -2,8 +2,9 @@ package com.britesnow.samplesocial.web;
 
 import java.util.Map;
 
+import com.britesnow.samplesocial.dao.UserDao;
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.auth.AuthRequest;
 import com.britesnow.snow.web.auth.AuthToken;
@@ -23,6 +24,9 @@ public class SSAuthRequest implements AuthRequest<Object> {
     
     @Inject
     private OAuthManager oAuthManager;
+    
+    @Inject
+	private UserDao userDao;
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -92,9 +96,10 @@ public class SSAuthRequest implements AuthRequest<Object> {
     @WebActionHandler
     public Object login(@WebParam("username") String username,
                             @WebParam("password") String password, RequestContext rc) {
-    	User user = new User();
-    	user.setUsername(username);
-        user.setPassword(password);
+    	User user = userDao.getByUsername(username).orElse(null);
+    	if(user == null){
+    		user = userDao.createUser(username, password);
+    	}
         setUserToSession(rc, user);
     	oAuthManager.setUserInfo("webuser", user);
     	return user;
@@ -107,7 +112,7 @@ public class SSAuthRequest implements AuthRequest<Object> {
         if (user != null) {
             String userToken = sha1(user.getUsername());
             rc.setCookie("userToken", userToken);
-            //
+            rc.setCookie("userID", user.getId());
         }
     }
     

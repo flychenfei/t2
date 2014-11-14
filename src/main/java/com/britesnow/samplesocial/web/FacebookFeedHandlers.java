@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.model.SocialIdEntity;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.FacebookService;
 import com.britesnow.snow.web.RequestContext;

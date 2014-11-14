@@ -1,16 +1,14 @@
 package com.britesnow.samplesocial.web;
 
 
-import com.britesnow.samplesocial.model.User;
-import com.britesnow.snow.web.RequestContext;
+import java.util.Map;
+
+import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.service.OutLookService;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import java.util.Map;
-
-import com.britesnow.samplesocial.service.OutLookService;
 
 @Singleton
 public class OutLookHandlers {

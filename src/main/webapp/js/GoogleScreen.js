@@ -41,6 +41,8 @@
                   brite.display("GoogleFolders");
                 }else if(menu == "folders_rest"){
                   brite.display("GoogleFoldersRest");
+                }else if(menu == "gmail_analytics"){
+                  brite.display("GoogleGmailAnalytics");
                 }else if(menu == "actions"){
                     var list = [
                         {name:"sendMail",label:"Send Mail"},

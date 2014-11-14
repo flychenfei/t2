@@ -9,8 +9,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.model.ContactInfo;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.service.GContactService;
 import com.britesnow.samplesocial.service.GoogleAuthService;

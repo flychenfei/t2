@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.britesnow.samplesocial.dao.GmailAnalyticsDao;
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GmailRestService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
@@ -25,8 +26,12 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class GoogleRestEmailHandlers {
+	
     @Inject
     GmailRestService gmailRestService;
+    
+    @Inject
+    GmailAnalyticsDao gmailAnalyticsDao;
 
     @WebGet("/gmailrest/search")
     public WebResponse search(@WebUser User user,
@@ -193,5 +198,11 @@ public class GoogleRestEmailHandlers {
         out.write(data);
         out.flush();
         out.close();
+    }
+    
+    @WebGet("/gmailrest/gmailAnalytics")
+    public WebResponse getGmailAnalytics(@WebUser User user, @WebParam("pageIndex") Integer pageIndex, @WebParam("pageSize") Integer pageSize) throws Exception {
+    	 List results = gmailAnalyticsDao.getGmailAnalyticsList(user, pageIndex, pageSize);
+         return WebResponse.success(results);
     }
 }

@@ -326,6 +326,11 @@ var app = app || {};
             var params = opts || {};
             params.method = "Post";
             return app.getJsonData(contextPath + "/gmailrest/updateLabels", params);
+        },
+        getGmailAnalytics: function(opts) {
+            var params = opts || {};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gmailrest/gmailAnalytics", params);
         }
 	};
 })();

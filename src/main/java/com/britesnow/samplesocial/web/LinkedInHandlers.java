@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.britesnow.samplesocial.model.User;
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.LinkedInService;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
@@ -12,8 +12,6 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import javax.swing.text.html.parser.DTDConstants;
 
 @Singleton
 public class LinkedInHandlers {

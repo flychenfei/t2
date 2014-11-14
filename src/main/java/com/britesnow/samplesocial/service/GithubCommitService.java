@@ -8,7 +8,7 @@ import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryCommitCompare;
 import org.eclipse.egit.github.core.service.CommitService;
 
-import com.britesnow.samplesocial.model.User;
+import com.britesnow.samplesocial.entity.User;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 

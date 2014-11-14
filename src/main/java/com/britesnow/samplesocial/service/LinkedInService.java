@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.appengine.repackaged.com.google.common.base.Flag;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -16,8 +15,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.model.SocialIdEntity;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.OAuthServiceHelper;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;

@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.eclipse.egit.github.core.event.Event;
 import org.eclipse.egit.github.core.service.EventService;
 
-import com.britesnow.samplesocial.model.User;
+import com.britesnow.samplesocial.entity.User;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 

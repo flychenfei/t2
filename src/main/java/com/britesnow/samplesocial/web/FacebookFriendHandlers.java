@@ -3,8 +3,8 @@ package com.britesnow.samplesocial.web;
 import java.util.List;
 import java.util.Map;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.model.SocialIdEntity;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.FacebookAuthService;
 import com.britesnow.samplesocial.service.FacebookService;
 import com.britesnow.snow.web.RequestContext;

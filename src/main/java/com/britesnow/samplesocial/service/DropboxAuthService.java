@@ -7,15 +7,15 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.manager.OAuthManager;
 import com.britesnow.samplesocial.model.SocialIdEntity;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.snow.web.binding.ApplicationProperties;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.WebAuthSession;
 import com.dropbox.client2.session.Session.AccessType;
+import com.dropbox.client2.session.WebAuthSession;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 

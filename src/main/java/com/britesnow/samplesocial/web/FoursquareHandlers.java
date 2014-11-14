@@ -1,7 +1,12 @@
 package com.britesnow.samplesocial.web;
 
 
-import com.britesnow.samplesocial.model.User;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.FoursquareService;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebParam;
@@ -9,13 +14,21 @@ import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import fi.foyt.foursquare.api.Result;
-import fi.foyt.foursquare.api.entities.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import fi.foyt.foursquare.api.Result;
+import fi.foyt.foursquare.api.entities.Badges;
+import fi.foyt.foursquare.api.entities.Category;
+import fi.foyt.foursquare.api.entities.Checkin;
+import fi.foyt.foursquare.api.entities.CompactUser;
+import fi.foyt.foursquare.api.entities.CompactVenue;
+import fi.foyt.foursquare.api.entities.CompleteUser;
+import fi.foyt.foursquare.api.entities.Location;
+import fi.foyt.foursquare.api.entities.Recommendation;
+import fi.foyt.foursquare.api.entities.RecommendationGroup;
+import fi.foyt.foursquare.api.entities.Recommended;
+import fi.foyt.foursquare.api.entities.SpecialGroup;
+import fi.foyt.foursquare.api.entities.UserGroup;
+import fi.foyt.foursquare.api.entities.VenuesSearchResult;
 
 
 @Singleton

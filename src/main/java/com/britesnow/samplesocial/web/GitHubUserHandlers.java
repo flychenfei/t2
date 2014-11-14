@@ -2,7 +2,7 @@ package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
 
-import com.britesnow.samplesocial.model.User;
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.GithubAuthService;
 import com.britesnow.samplesocial.service.GithubUserService;
 import com.britesnow.snow.web.RequestContext;

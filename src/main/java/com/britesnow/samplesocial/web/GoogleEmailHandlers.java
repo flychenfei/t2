@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.mail.MailInfo;
-import com.britesnow.samplesocial.model.User;
 import com.britesnow.samplesocial.service.GmailImapService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;

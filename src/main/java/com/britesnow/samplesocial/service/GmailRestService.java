@@ -212,6 +212,15 @@ public class GmailRestService {
         return new Pair<String, List<MailInfo>>(response.getNextPageToken(), mails);
     }
 
+    public HashMap gmailMessageList(String start, Integer count)throws Exception{
+    	Gmail gmail = getGmailClient();
+    	ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).execute();
+    	List<Message> messages = response.getMessages();
+    	HashMap result = new HashMap();
+    	result.put("start", response.getNextPageToken());
+    	result.put("values", messages);
+    	return result;
+    }
     
     /**
      * get mail detail
