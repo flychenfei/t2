@@ -9,7 +9,7 @@ var app = app || {};
 		"getUserContactlist" : function() {
 			var param = {};
 			param.method = "Get";
-			return app.getJsonData(contextPath + "/live/OutLook/getUserContactlist", param);
+			return app.getJsonData(contextPath + "/liveContact/getList", param);
 		},
         "saveContact": function (contact) {
             return app.getJsonData(contextPath + "/liveContact/saveContact", contact);

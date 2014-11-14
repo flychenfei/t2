@@ -19,10 +19,10 @@ public class LiveContactHandlers {
     @Inject
     private LiveContactService liveContactService;
 
-    @WebGet("/live/getUserInfo")
-    public WebResponse getUserInfo(@WebUser User user, RequestContext rc)  {
+    @WebGet("/liveContact/getList")
+    public WebResponse getList(@WebUser User user, RequestContext rc)  {
         if (user != null) {
-            Map userInfo = liveContactService.getUserInfo();
+            Map userInfo = liveContactService.listContact();
             WebResponse response = WebResponse.success(userInfo);
             return response;
         }else {

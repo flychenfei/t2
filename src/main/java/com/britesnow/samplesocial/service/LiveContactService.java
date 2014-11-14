@@ -1,6 +1,9 @@
 package com.britesnow.samplesocial.service;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import net.sf.json.JSONObject;
 
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -19,8 +22,8 @@ public class LiveContactService {
     @Inject
 	private LiveAuthService oAuthService;
 
-    public Map getUserInfo() {
-        OAuthRequest request = oAuthService.createRequest(Verb.GET, LiveAuthService.PROFILE_ENDPOINT);
+    public Map listContact() {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, CONTACT_ENDPOINT + "/me/contacts");
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
@@ -35,6 +38,9 @@ public class LiveContactService {
         }
         request.addBodyParameter("first_name", (String) contact.get("first_name"));
         request.addBodyParameter("last_name", (String) contact.get("last_name"));
+        request.addBodyParameter("birth_day", (String) contact.get("birth_day"));
+        request.addBodyParameter("birth_month", (String) contact.get("birth_month"));
+        
         Response response = request.send();
         Map contactInfo = JsonUtil.toMapAndList(response.getBody());
         return contactInfo;
