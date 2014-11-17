@@ -40,15 +40,4 @@ public class OutLookService {
         return profile;
     }
 
-    /**
-     * get user ablum lists
-     * @return
-     */
-    public Map getUserAblums() {
-        OAuthRequest request = oAuthService.createRequest(Verb.GET, ALBUMLIST_ENDPOINT);
-        Response response = request.send();
-        Map profile = JsonUtil.toMapAndList(response.getBody());
-        return profile;
-    }
-
 }

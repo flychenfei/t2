@@ -1,34 +1,34 @@
 (function(){
 	
-	brite.registerView("LiveAblums",{emptyParent:true, parent:".LiveScreen-content"},{
+	brite.registerView("LiveAlbums",{emptyParent:true, parent:".LiveScreen-content"},{
 		create: function(data,config){
-			return render("tmpl-LiveAblums");
+			return render("tmpl-LiveAlbums");
 		},
 		postDisplay: function () {
 			var view = this;
-			showAblums.call(view);
+			showAlbums.call(view);
 		},
 		events:{
 			"click;.btnAdd":function(e){
-				brite.display("LiveCreateAblum", null, {id: null});
+				brite.display("LiveCreateAlbum", null, {id: null});
 			},
 		},
 		docEvents: {
-            "DO_REFRESH_ABLUM":function(){
+            "DO_REFRESH_ALBUM":function(){
                  var view = this;
-                 showAblums.call(view);
+                 showAlbums.call(view);
             }
          }
 	});
 
-	function showAblums() {
+	function showAlbums() {
 		var view = this;
 		var listFunction = function(){
-			return app.liveAblumApi.getUserAblums().pipe(function(result){
+			return app.liveAlbumApi.getUserAlbums().pipe(function(result){
 				return {result: result.result.data};
 			});
 		}
-		brite.display("DataTable", ".ablumsLists", {
+		brite.display("DataTable", ".albumsLists", {
 			dataProvider: {list: listFunction},
 			columnDef: [
 				{
@@ -83,7 +83,7 @@
 				}
 			],
 			opts: {
-				htmlIfEmpty: "Not ablums found",
+				htmlIfEmpty: "Not albums found",
 				withPaging: false,
 				withCmdDelete: false,
 				withCmdEdit: false

@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 @Singleton
-public class LiveAblumService {
+public class LiveAlbumService {
     @Inject
 	private LiveAuthService oAuthService;
 
@@ -20,39 +20,39 @@ public class LiveAblumService {
     public static final String LIVE_ENDPOINT = "https://apis.live.net/v5.0";
 
     /**
-     * get user ablum lists
+     * get user album lists
      * @return
      */
-    public Map getUserAblums() {
+    public Map getUserAlbums() {
         OAuthRequest request = oAuthService.createRequest(Verb.GET, ALBUMLIST_ENDPOINT);
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
     }
 
-    public Map getAblum(String ablumId) {
-        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + ablumId);
+    public Map getAlbum(String albumId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + albumId);
         Response response = request.send();
-        Map ablumInfo = JsonUtil.toMapAndList(response.getBody());
-        return ablumInfo;
+        Map albumInfo = JsonUtil.toMapAndList(response.getBody());
+        return albumInfo;
     }
 
     /**
-     * create ablum
+     * create album
      * @return
      */
-    public Map saveAblum(Map ablum, String ablumId) {
+    public Map saveAlbum(Map album, String albumId) {
         OAuthRequest request = null;
-        if(StringUtil.isEmpty(ablumId)){
+        if(StringUtil.isEmpty(albumId)){
             request = oAuthService.createRequest(Verb.POST, ALBUMLIST_ENDPOINT);
         }else{
-            request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT + "/" + ablumId);
+            request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT + "/" + albumId);
         }
-        request.addBodyParameter("name", (String) ablum.get("name"));
-        request.addBodyParameter("description", (String) ablum.get("description"));
+        request.addBodyParameter("name", (String) album.get("name"));
+        request.addBodyParameter("description", (String) album.get("description"));
         Response response = request.send();
-        Map ablumInfo = JsonUtil.toMapAndList(response.getBody());
-        return ablumInfo;
+        Map albumInfo = JsonUtil.toMapAndList(response.getBody());
+        return albumInfo;
     }
 
 }
