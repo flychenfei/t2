@@ -12,6 +12,9 @@
 			"click;.btnAdd":function(e){
 				brite.display("LiveCreateContact", null, {id: null});
 			},
+			"click;.btnFriends":function(){
+				showContacts(true);
+			}
 			
 		},
         docEvents: {
@@ -27,10 +30,14 @@
          }
 	});
 
-	function showContacts() {
+	function showContacts(isFriend) {
 		var view = this;
 		var listFunction = function(){
-			return app.liveContactApi.getUserContactlist().pipe(function(result){
+			var opt = {};
+			if(typeof isFriend != 'undefined'){
+				opt.isFriend = isFriend;
+			}
+			return app.liveContactApi.getUserContactlist(opt).pipe(function(result){
 				return {result: result.result.data};
 			});
 		}

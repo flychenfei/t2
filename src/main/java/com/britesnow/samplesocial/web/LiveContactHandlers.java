@@ -20,9 +20,9 @@ public class LiveContactHandlers {
     private LiveContactService liveContactService;
 
     @WebGet("/liveContact/getList")
-    public WebResponse getList(@WebUser User user, RequestContext rc)  {
+    public WebResponse getList(@WebUser User user, RequestContext rc, @WebParam("isFriend") Boolean isFriend)  {
         if (user != null) {
-            Map userInfo = liveContactService.listContact();
+            Map userInfo = liveContactService.listContact(isFriend);
             WebResponse response = WebResponse.success(userInfo);
             return response;
         }else {

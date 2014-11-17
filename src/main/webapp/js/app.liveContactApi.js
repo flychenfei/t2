@@ -6,8 +6,8 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/live/OutLook/getUserInfo", param);
 		},
-		"getUserContactlist" : function() {
-			var param = {};
+		"getUserContactlist" : function(param) {
+			param = param || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/liveContact/getList", param);
 		},
