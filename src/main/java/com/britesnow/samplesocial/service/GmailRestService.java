@@ -177,12 +177,12 @@ public class GmailRestService {
             query.append(" rfc822msgid:");
             query.append(a);
         });
-        
+        System.out.println(query.toString());
         ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).setQ(query.toString()).execute();
         
         final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
-        
+
         final List<Map> labels = listLabels(false);
         
         if(messages != null){
@@ -212,13 +212,32 @@ public class GmailRestService {
         return new Pair<String, List<MailInfo>>(response.getNextPageToken(), mails);
     }
 
-    public HashMap gmailMessageList(String start, Integer count)throws Exception{
-    	Gmail gmail = getGmailClient();
-    	ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).execute();
+    public HashMap gmailMessageList(String access_token, String start, Integer count)throws Exception{
+    	Gmail gmail = getGmailClient(access_token);
+    	ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setQ("larger:0 smaller:2147483647").setPageToken(start).execute();
     	List<Message> messages = response.getMessages();
+    	List<Message> messagerenders = new ArrayList<Message>();
+    	if(messages != null){
+            BatchRequest batch = gmail.batch();
+            JsonBatchCallback<Message> callback = new JsonBatchCallback<Message>() {
+                public void onSuccess(Message message, HttpHeaders responseHeaders) {
+                	messagerenders.add(message);
+                }
+                public void onFailure(GoogleJsonError e, HttpHeaders responseHeaders) {
+                    log.warn("Error Message: " + e.getMessage());
+                }
+            };
+
+            for (Message message : messages) {
+                getGmailClient(access_token).users().messages().get("me", message.getId()).queue(batch, callback);
+            }
+            
+            batch.execute();
+        }
+    	
     	HashMap result = new HashMap();
     	result.put("start", response.getNextPageToken());
-    	result.put("values", messages);
+    	result.put("values", messagerenders);
     	return result;
     }
     
@@ -241,7 +260,6 @@ public class GmailRestService {
     }
 
     public MailInfo buildMailInfo(Message message) {
-        
         MailInfo mailInfo = new MailInfo();
         DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
         
@@ -574,5 +592,13 @@ public class GmailRestService {
         return gmail;
     }
     
-
+    private Gmail getGmailClient(String access_token){
+        if(gmail == null){
+            HttpTransport httpTransport = new NetHttpTransport();
+            JacksonFactory jsonFactory = new JacksonFactory();
+            GoogleCredential credential = new GoogleCredential().setAccessToken(access_token);
+            gmail = new Gmail.Builder(httpTransport, jsonFactory, credential).setApplicationName("Gmail Test").build();
+        }
+        return gmail;
+    }
 }

@@ -203,6 +203,7 @@ public class GoogleRestEmailHandlers {
     @WebGet("/gmailrest/gmailAnalytics")
     public WebResponse getGmailAnalytics(@WebUser User user, @WebParam("pageIndex") Integer pageIndex, @WebParam("pageSize") Integer pageSize) throws Exception {
     	 List results = gmailAnalyticsDao.getGmailAnalyticsList(user, pageIndex, pageSize);
-         return WebResponse.success(results);
+    	 Long count = gmailAnalyticsDao.countAnalyticsByUsername(user.getUsername());
+         return WebResponse.success(results).set("result_count", count);
     }
 }

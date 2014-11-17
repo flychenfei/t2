@@ -1,5 +1,7 @@
 package com.britesnow.samplesocial.feed;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -19,7 +21,7 @@ public class FeedGmailAnalyticsManager {
 	// Pause duration between UserFeed scan
 	static private final long SLEEP = 5000;
 	
-	
+	private volatile List<String> users = new ArrayList<String>();
 	/*
 	Injector to create the FeedJob which use Guice annotations and needs to be created per job.
 	 */
@@ -41,7 +43,7 @@ public class FeedGmailAnalyticsManager {
 	// TODO: Will need to have a pool here (pool-size = 10).
 	private ExecutorService feedJobPool = Executors.newCachedThreadPool();
 	
-	private List<CompletableFuture<Void>> futures = new CopyOnWriteArrayList<>();
+	private List<CompletableFuture<HashMap<String, String>>> futures = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * Start the main thread that will look at the UserFeedInfo rows to perform eventual feedjob.
@@ -90,7 +92,10 @@ public class FeedGmailAnalyticsManager {
 		System.out.println("FeedJobManager.run " + on);
 		while (on) {
 			if(hasTask){
-				startNewFeedJob(user);
+				if(!users.contains(user.getUsername())){
+					startNewFeedJob(user);
+					users.add(user.getUsername());
+				}
 				resetTask();
 			}
 			// we sleep for a little while, before, looking for more work.
@@ -103,22 +108,25 @@ public class FeedGmailAnalyticsManager {
 		System.out.println("FeedJobManager.run DONE");
 	}
 	
-	private CompletableFuture<Void> startNewFeedJob(User user) {
+	private void startNewFeedJob(User user) {
 
 		FeedGmailAnalyticsJob feedGmailAnalyticsJob = injector.getInstance(FeedGmailAnalyticsJob.class);
 		feedGmailAnalyticsJob.init(user);
 
 		// Note: Because we are using a ExecutorService feedJobPool, we can call this as much as we want, they will get queue
-		CompletableFuture<Void> future =  CompletableFuture.runAsync(feedGmailAnalyticsJob, feedJobPool);
+		CompletableFuture<HashMap<String, String>> future =  CompletableFuture.supplyAsync(() -> feedGmailAnalyticsJob.call(), feedJobPool);
 		futures.add(future);
-
-		return future;
-
+		future.thenAccept(result -> {if("true".equals(result.get("success"))){
+										System.out.println("For the user "+result.get("name")+" , the gmailAnalytice job has succeeded!");
+									}else{
+										System.out.println("For the user "+result.get("name")+" , the gmailAnalytice job has failed!");
+									}
+							users.remove(result.get("name"));
+						});
 	}
 	
 	private void resetTask(){
 		this.hasTask = false;
 		this.user = null;
 	}
-
 }

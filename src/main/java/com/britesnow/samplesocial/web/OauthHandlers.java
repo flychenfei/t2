@@ -6,6 +6,7 @@ import java.util.Map;
 import org.scribe.model.Token;
 
 import com.britesnow.samplesocial.entity.User;
+import com.britesnow.samplesocial.feed.FeedGmailAnalyticsManager;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.oauth.ServiceType;
 import com.britesnow.samplesocial.service.DropboxAuthService;
@@ -49,8 +50,8 @@ public class OauthHandlers {
     private DropboxAuthService dropboxAuthService;
     @Inject
     private YahooAuthService yahooAuthService;
-   // @Inject
-   // private SocialIdEntityDao   socialIdEntityDao;
+    @Inject
+    private FeedGmailAnalyticsManager   feedGmailAnalyticsManager;
 
     @WebGet("/authorize")
     public void authorize(@WebModel Map<?, ?> m,@WebParam("service") ServiceType service, RequestContext rc) throws IOException {
@@ -134,7 +135,8 @@ public class OauthHandlers {
     @WebModelHandler(startsWith="/googleCallback")
     public void googleCallback(@WebUser User user, RequestContext rc, @WebParam("code") String code) throws Exception {
     	if (user != null && code != null) {
-            googleAuthService.updateAccessToken(code);
+            user.setGoogle_access_token(googleAuthService.updateAccessToken(code));
+            feedGmailAnalyticsManager.addTask(user);
         } else {
             rc.getRes().sendRedirect(googleAuthService.getAuthorizationUrl());
         }

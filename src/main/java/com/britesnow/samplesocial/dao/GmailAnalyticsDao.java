@@ -9,11 +9,16 @@ import org.j8ql.query.SelectQuery;
 
 import com.britesnow.samplesocial.entity.GmailAnalytics;
 import com.britesnow.samplesocial.entity.User;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 
+    
+    @Inject
+	private UserDao userDao;
+    
 	public static final SelectQuery<GmailAnalytics> SELECT_GET = Query.select(GmailAnalytics.class).columns("gmailanalytics.*");
 	
 	public Optional<GmailAnalytics> get(Long id) {
@@ -22,6 +27,12 @@ public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 
 	public Optional<GmailAnalytics> getByUsername(String username){
 		return daoHelper.first(Query.select(entityClass).where("username", username));
+	}
+	
+	public Long countAnalyticsByUsername(String username){
+		User user = userDao.getByUsername(username).orElse(null);
+		Condition condition = Query.one("gmailanalytics.userId", user.getId());
+		return count(condition);
 	}
 	
 	// --------- Gmail Analytics method --------- //

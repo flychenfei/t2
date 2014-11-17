@@ -48,7 +48,7 @@ public class GoogleAuthService implements AuthService {
         return oAuthService.getAuthorizationUrl(EMPTY_TOKEN);
     }
 
-    public void updateAccessToken(String verifierCode) {
+    public String updateAccessToken(String verifierCode) {
     	
         Verifier verifier = new Verifier(verifierCode);
         Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
@@ -71,7 +71,7 @@ public class GoogleAuthService implements AuthService {
         } else{
             throw new OauthException(getAuthorizationUrl());
         }
-
+        return  accessToken.getToken();
 
     }
     

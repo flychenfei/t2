@@ -4,6 +4,7 @@ public class User extends BaseEntity<Long> {
 
 	private String username;
 	private String password;
+	private String google_access_token;
 
 	// denote if it is an admin user
 	private Boolean admin = false;
@@ -36,6 +37,14 @@ public class User extends BaseEntity<Long> {
 
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
+	}
+
+	public String getGoogle_access_token() {
+		return google_access_token;
+	}
+
+	public void setGoogle_access_token(String google_access_token) {
+		this.google_access_token = google_access_token;
 	}
 
 	// --------- /Persistent Properties --------- //
