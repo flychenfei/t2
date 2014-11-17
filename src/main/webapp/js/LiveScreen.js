@@ -32,6 +32,8 @@
                   brite.display("LiveContacts");
                 }else if(menu == "albums"){
                   brite.display("LiveAlbums");
+                }else if(menu == "folders"){
+                  brite.display("LiveFolders");
                 }
               }
             },
