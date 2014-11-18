@@ -1,13 +1,18 @@
 var app = app || {};
 (function() {
 	app.liveFolderApi = {
-		getUserFolders : function() {
+		getRootFolder : function() {
 			var param = {};
 			param.method = "Get";
-			return app.getJsonData(contextPath + "/liveFolder/getFolders", param);
+			return app.getJsonData(contextPath + "/liveFolder/getRootFolder", param);
 		},
-		getFolder : function() {
-			var param = {};
+		getFolderFilesList : function(id) {
+			var param = {id:id};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/liveFolder/getFolderFilesList", param);
+		},
+		getFolder : function(id) {
+			var param = {id:id};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/liveFolder/getFolder", param);
 		},

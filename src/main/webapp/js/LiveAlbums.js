@@ -25,6 +25,7 @@
 		var view = this;
 		var listFunction = function(){
 			return app.liveAlbumApi.getUserAlbums().pipe(function(result){
+				console.log(result.result.data)
 				return {result: result.result.data};
 			});
 		}

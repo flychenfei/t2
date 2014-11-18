@@ -1,7 +1,9 @@
 <script id="tmpl-LiveFolders" type="text/html">
 	<div class="LiveFolders">
 		<div>
-			<span class="btn btn-default btn-sm btnAdd"><i class="glyphicon glyphicon-plus"></i>Add</span>
+			{{#if isShowAddFolderBtn}}
+				<span class="btn btn-default btn-sm btnFolderAdd"><i class="glyphicon glyphicon-plus"></i>Add Folder</span>
+			{{/if}}
 		</div>
 		<div class="foldersLists">
 			

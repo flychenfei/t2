@@ -18,11 +18,21 @@ public class LiveFolderHandlers {
     @Inject
     private LiveFolderService liveFolderService;
 
-    @WebGet("/liveFolder/getFolders")
-    public WebResponse getFolders(@WebUser User user)  {
+    @WebGet("/liveFolder/getRootFolder")
+    public WebResponse getRootFolder(@WebUser User user)  {
         if (user != null) {
-            Map foldersList = liveFolderService.getFolders();
+            Map foldersList = liveFolderService.getRootFolder();
             return WebResponse.success(foldersList);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
+    @WebGet("/liveFolder/getFolderFilesList")
+    public WebResponse getFolderFilesList(@WebUser User user,@WebParam("id") String id)  {
+        if (user != null) {
+            Map filesList = liveFolderService.getFolderFilesList(id);
+            return WebResponse.success(filesList);
         }else {
             return WebResponse.fail();
         }
@@ -35,10 +45,10 @@ public class LiveFolderHandlers {
     }
 
     @WebPost("/liveFolder/saveFolder")
-    public WebResponse saveFolder(@WebUser User user, @WebParam("id") String id, @WebParam("folderJson") String folderJson)  {
+    public WebResponse saveFolder(@WebUser User user, @WebParam("id") String id, @WebParam("parentId") String parentId, @WebParam("folderJson") String folderJson)  {
         if (user != null) {
             Map folder = JsonUtil.toMapAndList(folderJson);
-            Map folderInfo = liveFolderService.saveFolder(folder, id);
+            Map folderInfo = liveFolderService.saveFolder(folder, id, parentId);
             return WebResponse.success(folderInfo);
         }else {
             return WebResponse.fail();

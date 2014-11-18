@@ -20,11 +20,18 @@ public class LiveFolderService {
     public static final String LIVE_ENDPOINT = "https://apis.live.net/v5.0";
 
     /**
-     * get user folder lists
+     * get user root folder (Skydrive)
      * @return
      */
-    public Map getFolders() {
-        OAuthRequest request = oAuthService.createRequest(Verb.GET, FOLDERLIST_ENDPOINT);
+    public Map getRootFolder() {
+        OAuthRequest  request = oAuthService.createRequest(Verb.GET, FOLDERLIST_ENDPOINT);
+        Response response = request.send();
+        Map profile = JsonUtil.toMapAndList(response.getBody());
+        return profile;
+    }
+
+    public Map getFolderFilesList(String folderId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + folderId + "/files");
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
@@ -41,10 +48,10 @@ public class LiveFolderService {
      * create folder
      * @return
      */
-    public Map saveFolder(Map folder, String folderId) {
+    public Map saveFolder(Map folder, String folderId, String parentId) {
         OAuthRequest request = null;
         if(StringUtil.isEmpty(folderId)){
-            request = oAuthService.createRequest(Verb.POST, FOLDERLIST_ENDPOINT);
+            request = oAuthService.createRequest(Verb.POST, LIVE_ENDPOINT + "/" + parentId);
         }else{
             request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT + "/" + folderId);
         }

@@ -12,9 +12,9 @@
 				var view = this;
 				data = data || {};
 				if(data) {
-					this.folderId = data.id;
+					this.folderId = data.id || "";
+					this.parentId = data.parendId;
 				}
-				
 				var dfd = $.Deferred();
 				var createDfd = $.Deferred();
 				if(view.folderId){
@@ -24,7 +24,7 @@
 				}else{
 					dfd.resolve({});
 				}
-				
+
 				dfd.done(function(obj){
 					html = app.render("tmpl-LiveCreateFolder",obj||{});
 					var $e = $(html);
@@ -56,13 +56,12 @@
 					input.focus();
 					input.closest("div").addClass("has-error").find("span").html("Please enter valid folder name.");
 				} else {
-					app.liveFolderApi.saveFolder({id: view.folderId, folderJson: JSON.stringify(folder)}).done(function (extraData) {
+					app.liveFolderApi.saveFolder({id: view.folderId, parentId: view.parentId, folderJson: JSON.stringify(folder)}).done(function (extraData) {
 						setTimeout((function () {
 							$(document).trigger("DO_REFRESH_FOLDER");
 						}), 5000);
 						view.close();
 					});
-
 				}
 			},
 
