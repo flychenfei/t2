@@ -1,5 +1,6 @@
 package com.britesnow.samplesocial.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 	private UserDao userDao;
     
 	public static final SelectQuery<GmailAnalytics> SELECT_GET = Query.select(GmailAnalytics.class).columns("gmailanalytics.*");
+	public static final SelectQuery<LocalDateTime> SELECT_GET_LARGEST_RECIPIENTTIMESTAMP = Query.select(LocalDateTime.class).columns("max(\"gmailanalytics.recipientTimeStamp\"");
 	
 	public Optional<GmailAnalytics> get(Long id) {
 		return super.get(null, id);
@@ -34,8 +36,7 @@ public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 		Condition condition = Query.one("gmailanalytics.userId", user.getId());
 		return count(condition);
 	}
-	
-	// --------- Gmail Analytics method --------- //
+
 	/**
 	 * Create a new user and return the complete user object.
 	 * @param user
@@ -61,6 +62,11 @@ public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 		dealSelectQuery = dealSelectQuery.where(condition).offset(pageIdx * pageSize).limit(pageSize).orderBy("!id");
 		return daoHelper.list(dealSelectQuery);
 	}
-	
-	// --------- /Gmail Analytics method--------- //
+
+	public LocalDateTime getGmailAnalyticsLargestTime(User user){
+		SelectQuery<LocalDateTime> dealSelectQuery = SELECT_GET_LARGEST_RECIPIENTTIMESTAMP;
+		Condition condition = Query.one("gmailanalytics.userId", user.getId());
+		dealSelectQuery = dealSelectQuery.where(condition);
+		return daoHelper.first(dealSelectQuery).orElse(null);
+	}
 }

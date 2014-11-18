@@ -1,6 +1,9 @@
 package com.britesnow.samplesocial.feed;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,9 +26,12 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String,String>> {
 	private GmailRestService gmailRestService;
 	
 	private User user;
+	
+	private LocalDateTime maxGmailAnalyticsLargestTime;
 
 	public void init(User user) {
 		this.user = user;
+		this.maxGmailAnalyticsLargestTime = gmailAnalyticsDao.getGmailAnalyticsLargestTime(user);
 	}
 
 	@Override
@@ -59,7 +65,9 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String,String>> {
 			if(message.getPayload() != null){
 				gmailAnalytics = buildAnalyticsfo(message);
 				gmailAnalytics.setMessageSize(Integer.toUnsignedLong(message.getSizeEstimate()));
-				gmailAnalyticsDao.create(user, gmailAnalytics);
+				if(maxGmailAnalyticsLargestTime != null && maxGmailAnalyticsLargestTime.isBefore(gmailAnalytics.getRecipientTimeStamp())){
+					gmailAnalyticsDao.create(user, gmailAnalytics);
+				}
 			}
 		}
 		return true;
@@ -67,8 +75,7 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String,String>> {
 	
 	public GmailAnalytics buildAnalyticsfo(Message message) {
 		GmailAnalytics gmailAnalytics = new GmailAnalytics();
-		//DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
-		//DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z z", Locale.US);
+		//DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
         if(message.getPayload() != null){
             if(message.getPayload().getHeaders() != null){
             	StringBuilder recipientAddress = new StringBuilder();
@@ -98,8 +105,13 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String,String>> {
                     	}
                     }
                     if(header.getName().equals("Date")){
-                        //gmailAnalytics.setRecipientTimeStamp(LocalDateTime.parse(String.valueOf(header.getValue()), DateTimeFormatter.RFC_1123_DATE_TIME));
-                    	//gmailAnalytics.setRecipientTimeStamp(LocalDateTime.parse(header.getValue(), dateFormat));
+                    	String dateTimeStr = String.valueOf(header.getValue());
+                    	Integer firstIndex = dateTimeStr.indexOf("(");
+                    	if(firstIndex > -1){
+                        	dateTimeStr = String.valueOf(header.getValue()).substring(0, firstIndex-1);
+                    	}
+                    	TemporalAccessor temporalAccessor = DateTimeFormatter.RFC_1123_DATE_TIME.parse(dateTimeStr);
+                    	gmailAnalytics.setRecipientTimeStamp(LocalDateTime.from(temporalAccessor));
                     }
                 }
                 gmailAnalytics.setRecipientEmailAddress(recipientAddress.toString());
