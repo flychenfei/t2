@@ -34,6 +34,8 @@
                   brite.display("LiveAlbums");
                 }else if(menu == "folders"){
                   brite.display("LiveFolders");
+                }else if(menu == "calendar"){
+                  brite.display("LiveCalendar");
                 }
               }
             },

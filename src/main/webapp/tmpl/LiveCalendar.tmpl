@@ -1,0 +1,30 @@
+<script id="tmpl-LiveCalendar" type="text/html">
+	<div class="LiveCalendar">
+		<div class="CompanyTotal">Sum:{{total}}</div>
+		<div class="LiveCalendarList">
+			<table class="table table-bordered table-hover">
+				<tr>
+					<!--<th>Number</th>-->
+					<th>Name</th>
+					<th>Description</th>
+					<th>Owner</th>
+					<th>Created Time</th>
+					<th>Permissions</th>
+					<th>Subscription Location</th>
+				</tr>
+					
+				{{#each calendars}}
+				<tr data-calendarId="{{id}}" >
+					<!--<td class="number with5">{{number}}</td>-->
+					<td class="calendarName width10">{{name}}</td>
+					<td class="description width30">{{description}}</td>
+					<td class="owner width10">{{from.name}}</td>
+					<td class="createdTime width10">{{created_time}}</td>
+					<td class="permissions width10">{{permissions}}</td>
+					<td class="location width5">{{subscription_location}}</td>
+				</tr>
+				{{/each}}
+			</table>
+		</div>
+	</div>
+</script>
