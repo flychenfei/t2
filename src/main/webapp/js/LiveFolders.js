@@ -9,6 +9,7 @@
 			var view = this;
 			view.folderId = data ? data.id : "";
 			view.isFolderContents = data ? data.isFolderContents : false;
+			view.isShowPhotos = data ? data.isShowPhotos : false;
 			showFolders.call(view);
 		},
 		events:{
@@ -21,6 +22,11 @@
 				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("LiveFolders", null, {id:id, isFolderContents:true, isShowAddFolderBtn:true});
+			},
+			"click;.btnShowPhotos":function(event){
+				var view = this;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				brite.display("LiveFolders", null, {id:id, isFolderContents:true, isShowAddFolderBtn:false, isShowPhotos:true});
 			}
 		},
 		docEvents: {
@@ -51,9 +57,15 @@
 		var view = this;
 		var listFunction = function(){
 			if(view.isFolderContents){
-				return app.liveFolderApi.getFolderFilesList(view.folderId).pipe(function(result){
-					return {result: result.result.data};
-				});
+				if(view.isShowPhotos){
+					return app.liveFolderApi.showPhotos(view.folderId).pipe(function(result){
+						return {result: result.result.data};
+					});
+				}else{
+					return app.liveFolderApi.getFolderFilesList(view.folderId).pipe(function(result){
+						return {result: result.result.data};
+					});
+				}
 			}else{
 				return app.liveFolderApi.getRootFolder().pipe(function(result){
 					var list = [];
@@ -126,6 +138,13 @@
 					text: "Files",
 					render: function (obj) {
 						return "<span class='btn btn-default btn-sm btnFiles'>Show</button>";
+					},
+					attrs: "style='width: 100px'"
+				},
+				{
+					text: "Files",
+					render: function (obj) {
+						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>";
 					},
 					attrs: "style='width: 100px'"
 				}

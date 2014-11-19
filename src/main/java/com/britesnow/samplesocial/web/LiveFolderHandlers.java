@@ -60,5 +60,15 @@ public class LiveFolderHandlers {
             return WebResponse.fail();
         }
     }
+    
+    @WebGet("/liveFolder/showPhotos")
+    public WebResponse showPhotos(@WebUser User user,@WebParam("id") String id)  {
+        if (user != null) {
+            Map photos = liveFolderService.showPhotos(id);
+            return WebResponse.success(photos);
+        }else {
+            return WebResponse.fail();
+        }
+    }
 
 }

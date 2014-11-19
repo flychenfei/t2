@@ -22,7 +22,12 @@ var app = app || {};
 			return app.getJsonData(contextPath + "/liveFolder/deleteFolder", param);
 		},
 		"saveFolder": function (folder) {
-            return app.getJsonData(contextPath + "/liveFolder/saveFolder", folder);
-        }
+			return app.getJsonData(contextPath + "/liveFolder/saveFolder", folder);
+		},
+		"showPhotos" : function(id) {
+			var param = {id:id};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/liveFolder/showPhotos", param);
+		},
 	}
 })();
