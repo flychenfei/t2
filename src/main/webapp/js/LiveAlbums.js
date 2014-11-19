@@ -17,6 +17,22 @@
             "DO_REFRESH_ALBUM":function(){
                  var view = this;
                  showAlbums.call(view);
+            },
+            "EDIT_ALBUM":function(){
+                var view = this;
+                var $e = view.$el;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+                brite.display("LiveCreateAlbum", null, {id:id});
+            },
+            "DELETE_ALBUM":function(){
+                var view = this;
+                var $e = view.$el;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+                app.liveAlbumApi.deleteAlbum(id).done(function(result){
+					setTimeout(function(){
+                        showAlbums.call(view);
+                    }, 3000)
+				});
             }
          }
 	});
@@ -25,7 +41,6 @@
 		var view = this;
 		var listFunction = function(){
 			return app.liveAlbumApi.getUserAlbums().pipe(function(result){
-				console.log(result.result.data)
 				return {result: result.result.data};
 			});
 		}
@@ -86,8 +101,8 @@
 			opts: {
 				htmlIfEmpty: "Not albums found",
 				withPaging: false,
-				withCmdDelete: false,
-				withCmdEdit: false
+				cmdDelete: "DELETE_ALBUM",
+                cmdEdit: "EDIT_ALBUM"
 			}
 		});
 	}

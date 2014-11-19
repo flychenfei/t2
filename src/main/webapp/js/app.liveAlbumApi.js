@@ -6,10 +6,15 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/liveAlbum/getUserAlbums", param);
 		},
-		getAlbum : function() {
-			var param = {};
+		getAlbum : function(id) {
+			var param = {id:id};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/liveAlbum/getAlbum", param);
+		},
+		deleteAlbum : function(id) {
+			var param = {id:id};
+			param.method = "Post";
+			return app.getJsonData(contextPath + "/liveAlbum/deleteAlbum", param);
 		},
 		"saveAlbum": function (album) {
             return app.getJsonData(contextPath + "/liveAlbum/saveAlbum", album);

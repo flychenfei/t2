@@ -34,6 +34,12 @@ public class LiveAlbumHandlers {
         return WebResponse.success(albumInfo);
     }
 
+    @WebPost("/liveAlbum/deleteAlbum")
+    public WebResponse deletAlbum(@WebUser User user,@WebParam("id") String id)  {
+        liveAlbumService.deleteAlbum(id);
+        return WebResponse.success();
+    }
+
     @WebPost("/liveAlbum/saveAlbum")
     public WebResponse saveAlbum(@WebUser User user, @WebParam("id") String id, @WebParam("albumJson") String albumJson)  {
         if (user != null) {

@@ -37,6 +37,11 @@ public class LiveAlbumService {
         return albumInfo;
     }
 
+    public void deleteAlbum(String albumId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.DELETE, LIVE_ENDPOINT + "/" + albumId);
+        Response response = request.send();
+    }
+
     /**
      * create album
      * @return
