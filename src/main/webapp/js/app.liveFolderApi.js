@@ -16,6 +16,11 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/liveFolder/getFolder", param);
 		},
+		deleteFolder : function(id) {
+			var param = {id:id};
+			param.method = "Post";
+			return app.getJsonData(contextPath + "/liveFolder/deleteFolder", param);
+		},
 		"saveFolder": function (folder) {
             return app.getJsonData(contextPath + "/liveFolder/saveFolder", folder);
         }

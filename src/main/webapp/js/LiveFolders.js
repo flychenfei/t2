@@ -33,6 +33,16 @@
                 var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
                 brite.display("LiveCreateFolder", null, {id:id, parendId: view.folderId});
+            },
+            "DELETE_FOLDER":function(){
+                var view = this;
+                var $e = view.$el;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+                app.liveFolderApi.deleteFolder(id).done(function(result){
+					setTimeout(function(){
+                        showFolders.call(view);
+                    }, 3000)
+				});
             }
          }
 	});
@@ -62,8 +72,7 @@
 			opts = {
 				htmlIfEmpty: "Not folders found",
 				withPaging: false,
-				withCmdDelete: false,
-				//cmdDelete: "DELETE_FOLDER",
+				cmdDelete: "DELETE_FOLDER",
                 cmdEdit: "EDIT_FOLDER"
 			}
 		}

@@ -44,6 +44,11 @@ public class LiveFolderService {
         return folderInfo;
     }
 
+    public void deleteFolder(String folderId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.DELETE, LIVE_ENDPOINT + "/" + folderId);
+        Response response = request.send();
+    }
+
     /**
      * create folder
      * @return

@@ -44,6 +44,12 @@ public class LiveFolderHandlers {
         return WebResponse.success(folderInfo);
     }
 
+    @WebPost("/liveFolder/deleteFolder")
+    public WebResponse deleteFolder(@WebUser User user,@WebParam("id") String id)  {
+        liveFolderService.deleteFolder(id);
+        return WebResponse.success();
+    }
+
     @WebPost("/liveFolder/saveFolder")
     public WebResponse saveFolder(@WebUser User user, @WebParam("id") String id, @WebParam("parentId") String parentId, @WebParam("folderJson") String folderJson)  {
         if (user != null) {
