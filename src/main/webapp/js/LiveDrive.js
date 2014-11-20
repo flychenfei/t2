@@ -1,73 +1,73 @@
 (function(){
 	
-	brite.registerView("LiveFolders",{emptyParent:true, parent:".LiveScreen-content"},{
+	brite.registerView("LiveDrive",{emptyParent:true, parent:".LiveScreen-content"},{
 		create: function(data,config){
 			data = data || {};
-			return render("tmpl-LiveFolders",data);
+			return render("tmpl-LiveDrive",data);
 		},
 		postDisplay: function (data) {
 			var view = this;
-			view.folderId = data ? data.id : "";
+			view.targetId = data ? data.id : "";
 			view.isFolderContents = data ? data.isFolderContents : false;
 			view.isShowPhotos = data ? data.isShowPhotos : false;
-			showFolders.call(view);
+			showView.call(view);
 		},
 		events:{
 			"click;.btnFolderAdd":function(e){
 				var view = this;
-				brite.display("LiveCreateFolder", null, {parendId: view.folderId});
+				brite.display("LiveCreateFolder", null, {parendId: view.targetId});
 			},
 			"click;.btnFiles":function(event){
 				var view = this;
 				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-				brite.display("LiveFolders", null, {id:id, isFolderContents:true, isShowAddFolderBtn:true});
+				brite.display("LiveDrive", null, {id:id, isFolderContents:true, isShowAddFolderBtn:true});
 			},
 			"click;.btnShowPhotos":function(event){
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-				brite.display("LiveFolders", null, {id:id, isFolderContents:true, isShowAddFolderBtn:false, isShowPhotos:true});
+				brite.display("LiveDrive", null, {id:id, isFolderContents:true, isShowAddFolderBtn:false, isShowPhotos:true});
 			}
 		},
 		docEvents: {
-            "DO_REFRESH_FOLDER":function(){
+            "DO_REFRESH_DRIVE":function(){
                 var view = this;
-                showFolders.call(view);
+                showView.call(view);
             },
-            "EDIT_FOLDER":function(){
+            "EDIT_DRIVE_OBJECT":function(){
                 var view = this;
                 var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                brite.display("LiveCreateFolder", null, {id:id, parendId: view.folderId});
+                brite.display("LiveCreateFolder", null, {id:id, parendId: view.targetId});
             },
-            "DELETE_FOLDER":function(){
+            "DELETE_DRIVE_OBJECT":function(){
                 var view = this;
                 var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                app.liveFolderApi.deleteFolder(id).done(function(result){
+                app.liveDriveApi.delete(id).done(function(result){
 					setTimeout(function(){
-                        showFolders.call(view);
+                        showView.call(view);
                     }, 3000)
 				});
             }
          }
 	});
 
-	function showFolders() {
+	function showView() {
 		var view = this;
 		var listFunction = function(){
 			if(view.isFolderContents){
 				if(view.isShowPhotos){
-					return app.liveFolderApi.showPhotos(view.folderId).pipe(function(result){
+					return app.liveDriveApi.showPhotos(view.targetId).pipe(function(result){
 						return {result: result.result.data};
 					});
 				}else{
-					return app.liveFolderApi.getFolderFilesList(view.folderId).pipe(function(result){
+					return app.liveDriveApi.getFolderFilesList(view.targetId).pipe(function(result){
 						return {result: result.result.data};
 					});
 				}
 			}else{
-				return app.liveFolderApi.getRootFolder().pipe(function(result){
+				return app.liveDriveApi.getRootFolder().pipe(function(result){
 					var list = [];
 					list.push(result.result);
 					return {result: list};
@@ -75,17 +75,17 @@
 			}
 		}
 		var opts = {
-			htmlIfEmpty: "Not folders found",
+			htmlIfEmpty: "Not folders or files found",
 			withPaging: false,
 			withCmdDelete: false,
 			withCmdEdit: false
 		}
 		if(view.isFolderContents){
 			opts = {
-				htmlIfEmpty: "Not folders found",
+				htmlIfEmpty: "Not folders or files found",
 				withPaging: false,
-				cmdDelete: "DELETE_FOLDER",
-                cmdEdit: "EDIT_FOLDER"
+				cmdDelete: "DELETE_DRIVE_OBJECT",
+                cmdEdit: "EDIT_DRIVE_OBJECT"
 			}
 		}
 		brite.display("DataTable", ".foldersLists", {

@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 @Singleton
-public class LiveFolderService {
+public class LiveDriveService {
     @Inject
 	private LiveAuthService oAuthService;
 
@@ -21,8 +21,7 @@ public class LiveFolderService {
     public static final String LIVE_ENDPOINT = "https://apis.live.net/v5.0";
 
     /**
-     * get user root folder (Skydrive)
-     * @return
+     * get user root folder (onedrive)
      */
     public Map getRootFolder() {
         OAuthRequest  request = oAuthService.createRequest(Verb.GET, FOLDERLIST_ENDPOINT);
@@ -31,6 +30,9 @@ public class LiveFolderService {
         return profile;
     }
 
+    /**
+     * get the files under the folder or album
+     */
     public Map getFolderFilesList(String folderId) {
         OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + folderId + "/files");
         Response response = request.send();
@@ -38,34 +40,39 @@ public class LiveFolderService {
         return profile;
     }
 
-    public Map getFolder(String folderId) {
-        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + folderId);
+    /**
+     * get the object by id (folder, album, file and photo)
+     */
+    public Map get(String id) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + id);
         Response response = request.send();
-        Map folderInfo = JsonUtil.toMapAndList(response.getBody());
-        return folderInfo;
-    }
-
-    public void deleteFolder(String folderId) {
-        OAuthRequest request = oAuthService.createRequest(Verb.DELETE, LIVE_ENDPOINT + "/" + folderId);
-        Response response = request.send();
+        Map info = JsonUtil.toMapAndList(response.getBody());
+        return info;
     }
 
     /**
-     * create folder
-     * @return
+     * delete the object by id (folder, album, file and photo)
      */
-    public Map saveFolder(Map folder, String folderId, String parentId) {
+    public void delete(String id) {
+        OAuthRequest request = oAuthService.createRequest(Verb.DELETE, LIVE_ENDPOINT + "/" + id);
+        request.send();
+    }
+
+    /**
+     * create or update the object's name and description (folder, album, file and photo)
+     */
+    public Map save(Map obj, String id, String parentId) {
         OAuthRequest request = null;
-        if(StringUtil.isEmpty(folderId)){
+        if(StringUtil.isEmpty(id)){
             request = oAuthService.createRequest(Verb.POST, LIVE_ENDPOINT + "/" + parentId);
         }else{
-            request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT + "/" + folderId);
+            request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT + "/" + id);
         }
-        request.addBodyParameter("name", (String) folder.get("name"));
-        request.addBodyParameter("description", (String) folder.get("description"));
+        request.addBodyParameter("name", (String) obj.get("name"));
+        request.addBodyParameter("description", (String) obj.get("description"));
         Response response = request.send();
-        Map folderInfo = JsonUtil.toMapAndList(response.getBody());
-        return folderInfo;
+        Map info = JsonUtil.toMapAndList(response.getBody());
+        return info;
     }
 
     public Map showPhotos(String folderId) {

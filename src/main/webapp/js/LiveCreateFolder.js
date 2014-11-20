@@ -12,13 +12,13 @@
 				var view = this;
 				data = data || {};
 				if(data) {
-					this.folderId = data.id || "";
+					this.targetId = data.id || "";
 					this.parentId = data.parendId;
 				}
 				var dfd = $.Deferred();
 				var createDfd = $.Deferred();
-				if(view.folderId){
-					app.liveFolderApi.getFolder(view.folderId).done(function(extraData) {
+				if(view.targetId){
+					app.liveDriveApi.get(view.targetId).done(function(extraData) {
 						dfd.resolve(extraData.result);
 					});
 				}else{
@@ -46,19 +46,19 @@
 				var view = this;
 				var $e = this.$el;
 				var $controls = $e.find(".controls input,.controls textarea");
-				var folder = {};
+				var targetObj = {};
 				$controls.each(function(idx, obj){
 					var $this = $(this);
-					folder[$this.attr("name")] = $this.val();
+					targetObj[$this.attr("name")] = $this.val();
 				});
 				var input = $e.find("input[name='name']");
 				if (input.val() == "") {
 					input.focus();
-					input.closest("div").addClass("has-error").find("span").html("Please enter valid folder name.");
+					input.closest("div").addClass("has-error").find("span").html("Please enter valid name.");
 				} else {
-					app.liveFolderApi.saveFolder({id: view.folderId, parentId: view.parentId, folderJson: JSON.stringify(folder)}).done(function (extraData) {
+					app.liveDriveApi.save({id: view.targetId, parentId: view.parentId, objJson: JSON.stringify(targetObj)}).done(function (extraData) {
 						setTimeout((function () {
-							$(document).trigger("DO_REFRESH_FOLDER");
+							$(document).trigger("DO_REFRESH_DRIVE");
 						}), 5000);
 						view.close();
 					});
