@@ -4,6 +4,7 @@ import com.britesnow.snow.util.JsonUtil;
 import com.google.gdata.util.common.base.StringUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
@@ -58,6 +59,13 @@ public class LiveAlbumService {
         Response response = request.send();
         Map albumInfo = JsonUtil.toMapAndList(response.getBody());
         return albumInfo;
+    }
+
+    public Map showPhotos(String albumId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + albumId + "/photos");
+        Response response = request.send();
+        Map profile = JsonUtil.toMapAndList(response.getBody());
+        return profile;
     }
 
 }

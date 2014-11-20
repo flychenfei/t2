@@ -18,6 +18,11 @@ var app = app || {};
 		},
 		"saveAlbum": function (album) {
             return app.getJsonData(contextPath + "/liveAlbum/saveAlbum", album);
-        }
+       },
+		"showPhotos" : function(id) {
+			var param = {id:id};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/liveAlbum/showPhotos", param);
+		},
 	}
 })();

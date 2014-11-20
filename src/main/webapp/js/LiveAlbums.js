@@ -2,16 +2,24 @@
 	
 	brite.registerView("LiveAlbums",{emptyParent:true, parent:".LiveScreen-content"},{
 		create: function(data,config){
-			return render("tmpl-LiveAlbums");
+			data = data || {};
+			return render("tmpl-LiveAlbums",data);
 		},
-		postDisplay: function () {
+		postDisplay: function (data) {
 			var view = this;
+			view.albumId = data ? data.id : "";
+			view.isShowPhotos = data ? data.isShowPhotos : false;
 			showAlbums.call(view);
 		},
 		events:{
 			"click;.btnAdd":function(e){
 				brite.display("LiveCreateAlbum", null, {id: null});
 			},
+			"click;.btnShowPhotos":function(event){
+				var view = this;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				brite.display("LiveAlbums", null, {id:id, isShowPhotos:true});
+			}
 		},
 		docEvents: {
             "DO_REFRESH_ALBUM":function(){
@@ -40,9 +48,16 @@
 	function showAlbums() {
 		var view = this;
 		var listFunction = function(){
-			return app.liveAlbumApi.getUserAlbums().pipe(function(result){
-				return {result: result.result.data};
-			});
+			if(view.isShowPhotos){
+				return app.liveAlbumApi.showPhotos(view.albumId).pipe(function(result){
+					return {result: result.result.data};
+				});
+			}else{
+				return app.liveAlbumApi.getUserAlbums().pipe(function(result){
+					return {result: result.result.data};
+				});
+				
+			}
 		}
 		brite.display("DataTable", ".albumsLists", {
 			dataProvider: {list: listFunction},
@@ -96,6 +111,13 @@
 						return obj.updated_time;
 					},
 					attrs: "style='width: 20%'"
+				},
+				{
+					text: "Files",
+					render: function (obj) {
+						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>";
+					},
+					attrs: "style='width: 100px'"
 				}
 			],
 			opts: {

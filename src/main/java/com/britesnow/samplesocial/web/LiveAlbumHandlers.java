@@ -50,5 +50,16 @@ public class LiveAlbumHandlers {
             return WebResponse.fail();
         }
     }
+    
+    @WebGet("/liveAlbum/showPhotos")
+    public WebResponse showPhotos(@WebUser User user,@WebParam("id") String id)  {
+        if (user != null) {
+            Map photos = liveAlbumService.showPhotos(id);
+            return WebResponse.success(photos);
+        }else {
+            return WebResponse.fail();
+        }
+    }
+
 
 }
