@@ -116,14 +116,14 @@
 				{
 					text: "Count",
 					render: function (obj) {
-						return obj.count;
+						return typeof obj.count != "undefined" ? obj.count : "-";
 					},
 					attrs: "style='width: 25px'"
 				},
 				{
 					text: "Created Time",
 					render: function (obj) {
-						return obj.created_time;
+						return obj.created_time ? obj.created_time : "";
 					},
 					attrs: "style='width: 20%'"
 				},
@@ -137,14 +137,14 @@
 				{
 					text: "Files",
 					render: function (obj) {
-						return "<span class='btn btn-default btn-sm btnFiles'>Show</button>";
+						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<span class='btn btn-default btn-sm btnFiles'>Show</button>" : "";
 					},
 					attrs: "style='width: 100px'"
 				},
 				{
-					text: "Files",
+					text: "Photos",
 					render: function (obj) {
-						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>";
+						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>" : "";
 					},
 					attrs: "style='width: 100px'"
 				}
