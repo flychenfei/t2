@@ -6,6 +6,11 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/live/calendar/getUserCalendars", param);
 		},
+		addUserCalendar : function(param) {
+			var param = param || {};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/live/calendar/addUserCalendar", param);
+		},
 		deleteUserCalendar : function(param) {
 			var param = param || {};
 			param.method = "Get";

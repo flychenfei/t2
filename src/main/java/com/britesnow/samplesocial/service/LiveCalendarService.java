@@ -1,15 +1,15 @@
 package com.britesnow.samplesocial.service;
 
-import com.britesnow.snow.util.JsonUtil;
-import com.google.api.client.repackaged.com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.util.Map;
 
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
-import java.util.Map;
+import com.britesnow.snow.util.JsonUtil;
+import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 
 @Singleton
@@ -32,7 +32,25 @@ public class LiveCalendarService {
     }
     
     /**
-     * delete user calendar lists
+     * add a calendar for user
+     * @param calendarName
+     * @param description
+     * @param subscription_location
+     * @return
+     */
+    public Map addUserCalendar(String calendarName, String description, String subscription_location) {
+    	OAuthRequest request = oAuthService.createRequest(Verb.POST, USER_CALENDARS_ENDPOINT);
+        request.addBodyParameter("name", calendarName);
+        request.addBodyParameter("description", description);
+        //request.addBodyParameter("subscription_location", subscription_location);
+        Response response = request.send();
+        Map profile = JsonUtil.toMapAndList(response.getBody());
+        return profile;
+    }
+    
+    /**
+     * delete user calendar
+     * @param calendarId
      * @return
      */
     public boolean deleteUserCalendar(String calendarId) {
