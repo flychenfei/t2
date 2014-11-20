@@ -1,11 +1,18 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.britesnow.samplesocial.entity.User;
 import com.britesnow.samplesocial.service.LiveAlbumService;
 import com.britesnow.snow.util.JsonUtil;
+import com.britesnow.snow.web.RequestContext;
+import com.britesnow.snow.web.handler.annotation.WebResourceHandler;
 import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.param.annotation.WebUser;
 import com.britesnow.snow.web.rest.annotation.WebGet;
@@ -58,6 +65,23 @@ public class LiveAlbumHandlers {
             return WebResponse.success(photos);
         }else {
             return WebResponse.fail();
+        }
+    }
+    
+    @WebResourceHandler(matches = "/liveAlbum/showPicture")
+    public void showPicture(@WebUser User user,@WebParam("id") String id, RequestContext rc) throws IOException  {
+        InputStream in = liveAlbumService.showPicture(id);
+        if (in != null) {
+            HttpServletResponse res = rc.getRes();
+            OutputStream out = res.getOutputStream();
+            res.setContentType("application/octet-stream");
+            int length = 0;
+            byte[] data = new byte[10240];
+            while((length=in.read(data))!=-1){
+                out.write(data, 0, length);
+            }
+            in.close();
+            out.close(); 
         }
     }
 

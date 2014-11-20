@@ -19,6 +19,12 @@
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("LiveAlbums", null, {id:id, isShowPhotos:true});
+			},
+			"click;.btnShowPicture":function(event){
+				var view = this;
+				view.$el.toggleClass("show");
+				var photoId = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				view.$el.find(".showPicture").append("<img src='"+contextPath+"/liveAlbum/showPicture?id="+photoId+"' />");	
 			}
 		},
 		docEvents: {
@@ -113,12 +119,20 @@
 					attrs: "style='width: 20%'"
 				},
 				{
-					text: "Files",
+					text: "",
 					render: function (obj) {
-						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>";
+						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</span>";
+					},
+					attrs: "style='width: 100px'"
+				},
+				{
+					text: "",
+					render: function (obj) {
+						return "<span class='btn btn-default btn-sm btnShowPicture'>ShowPicture</span>";
 					},
 					attrs: "style='width: 100px'"
 				}
+				
 			],
 			opts: {
 				htmlIfEmpty: "Not albums found",
