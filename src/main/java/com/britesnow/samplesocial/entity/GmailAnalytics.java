@@ -9,7 +9,7 @@ public class GmailAnalytics extends UserScopedEntity<Long> {
 	private String messageSubject;
 	private LocalDateTime senderTimeStamp;
 	private LocalDateTime recipientTimeStamp;
-	private String convetsationName;
+	private String conversationName;
 	private String messageType;
 	private String senderEmailAddress;
 	private String recipientEmailAddress;
@@ -73,14 +73,14 @@ public class GmailAnalytics extends UserScopedEntity<Long> {
 	 * @return the convetsationName
 	 */
 	public String getConvetsationName() {
-		return convetsationName;
+		return conversationName;
 	}
 
 	/**
 	 * @param convetsationName the convetsationName to set
 	 */
 	public void setConvetsationName(String convetsationName) {
-		this.convetsationName = convetsationName;
+		this.conversationName = convetsationName;
 	}
 
 	/**

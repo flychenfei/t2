@@ -88,6 +88,7 @@ public class FeedGmailAnalyticsManager {
 	/**
 	 * No need to be a Runnable interface, as we are using lambda in the mainThread initialization.
 	 */
+	@SuppressWarnings("static-access")
 	private void run() {
 		System.out.println("FeedJobManager.run " + on);
 		while (on) {
