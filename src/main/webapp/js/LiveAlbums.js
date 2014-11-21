@@ -2,8 +2,10 @@
 	
 	brite.registerView("LiveAlbums",{emptyParent:true, parent:".LiveScreen-content"},{
 		create: function(data,config){
+			view = this;
 			data = data || {};
-			return render("tmpl-LiveAlbums",data);
+			var $html = app.render("tmpl-LiveAlbums",data);
+			return $html;
 		},
 		postDisplay: function (data) {
 			var view = this;
@@ -15,40 +17,47 @@
 			"click;.btnAdd":function(e){
 				brite.display("LiveCreateAlbum", null, {id: null});
 			},
-			"click;.btnShowPhotos":function(event){
+			"click;.albumSelf":function(event){
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-				brite.display("LiveAlbums", null, {id:id, isShowPhotos:true});
+				if(id.indexOf("folder") > -1){
+					brite.display("LiveAlbums", null, {id:id, isShowPhotos:true});
+				}else{
+					view.$el.find(".pictureContent").removeClass("hide");
+					view.$el.find(".pictureContent .showPicture").append("<img src='"+contextPath+"/liveAlbum/showPicture?id="+id+"' />");
+					view.$screen = $("<div class='notTransparentScreen'></div>").insertBefore(".MainScreen"); 
+				}
 			},
-			"click;.btnShowPicture":function(event){
+			"click;.glyphicon-remove":function () {
 				var view = this;
-				view.$el.toggleClass("show");
-				var photoId = $(event.currentTarget).closest("tr").attr("data-obj_id");
-				view.$el.find(".showPicture").append("<img src='"+contextPath+"/liveAlbum/showPicture?id="+photoId+"' />");	
+				view.$el.find(".pictureContent").addClass("hide");
+				view.$el.find(".pictureContent .showPicture img").remove();
+				$("#bodyPage .notTransparentScreen").remove();
+				
 			}
 		},
 		docEvents: {
-            "DO_REFRESH_ALBUM":function(){
-                 var view = this;
-                 showAlbums.call(view);
-            },
-            "EDIT_ALBUM":function(){
-                var view = this;
-                var $e = view.$el;
+			"DO_REFRESH_ALBUM":function(){
+				var view = this;
+				showAlbums.call(view);
+			},
+			"EDIT_ALBUM":function(){
+				var view = this;
+				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                brite.display("LiveCreateAlbum", null, {id:id});
-            },
-            "DELETE_ALBUM":function(){
-                var view = this;
-                var $e = view.$el;
+				brite.display("LiveCreateAlbum", null, {id:id});
+			},
+			"DELETE_ALBUM":function(){
+				var view = this;
+				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                app.liveAlbumApi.deleteAlbum(id).done(function(result){
+				app.liveAlbumApi.deleteAlbum(id).done(function(result){
 					setTimeout(function(){
-                        showAlbums.call(view);
-                    }, 3000)
+						showAlbums.call(view);
+					}, 3000)
 				});
-            }
-         }
+			}
+		 }
 	});
 
 	function showAlbums() {
@@ -78,9 +87,9 @@
 				{
 					text: "Name",
 					render: function (obj) {
-						return obj.name;
+						return "<a src=\"#\" class=\"albumSelf\">"+obj.name+"</a>";
 					},
-					attrs: "style='width: 15%'"
+					attrs: "style='width: 15%; word-break: break-word; cursor:pointer;'"
 				},
 				{
 					text: "Description",
@@ -118,27 +127,13 @@
 					},
 					attrs: "style='width: 20%'"
 				},
-				{
-					text: "",
-					render: function (obj) {
-						return "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</span>";
-					},
-					attrs: "style='width: 100px'"
-				},
-				{
-					text: "",
-					render: function (obj) {
-						return "<span class='btn btn-default btn-sm btnShowPicture'>ShowPicture</span>";
-					},
-					attrs: "style='width: 100px'"
-				}
 				
 			],
 			opts: {
 				htmlIfEmpty: "Not albums found",
 				withPaging: false,
 				cmdDelete: "DELETE_ALBUM",
-                cmdEdit: "EDIT_ALBUM"
+				cmdEdit: "EDIT_ALBUM"
 			}
 		});
 	}
