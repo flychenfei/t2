@@ -135,18 +135,18 @@
 					attrs: "style='width: 20%'"
 				},
 				{
-					text: "Files",
+					text: "",
 					render: function (obj) {
-						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<span class='btn btn-default btn-sm btnFiles'>Show</button>" : "";
+						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<div class='glyphicon glyphicon-folder-open btnFiles'/>" : "";
 					},
-					attrs: "style='width: 100px'"
+					attrs: "style='width: 40px' title='Show Files'"
 				},
 				{
-					text: "Photos",
+					text: "",
 					render: function (obj) {
-						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<span class='btn btn-default btn-sm btnShowPhotos'>ShowPhotos</button>" : "";
+						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<div class='glyphicon glyphicon-picture btnShowPhotos'/>" : "";
 					},
-					attrs: "style='width: 100px'"
+					attrs: "style='width: 40px' title='Show Photos'"
 				}
 			],
 			opts: opts
