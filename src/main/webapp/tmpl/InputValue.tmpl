@@ -8,7 +8,11 @@
 					<div class="control-group">
 					{{#if label}}
 						<label>{{label}}:</label>
-						<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
+						{{#if value}}
+							<input type="text"  name="{{name}}"  value="{{value}}"><span class="help-inline" ></span>
+						{{else}}
+							<input type="text"  name="{{name}}"  placeholder="input value"><span class="help-inline" ></span>
+						{{/if}}
 					{{else}}
 						<label>{{datelabel}}:</label>
 						<div class="input-append datetimepicker date"> 

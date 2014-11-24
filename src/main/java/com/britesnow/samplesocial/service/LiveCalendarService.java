@@ -49,6 +49,23 @@ public class LiveCalendarService {
     }
     
     /**
+     * add a calendar for user
+     * @param calendarName
+     * @param description
+     * @param subscription_location
+     * @return
+     */
+    public Map updateUserCalendar(String calendarId, String calendarName, String description, String subscription_location) {
+    	OAuthRequest request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT+calendarId);
+        request.addBodyParameter("name", calendarName);
+        request.addBodyParameter("description", description);
+        //request.addBodyParameter("subscription_location", subscription_location);
+        Response response = request.send();
+        Map profile = JsonUtil.toMapAndList(response.getBody());
+        return profile;
+    }
+    
+    /**
      * delete user calendar
      * @param calendarId
      * @return

@@ -11,6 +11,11 @@ var app = app || {};
 			param.method = "Get";
 			return app.getJsonData(contextPath + "/live/calendar/addUserCalendar", param);
 		},
+		updateUserCalendar : function(param) {
+			var param = param || {};
+			param.method = "Get";
+			return app.getJsonData(contextPath + "/live/calendar/updateUserCalendar", param);
+		},
 		deleteUserCalendar : function(param) {
 			var param = param || {};
 			param.method = "Get";
