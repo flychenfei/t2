@@ -27,30 +27,48 @@
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("LiveDrive", null, {id:id, isFolderContents:true, isShowAddFolderBtn:false, isShowPhotos:true});
+			},
+			"click;.albumSelf":function(event){
+				var view = this;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				if(id.indexOf("folder") > -1){
+					brite.display("LiveDrive", null, {id:id, isFolderContents:true, isShowAddFolderBtn:true});
+				}else{
+					view.$el.find(".pictureContent").removeClass("hide");
+					view.$el.find(".pictureContent .showPicture").append("<img src='"+contextPath+"/liveDrive/showPicture?id="+id+"' />");
+					view.$screen = $("<div class='notTransparentScreen'></div>").insertBefore(".MainScreen");
+				}
+			},
+			"click;.glyphicon-remove":function () {
+				var view = this;
+				view.$el.find(".pictureContent").addClass("hide");
+				view.$el.find(".pictureContent .showPicture img").remove();
+				$("#bodyPage .notTransparentScreen").remove();
+				
 			}
 		},
 		docEvents: {
-            "DO_REFRESH_DRIVE":function(){
-                var view = this;
-                showView.call(view);
-            },
-            "EDIT_DRIVE_OBJECT":function(){
-                var view = this;
-                var $e = view.$el;
+			"DO_REFRESH_DRIVE":function(){
+				var view = this;
+				showView.call(view);
+			},
+			"EDIT_DRIVE_OBJECT":function(){
+				var view = this;
+				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                brite.display("LiveCreateFolder", null, {id:id, parendId: view.targetId});
-            },
-            "DELETE_DRIVE_OBJECT":function(){
-                var view = this;
-                var $e = view.$el;
+				brite.display("LiveCreateFolder", null, {id:id, parendId: view.targetId});
+			},
+			"DELETE_DRIVE_OBJECT":function(){
+				var view = this;
+				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
-                app.liveDriveApi.delete(id).done(function(result){
+				app.liveDriveApi.delete(id).done(function(result){
 					setTimeout(function(){
-                        showView.call(view);
-                    }, 3000)
+						showView.call(view);
+					}, 3000)
 				});
-            }
-         }
+			}
+		 }
 	});
 
 	function showView() {
@@ -85,7 +103,7 @@
 				htmlIfEmpty: "Not folders or files found",
 				withPaging: false,
 				cmdDelete: "DELETE_DRIVE_OBJECT",
-                cmdEdit: "EDIT_DRIVE_OBJECT"
+				cmdEdit: "EDIT_DRIVE_OBJECT"
 			}
 		}
 		brite.display("DataTable", ".foldersLists", {
@@ -94,9 +112,9 @@
 				{
 					text: "Name",
 					render: function (obj) {
-						return obj.name;
+						return "<a src=\"#\" class=\"albumSelf\">"+obj.name+"</a>";
 					},
-					attrs: "style='width: 15%'"
+					attrs: "style='width: 15%; word-break: break-word; cursor:pointer;'"
 				},
 				{
 					text: "Type",

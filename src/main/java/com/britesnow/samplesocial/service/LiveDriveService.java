@@ -9,6 +9,7 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
+import java.io.InputStream;
 import java.util.Map;
 
 
@@ -80,6 +81,12 @@ public class LiveDriveService {
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
+    }
+
+    public InputStream showPicture(String photoId) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + photoId + "/picture");
+        Response response = request.send();
+        return response.getStream();
     }
 
 }
