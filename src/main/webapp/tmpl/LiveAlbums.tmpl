@@ -3,10 +3,15 @@
 		<div class="pictureContent hide">
 			<i class="glyphicon glyphicon-remove"></i>
 			<div class="showPicture"></div>
+
 		</div>
 		<div>
 			<span class="btn btn-default btn-sm btnAdd"><i class="glyphicon glyphicon-plus"></i>Add</span>
+			{{#if isShowAllPicturesBtn}}
+				<span class="btn btn-default btn-sm btnAllPicture">All Pictures</span>
+			{{/if}}
 		</div>
+
 		<div class="albumsLists">
 			
 		</div>

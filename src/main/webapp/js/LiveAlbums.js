@@ -21,7 +21,7 @@
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				if(id.indexOf("folder") > -1){
-					brite.display("LiveAlbums", null, {id:id, isShowPhotos:true});
+					brite.display("LiveAlbums", null, {id:id, isShowPhotos:true, isShowAllPicturesBtn:true});
 				}else{
 					view.$el.find(".pictureContent").removeClass("hide");
 					view.$el.find(".pictureContent .showPicture").append("<img src='"+contextPath+"/liveAlbum/showPicture?id="+id+"' />");
@@ -34,6 +34,16 @@
 				view.$el.find(".pictureContent .showPicture img").remove();
 				$("#bodyPage .notTransparentScreen").remove();
 				
+			},
+			"click; .btnAllPicture": function(event){
+				var view = this;
+				view.$el.find(".albumsLists .listItem tr").each(function(idx,items){
+					$items = $(items);
+					var name = $items.find(".albumSelf").text();
+					var photoId = $items.attr("data-obj_id");
+					view.$el.find(".pictureContent").removeClass("hide");
+					view.$el.find(".pictureContent .showPicture").append("<div class='pictureItem'><img src='"+contextPath+"/liveAlbum/showPicture?id="+photoId+"' /><span class='photoName'>Name:"+name+"</span></div>");
+				});
 			}
 		},
 		docEvents: {
