@@ -66,6 +66,24 @@ public class LiveDriveHandlers {
             return WebResponse.fail();
         }
     }
+
+    @WebResourceHandler(matches = "/liveDrive/download")
+    public void download(@WebUser User user, @WebParam("id") String id,@WebParam("fileName") String fileName, RequestContext rc)  throws IOException {
+        InputStream in = liveDriveService.download(id);
+        if (in != null) {
+            HttpServletResponse res = rc.getRes();
+            res.addHeader("Content-Disposition", "attachment;filename="+fileName);
+            OutputStream out = res.getOutputStream();
+            res.setContentType("application/octet-stream");
+            int length = 0;
+            byte[] data = new byte[10240];
+            while((length=in.read(data))!=-1){
+                out.write(data, 0, length);
+            }
+            in.close();
+            out.close();
+        }
+    }
     
     @WebGet("/liveDrive/showPhotos")
     public WebResponse showPhotos(@WebUser User user,@WebParam("id") String id)  {

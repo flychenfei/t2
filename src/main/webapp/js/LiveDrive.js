@@ -23,6 +23,17 @@
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("LiveDrive", null, {id:id, isFolderContents:true, isShowAddFolderBtn:true});
 			},
+			"click;.btnDownloadFiles":function(event){
+				var view = this;
+				var $e = view.$el;
+				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
+				var fileName = $(event.currentTarget).closest("tr").attr("data-obj_name");
+				if(id){
+					window.location.href=contextPath+"/liveDrive/download?id="+id+"&fileName="+fileName;
+				}else{
+					alert("This file is not support download!");
+				}
+			},
 			"click;.btnShowPhotos":function(event){
 				var view = this;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
@@ -108,6 +119,9 @@
 		}
 		brite.display("DataTable", ".foldersLists", {
 			dataProvider: {list: listFunction},
+			rowAttrs: function (obj) {
+				return "data-obj_id='{0}' data-obj_name='{1}'".format(obj.id,obj.name)
+			},
 			columnDef: [
 				{
 					text: "Name",
@@ -158,6 +172,13 @@
 						return ((obj.type == "folder" || obj.type == "album") && obj.count > 0) ? "<div class='glyphicon glyphicon-folder-open btnFiles'/>" : "";
 					},
 					attrs: "style='width: 40px' title='Show Files'"
+				},
+				{
+					text: "",
+					render: function (obj) {
+						return (obj.type == "folder" || obj.type == "album") ?  "" : "<div class='glyphicon glyphicon-download btnDownloadFiles'/>";
+					},
+					attrs: "style='width: 40px'  title='Download'"
 				},
 				{
 					text: "",

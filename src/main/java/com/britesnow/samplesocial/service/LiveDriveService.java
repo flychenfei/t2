@@ -76,6 +76,15 @@ public class LiveDriveService {
         return info;
     }
 
+    /**
+     * download by id
+     */
+    public InputStream download(String id) {
+        OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + id + "/content?download=true");
+        Response response = request.send();
+        return response.getStream();
+    }
+
     public Map showPhotos(String folderId) {
         OAuthRequest request = oAuthService.createRequest(Verb.GET, LIVE_ENDPOINT + "/" + folderId + "/photos");
         Response response = request.send();
