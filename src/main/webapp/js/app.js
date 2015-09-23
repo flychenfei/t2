@@ -1,5 +1,10 @@
 var app = app || {};
 
+// when using pre-compiling or other templating engine are needed.
+Handlebars.templates = Handlebars.templates || {};
+// make all templates partials (no reasons why they should not)
+Handlebars.partials =  Handlebars.templates;
+
 (function(w) {
 
 	w.render = function(templateName, data) {
