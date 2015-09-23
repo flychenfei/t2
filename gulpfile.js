@@ -22,12 +22,12 @@ gulp.task('default',['clean', 'hbs', 'less']);
 gulp.task('watch', ['default'], function(){
     gulp.watch(path.join(webappDir,"/tmpl/",'*.tmpl'), ['hbs']);
 
-    gulp.watch(path.join(webappDir,"/less/",'*.less'), ['less']);
+    gulp.watch(path.join(webappDir,"/less/",'all.less'), ['less']);
 
 });
 
 gulp.task('clean', function(){
-    var dirs = [commonCssDir, cssDir, sysadminCssDir];
+    var dirs = [cssDir];
 
     // make sure the directories exists (they might not in fresh clone)
     var dir;
@@ -36,7 +36,7 @@ gulp.task('clean', function(){
         if (!fs.existsSync(dir)) {
             fs.mkdir(dir);
         }
-        del.sync(dir + "*.css");
+        del.sync(dir + "all.css");
     }
 });
 
@@ -48,7 +48,7 @@ gulp.task('hbs', function() {
 });
 
 gulp.task('less', function() {
-    gulp.src(path.join(webappDir,"/less/",'*.less'))
+    gulp.src(path.join(webappDir,"/less/",'all.less'))
         .pipe(less())
         .pipe(gulp.dest(cssDir));
 });

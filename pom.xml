@@ -22,28 +22,58 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         </configuration>
       </plugin>
 
-      <!-- Copy war files to ../war -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <!-- gulp default to process tmpl & less files -->
+          <execution>
+            <id>node-gulp-default</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>gulp</executable>
+              <arguments>
+                <argument>default</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <!-- /gulp default to process tmpl & less files -->
+        </executions>
+      </plugin>
+
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
+        <version>1.4</version>
         <executions>
+
+          <!-- Copy to War -->
           <execution>
-            <id>compile-less-tmpl</id>
-            <phase>compile</phase>
-            <configuration>
-              <tasks>
-                <exec executable="java">
-                  <arg line="-jar"/>
-                  <arg line="/apps/jcruncherEx.jar"/>
-                </exec>
-              </tasks>
-            </configuration>
+            <id>copy-to-war</id>
+            <phase>package</phase>
             <goals>
               <goal>run</goal>
             </goals>
+            <configuration>
+              <tasks>
+                <mkdir dir="../war" />
+                <delete includeemptydirs="true">
+                  <fileset dir="../war" includes="**/*" excludes=".git/"/>
+                </delete>
+                <copy todir="../war">
+                  <fileset dir="target/samplesocial"/>
+                </copy>
+              </tasks>
+            </configuration>
           </execution>
+          <!-- /Copy to War -->
+
         </executions>
       </plugin>
+
+
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
