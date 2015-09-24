@@ -5,6 +5,9 @@
 .project
 .settings
 
+# ignore node_modules
+node_modules/
+
 # remove intellij stuff
 out/
 *.iml
