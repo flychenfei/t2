@@ -22,7 +22,7 @@ gulp.task('default',['clean', 'hbs', 'less']);
 gulp.task('watch', ['default'], function(){
     gulp.watch(path.join(webappDir,"/tmpl/",'*.tmpl'), ['hbs']);
 
-    gulp.watch(path.join(webappDir,"/less/",'all.less'), ['less']);
+    gulp.watch(path.join(webappDir,"/less/",'*.less'), ['less']);
 
 });
 
