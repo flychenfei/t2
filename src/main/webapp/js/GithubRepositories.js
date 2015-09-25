@@ -61,7 +61,6 @@
 			},
 			"click;.events":function(event){
 				app.githubApi.getPublicEvents().pipe(function(json){
-					console.log(json);
 				});
 			},
 			"click;.reponame":function(event){

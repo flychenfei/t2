@@ -56,7 +56,6 @@
                             var params = {};
                             params.updateKey = updateKey;
                             params.comment = data.comment;
-                            console.log(params);
                             app.linkedInApi.CommentCompanyUpdates(params).done(function (result) {
                                 if(result.success === true){
                                     alert("Commenting On Updates success!");
@@ -144,8 +143,6 @@
     function showCompanys(data){
         var view = this;
         var $content = view.$el.find(".LinkedInCompanys-body");
-        console.log($content.get(0));
-        console.log(data);
         $content.empty();
         var $renderContent = $(render("tmpl-LinkedInCompanyLists",{result:data.result,total:data.result.length}));
         $content.append($renderContent);
