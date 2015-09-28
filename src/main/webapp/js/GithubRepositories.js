@@ -22,6 +22,11 @@
 					}).pipe(function(json){
 					if(json.success){
 						alert("adding "+json.result.name+" successfully.");
+						$(".tab-content").html("<div class=\"alert alert-info\">Tring to load data,Please wait...</div>");
+						app.githubApi.getRepositories().pipe(function(repositories){
+							repositories = repositories.result;
+							brite.display("GithubRepositories",$(".tab-content"),{repositories:repositories});
+						});
 					}else{
 						alert(json.errorMessage);
 					}
