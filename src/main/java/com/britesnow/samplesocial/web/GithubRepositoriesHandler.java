@@ -102,7 +102,9 @@ public class GithubRepositoriesHandler {
 			@WebParam("login") String login) throws IOException {
 		//since the repository edit must need the login and name to generateId,so need these parameters
 		Repository repo = new Repository();
-		repo.setOwner(githubUserService.getGithubUser(user));
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
 		repo.setName(name);
 		try{
 			return WebResponse.success(githubCommitService.getCommits(repo, user));
