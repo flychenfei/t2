@@ -36,7 +36,7 @@
 					$(description).val("");
 				});
 			},
-			"click;.glyphicon glyphicon-edit":function(event){
+			"click;.edit-name":function(event){
 				var repositoryId = $(event.target).closest("td").attr("data-repository-id");
 				var name = $(event.target).closest("td").attr("data-repository-name");
 				var description = $(event.target).closest("td").attr("data-repository-description");
