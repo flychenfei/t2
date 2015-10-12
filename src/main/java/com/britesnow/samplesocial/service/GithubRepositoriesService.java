@@ -1,15 +1,18 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.DownloadResource;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.service.DownloadService;
+import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.util.EncodingUtils;
 import org.scribe.model.OAuthRequest;
@@ -20,6 +23,8 @@ import com.britesnow.samplesocial.entity.User;
 import com.britesnow.snow.util.JsonUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import javax.xml.crypto.Data;
 
 @Singleton
 public class GithubRepositoriesService {
@@ -99,8 +104,8 @@ public class GithubRepositoriesService {
 		if(path.startsWith("/"))
 			path = "/"+path;
 		OAuthRequest request = githubAuthService.createRequest(Verb.GET,
-				PREFIX+"/repos/"+githubUserService.getGithubUser(user).getLogin()+"/"+repo+
-				"/contents"+path+"?access_token="+githubAuthService.getToken(user).getToken());
+				PREFIX + "/repos/" + githubUserService.getGithubUser(user).getLogin() + "/" + repo +
+						"/contents" + path + "?access_token=" + githubAuthService.getToken(user).getToken());
 		Response response = request.send();
 		String result = response.getBody();
 		if(result.startsWith("["))
@@ -201,5 +206,19 @@ public class GithubRepositoriesService {
 	public List<SearchRepository> searchRepositories(User user,String query,int startPage) throws IOException{
 		RepositoryService repositoryService = new RepositoryService(githubAuthService.createClient(user));
 		return repositoryService.searchRepositories(query, startPage);
+	}
+
+	/**
+	 * Search repositories
+	 * @param repo
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Issue> getIssues(Repository repo,User user) throws IOException{
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		Map<String,String> filterdata = new HashMap<String,String>();
+		filterdata.put("data","");
+		return issueService.getIssues(repo,filterdata);
 	}
 }

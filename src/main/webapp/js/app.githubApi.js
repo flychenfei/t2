@@ -75,6 +75,11 @@ var app = app || {};
         	var params = opts||{};
         	params.method="Post";
         	return app.getJsonData(contextPath+"/github/createFork",params);
-        }
+        },
+		getIssues:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/getIssues",params);
+		}
     };
 })();

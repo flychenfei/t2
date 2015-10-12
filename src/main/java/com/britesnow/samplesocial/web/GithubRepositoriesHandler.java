@@ -129,7 +129,7 @@ public class GithubRepositoriesHandler {
 		repo.setOwner(githubUserService.getGithubUser(user));
 		repo.setName(name);
 		try{
-			return WebResponse.success(githubCommitService.getCommit(repo, user,sha));
+			return WebResponse.success(githubCommitService.getCommit(repo, user, sha));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
@@ -150,7 +150,7 @@ public class GithubRepositoriesHandler {
 		Repository repo = new Repository();
 		repo.setOwner(githubUserService.getGithubUser(user));
 		repo.setName(name);
-		return WebResponse.success(githubCommitService.compareCommits(repo,user,base,head));
+		return WebResponse.success(githubCommitService.compareCommits(repo, user, base, head));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
@@ -180,7 +180,7 @@ public class GithubRepositoriesHandler {
 	 */
 	@WebGet("/github/getContents")
 	public WebResponse getContents(@WebUser User user,@WebParam("repo") String repo,@WebParam("path")String path) throws IOException{
-		return WebResponse.success(githubRepositoriesService.getContents(user, repo,path));
+		return WebResponse.success(githubRepositoriesService.getContents(user, repo, path));
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class GithubRepositoriesHandler {
 		repository.setOwner(githubUserService.getGithubUser(user));
 		repository.setName(repo);
 		System.out.println(repository.generateId());
-		return WebResponse.success(githubRepositoriesService.createDownload(user, repository,item));
+		return WebResponse.success(githubRepositoriesService.createDownload(user, repository, item));
 	}
 	
 	/**
@@ -231,7 +231,7 @@ public class GithubRepositoriesHandler {
 		Repository repository = new Repository();
 		repository.setOwner(githubUserService.getGithubUser(user));
 		repository.setName(repo);
-		githubRepositoriesService.deleteDownload(user, repository,Integer.parseInt(repoId));
+		githubRepositoriesService.deleteDownload(user, repository, Integer.parseInt(repoId));
 		return WebResponse.success();
 	}
 	
@@ -268,5 +268,28 @@ public class GithubRepositoriesHandler {
 		repository.setName(repo);
 		githubRepositoriesService.CreateFork(user, repository);
 		return WebResponse.success(githubRepositoriesService.getForks(user, repository));
+	}
+
+	/**
+	 * get commits for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getIssues")
+	public WebResponse getIssues(@WebUser User user,@WebParam("name") String name,
+								  @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		try{
+			return WebResponse.success(githubRepositoriesService.getIssues(repo, user));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
 	}
 }
