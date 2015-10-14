@@ -115,9 +115,10 @@
 				var login = $(event.target).closest("td").attr("data-login");
 				app.githubApi.getIssues({
 					name:name,
-					login:login
+					login:login,
+					state:"open"
 				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result,name:name,login:login});
+					brite.display("GithubIssues",$(".tab-content"),{issues:json.result,name:name,login:login,issueState:"open"});
 				});
 			}
 		}

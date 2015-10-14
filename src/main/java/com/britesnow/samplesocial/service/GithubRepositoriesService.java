@@ -208,17 +208,18 @@ public class GithubRepositoriesService {
 		return repositoryService.searchRepositories(query, startPage);
 	}
 
-	/**
-	 * Search repositories
+	/*
+	 * Search Issues
 	 * @param repo
 	 * @param user
 	 * @return
 	 * @throws IOException
 	 */
-	public List<Issue> getIssues(Repository repo,User user) throws IOException{
+
+	public List<Issue> getIssues(Repository repo,User user,String state) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
-		Map<String,String> filterdata = new HashMap<String,String>();
-		filterdata.put("data","");
-		return issueService.getIssues(repo,filterdata);
+		Map<String,String> filterData = new HashMap<String,String>();
+		filterData.put("state",state);
+		return issueService.getIssues(repo,filterData);
 	}
 }
