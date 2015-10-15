@@ -10,6 +10,11 @@
 					alert("please type the email u want add");
 					return false;
 				}
+				var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+				if (!(reg.test($(emailInput).val()))) {
+					alert("The email format not right");
+					return false;
+				}
 				$(".githubloading.adding").toggleClass("hide");
 				var button = $(event.target);
 				if($(button).hasClass("disabled"))
