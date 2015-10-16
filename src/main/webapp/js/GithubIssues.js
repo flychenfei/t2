@@ -25,6 +25,27 @@
 				}).pipe(function(json){
 					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"closed",openCount: json.result.openCount,closedCount:json.result.closedCount});
 				});
+			},
+			"click;.message":function(event){
+				var name = $(event.target).closest("table").attr("data-name");
+				var login = $(event.target).closest("table").attr("data-login");
+				var issueNumber = $(event.target).closest("td").attr("data-issue-id");
+				app.githubApi.getIssue({
+					name:name,
+					login:login,
+					issueNumber:issueNumber
+				}).pipe(function(json){
+					brite.display("GithubIssue",$("body"),{
+						issue:json.result.issue,
+						comments:json.result.comment,
+						layout:{
+							left:'20%',
+							top:"100px",
+							width:'60%',
+							height:'auto'
+						}
+					});
+				});
 			}
 		}
 	});

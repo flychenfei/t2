@@ -1,0 +1,59 @@
+<script id="tmpl-GithubIssue" type="text/html">
+  <div class="GithubIssue github">
+	  <div class="dialogBackground">
+		</div>
+		<div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
+			<div class="dialogHead">
+				<span class="close dialogBtns dialogCloseBtn">&times;</span>
+				<div class="dialogTitle">{{issue.title}}&nbsp;&nbsp;<span class="number">#{{issue.number}}</span></div>
+			</div>
+			<div class="dialogBody">
+				<div class="container-fluid">
+					<div class="row status">
+						{{#equal issue.state "open"}}
+						<span class="open"><i class="glyphicon glyphicon-exclamation-sign"></i>{{issue.state}}</span>
+						{{else}}
+						<span class="closed"><i class="glyphicon glyphicon-exclamation-sign"></i>{{issue.state}}</span>
+						{{/equal}}
+
+						<span class="opener">{{issue.user.login}}</span>
+						<span class="date-info">opened this issue on
+							{{#plus issue.createdAt.year 1900}}{{/plus}}-{{#lt issue.createdAt.month 9}}0{{/lt}}{{#plus issue.createdAt.month 1}}{{/plus}}-{{#lt issue.createdAt.day 10}}0{{/lt}}{{issue.createdAt.day}}
+							. {{issue.comments}} comments</span>
+					</div>
+
+					<div class="row issue-comment">
+						<img class="user-avatar" src="{{issue.user.avatarUrl}}"/>
+						<div class="comment-detail">
+							<div class="comment-header">
+								<span class="bold">{{issue.user.login}}</span> commented on
+								{{#plus issue.createdAt.year 1900}}{{/plus}}-{{#lt issue.createdAt.month 9}}0{{/lt}}{{#plus issue.createdAt.month 1}}{{/plus}}-{{#lt issue.createdAt.day 10}}0{{/lt}}{{issue.createdAt.day}}
+							</div>
+							<div class="comment-body">
+								{{#convertMDToHtml issue.body}}{{/convertMDToHtml}}
+							</div>
+						</div>
+					</div>
+
+					{{#each comments}}
+					<div class="row issue-comment">
+						<img class="user-avatar" src="{{user.avatarUrl}}"/>
+						<div class="comment-detail">
+							<div class="comment-header">
+								<span class="bold">{{user.login}}</span> commented on
+								{{#plus createdAt.year 1900}}{{/plus}}-{{#lt createdAt.month 9}}0{{/lt}}{{#plus createdAt.month 1}}{{/plus}}-{{#lt createdAt.day 10}}0{{/lt}}{{createdAt.day}}
+							</div>
+							<div class="comment-body">
+								{{#convertMDToHtml body}}{{/convertMDToHtml}}
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+				<div class="dialogBtns">
+                	<button class="btn btn-primary cancel">Cancel</button>
+                </div>
+			</div>
+		</div>
+	</div>
+</script>

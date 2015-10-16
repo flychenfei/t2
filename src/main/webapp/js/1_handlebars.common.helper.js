@@ -161,7 +161,14 @@
         }
 
     });
-	
-	
-	
+
+	//plus values
+	Handlebars.registerHelper('plus', function (a, b) {
+		return a + b;
+	});
+
+	//convert markdown to html
+	Handlebars.registerHelper('convertMDToHtml', function (md) {
+		return marked(md);
+	});
 })(jQuery);

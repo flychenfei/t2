@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.britesnow.snow.util.MapUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
@@ -241,5 +242,18 @@ public class GithubRepositoriesService {
 		map.put("openCount",openIssues.size());
 		map.put("closedCount",closedIssues.size());
 		return map;
+	}
+
+	/*
+	 * Search Issue
+	 * @param repo
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
+
+	public Map<?, ?> getIssue(Repository repo, User user, String issueNumber) throws IOException{
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		return MapUtil.mapIt("issue", issueService.getIssue(repo, issueNumber), "comment", issueService.getComments(repo, issueNumber));
 	}
 }
