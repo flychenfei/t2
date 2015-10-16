@@ -2,24 +2,24 @@
 // NOTE: this is to generate the layout.less file so that we can reuse the generated
 //       code in the other .less files
 
-
 @totalcolumns: 12%;
 @gutter: 2.12%;
-@columnWidth: (100 - (@totalcolumns - 1) * @gutter) / @totalcolumns; 
+@columnWidth: (100 - (@totalcolumns - 1) * @gutter) / @totalcolumns;
 
 /* --------- .spreadX --------- */
 // looping the recursive way
-.spreadX (@index) when (@index > 0){
-  (~".spread@{index}") { 
-    .spread(@index); 
-  }
-  .spreadX(@index - 1);    
+.spreadX (@index) when (@index > 0) {
+	(~".spread@{index}") {
+		.spread(@index);
+	}
+	.spreadX(@index - 1);
 }
 
-.spreadX(0){
+.spreadX(0) {
 }
-.spread (@columns){
-  width: @columns * @columnWidth + (@columns - 1) * @gutter ;
+
+.spread (@columns) {
+	width: @columns * @columnWidth + (@columns - 1) * @gutter;
 }
 
 .spreadX (12);
@@ -28,17 +28,18 @@
 
 /* --------- .startLX --------- */
 // looping the recursive way
-.startLX (@index) when (@index > 0){
-  (~".startL@{index}") { 
-    .startL(@index); 
-  }
-  .startLX(@index - 1);    
+.startLX (@index) when (@index > 0) {
+	(~".startL@{index}") {
+		.startL(@index);
+	}
+	.startLX(@index - 1);
 }
 
-.startLX(0){
+.startLX(0) {
 }
-.startL (@columns){
-  left: (@columns - 1) * @columnWidth + (@columns - 2) * @gutter + @gutter ;
+
+.startL (@columns) {
+	left: (@columns - 1) * @columnWidth + (@columns - 2) * @gutter + @gutter;
 }
 
 .startLX (12);

@@ -1,140 +1,140 @@
-.GithubIssue{
-  .dialogTitle{
-    color:#333;
-    font-weight: normal !important;
+.GithubIssue {
+	.dialogTitle {
+		color: #333;
+		font-weight: normal !important;
 
-    .number{
-      color:#aaa;
-    }
-  }
+		.number {
+			color: #aaa;
+		}
+	}
 
-  .github {
-    .dialogBackground {
-      position:fixed;
-    }
+	.github {
+		.dialogBackground {
+			position: fixed;
+		}
 
-    .dialogContent{
-      top:100px;
-    }
-  }
-  .container-fluid{
-    height: 300px;
-    overflow-y: auto;
-  }
-  .status{
-    margin-bottom: 20px;
-    padding: 9px 0 20px 0;
-    border-bottom: 1px solid #eee;
-    i{
-      margin-right: 4px;
-    }
+		.dialogContent {
+			top: 100px;
+		}
+	}
+	.container-fluid {
+		height: 300px;
+		overflow-y: auto;
+	}
+	.status {
+		margin-bottom: 20px;
+		padding: 9px 0 20px 0;
+		border-bottom: 1px solid #eee;
+		i {
+			margin-right: 4px;
+		}
 
-    .open{
-      background-color: #6cc644;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 3px;
-      color: #FFF;
-    }
-    .closed{
-      background-color: #bd2c00;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 3px;
-      color: #FFF;
-    }
-  }
+		.open {
+			background-color: #6cc644;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 4px 8px;
+			border-radius: 3px;
+			color: #FFF;
+		}
+		.closed {
+			background-color: #bd2c00;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 4px 8px;
+			border-radius: 3px;
+			color: #FFF;
+		}
+	}
 
-  .bold{
-    font-weight: bold;
-  }
+	.bold {
+		font-weight: bold;
+	}
 
-  .opener{
-    color:#555;
-    font-size: 14px;
-    font-weight: bold;
-  }
+	.opener {
+		color: #555;
+		font-size: 14px;
+		font-weight: bold;
+	}
 
-  .date-info{
-    color:#767676;
-    font-size: 14px;
-  }
+	.date-info {
+		color: #767676;
+		font-size: 14px;
+	}
 
-  .issue-comment {
-    margin: 15px 0;
-    .user-avatar {
-      width: 48px;
-      height: 48px;
-      margin-right: 16px;
-      display: inline-block;
-      vertical-align: top;
-      float: left;
-    }
-    .comment-detail:before{
-      position: absolute;
-      top: 11px;
-      left: -16px;
-      right: 100%;
-      width: 0;
-      height: 0;
-      display: block;
-      content: " ";
-      border: solid 8px rgba(60, 60, 60, 0);
-      border-right-color: #F2F8FA;
-      z-index: 999
-    }
+	.issue-comment {
+		margin: 15px 0;
+		.user-avatar {
+			width: 48px;
+			height: 48px;
+			margin-right: 16px;
+			display: inline-block;
+			vertical-align: top;
+			float: left;
+		}
+		.comment-detail:before {
+			position: absolute;
+			top: 11px;
+			left: -16px;
+			right: 100%;
+			width: 0;
+			height: 0;
+			display: block;
+			content: " ";
+			border: solid 8px rgba(60, 60, 60, 0);
+			border-right-color: #F2F8FA;
+			z-index: 999
+		}
 
-    .comment-header:before{
-      position: absolute;
-      top: 10.5px;
-      left: -18px;
-      right: 100%;
-      width: 0;
-      height: 0;
-      display: block;
-      content: " ";
-      border: solid 9px rgba(60, 60, 60, 0);
-      border-right-color: #ddd;
-      z-index: 998;
-    }
-    .comment-detail {
-      margin-left:64px;
-      position: relative;
-      display: block;
-      width:auto;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-      color: rgb(118, 118, 118);
-      font-size: 13px;
-      font-style: normal;
-      font-variant: normal;
-      font-weight: normal;
-      word-wrap: break-word;
-      .comment-header {
-        padding-left: 15px;
-        padding-right: 15px;
-        background-color: #f2f8fa;
-        border-bottom-color: #dde4e6;
-        height: 39px;
-        line-height: 39px;
-      }
+		.comment-header:before {
+			position: absolute;
+			top: 10.5px;
+			left: -18px;
+			right: 100%;
+			width: 0;
+			height: 0;
+			display: block;
+			content: " ";
+			border: solid 9px rgba(60, 60, 60, 0);
+			border-right-color: #ddd;
+			z-index: 998;
+		}
+		.comment-detail {
+			margin-left: 64px;
+			position: relative;
+			display: block;
+			width: auto;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			box-sizing: border-box;
+			color: rgb(118, 118, 118);
+			font-size: 13px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: normal;
+			word-wrap: break-word;
+			.comment-header {
+				padding-left: 15px;
+				padding-right: 15px;
+				background-color: #f2f8fa;
+				border-bottom-color: #dde4e6;
+				height: 39px;
+				line-height: 39px;
+			}
 
-      .comment-body {
-        box-sizing: border-box;
-        color: rgb(51, 51, 51);
-        display: block;
-        font-size: 13px;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: normal;
-        line-height: 18.2px;
-        width: 694px;
-        word-wrap: break-word;
-        padding: 15px;
-      }
-    }
-  }
+			.comment-body {
+				box-sizing: border-box;
+				color: rgb(51, 51, 51);
+				display: block;
+				font-size: 13px;
+				font-style: normal;
+				font-variant: normal;
+				font-weight: normal;
+				line-height: 18.2px;
+				width: 694px;
+				word-wrap: break-word;
+				padding: 15px;
+			}
+		}
+	}
 }

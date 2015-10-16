@@ -1,35 +1,35 @@
-.LinkedInGroupDetails{
-	outline-width:1px;
+.LinkedInGroupDetails {
+	outline-width: 1px;
 	
-	.GroupDetailsHead{
-		width:100%;
-		min-height:55px;
+	.GroupDetailsHead {
+		width: 100%;
+		min-height: 55px;
 		max-height: 80px;
-	    span{
-	    	font-size: 20px;
+		span {
+			font-size: 20px;
 			font-weight: bold;
-			line-height: 24px; 
+			line-height: 24px;
 			min-width: 120px;
-	   		padding-right: 50px;
-	    }
-	    .num-members{
-	    	float:right;
-	    }
+			padding-right: 50px;
+		}
+		.num-members {
+			float: right;
+		}
 	}
 	
-	.GroupDetailsBody{
-		div{
+	.GroupDetailsBody {
+		div {
 			margin-top: 5px;
 		}
-	    
-		.ShortDescription{
-	    	font-size: 18px;
+
+		.ShortDescription {
+			font-size: 18px;
 			width: 90%;
 			word-break: break-word;
 			padding: 3px;
 		}
 		
-		.Description{
+		.Description {
 			width: 95%;
 			font-size: 16px;
 			word-break: break-word;
@@ -38,114 +38,114 @@
 		}
 	}
 	
-.LinkedInGroupPost{
+	.LinkedInGroupPost {
 
-	margin-top: 10px;
-	
-	.GroupPostsHead{
-		margin: 10px 0px;
+		margin-top: 10px;
+
+		.GroupPostsHead {
+			margin: 10px 0px;
+		}
+		
+		.GroupPostsBody {
+			clear: both;
+		}
+
+		.postItemDiv {
+			width: 95%;
+			min-height: 250px;
+			margin: 3px 3px 0 3px;
+			border-style: groove;
+			border-width: 1px;
+			border-color: #999;
+
+			.postHead {
+				width: 100%;
+				height: 80px;
+
+				.creatorImg {
+					width: 80px;
+					margin-right: 20px;
+				}
+
+				.creatorName {
+					font-size: 18px;
+					min-width: 100px;
+					text-align: center;
+					margin-right: 20px;
+				}
+
+				.headline {
+					font-size: 20px;
+					font-style: blod;
+					min-width: 300px;
+					mmax-width: 400px;
+					margin-right: 20px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					word-break: keep-all;
+				}
+
+				.comments {
+					cursor: pointer;
+				}
+
+				.url {
+					margin: 0px 5px;
+					text-align: left;
+				}
+
+			}
+
+			.postTitle {
+				span {
+					min-width: 200px;
+					margin-right: 50px;
+					display: inline-block;
+				}
+			}
+
+			.postSummary {
+				textarea {
+					width: 90%;
+					min-height: 100px;
+					max-height: 300px;
+					margin-left: 5px;
+					margin-right: 5px;
+				}
+			}
+
+			.postAttachment {
+				span {
+					min-width: 200px;
+					margin-right: 50px;
+					display: inline-block;
+				}
+
+				textarea {
+					width: 90%;
+					min-height: 100px;
+					max-height: 300px;
+				}
+
+				.contentUrl {
+					min-height: 100px;
+					min-width: 100px;
+					max-height: 300px;
+					max-width: 300px;
+				}
+			}
+
+			.postOperator {
+				span {
+					font-size: 15px;
+					font-weight: bold;
+					line-height: 18px;
+					min-width: 50px;
+					margin: 3px;
+					cursor: pointer;
+				}
+			}
+		}
 	}
-		
-	.GroupPostsBody{
-		clear: both;
-	}
-	
-	.postItemDiv{
-		width: 95%;
-		min-height: 250px;
-		margin: 3px 3px 0 3px;
-		border-style: groove; 
-		border-width: 1px; 
-		border-color: #999;
-		
-		.postHead{
-			width: 100%;
-			height: 80px;
-			
-			.creatorImg{
-				width: 80px;
-				margin-right: 20px;
-			}
-			
-			.creatorName{
-				font-size: 18px;
-				min-width: 100px;
-				text-align:center;
-				margin-right: 20px;
-			}
-			
-			.headline{
-				font-size: 20px;
-				font-style: blod;
-				min-width: 300px;
-				mmax-width: 400px;
-				margin-right: 20px;
-				overflow:hidden;
-				text-overflow:ellipsis;
-				word-break:keep-all;
-			}
-			
-			.comments{
-				cursor:pointer;
-			}
-			
-			.url{
-				margin: 0px 5px;
-				text-align: left;
-			}
-			
-		}
-		
-		.postTitle{
-			span{
-				min-width: 200px;
-				margin-right: 50px;
-				display: inline-block;
-			}
-		}
-		
-		.postSummary{
-			textarea{
-				width: 90%;
-				min-height: 100px;
-				max-height: 300px;
-				margin-left:5px;
-				margin-right:5px;
-			}
-		}
-		
-		.postAttachment{
-			span{
-				min-width: 200px;
-				margin-right: 50px;
-				display: inline-block;
-			}
-			
-			textarea{
-				width: 90%;
-				min-height: 100px;
-				max-height: 300px;
-			}
-			
-			.contentUrl{
-				min-height:100px;
-				min-width:100px;
-				max-height:300px;
-				max-width:300px;
-			}
-		}
-		
-		.postOperator{
-			span{
-		    	font-size: 15px;
-				font-weight: bold;
-				line-height: 18px;
-				min-width: 50px;
-		   		margin: 3px;
-		   		cursor: pointer;
-	    	}
-		}
-	}
-}
 	
 }
