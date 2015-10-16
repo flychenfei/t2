@@ -3,20 +3,20 @@
 		{{#equal issueState "open"}}
   		<span class="choosed">
   			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="openIssues">Open</span>
+			<span class="openIssues">{{openCount}} Open</span>
 		</span>
 		<span class="unchoosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-			<span class="closedIssues unchoosed">Closed</span>
+			<span class="closedIssues unchoosed">{{closedCount}} Closed</span>
 		</span>
 		{{else}}
 		<span class="unchoosed">
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="openIssues">Open</span>
+			<span class="openIssues">{{openCount}} Open</span>
 		</span>
 		<span class="choosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-        	<span class="closedIssues">Closed</span>
+        	<span class="closedIssues">{{closedCount}} Closed</span>
         </span>
 		{{/equal}}
 	</div>

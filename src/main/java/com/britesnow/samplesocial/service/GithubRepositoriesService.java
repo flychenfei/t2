@@ -1,6 +1,7 @@
 package com.britesnow.samplesocial.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,10 +217,29 @@ public class GithubRepositoriesService {
 	 * @throws IOException
 	 */
 
-	public List<Issue> getIssues(Repository repo,User user,String state) throws IOException{
+	public Map getIssues(Repository repo,User user,String state) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		Map<String,String> filterData = new HashMap<String,String>();
-		filterData.put("state",state);
-		return issueService.getIssues(repo,filterData);
+		filterData.put("state","all");
+		Map map = new HashMap<>();
+		List<Issue> issues = issueService.getIssues(repo,filterData);
+		List openIssues = new ArrayList<Issue>();
+		List closedIssues = new ArrayList<Issue>();
+		for (Issue issue : issues){
+			if(issue.getState().equals("open")){
+				openIssues.add(issue);
+			}else {
+				closedIssues.add(issue);
+			}
+		}
+		if(state.equals("open")){
+			issues = openIssues;
+		}else if(state.equals("closed")){
+			issues = closedIssues;
+		}
+		map.put("issues",issues);
+		map.put("openCount",openIssues.size());
+		map.put("closedCount",closedIssues.size());
+		return map;
 	}
 }

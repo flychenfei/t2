@@ -118,7 +118,7 @@
 					login:login,
 					state:"open"
 				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result,name:name,login:login,issueState:"open"});
+					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
 				});
 			}
 		}
