@@ -1,0 +1,27 @@
+<script id="tmpl-GithubNewIssue" type="text/html">
+  <div class="GithubNewIssue github">
+	  <div class="dialogBackground">
+	  </div>
+	  <div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
+	  	<div class="dialogHead">
+	  		<span class="close dialogBtns dialogCloseBtn">&times;</span>
+            <div class="dialogTitle">New Issue</div>
+	  	</div>
+	  	<div class="dialogBody">
+	  		<img class="user-avatar" src="{{avatarUrl}}"/>
+	  		<div class="NewIssue">
+	  			<div class="IssueTitle">
+	  				<input class="form-control issue-title" placeholder="Title"></input>
+	  			</div>
+	  			<div class="IssueBody">
+	  				<textarea class="form-control issue-body" placeholder="Leave a comment"></textarea>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div class="dialogBtns" data-name="{{name}}" data-login="{{login}}">
+	  		<button class="btn btn-primary newissue">Submit New Issue</button>
+            <button class="btn btn-primary cancel">Cancel</button>
+        </div>
+	  </div>
+  </div>
+</script>

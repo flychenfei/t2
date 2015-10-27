@@ -1,0 +1,88 @@
+.GithubNewIssue {
+	.dialogTitle {
+		color: #333;
+		font-weight: normal !important;
+	}
+
+	.github {
+		.dialogBackground {
+			position: fixed;
+		}
+
+		.dialogContent {
+			top: 100px;
+		}
+	}
+
+	.dialogBody {
+		margin: 15px 0;
+		.user-avatar {
+			width: 48px;
+			height: 48px;
+			margin-right: 16px;
+			display: inline-block;
+			vertical-align: top;
+			float: left;
+		}
+		.NewIssue:before {
+			position: absolute;
+			top: 11px;
+			left: -16px;
+			right: 100%;
+			width: 0;
+			height: 0;
+			display: block;
+			content: " ";
+			border: solid 8px rgba(60, 60, 60, 0);
+			border-right-color: #F2F8FA;
+			z-index: 999
+		}
+
+
+		.NewIssue {
+			margin-left: 64px;
+			position: relative;
+			display: block;
+			width: auto;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			box-sizing: border-box;
+			color: rgb(118, 118, 118);
+			font-size: 13px;
+			font-style: normal;
+			font-variant: normal;
+			font-weight: normal;
+			word-wrap: break-word;
+		  	.IssueTitle{
+			  margin-top: 10px;
+			  margin-left: 10px;
+			  margin-right: 10px;
+			}
+
+			.IssueBody {
+			  	margin-top: 10px;
+			  	padding-left: 10px;
+			  	padding-right: 10px;
+			  	padding-bottom: 10px;
+				box-sizing: border-box;
+				color: rgb(51, 51, 51);
+				display: block;
+				font-size: 13px;
+				font-style: normal;
+				font-variant: normal;
+				font-weight: normal;
+				line-height: 18.2px;
+				width: auto;
+				word-wrap: break-word;
+
+			  	.issue-body{
+				  height: 300px;
+				}
+			}
+
+		  	.failed-message{
+			  	color: #990000;
+			}
+		}
+	}
+}

@@ -46,6 +46,24 @@
 						}
 					});
 				});
+			},
+			"click;.new-issue":function(event){
+				var name = $(event.target).closest("div").attr("data-name");
+				var login = $(event.target).closest("div").attr("data-login");
+				app.githubApi.showUserInfo().pipe(function(result){
+					var userInfo = JSON.parse(result.result);
+					brite.display("GithubNewIssue",$("body"),{
+						name:name,
+						login:login,
+						avatarUrl:userInfo.avatar_url,
+						layout:{
+							left:'20%',
+							top:"100px",
+							width:'60%',
+							height:'auto'
+						}
+					})
+				});
 			}
 		}
 	});

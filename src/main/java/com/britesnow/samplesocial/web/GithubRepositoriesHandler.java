@@ -3,6 +3,7 @@ package com.britesnow.samplesocial.web;
 import java.io.IOException;
 
 import org.apache.commons.fileupload.FileItem;
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 
 import com.britesnow.samplesocial.entity.User;
@@ -312,6 +313,36 @@ public class GithubRepositoriesHandler {
 		try{
 
 			return WebResponse.success(githubRepositoriesService.getIssue(repo, user, issueNumber));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * new Issue for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @param title title of issue
+	 * @param body body of issue
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/newIssue")
+	public WebResponse newIssue(@WebUser User user,@WebParam("name") String name,
+								@WebParam("login") String login,@WebParam("title") String title,
+								@WebParam("body") String body) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		try{
+			Issue issue = new Issue();
+			issue.setTitle(title);
+			issue.setBody(body);
+			issue.setAssignee(owner);
+			return WebResponse.success(githubRepositoriesService.newIssue(repo, user, issue));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}

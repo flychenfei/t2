@@ -85,6 +85,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/getIssue",params);
+		},
+		newIssue:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/newIssue",params);
 		}
     };
 })();

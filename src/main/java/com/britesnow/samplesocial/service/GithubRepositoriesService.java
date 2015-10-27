@@ -256,4 +256,17 @@ public class GithubRepositoriesService {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return MapUtil.mapIt("issue", issueService.getIssue(repo, issueNumber), "comment", issueService.getComments(repo, issueNumber));
 	}
+
+	/*
+	 * new Issue
+	 * @param repo
+	 * @param user
+	 * @return
+	 * @throws IOException
+	 */
+
+	public Issue newIssue(Repository repo, User user, Issue issue) throws IOException{
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		return issueService.createIssue(repo, issue);
+	}
 }
