@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.britesnow.samplesocial.entity.GithubRelease;
 import com.britesnow.snow.util.MapUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
@@ -264,9 +265,17 @@ public class GithubRepositoriesService {
 	 * @return
 	 * @throws IOException
 	 */
-
-	public Issue newIssue(Repository repo, User user, Issue issue) throws IOException{
+	public Issue newIssue(Repository repo, User user, Issue issue) throws IOException {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return issueService.createIssue(repo, issue);
+	}
+
+	public Map getReleases(Repository repo,User user) throws IOException{
+		GithubReleaseService releaseService = new GithubReleaseService(githubAuthService.createClient(user));
+		Map map = new HashMap<>();
+		List<GithubRelease> releases = releaseService.getReleases(repo);
+
+		map.put("releases",releases);
+		return map;
 	}
 }

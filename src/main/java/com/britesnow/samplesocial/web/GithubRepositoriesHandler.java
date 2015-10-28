@@ -347,4 +347,23 @@ public class GithubRepositoriesHandler {
 			return WebResponse.fail(e.getMessage());
 		}
 	}
+
+	/**
+	* get Releases for a repository
+	* @param user
+	* @param name name of repository
+	* @param login current github user login name
+	* @return
+			* @throws IOException
+	*/
+	@WebGet("/github/getReleases")
+	public WebResponse getReleases(@WebUser User user,@WebParam("name") String name,
+								   @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		return WebResponse.success(githubRepositoriesService.getReleases(repo, user));
+	}
 }

@@ -1,0 +1,23 @@
+<script id="tmpl-GithubReleases" type="text/html">
+  <div class="container githubReleases" data-name="{{name}}" data-login="{{login}}">
+        <table class="table table-striped">
+            <thead>
+                <tr class="header">
+                    <th colspan="2">
+                        Releases for {{name}}
+                    </th>
+                </tr>
+            </thead>
+            {{#each releases}}
+            <tr>
+                <td class="message">
+                    <div><span class="messageTitle">{{tag_name}}</span></div>
+                </td>
+                <td class="sha">
+                    <div><span class="messageTitle">{{author.login}} released</span></div>
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+	</div>
+</script>

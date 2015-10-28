@@ -120,6 +120,16 @@
 				}).pipe(function(json){
 					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
 				});
+			},
+			"click;.releases":function(event){
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				var login = $(event.target).closest("td").attr("data-login");
+				app.githubApi.getReleases({
+					name:name,
+					login:login
+				}).pipe(function(json){
+					brite.display("GithubReleases",$(".tab-content"),{releases:json.result.releases,name:name,login:login});
+				});
 			}
 		}
 	});
