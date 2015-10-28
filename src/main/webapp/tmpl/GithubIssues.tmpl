@@ -5,22 +5,22 @@
 	</div>
 	<div class="option" data-name="{{name}}" data-login="{{login}}">
 		{{#equal issueState "open"}}
-  		<span class="choosed">
+  		<span class="openIssues choosed">
   			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="openIssues">{{openCount}} Open</span>
+			<span class="">{{openCount}} Open</span>
 		</span>
-		<span class="unchoosed">
+		<span class="closedIssues unchoosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-			<span class="closedIssues unchoosed">{{closedCount}} Closed</span>
+			<span class="unchoosed">{{closedCount}} Closed</span>
 		</span>
 		{{else}}
-		<span class="unchoosed">
+		<span class="openIssues unchoosed">
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="openIssues">{{openCount}} Open</span>
+			<span class="">{{openCount}} Open</span>
 		</span>
-		<span class="choosed">
+		<span class="closedIssues choosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-        	<span class="closedIssues">{{closedCount}} Closed</span>
+        	<span class="">{{closedCount}} Closed</span>
         </span>
 		{{/equal}}
 	</div>
