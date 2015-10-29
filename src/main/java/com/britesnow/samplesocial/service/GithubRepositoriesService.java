@@ -278,4 +278,20 @@ public class GithubRepositoriesService {
 		map.put("releases",releases);
 		return map;
 	}
+
+	/*
+	 * edit Issue
+	 * @param repo
+	 * @param user
+	 * @param state
+	 * @param number
+	 * @return
+	 * @throws IOException
+	 */
+	public Issue editIssue(Repository repo, User user, String state,String number) throws IOException {
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		Issue issue = issueService.getIssue(repo,number);
+		issue.setState(state);
+		return issueService.editIssue(repo, issue);
+	}
 }

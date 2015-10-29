@@ -95,6 +95,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/getReleases",params);
+		},
+		editIssue:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/editIssue",params);
 		}
     };
 })();

@@ -366,4 +366,30 @@ public class GithubRepositoriesHandler {
 		repo.setName(name);
 		return WebResponse.success(githubRepositoriesService.getReleases(repo, user));
 	}
+
+	/**
+	 * edit Issue for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @param state state of issue
+	 * @param number number of issue
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/editIssue")
+	public WebResponse editIssue(@WebUser User user,@WebParam("name") String name,
+								@WebParam("login") String login,@WebParam("state") String state,
+								@WebParam("number") String number) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		try{
+			return WebResponse.success(githubRepositoriesService.editIssue(repo, user, state,number));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
 }

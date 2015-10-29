@@ -7,20 +7,20 @@
 		{{#equal issueState "open"}}
   		<span class="openIssues choosed">
   			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="">{{openCount}} Open</span>
+			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
 		</span>
 		<span class="closedIssues unchoosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-			<span class="unchoosed">{{closedCount}} Closed</span>
+			<span class="close-count unchoosed" data-count="{{closedCount}}">{{closedCount}} Closed</span>
 		</span>
 		{{else}}
 		<span class="openIssues unchoosed">
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="">{{openCount}} Open</span>
+			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
 		</span>
 		<span class="closedIssues choosed">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-        	<span class="">{{closedCount}} Closed</span>
+        	<span class="close-count" data-count="{{closedCount}}">{{closedCount}} Closed</span>
         </span>
 		{{/equal}}
 	</div>
@@ -37,11 +37,11 @@
 				</td>
 				{{#equal state "open"}}
 				<td class="sha">
-                	<div><span class="btn btn-close">Close{{issueState}}</span></div>
+                	<div><span class="btn btn-close" data-issue-id="{{number}}">Close{{issueState}}</span></div>
                 </td>
                 {{else}}
                 <td class="sha">
-					<div><span class="btn btn-open">Open</span></div>
+					<div><span class="btn btn-open" data-issue-id="{{number}}">Open</span></div>
 				</td>
 				{{/equal}}
 			</tr>
