@@ -28,6 +28,7 @@
 							<div class="comment-header">
 								<span class="bold">{{issue.user.login}}</span> commented on
 								{{#plus issue.createdAt.year 1900}}{{/plus}}-{{#lt issue.createdAt.month 9}}0{{/lt}}{{#plus issue.createdAt.month 1}}{{/plus}}-{{#lt issue.createdAt.day 10}}0{{/lt}}{{issue.createdAt.day}}
+								<span class="glyphicon glyphicon-pencil comment-edit"></span>
 							</div>
 							<div class="comment-body">
 								{{#convertMDToHtml issue.body}}{{/convertMDToHtml}}
