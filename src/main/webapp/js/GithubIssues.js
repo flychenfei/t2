@@ -43,6 +43,11 @@
 							top:"100px",
 							width:'60%',
 							height:'auto'
+						},
+						info:{
+							name:name,
+							login:login,
+							issueNumber:issueNumber
 						}
 					});
 				});

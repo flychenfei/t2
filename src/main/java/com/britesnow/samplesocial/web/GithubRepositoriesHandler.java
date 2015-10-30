@@ -312,7 +312,7 @@ public class GithubRepositoriesHandler {
 		repo.setName(name);
 		try{
 
-			return WebResponse.success(githubRepositoriesService.getIssue(repo, user, issueNumber));
+			return WebResponse.success(githubRepositoriesService.getIssueWithComment(repo, user, issueNumber));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
@@ -380,14 +380,24 @@ public class GithubRepositoriesHandler {
 	@WebGet("/github/editIssue")
 	public WebResponse editIssue(@WebUser User user,@WebParam("name") String name,
 								@WebParam("login") String login,@WebParam("state") String state,
+								@WebParam("body")String body,
 								@WebParam("number") String number) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
 		owner.setLogin(login);
 		repo.setOwner(owner);
 		repo.setName(name);
+		Issue issue = githubRepositoriesService.getIssue(repo, user, number);
+
+		if(state != null) {
+			issue.setState(state);
+		}
+
+		if(body != null){
+			issue.setBody(body);
+		}
 		try{
-			return WebResponse.success(githubRepositoriesService.editIssue(repo, user, state,number));
+			return WebResponse.success(githubRepositoriesService.editIssue(repo, user, issue));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}

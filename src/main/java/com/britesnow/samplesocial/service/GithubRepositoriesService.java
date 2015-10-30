@@ -253,9 +253,22 @@ public class GithubRepositoriesService {
 	 * @throws IOException
 	 */
 
-	public Map<?, ?> getIssue(Repository repo, User user, String issueNumber) throws IOException{
+	public Map<?, ?> getIssueWithComment(Repository repo, User user, String issueNumber) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return MapUtil.mapIt("issue", issueService.getIssue(repo, issueNumber), "comment", issueService.getComments(repo, issueNumber));
+	}
+
+	/**
+	 * Get issue
+	 * @param repo repo
+	 * @param user user
+	 * @param issueNumber issue number
+	 * @return the issue
+	 * @throws IOException
+	 */
+	public Issue getIssue(Repository repo, User user, String issueNumber) throws IOException{
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		return issueService.getIssue(repo, issueNumber);
 	}
 
 	/*
@@ -288,10 +301,8 @@ public class GithubRepositoriesService {
 	 * @return
 	 * @throws IOException
 	 */
-	public Issue editIssue(Repository repo, User user, String state,String number) throws IOException {
+	public Issue editIssue(Repository repo, User user, Issue issue) throws IOException {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
-		Issue issue = issueService.getIssue(repo,number);
-		issue.setState(state);
 		return issueService.editIssue(repo, issue);
 	}
 }

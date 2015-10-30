@@ -31,7 +31,16 @@
 								<span class="glyphicon glyphicon-pencil comment-edit"></span>
 							</div>
 							<div class="comment-body">
-								{{#convertMDToHtml issue.body}}{{/convertMDToHtml}}
+								<div class="body-content">
+									{{#convertMDToHtml issue.body}}{{/convertMDToHtml}}
+								</div>
+								<div class="body-edit hide">
+									<textarea id="commentBodyBox" class="edit-box"></textarea>
+									<div class="opt-btns">
+										<button class="btn btn-danger cancel-btn">Cancel</button>
+										<button class="btn btn-success update-btn">Update comment</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -51,9 +60,6 @@
 					</div>
 					{{/each}}
 				</div>
-				<div class="dialogBtns">
-                	<button class="btn btn-primary cancel">Cancel</button>
-                </div>
 			</div>
 		</div>
 	</div>
