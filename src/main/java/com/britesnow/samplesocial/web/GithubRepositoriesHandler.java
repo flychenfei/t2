@@ -373,6 +373,7 @@ public class GithubRepositoriesHandler {
 	 * @param user
 	 * @param repoName  name of repository
 	 * @param name name of release
+	 * @param tagName tagNme of release
 	 * @param releaseId  id of release
 	 * @param login current github user login name
 	 * @return
@@ -380,7 +381,7 @@ public class GithubRepositoriesHandler {
 	 */
 	@WebPost("/github/editRelease")
 	public WebResponse editRelease(@WebUser User user,@WebParam("repoName") String repoName,@WebParam("name") String name,
-									 @WebParam("releaseId")String releaseId,
+								   @WebParam("tagName") String tagName,@WebParam("releaseId")String releaseId,
 								     @WebParam("login") String login) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
@@ -389,6 +390,7 @@ public class GithubRepositoriesHandler {
 		repo.setName(repoName);
 		GithubRelease release = new GithubRelease();
 		release.setName(name);
+		release.setTag_name(tagName);
 		release.setId(releaseId);
 		try {
 			release = githubRepositoriesService.editRelease(user, repo, release);

@@ -50,6 +50,7 @@ public class GithubReleaseService extends GitHubService {
         uri.append("/releases/").append(release.getId());
         Map<Object, Object> params = new HashMap<Object, Object>();
         params.put("name",release.getName());
+        params.put("tag_name",release.getTag_name());
         return client.post(uri.toString(), params, GithubRelease.class);
     }
 }

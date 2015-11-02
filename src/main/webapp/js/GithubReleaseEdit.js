@@ -4,6 +4,7 @@
             return app.render("tmpl-GithubReleaseEdit",{
                 id:data.id,
                 name:data.name,
+                tagName:data.tagName,
                 login: data.login,
                 repoName: data.repoName,
                 layout:data.layout
@@ -23,6 +24,7 @@
                 var login = dialogBody.attr("data-login");
                 var releaseId = dialogBody.attr("data-release-id");
                 var name = $(":input[name='releaseName']",dialogContent);
+                var tagName = $(":input[name='releaseTagName']",dialogContent);
                 var view = this;
                 var saveBtn = $(event.target);
                 var loading = $(".githubloading.save");
@@ -31,6 +33,7 @@
                 app.githubApi.editRelease({
                     repoName: repoName,
                     name:$(name).val(),
+                    tagName:$(tagName).val(),
                     releaseId: releaseId,
                     login: login
                 }).pipe(function(json){

@@ -19,13 +19,13 @@
             </tr>
             {{#each releases}}
             <tr>
-                <td class="message" data-release-id="{{id}}" data-release-name="{{name}}">
+                <td class="message" data-release-id="{{id}}" data-release-name="{{name}}" data-release-tagname="{{tag_name}}">
                     <div>
-                    <span class="messageTitle">{{name}}</span>
+                    <span class="name">{{name}}</span>
                     </div>
                 </td>
                 <td class="sha">
-                    <div><span class="created-at">{{tag_name}}</span></div>
+                    <div><span class="tag-name">{{tag_name}}</span></div>
                 </td>
                 <td class="sha">
                     <div><span class="created-at">{{created_at}}</span></div>

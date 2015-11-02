@@ -7,7 +7,14 @@
               <span class="close dialogBtns dialogCloseBtn">&times;</span>
           </div>
           <div class="dialogBody" data-repository-name="{{repoName}}" data-release-id="{{id}}" data-login="{{login}}">
-              <input type="text" name="releaseName" value="{{name}}" class="input-block-level" placeholder="type the release name"/>
+              <div>
+                  <div>Name:</div>
+                  <input type="text" name="releaseName" value="{{name}}" class="input-block-level" placeholder="type the release name"/>
+              </div>
+              <div>
+                  <div>Tag Name:</div>
+                  <input type="text" name="releaseTagName" value="{{tagName}}" class="input-block-level" placeholder="type the release tag name"/>
+              </div>
               <div class="dialogBtns">
                   <img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
                   <button class="btn btn-primary save">Save</button>
