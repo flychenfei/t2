@@ -19,6 +19,7 @@ public class GithubRelease implements Serializable {
     private String zipballUrl;
     private String created_at;
     private String published_at;
+    private org.eclipse.egit.github.core.User author;
 
     public GithubRelease() {
     }
@@ -76,8 +77,6 @@ public class GithubRelease implements Serializable {
         this.author = author;
         return this;
     }
-
-    private org.eclipse.egit.github.core.User author;
 
     public String getCreated_at() {
         return created_at;

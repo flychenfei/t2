@@ -96,6 +96,13 @@ var app = app || {};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/getReleases",params);
 		},
+
+		editRelease:function(opts){
+			var params = opts||{};
+			params.method="Post";
+			return app.getJsonData(contextPath+"/github/editRelease",params);
+		},
+
 		editIssue:function(opts){
 			var params = opts||{};
 			params.method="Get";

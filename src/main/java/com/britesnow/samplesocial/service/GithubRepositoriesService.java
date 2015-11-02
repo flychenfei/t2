@@ -292,6 +292,12 @@ public class GithubRepositoriesService {
 		return map;
 	}
 
+	public GithubRelease editRelease(User user, Repository repo, GithubRelease release) throws IOException {
+		GithubReleaseService releaseService = new GithubReleaseService(githubAuthService.createClient(user));
+		release = releaseService.editRelease(repo, release);
+		return release;
+	}
+
 	/*
 	 * edit Issue
 	 * @param repo

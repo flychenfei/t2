@@ -2,6 +2,7 @@ package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
 
+import com.britesnow.samplesocial.entity.GithubRelease;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -365,6 +366,36 @@ public class GithubRepositoriesHandler {
 		repo.setOwner(owner);
 		repo.setName(name);
 		return WebResponse.success(githubRepositoriesService.getReleases(repo, user));
+	}
+
+	/**
+	 * edit repository for description
+	 * @param user
+	 * @param repoName  name of repository
+	 * @param name name of release
+	 * @param releaseId  id of release
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/editRelease")
+	public WebResponse editRelease(@WebUser User user,@WebParam("repoName") String repoName,@WebParam("name") String name,
+									 @WebParam("releaseId")String releaseId,
+								     @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(repoName);
+		GithubRelease release = new GithubRelease();
+		release.setName(name);
+		release.setId(releaseId);
+		try {
+			release = githubRepositoriesService.editRelease(user, repo, release);
+			return WebResponse.success(release);
+		} catch (Exception e) {
+			return WebResponse.fail(e.getMessage());
+		}
 	}
 
 	/**
