@@ -38,8 +38,13 @@
                     login: login
                 }).pipe(function(json){
                     if(json.success){
-                        window.location.reload();
-                        view.$el.remove();
+                        app.githubApi.getReleases({
+                            name:repoName,
+                            login:login
+                        }).pipe(function(json){
+                            view.$el.remove();
+                            brite.display("GithubReleases",$(".tab-content"),{releases:json.result.releases,name:repoName,login:login});
+                        });
                     }else{
                         alert(json.errorMessage);
                         $(loading).toggleClass("hide");
