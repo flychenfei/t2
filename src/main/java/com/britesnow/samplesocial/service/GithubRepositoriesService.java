@@ -1,19 +1,18 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.britesnow.samplesocial.entity.GithubRelease;
+import com.britesnow.samplesocial.entity.User;
+import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.util.MapUtil;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Download;
-import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.DownloadResource;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.SearchRepository;
+import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -22,12 +21,11 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
-import com.britesnow.samplesocial.entity.User;
-import com.britesnow.snow.util.JsonUtil;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-import javax.xml.crypto.Data;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class GithubRepositoriesService {
@@ -310,5 +308,18 @@ public class GithubRepositoriesService {
 	public Issue editIssue(Repository repo, User user, Issue issue) throws IOException {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return issueService.editIssue(repo, issue);
+	}
+
+	/*
+	 * edit Comment
+	 * @param repo
+	 * @param user
+	 * @param comment
+	 * @return
+	 * @throws IOException
+	 */
+	public Comment editComment(Repository repo, User user, Comment comment) throws IOException {
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		return issueService.editComment(repo, comment);
 	}
 }

@@ -1,9 +1,11 @@
 package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
+import java.util.Date;
 
 import com.britesnow.samplesocial.entity.GithubRelease;
 import org.apache.commons.fileupload.FileItem;
+import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 
@@ -19,6 +21,7 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.egit.github.core.service.IssueService;
 
 @Singleton
 public class GithubRepositoriesHandler {
@@ -431,6 +434,36 @@ public class GithubRepositoriesHandler {
 		}
 		try{
 			return WebResponse.success(githubRepositoriesService.editIssue(repo, user, issue));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * edit Comment for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @param body comment of issue
+	 * @param commentId id of comment
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/editComment")
+	public WebResponse editComment(@WebUser User user,@WebParam("name") String name,
+								 @WebParam("login") String login,@WebParam("body")String body,
+								 @WebParam("commentId") String commentId) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		IssueService issueService = new IssueService();
+		Comment comment = issueService.getComment(login,repo.getName(),Long.parseLong(commentId));
+		comment.setUpdatedAt(new Date());
+		comment.setBody(body);
+		try{
+			return WebResponse.success(githubRepositoriesService.editComment(repo, user,comment));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}

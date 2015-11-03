@@ -1,6 +1,6 @@
 (function(){
 	brite.registerView("GithubIssue",{emptyParent:false},{
-		create:function(data,config){
+		create:function(data){
 			var view = this;
 			view.issue = data.issue;
 			view.info = data.info;
@@ -11,22 +11,41 @@
 				});
 		},
 		events:{
-			"click;.dialogCloseBtn":function(event){
+			"click;.dialogCloseBtn":function(){
 				this.$el.remove();
 			},
-			"click;.comment-edit":function(){
+			"click;.comment-edit":function(event){
 				var view = this;
-				view.$el.find(".body-content").addClass("hide");
-				view.$el.find(".body-edit").removeClass("hide");
-				view.$el.find("#commentBodyBox").val(view.issue.body);
+				var $issueComment = $(event.target).closest(".issue-comment");
+				$issueComment.find(".body-content").addClass("hide");
+				$issueComment.find(".body-edit").removeClass("hide");
+				$issueComment.find(".edit-box").val(view.issue.body);
 			},
-			"click;.cancel-btn":function(){
-				var view = this;
-				var $updateBtn = view.$el.find(".update-btn");
-				var $editBox = view.$el.find("#commentBodyBox");
+			"click;.comments-edit":function(event){
+				var $issueComment = $(event.target).closest(".issue-comment");
+				var body = $issueComment.find(".comment-header").attr("data-body");
+				$issueComment.find(".body-content-comment").addClass("hide");
+				$issueComment.find(".body-edit-comment").removeClass("hide");
+				$issueComment.find(".edit-box").val(body);
+			},
+			"click;.cancel-btn":function(event){
+				var $issueComment = $(event.target).closest(".issue-comment");
+				var $updateBtn = $issueComment.find(".update-btn");
+				var $editBox = $issueComment.find(".edit-box");
 
-				view.$el.find(".body-content").removeClass("hide");
-				view.$el.find(".body-edit").addClass("hide");
+				$issueComment.find(".body-content").removeClass("hide");
+				$issueComment.find(".body-edit").addClass("hide");
+
+				$editBox.prop("disabled",false);
+				$updateBtn.removeClass("disabled").html("Update comment");
+			},
+			"click;.comment-cancel-btn":function(event){
+				var $issueComment = $(event.target).closest(".issue-comment");
+				var $updateBtn = $issueComment.find(".comment-update-btn");
+				var $editBox = $issueComment.find(".edit-box");
+
+				$issueComment.find(".body-content-comment").removeClass("hide");
+				$issueComment.find(".body-edit-comment").addClass("hide");
 
 				$editBox.prop("disabled",false);
 				$updateBtn.removeClass("disabled").html("Update comment");
@@ -34,7 +53,8 @@
 			"click;.update-btn":function(event){
 				var view = this;
 				var $updateBtn = $(event.target);
-				var $editBox = view.$el.find("#commentBodyBox");
+				var $issueComment = $updateBtn.closest(".issue-comment");
+				var $editBox = $issueComment.find(".edit-box");
 				var info = view.info;
 				var body = $editBox.val();
 
@@ -47,9 +67,38 @@
 					number:info.issueNumber
 				}).pipe(function(result){
 					if(result.success == true){
-						view.$el.find(".body-content").removeClass("hide").html(marked(body));
-						view.$el.find(".body-edit").addClass("hide");
+						$issueComment.find(".body-content").removeClass("hide").html(marked(body));
+						$issueComment.find(".body-edit").addClass("hide");
 						view.issue.body = body;
+					}else{
+						alert("Description update failed.");
+					}
+					//reset the box and button status
+					$editBox.prop("disabled",false);
+					$updateBtn.removeClass("disabled").html("Update comment");
+				})
+			},
+			"click;.comment-update-btn":function(event){
+				var id = $(event.target).closest("div").attr("data-id");
+				var view = this;
+				var $updateBtn = $(event.target);
+				var $issueComment = $updateBtn.closest(".issue-comment");
+				var $editBox = $issueComment.find(".edit-box");
+				var info = view.info;
+				var body = $editBox.val();
+
+				$updateBtn.addClass("disabled").html("Updating...");
+				$editBox.prop("disabled",true);
+				app.githubApi.editComment({
+					name:info.name,
+					login:info.login,
+					body:body,
+					commentId:id
+				}).pipe(function(result){
+					if(result.success == true){
+						$issueComment.find(".body-content-comment").removeClass("hide").html(marked(body));
+						$issueComment.find(".body-edit-comment").addClass("hide");
+						$issueComment.find(".comment-header").attr("data-body",body);
 					}else{
 						alert("Description update failed.");
 					}

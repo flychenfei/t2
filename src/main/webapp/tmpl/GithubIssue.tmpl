@@ -49,13 +49,22 @@
 					<div class="row issue-comment">
 						<img class="user-avatar" src="{{user.avatarUrl}}"/>
 						<div class="comment-detail">
-							<div class="comment-header">
+							<div class="comment-header" data-body="{{body}}">
 								<span class="bold">{{user.login}}</span> commented on
 								{{#plus createdAt.year 1900}}{{/plus}}-{{#lt createdAt.month 9}}0{{/lt}}{{#plus createdAt.month 1}}{{/plus}}-{{#lt createdAt.day 10}}0{{/lt}}{{createdAt.day}}
-								<span class="glyphicon glyphicon-pencil comment-edit"></span>
+								<span class="glyphicon glyphicon-pencil comments-edit"></span>
 							</div>
 							<div class="comment-body">
-								{{#convertMDToHtml body}}{{/convertMDToHtml}}
+								<div class="body-content-comment">
+									{{#convertMDToHtml body}}{{/convertMDToHtml}}
+								</div>
+                                <div class="body-edit-comment hide">
+									<textarea class="edit-box"></textarea>
+									<div class="opt-btns" data-id={{id}}>
+										<button class="btn btn-danger comment-cancel-btn">Cancel</button>
+										<button class="btn btn-success comment-update-btn">Update comment</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

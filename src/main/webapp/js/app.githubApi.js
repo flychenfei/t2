@@ -107,6 +107,12 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/editIssue",params);
+		},
+
+		editComment:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/editComment",params);
 		}
     };
 })();
