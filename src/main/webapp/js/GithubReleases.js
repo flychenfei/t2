@@ -22,7 +22,24 @@
                     }
                 });
             },
-
+            "click;.new-release":function(event){
+                var releaseId;
+                var name = "";
+                var tagName = "";
+                var login = $(event.target).closest("table").parent().attr("data-login");
+                var repoName = $(event.target).closest("table").parent().attr("data-name");
+                brite.display("GithubReleaseEdit",$("body"),{
+                    id:releaseId,
+                    name:name,
+                    tagName:tagName,
+                    login: login,
+                    repoName: repoName,
+                    layout:{
+                        left:'20%',
+                        height:'auto'
+                    }
+                });
+            },
         }
     });
 })();

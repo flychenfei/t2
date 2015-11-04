@@ -372,7 +372,7 @@ public class GithubRepositoriesHandler {
 	}
 
 	/**
-	 * edit repository for description
+	 * edit release
 	 * @param user
 	 * @param repoName  name of repository
 	 * @param name name of release
@@ -397,6 +397,36 @@ public class GithubRepositoriesHandler {
 		release.setId(releaseId);
 		try {
 			release = githubRepositoriesService.editRelease(user, repo, release);
+			return WebResponse.success(release);
+		} catch (Exception e) {
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * create release
+	 * @param user
+	 * @param repoName  name of repository
+	 * @param name name of release
+	 * @param tagName tagNme of release
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/createRelease")
+	public WebResponse createRelease(@WebUser User user,@WebParam("repoName") String repoName,@WebParam("name") String name,
+								   @WebParam("tagName") String tagName,
+								   @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(repoName);
+		GithubRelease release = new GithubRelease();
+		release.setName(name);
+		release.setTag_name(tagName);
+		try {
+			release = githubRepositoriesService.createRelease(user, repo, release);
 			return WebResponse.success(release);
 		} catch (Exception e) {
 			return WebResponse.fail(e.getMessage());

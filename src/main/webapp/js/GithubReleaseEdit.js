@@ -30,27 +30,58 @@
                 var loading = $(".githubloading.save");
                 $(loading).toggleClass("hide");
                 $(saveBtn).toggleClass("hide");
-                app.githubApi.editRelease({
-                    repoName: repoName,
-                    name:$(name).val(),
-                    tagName:$(tagName).val(),
-                    releaseId: releaseId,
-                    login: login
-                }).pipe(function(json){
-                    if(json.success){
-                        app.githubApi.getReleases({
-                            name:repoName,
-                            login:login
-                        }).pipe(function(json){
-                            view.$el.remove();
-                            brite.display("GithubReleases",$(".tab-content"),{releases:json.result.releases,name:repoName,login:login});
-                        });
-                    }else{
-                        alert(json.errorMessage);
-                        $(loading).toggleClass("hide");
-                        $(saveBtn).toggleClass("hide");
-                    }
-                });
+                if(releaseId == ""){
+                    app.githubApi.createRelease({
+                        repoName: repoName,
+                        name: $(name).val(),
+                        tagName: $(tagName).val(),
+                        login: login
+                    }).pipe(function (json) {
+                        if (json.success) {
+                            app.githubApi.getReleases({
+                                name: repoName,
+                                login: login
+                            }).pipe(function (json) {
+                                view.$el.remove();
+                                brite.display("GithubReleases", $(".tab-content"), {
+                                    releases: json.result.releases,
+                                    name: repoName,
+                                    login: login
+                                });
+                            });
+                        } else {
+                            alert(json.errorMessage);
+                            $(loading).toggleClass("hide");
+                            $(saveBtn).toggleClass("hide");
+                        }
+                    });
+                }else{
+                    app.githubApi.editRelease({
+                        repoName: repoName,
+                        name: $(name).val(),
+                        tagName: $(tagName).val(),
+                        releaseId: releaseId,
+                        login: login
+                    }).pipe(function (json) {
+                        if (json.success) {
+                            app.githubApi.getReleases({
+                                name: repoName,
+                                login: login
+                            }).pipe(function (json) {
+                                view.$el.remove();
+                                brite.display("GithubReleases", $(".tab-content"), {
+                                    releases: json.result.releases,
+                                    name: repoName,
+                                    login: login
+                                });
+                            });
+                        } else {
+                            alert(json.errorMessage);
+                            $(loading).toggleClass("hide");
+                            $(saveBtn).toggleClass("hide");
+                        }
+                    });
+                }
             }
         }
     });

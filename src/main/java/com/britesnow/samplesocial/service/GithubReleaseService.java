@@ -53,4 +53,20 @@ public class GithubReleaseService extends GitHubService {
         params.put("tag_name",release.getTag_name());
         return client.post(uri.toString(), params, GithubRelease.class);
     }
+
+    public GithubRelease createRelease(IRepositoryIdProvider repository,GithubRelease release) throws IOException {
+        if (repository == null)
+            throw new IllegalArgumentException("Repository cannot be null");
+        if (release == null)
+            throw new IllegalArgumentException("Release cannot be null");
+
+        final String repoId = getId(repository);
+        StringBuilder uri = new StringBuilder("/repos");
+        uri.append('/').append(repoId);
+        uri.append("/releases");
+        Map<Object, Object> params = new HashMap<Object, Object>();
+        params.put("name",release.getName());
+        params.put("tag_name",release.getTag_name());
+        return client.post(uri.toString(), params, GithubRelease.class);
+    }
 }

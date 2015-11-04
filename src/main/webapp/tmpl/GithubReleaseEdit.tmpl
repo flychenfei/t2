@@ -3,7 +3,7 @@
 	  <div class="dialogBackground"></div>
       <div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
           <div class="dialogHead">
-              <span class="dialogTitle">Edit Release</span>
+              <span class="dialogTitle">{{#if id}}Edit{{else}}Create{{/if}} Release</span>
               <span class="close dialogBtns dialogCloseBtn">&times;</span>
           </div>
           <div class="dialogBody" data-repository-name="{{repoName}}" data-release-id="{{id}}" data-login="{{login}}">

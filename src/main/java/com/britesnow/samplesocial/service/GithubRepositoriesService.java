@@ -296,6 +296,12 @@ public class GithubRepositoriesService {
 		return release;
 	}
 
+	public GithubRelease createRelease(User user, Repository repo, GithubRelease release) throws IOException {
+		GithubReleaseService releaseService = new GithubReleaseService(githubAuthService.createClient(user));
+		release = releaseService.createRelease(repo, release);
+		return release;
+	}
+
 	/*
 	 * edit Issue
 	 * @param repo

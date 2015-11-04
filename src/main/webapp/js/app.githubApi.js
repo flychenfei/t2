@@ -102,6 +102,11 @@ var app = app || {};
 			params.method="Post";
 			return app.getJsonData(contextPath+"/github/editRelease",params);
 		},
+		createRelease:function(opts){
+			var params = opts||{};
+			params.method="Post";
+			return app.getJsonData(contextPath+"/github/createRelease",params);
+		},
 
 		editIssue:function(opts){
 			var params = opts||{};
