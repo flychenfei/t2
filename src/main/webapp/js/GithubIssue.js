@@ -106,6 +106,37 @@
 					$editBox.prop("disabled",false);
 					$updateBtn.removeClass("disabled").html("Update comment");
 				})
+			},
+			"click;.edit":function(event){
+				var $issueTitle = $(event.target).closest(".dialogHead");
+				$issueTitle.find(".title-edit").removeClass("hide");
+				$issueTitle.find(".dialogTitle").addClass("hide");
+				$issueTitle.find(".title-edit-box").val(this.issue.title);
+			},
+			"click;.title-save":function(event){
+				var view = this;
+				var $saveBtn = $(event.target);
+				var $issueTitle = $saveBtn.closest(".dialogHead");
+				var newTitle = $issueTitle.find(".title-edit-box").val();
+				var info = this.info;
+				$saveBtn.addClass("disabled").html("Saving...");
+				app.githubApi.editTitle({
+					name:info.name,
+					login:info.login,
+					number:info.issueNumber,
+					title:newTitle
+				}).pipe(function(result){
+					$saveBtn.removeClass("disabled",false).html("Save");
+					if(result.success == true){
+						$issueTitle.find(".dialogTitle").removeClass("hide");
+						$issueTitle.find(".title-edit").addClass("hide");
+						$issueTitle.find(".dialogTitle-content").html(newTitle);
+						$(".message[data-issue-id = '"+view.issue.number+"']").find(".messageTitle").html(newTitle);
+						view.issue.title = newTitle;
+					}else{
+						alert("Description update failed.");
+					}
+				})
 			}
 		}
 	});

@@ -118,6 +118,12 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/editComment",params);
+		},
+
+		editTitle:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/editTitle",params);
 		}
     };
 })();

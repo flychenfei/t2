@@ -493,7 +493,36 @@ public class GithubRepositoriesHandler {
 		comment.setUpdatedAt(new Date());
 		comment.setBody(body);
 		try{
-			return WebResponse.success(githubRepositoriesService.editComment(repo, user,comment));
+			return WebResponse.success(githubRepositoriesService.editComment(repo, user, comment));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * edit title for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @param number number of issue
+	 * @param title title of issue
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/editTitle")
+	public WebResponse editTitle(@WebUser User user,@WebParam("name") String name,
+								   @WebParam("login") String login,@WebParam("number") String number,
+								 @WebParam("title")String title) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		Issue issue = githubRepositoriesService.getIssue(repo, user, number);
+		issue.setTitle(title);
+
+		try{
+			return WebResponse.success(githubRepositoriesService.editIssue(repo, user,issue));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}

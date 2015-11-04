@@ -5,10 +5,16 @@
 		<div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
 			<div class="dialogHead">
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
-				<div class="dialogTitle">
-				{{issue.title}}&nbsp;&nbsp;
-				<span class="number">#{{issue.number}}</span>
+				<div class="dialogTitle" issue-title={{issue.title}}>
+				<span class="dialogTitle-content">{{issue.title}}</span>
+				<span class="number">&nbsp;&nbsp;#{{issue.number}}</span>
 				<span class="btn edit">Edit</span>
+				</div>
+				<div class="title-edit hide">
+					<span class="btn title-save">Save</span>
+					<div class="edit-box-container">
+						<input class="title-edit-box"/>
+					</div>
 				</div>
 			</div>
 			<div class="dialogBody">
