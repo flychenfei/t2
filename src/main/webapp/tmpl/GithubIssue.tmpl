@@ -5,7 +5,11 @@
 		<div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
 			<div class="dialogHead">
 				<span class="close dialogBtns dialogCloseBtn">&times;</span>
-				<div class="dialogTitle">{{issue.title}}&nbsp;&nbsp;<span class="number">#{{issue.number}}</span></div>
+				<div class="dialogTitle">
+				{{issue.title}}&nbsp;&nbsp;
+				<span class="number">#{{issue.number}}</span>
+				<span class="btn edit">Edit</span>
+				</div>
 			</div>
 			<div class="dialogBody">
 				<div class="container-fluid">
