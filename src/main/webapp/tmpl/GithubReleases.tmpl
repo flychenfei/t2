@@ -1,5 +1,5 @@
 <script id="tmpl-GithubReleases" type="text/html">
-  <div class="container githubReleases" data-name="{{reponame}}" data-login="{{login}}">
+    <div class="container githubReleases" data-name="{{reponame}}" data-login="{{login}}">
         <table class="table table-striped">
             <thead>
                 <tr class="header">
@@ -38,7 +38,7 @@
                     <div><span class="target-commitish">{{target_commitish}}</span></div>
                 </td>
                 <td class="sha">
-                    <div><span class="messageTitle">{{author.login}} released</span></div>
+                    <div><span class="author-login">{{author.login}} released</span></div>
                 </td>
                 <td class="sha">
                     <div class="btn edit">Edit</div>
@@ -46,5 +46,5 @@
             </tr>
             {{/each}}
         </table>
-	</div>
+    </div>
 </script>
