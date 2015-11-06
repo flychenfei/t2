@@ -434,6 +434,31 @@ public class GithubRepositoriesHandler {
 	}
 
 	/**
+	 * delete release
+	 * @param user
+	 * @param repoName  name of repository
+	 * @param login current github user login name
+	 * @param releaseId  id of release
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/deleteRelease")
+	public WebResponse deleteRelease(@WebUser User user,@WebParam("repoName") String repoName,
+									 @WebParam("login") String login,@WebParam("releaseId")String releaseId) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(repoName);
+		try {
+			githubRepositoriesService.deleteRelease(user, repo, releaseId);
+			return WebResponse.success();
+		} catch (Exception e) {
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
 	 * edit Issue for a repository
 	 * @param user
 	 * @param name name of repository

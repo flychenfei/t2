@@ -302,6 +302,11 @@ public class GithubRepositoriesService {
 		return release;
 	}
 
+	public void deleteRelease(User user, Repository repo, String releaseId) throws IOException {
+		GithubReleaseService releaseService = new GithubReleaseService(githubAuthService.createClient(user));
+		releaseService.deleteRelease(repo, releaseId);
+	}
+
 	/*
 	 * edit Issue
 	 * @param repo

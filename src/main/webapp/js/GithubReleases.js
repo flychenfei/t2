@@ -40,6 +40,37 @@
                     }
                 });
             },
+            "click;.remove":function(event){
+                var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
+                var login = $(event.target).closest("table").parent().attr("data-login");
+                var repoName = $(event.target).closest("table").parent().attr("data-name");
+                var deleteBtn = $(event.target);
+                var loading = $($(event.target).parent().find(".githubloading.save"));
+                $(loading).toggleClass("hide");
+                $(deleteBtn).toggleClass("hide");
+                app.githubApi.deleteRelease({
+                    repoName: repoName,
+                    login: login,
+                    releaseId: releaseId
+                }).pipe(function (json) {
+                    if (json.success) {
+                        app.githubApi.getReleases({
+                            name: repoName,
+                            login: login
+                        }).pipe(function (json) {
+                            brite.display("GithubReleases", $(".tab-content"), {
+                                releases: json.result.releases,
+                                name: repoName,
+                                login: login
+                            });
+                        });
+                    } else {
+                        alert(json.errorMessage);
+                        $(loading).toggleClass("hide");
+                        $(deleteBtn).toggleClass("hide");
+                    }
+                });
+            }
         }
     });
 })();

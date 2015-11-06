@@ -3,10 +3,7 @@ package com.britesnow.samplesocial.service;
 
 import com.britesnow.samplesocial.entity.GithubRelease;
 import com.google.gson.reflect.TypeToken;
-import org.eclipse.egit.github.core.IRepositoryIdProvider;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.RepositoryTag;
+import org.eclipse.egit.github.core.*;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -68,5 +65,15 @@ public class GithubReleaseService extends GitHubService {
         params.put("name",release.getName());
         params.put("tag_name",release.getTag_name());
         return client.post(uri.toString(), params, GithubRelease.class);
+    }
+
+    public void deleteRelease(Repository repository, String releaseId) throws IOException {
+        if (repository == null)
+            throw new IllegalArgumentException("Repository cannot be null");
+        final String repoId = getId(repository);
+        StringBuilder uri = new StringBuilder("/repos");
+        uri.append('/').append(repoId);
+        uri.append("/releases/").append(releaseId);
+        client.delete(uri.toString());
     }
 }
