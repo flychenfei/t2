@@ -124,6 +124,12 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/editTitle",params);
+		},
+
+		deleteComment:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/deleteComment",params);
 		}
     };
 })();

@@ -137,6 +137,25 @@
 						alert("Description update failed.");
 					}
 				})
+			},
+			"click;.comments-remove":function(event){
+				var info = this.info;
+				var commentId = $(event.target).closest(".issue-comment").attr("comment-number");
+				var option = window.confirm("Are you sure you want to delete this?");
+				if(option == true){
+					app.githubApi.deleteComment({
+						name:info.name,
+						login:info.login,
+						commentId:commentId
+					}).pipe(function(result){
+						console.info(result);
+						if(result.success == true){
+							$(".issue-comment[comment-number = '"+commentId+"']").addClass("hide");
+						}else{
+							alert("Description delete failed.");
+						}
+					})
+				}
 			}
 		}
 	});
