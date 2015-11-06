@@ -547,7 +547,34 @@ public class GithubRepositoriesHandler {
 		issue.setTitle(title);
 
 		try{
-			return WebResponse.success(githubRepositoriesService.editIssue(repo, user,issue));
+			return WebResponse.success(githubRepositoriesService.editIssue(repo, user, issue));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
+
+	/**
+	 * delete comment for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @param commentId id of comment
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/deleteComment")
+	public WebResponse deleteComment(@WebUser User user,@WebParam("name") String name,
+								 @WebParam("login") String login,@WebParam("commentId") String commentId
+								 ) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+
+		try{
+			githubRepositoriesService.deleteComment(repo, user, commentId);
+			return WebResponse.success();
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}

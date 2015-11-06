@@ -333,4 +333,17 @@ public class GithubRepositoriesService {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return issueService.editComment(repo, comment);
 	}
+
+	/*
+	 * delete Comment
+	 * @param repo
+	 * @param user
+	 * @param commentId
+	 * @return
+	 * @throws IOException
+	 */
+	public void deleteComment(Repository repo, User user, String commentId) throws IOException {
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		issueService.deleteComment(repo, commentId);
+	}
 }

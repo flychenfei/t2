@@ -56,7 +56,7 @@
 					</div>
 
 					{{#each comments}}
-					<div class="row issue-comment">
+					<div class="row issue-comment" comment-number={{id}}>
 						<img class="user-avatar" src="{{user.avatarUrl}}"/>
 						<div class="comment-detail">
 							<div class="comment-header" data-body="{{body}}">
