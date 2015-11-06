@@ -113,13 +113,16 @@
             submit:function () {
                 var view = this;
                 var $e = this.$el;
+                $e.find(".controls span.message").removeClass("error").empty();
                 var mainScreen = view.mainScreen;
                 data = {};
                 data.id = view.id;
                 data.location=$e.find(".controls input[name='location'] ").val();
                 data.summary=$e.find(".controls textarea[name='summary'] ").val();
                 data.reminders=$e.find(".reminders").val();
-                data.inviters = $e.find(".addInviter").val();
+
+                var $inviter = $e.find(".addInviter");
+                data.inviters = $inviter.val();
                 
                 var dateVal = $e.find("input[name='startTime']").val();
                 var startHour = $e.find(".startHour").val();
@@ -135,6 +138,12 @@
                 if (input.val() == "") {
                     input.focus();
                     input.closest("div").addClass("error").find("span").html("Please enter summary.");
+                } else if($inviter.val() == ""){
+                    $inviter.focus();
+                    $inviter.closest("div").find("span").addClass("error").html("Please enter email address.");
+                } else if(!app.validate.email($inviter)){
+                    $inviter.focus();
+                    $inviter.closest("div").find("span").addClass("error").html("Please enter correct email address.");
                 } else {
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
@@ -142,7 +151,6 @@
                         }), 3000);
                         view.close();
                     });
-
                 }
                 
             },
