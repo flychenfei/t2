@@ -97,7 +97,7 @@
                     app.googleApi.deleteEmail(extra.objId).done(function(result){
                         console.log(result);
                         setTimeout(function(){
-                            showEmails().call(view);
+                            showEmails.call(view);
                         }, 3000)
 
                     });
@@ -195,12 +195,19 @@
                         return "<div class='glyphicon glyphicon-trash'/>";
                     },
                     attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
+                },
+                {
+                    text: "",
+                    render: function(){
+                        return "<div class='glyphicon glyphicon-remove'/>";
+                    },
+                    attrs: "style='width:40px;cursor:pointer'  data-cmd='DELETE_EMAIL' title='Delete Email'"
                 }
             ],
             opts: {
                 htmlIfEmpty: "Not emails found",
                 withPaging: true,
-                cmdDelete: "DELETE_EMAIL"
+                withCmdDelete: false
             }
         }).done(function(){
             var $mailsFolder = $e.find(".imapMails-folder");
