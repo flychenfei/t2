@@ -86,7 +86,7 @@
                     var $controls = $input.closest("div");
                     if($name == "email"){
                         var emailRex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
-                        if(!emailRex.test($input.val())){
+                        if($input.val() && !emailRex.test($input.val())){
                            $controls.addClass("has-error").find("span").html('username must be in an email format "yourname@yourcompany.com"');
                         } else {
                             $controls.removeClass("has-error").find("span").html("");
@@ -95,8 +95,16 @@
 
                     if($name == "phone"){
                         var phoneRex = new RegExp("^[0-9]*$");
-                        if(!phoneRex.test($input.val())){
+                        if($input.val() && !phoneRex.test($input.val())){
                            $controls.addClass("has-error").find("span").html("the phone should be numeric character");
+                        } else {
+                            $controls.removeClass("has-error").find("span").html("");
+                        }
+                    }
+
+                    if($name == "bir"){
+                        if($input.val() && !$input.val().match(/^((?:19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
+                           $controls.addClass("has-error").find("span").html('birthday must be an format "YYYY-MM-DD"');
                         } else {
                             $controls.removeClass("has-error").find("span").html("");
                         }
