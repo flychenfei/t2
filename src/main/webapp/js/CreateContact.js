@@ -63,6 +63,7 @@
                     var $e = view.$el;
                     view.submit();
                 },
+
                 "keydown": function (e) {
                     var view = this;
                     if (e.keyCode == 27) {
@@ -71,10 +72,45 @@
                         view.submit();
                     }
                 },
+
                 "btap; .cancelBtn":function () {
                     var view = this;
                     view.close();
-                }
+                },
+
+                //event for when blur check the format.
+                "blur; .controls input": function (event) {
+                    var view = this;
+                    var $input = $(event.currentTarget);
+                    var $name = $input.attr("name");
+                    var $controls = $input.closest("div");
+                    if($name == "email"){
+                        var emailRex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
+                        if(!emailRex.test($input.val())){
+                           $controls.addClass("has-error").find("span").html('username must be in an email format "yourname@yourcompany.com"');
+                        } else {
+                            $controls.removeClass("has-error").find("span").html("");
+                        }
+                    }
+
+                    if($name == "phone"){
+                        var phoneRex = new RegExp("^[0-9]*$");
+                        if(!phoneRex.test($input.val())){
+                           $controls.addClass("has-error").find("span").html("the phone should be numeric character");
+                        } else {
+                            $controls.removeClass("has-error").find("span").html("");
+                        }
+                    }
+                },
+
+                //event for when type, remove the error message
+                "keyup; .controls input": function (event) {
+                    var $input = $(event.currentTarget);
+                    var $controls = $input.parent();
+                    $controls.removeClass("has-error");
+                    var errorMsg = $controls.find("span");
+                    errorMsg.text("");
+                },
             }
         })
     })(jQuery);
