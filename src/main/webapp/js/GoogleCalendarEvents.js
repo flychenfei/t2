@@ -161,21 +161,21 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='glyphicon glyphicon-edit editEvent'></div>";
+                    	return "<div class='glyphicon glyphicon-edit editEvent hander'title='edit'></div>";
                     },
 					attrs: "style='width: 10%'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='glyphicon glyphicon-remove deleteEvent' data-cmd='DELETE_CALENDAR'></div>";
+                    	return "<div class='glyphicon glyphicon-remove deleteEvent hander' data-cmd='DELETE_CALENDAR' title='delete'></div>";
                     },
 					attrs: "style='width: 10%'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='copyEvent' style='cursor:pointer'>Copy</div>";
+                    	return "<div class='copyEvent hander'title='copy'>Copy</div>";
                     },
 					attrs: "style='width: 10%'"
                 }
