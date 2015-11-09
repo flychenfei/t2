@@ -17,19 +17,25 @@
             var view = this;
             var $e = view.$el;
 
-            $e.find('.datetimepicker').datetimepicker({ 
-                format: 'yyyy-MM-dd', 
-                language: 'en', 
-                 pickDate: true, 
-                 pickTime: true, 
-                 inputMask: true 
+            $e.find('.datetimepicker').datetimepicker({
+                format: 'yyyy-MM-dd',
+                language: 'en',
+                pickDate: true,
+                pickTime: true,
+                inputMask: true
             });
             
             showEmails.call(view);
         },
 
         events: {
-          "btap; .inputValueBtn":function () {
+            "btap; .datetimepicker": function(event){
+                var view = this;
+                var $e = view.$el;
+                $(event.currentTarget).datetimepicker('show');
+            },
+
+            "btap; .inputValueBtn":function () {
                 var view = this;
                 var $e = view.$el;
                 //view.submit();
