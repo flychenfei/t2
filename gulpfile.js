@@ -13,8 +13,6 @@ var precss = require('precss');
 var postcssSimpleVars = require("postcss-simple-vars");
 var postcssMixins = require("postcss-mixins");
 var postcssNested = require("postcss-nested");
-var sourcemaps = require("gulp-sourcemaps");
-var atImport = require("postcss-import");
 var lessVars = require("postcss-less-vars");
 var customProperties = require("postcss-custom-properties");
 
