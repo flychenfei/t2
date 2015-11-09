@@ -30,6 +30,12 @@
         },
 
         events: {
+            "btap; .datetimepicker": function(event){
+                var view = this;
+                var $e = view.$el;
+                $(event.currentTarget).datetimepicker('show');
+            },
+
             "btap; .inputValueBtn":function () {
 				var view = this;
 				var $e = view.$el;
