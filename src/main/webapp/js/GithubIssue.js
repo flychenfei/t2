@@ -120,6 +120,7 @@
 				var newTitle = $issueTitle.find(".title-edit-box").val();
 				var info = this.info;
 				$saveBtn.addClass("disabled").html("Saving...");
+				$issueTitle.find(".cancel").addClass("disabled");
 				app.githubApi.editTitle({
 					name:info.name,
 					login:info.login,
@@ -127,6 +128,7 @@
 					title:newTitle
 				}).pipe(function(result){
 					$saveBtn.removeClass("disabled",false).html("Save");
+					$issueTitle.find(".cancel").removeClass("disabled");
 					if(result.success == true){
 						$issueTitle.find(".dialogTitle").removeClass("hide");
 						$issueTitle.find(".title-edit").addClass("hide");
@@ -156,6 +158,11 @@
 						}
 					})
 				}
+			},
+			"click;.cancel":function(event){
+				var $issueTitle = $(event.target).closest(".dialogHead");
+				$issueTitle.find(".dialogTitle").removeClass("hide");
+				$issueTitle.find(".title-edit").addClass("hide");
 			}
 		}
 	});
