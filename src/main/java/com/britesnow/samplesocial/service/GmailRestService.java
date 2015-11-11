@@ -243,8 +243,7 @@ public class GmailRestService {
     
     /**
      * get mail detail
-     * @param user
-     * @param emailId
+     * @param messageId
      * @return
      * @throws Exception
      */
@@ -356,8 +355,7 @@ public class GmailRestService {
     
     /**
      * delete mail
-     * @param user
-     * @param emailId
+     * @param messageId
      * @throws Exception
      */
     public void deleteEmail(String messageId) {
