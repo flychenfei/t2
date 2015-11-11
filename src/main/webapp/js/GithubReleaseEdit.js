@@ -37,23 +37,7 @@
                         tagName: $(tagName).val(),
                         login: login
                     }).pipe(function (json) {
-                        if (json.success) {
-                            app.githubApi.getReleases({
-                                name: repoName,
-                                login: login
-                            }).pipe(function (json) {
-                                view.$el.remove();
-                                brite.display("GithubReleases", $(".tab-content"), {
-                                    releases: json.result.releases,
-                                    name: repoName,
-                                    login: login
-                                });
-                            });
-                        } else {
-                            alert(json.errorMessage);
-                            $(loading).toggleClass("hide");
-                            $(saveBtn).toggleClass("hide");
-                        }
+                        refresh(view,json,repoName,login,loading,saveBtn);
                     });
                 }else{
                     app.githubApi.editRelease({
@@ -63,26 +47,30 @@
                         releaseId: releaseId,
                         login: login
                     }).pipe(function (json) {
-                        if (json.success) {
-                            app.githubApi.getReleases({
-                                name: repoName,
-                                login: login
-                            }).pipe(function (json) {
-                                view.$el.remove();
-                                brite.display("GithubReleases", $(".tab-content"), {
-                                    releases: json.result.releases,
-                                    name: repoName,
-                                    login: login
-                                });
-                            });
-                        } else {
-                            alert(json.errorMessage);
-                            $(loading).toggleClass("hide");
-                            $(saveBtn).toggleClass("hide");
-                        }
+                        refresh(view,json,repoName,login,loading,saveBtn);
                     });
                 }
             }
         }
     });
+
+    function refresh(view,json,repoName,login,loading,saveBtn){
+        if (json.success) {
+            app.githubApi.getReleases({
+                name: repoName,
+                login: login
+            }).pipe(function (json) {
+                view.$el.remove();
+                brite.display("GithubReleases", $(".tab-content"), {
+                    releases: json.result.releases,
+                    name: repoName,
+                    login: login
+                });
+            });
+        } else {
+            alert(json.errorMessage);
+            $(loading).toggleClass("hide");
+            $(saveBtn).toggleClass("hide");
+        }
+    }
 })();
