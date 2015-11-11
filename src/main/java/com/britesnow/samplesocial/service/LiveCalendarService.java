@@ -42,7 +42,6 @@ public class LiveCalendarService {
     	OAuthRequest request = oAuthService.createRequest(Verb.POST, USER_CALENDARS_ENDPOINT);
         request.addBodyParameter("name", calendarName);
         request.addBodyParameter("description", description);
-        //request.addBodyParameter("subscription_location", subscription_location);
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
@@ -59,7 +58,6 @@ public class LiveCalendarService {
     	OAuthRequest request = oAuthService.createRequest(Verb.PUT, LIVE_ENDPOINT+calendarId);
         request.addBodyParameter("name", calendarName);
         request.addBodyParameter("description", description);
-        //request.addBodyParameter("subscription_location", subscription_location);
         Response response = request.send();
         Map profile = JsonUtil.toMapAndList(response.getBody());
         return profile;
