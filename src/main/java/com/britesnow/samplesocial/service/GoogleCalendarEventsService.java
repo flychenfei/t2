@@ -253,18 +253,11 @@ public class GoogleCalendarEventsService {
             }
             eventMap.put("location", event.getLocation());
             eventMap.put("calendarId", event.getOrganizer().getEmail());
-            StringBuilder inviters = new StringBuilder();
-            int i = 0;
             if(event.getAttendees() != null){
-                for(EventAttendee eventAtte : event.getAttendees()){
-                    if(i != 0){
-                        inviters.append(",");
-                    }
-                    inviters.append(eventAtte.getEmail());
-                    i++;
-                }
+                String inviters = event.getAttendees().stream().map(x -> x.getEmail())
+                        .collect(Collectors.joining(","));
+                eventMap.put("inviters", inviters);
             }
-            eventMap.put("inviters", inviters.toString());
             return eventMap;
         } catch (IOException e) {
             e.printStackTrace();
