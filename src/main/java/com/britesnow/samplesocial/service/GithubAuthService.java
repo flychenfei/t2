@@ -67,10 +67,6 @@ public class GithubAuthService implements AuthService {
     	Token accessToken  = new Token(token, configMap.get(prefix+".secret").toString());
     	OAuthRequest requestAccessToken = new OAuthRequest(Verb.GET,"https://api.github.com/user");
     	requestAccessToken.addQuerystringParameter("access_token", token);
-    	//String accessTokenString = requestAccessToken.send().getBody();
-
-    	//    	Verifier verifier = new Verifier(verifierCode);
-        //        Token accessToken = oAuthService.getAccessToken(EMPTY_TOKEN, verifier);
     	
         if (accessToken.getToken() != null) {
             //get userinfo
