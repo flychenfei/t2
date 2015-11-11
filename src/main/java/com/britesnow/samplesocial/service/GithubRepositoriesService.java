@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Singleton
 public class GithubRepositoriesService {
@@ -219,28 +220,14 @@ public class GithubRepositoriesService {
 
 	public Map getIssues(Repository repo,User user,String state) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
-		Map<String,String> filterData = new HashMap<String,String>();
+		Map<String,String> filterData = new HashMap<>();
 		filterData.put("state","all");
-		Map map = new HashMap<>();
 		List<Issue> issues = issueService.getIssues(repo,filterData);
-		List openIssues = new ArrayList<Issue>();
-		List closedIssues = new ArrayList<Issue>();
-		for (Issue issue : issues){
-			if(issue.getState().equals("open")){
-				openIssues.add(issue);
-			}else {
-				closedIssues.add(issue);
-			}
-		}
-		if(state.equals("open")){
-			issues = openIssues;
-		}else if(state.equals("closed")){
-			issues = closedIssues;
-		}
-		map.put("issues",issues);
-		map.put("openCount",openIssues.size());
-		map.put("closedCount",closedIssues.size());
-		return map;
+		List<Issue> currentIssues = issues.stream().filter(issue -> issue.getState().equals(state)).collect(Collectors.toList());
+		int currentSize = currentIssues.size(),
+				totalSize = issues.size();
+		return MapUtil.mapIt("issues",currentIssues,"openCount","open".equals(state) ? currentSize : totalSize - currentSize,
+				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
 	}
 
 	/*
