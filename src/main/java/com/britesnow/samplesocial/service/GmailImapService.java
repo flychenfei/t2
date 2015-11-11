@@ -216,7 +216,6 @@ public class GmailImapService {
 
     /**
      * list folder
-     * @param user
      * @return
      * @throws Exception
      */
@@ -267,7 +266,6 @@ public class GmailImapService {
 
     /**
      * get mail detail
-     * @param user
      * @param emailId
      * @return
      * @throws Exception
@@ -372,7 +370,6 @@ public class GmailImapService {
 
     /**
      * delete mail
-     * @param user
      * @param emailId
      * @throws Exception
      */
@@ -407,7 +404,6 @@ public class GmailImapService {
 
     /**
      * delete folder
-     * @param user
      * @param folderName
      * @return  delete ok or not
      * @throws Exception
@@ -446,7 +442,6 @@ public class GmailImapService {
 
     /**
      * sent mail
-     * @param user  auth user
      * @param subject  mail subject
      * @param content  mail content
      * @param to  mail to
