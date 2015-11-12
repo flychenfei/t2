@@ -24,17 +24,19 @@
                 pickTime: true,
                 inputMask: true
             });
-            
+
             showEmails.call(view);
         },
 
         events: {
+            // click to show date picker
             "btap; .datetimepicker": function(event){
                 var view = this;
                 var $e = view.$el;
                 $(event.currentTarget).datetimepicker('show');
             },
 
+            // click the search button
             "btap; .inputValueBtn":function () {
                 var view = this;
                 var $e = view.$el;
@@ -57,8 +59,10 @@
                     return app.googleApi.searchEmails(opts)
                 };
                 showEmails.call(view);
-          },
-          "btap; .cleanSearchBtn":function(event){
+            },
+
+            // click to clean the serach value
+            "btap; .cleanSearchBtn":function(event){
                 var view = this;
                 var $e = view.$el;
                 $e.find(".search-mails-container :text").each(function() {
@@ -78,15 +82,18 @@
                 };
                 showEmails.call(view);
             },
-          "btap; .searchCondition":function () {
+
+            // show or hide search condition
+            "btap; .searchCondition":function () {
                 var view = this;
                 var $e = view.$el;
                 $e.find(".search-mails-container").toggleClass("hide");
-          }
+            }
 
         },
         docEvents: {
-        	"TRASH_EMAIL": function(event, extra){
+            // trash the email
+            "TRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
                     app.googleApi.trashEmail(extra.objId).done(function(result){
@@ -97,6 +104,8 @@
                     });
                 }
             },
+
+            // delete the email
             "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
@@ -109,36 +118,35 @@
                     });
                 }
             },
+
+            // show the email info
             "SHOW_INFO": function(event, extra) {
                 var data = {id: extra.objId};
                 brite.display("GoogleMailInfo", "body", data);
             },
+
+            // replay the email
             "REPLAY_EMAIL": function(event, extra) {
                 app.googleApi.getMail(extra.objId).done(function(data){
                     if(data.success){
                         console.log(data);
                         brite.display("GoogleMailSend", "body",data.result);
                     }
-
                 })
-
             },
+
+            // forward the email
             "FORWARDING_EMAIL": function(event, extra) {
                 app.googleApi.getMail(extra.objId).done(function(data){
                     if(data.success){
                         console.log(data);
                         brite.display("GoogleMailForwardImap", "body",data.result);
                     }
-
                 })
-
-            },
-            
-        },
-
-        daoEvents: {
+            }
         }
     });
+
     function showEmails() {
         var view = this;
         var $e = view.$el;
@@ -222,8 +230,6 @@
                 $mailsFolder.find(".folderName").html(view.folderName);
             }else{
                 $mailsFolder.hide();
-
-
             }
         });
     }
