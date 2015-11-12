@@ -1,0 +1,30 @@
+<script id="tmpl-GithubPullRequests" type="text/html">
+	<div class="repository-name">
+		<span class="repository">{{login}} <span class="separator">/</span> {{reponame}}</span>
+	</div>
+	<div class="container githubPullRequests">
+		<table class="table" data-name="{{reponame}}" data-login="{{login}}">
+			<tbody>
+                <tr class="table-title">
+                    <td>title</td>
+                    <td>state</td>
+                    <td>author</td>
+                    <td></td>
+                </tr>
+			{{#each pullrequests}}
+			<tr>
+				<td class="sha" data-pullrequest-id="{{number}}">
+					<div><span class="messageTitle">{{title}}</span></div>
+				</td>
+				<td class="sha">
+					<div><span class="state">{{state}}</span></div>
+				</td>
+				<td class="sha">
+					<div><span class="author-login">{{user.login}} {{state}}</span></div>
+				</td>
+			</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+</script>

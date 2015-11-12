@@ -7,14 +7,10 @@ import com.britesnow.snow.util.MapUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.fileupload.FileItem;
-import org.eclipse.egit.github.core.Download;
-import org.eclipse.egit.github.core.DownloadResource;
-import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.SearchRepository;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.*;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.IssueService;
+import org.eclipse.egit.github.core.service.PullRequestService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.util.EncodingUtils;
 import org.scribe.model.OAuthRequest;
@@ -292,6 +288,14 @@ public class GithubRepositoriesService {
 	public void deleteRelease(User user, Repository repo, String releaseId) throws IOException {
 		GithubReleaseService releaseService = new GithubReleaseService(githubAuthService.createClient(user));
 		releaseService.deleteRelease(repo, releaseId);
+	}
+
+	public Map getPullRequests(Repository repo, User user) throws IOException {
+		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
+		List<PullRequest> pullRequests = pullRequestService.getPullRequests(repo,"all");
+		Map map = new HashMap<>();
+		map.put("pullRequests",pullRequests);
+		return map;
 	}
 
 	/*
