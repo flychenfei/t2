@@ -32,7 +32,7 @@ gulp.task('watch', ['default'], function(){
 	gulp.watch(path.join(webappDir,"/tmpl/",'*.tmpl'), ['hbs']);
 
 	// gulp.watch(path.join(webappDir,"/less/",'all.less'), ['pcss']);
-	gulp.watch(path.join(webappDir,"/pcss/",'all.pcss'), ['pcss']);
+	gulp.watch(path.join(webappDir,"/pcss/",'*.pcss'), ['pcss']);
 
 });
 
