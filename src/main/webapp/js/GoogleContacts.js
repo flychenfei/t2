@@ -149,7 +149,7 @@
 				{
 					text: "Full Name",
 					render: function (obj) {
-						return obj.fullName
+						return (typeof obj.fullName == "undefined") ? "" : obj.fullName;
 					},
 					attrs: "style='width: 25%'"
 				},
