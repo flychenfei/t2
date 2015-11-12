@@ -130,7 +130,17 @@
 				}).pipe(function(json){
 					brite.display("GithubReleases",$(".tab-content"),{releases:json.result.releases,name:name,login:login});
 				});
-			}
+			},
+			"click;.pull-requests":function(event){
+				var name = $(event.target).closest("td").attr("data-repository-name");
+				var login = $(event.target).closest("td").attr("data-login");
+				app.githubApi.getPullRequests({
+					name:name,
+					login:login
+				}).pipe(function(json){
+					brite.display("GithubPullRequests",$(".tab-content"),{pullrequests:json.result.pullRequests,name:name,login:login});
+				});
+	}
 		}
 	});
 	

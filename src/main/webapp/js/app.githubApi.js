@@ -112,6 +112,11 @@ var app = app || {};
 			params.method="Post";
 			return app.getJsonData(contextPath+"/github/deleteRelease",params);
 		},
+		getPullRequests:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/getPullRequests",params);
+		},
 
 		editIssue:function(opts){
 			var params = opts||{};

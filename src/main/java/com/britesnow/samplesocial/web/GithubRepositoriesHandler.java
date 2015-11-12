@@ -458,6 +458,25 @@ public class GithubRepositoriesHandler {
 	}
 
 	/**
+	 * get Pull Requests for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getPullRequests")
+	public WebResponse getPullRequests(@WebUser User user,@WebParam("name") String name,
+								   @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		return WebResponse.success(githubRepositoriesService.getPullRequests(repo, user));
+	}
+
+	/**
 	 * edit Issue for a repository
 	 * @param user
 	 * @param name name of repository
