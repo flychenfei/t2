@@ -1,21 +1,5 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.batch.BatchRequest;
@@ -27,21 +11,21 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.model.CalendarList;
-import com.google.api.services.calendar.model.CalendarListEntry;
-import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.*;
 import com.google.api.services.calendar.model.Event.Reminders;
-import com.google.api.services.calendar.model.EventAttendee;
-import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.EventReminder;
-import com.google.api.services.calendar.model.Events;
-import com.google.api.services.calendar.model.FreeBusyRequest;
-import com.google.api.services.calendar.model.FreeBusyRequestItem;
-import com.google.api.services.calendar.model.FreeBusyResponse;
-import com.google.api.services.calendar.model.TimePeriod;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.google.api.services.calendar.Calendar;
 
 @Singleton
 public class GoogleCalendarEventsService {
@@ -254,6 +238,7 @@ public class GoogleCalendarEventsService {
             eventMap.put("location", event.getLocation());
             eventMap.put("calendarId", event.getOrganizer().getEmail());
             if(event.getAttendees() != null){
+                //set inviters emails with ','
                 String inviters = event.getAttendees().stream().map(x -> x.getEmail())
                         .collect(Collectors.joining(","));
                 eventMap.put("inviters", inviters);
@@ -398,9 +383,7 @@ public class GoogleCalendarEventsService {
                 
                 event.setReminders(reminders);
             }
-            
 
-            
             event.setICalUID(iCalUID);
             getCalendarService().events().calendarImport(copyTo, event).execute();
             

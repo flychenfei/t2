@@ -1,9 +1,6 @@
 package com.britesnow.samplesocial.web;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.britesnow.samplesocial.service.GoogleCalendarSettingService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -11,6 +8,9 @@ import com.britesnow.snow.web.param.annotation.WebParam;
 import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class GoogleCalendarSettingHandlers {

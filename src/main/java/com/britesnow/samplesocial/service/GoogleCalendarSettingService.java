@@ -1,11 +1,5 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -16,6 +10,12 @@ import com.google.api.services.calendar.model.Setting;
 import com.google.api.services.calendar.model.Settings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Singleton
 public class GoogleCalendarSettingService {
@@ -71,8 +71,5 @@ public class GoogleCalendarSettingService {
         Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credential).setApplicationName("Gmail Test").build();
         return service;
     }
-
-
-
 
 }

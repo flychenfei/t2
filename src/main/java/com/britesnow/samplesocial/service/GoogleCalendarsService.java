@@ -1,11 +1,5 @@
 package com.britesnow.samplesocial.service;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.britesnow.snow.util.Pair;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpTransport;
@@ -19,6 +13,12 @@ import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Singleton
 public class GoogleCalendarsService {
@@ -43,11 +43,10 @@ public class GoogleCalendarsService {
             }).collect(Collectors.toList());
             
             pageToken = calendarList.getNextPageToken();
-           return new Pair<String, List<Map>>(pageToken, eventList);
+            return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
         return null;
     }
     
@@ -104,7 +103,7 @@ public class GoogleCalendarsService {
            getCalendarsService().acl().insert(calendarId, rule).execute();
        } catch (IOException e) {
            e.printStackTrace();
-           }
+       }
     }
     
     public Pair<String, List<Map>> getShareCalendar(String calendarId) {
@@ -142,8 +141,5 @@ public class GoogleCalendarsService {
         Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credential).setApplicationName("Gmail Test").build();
         return service;
     }
-
-
-
 
 }

@@ -1,9 +1,6 @@
 package com.britesnow.samplesocial.web;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.britesnow.samplesocial.service.GoogleCalendarsService;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -12,6 +9,9 @@ import com.britesnow.snow.web.rest.annotation.WebGet;
 import com.britesnow.snow.web.rest.annotation.WebPost;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class GoogleCalendarsHandlers {
@@ -35,10 +35,10 @@ public class GoogleCalendarsHandlers {
     
     @WebPost("/googleCalendars/save")
     public Object saveCalendar(@WebParam("id") String id,@WebParam("summary") String summary) throws Exception {
-        
         googleCalendarsService.saveCalendar(id, summary);
         return WebResponse.success();
     }
+
     @WebPost("/googleCalendars/delete")
     public Object deleteCalendar(@WebModel Map m, @WebParam("id") String id) throws Exception {
         googleCalendarsService.deleteCalendar(id);
@@ -48,7 +48,6 @@ public class GoogleCalendarsHandlers {
     @WebPost("/googleShareCalendars/save")
     public Object saveShareCalendar(@WebParam("calendarId") String calendarId,@WebParam("role") String role,
                             @WebParam("scopeType") String scopeType,@WebParam("scopeValue") String scopeValue) throws Exception {
-        
         googleCalendarsService.saveShareCalendar(calendarId, role, scopeType, scopeValue);
         return WebResponse.success();
     }
