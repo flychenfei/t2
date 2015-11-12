@@ -4,7 +4,7 @@
     brite.registerView("GoogleMailsRest",{parent:".GoogleScreen-content",emptyParent:true}, {
         create: function (data, config) {
             var view = this;
-        	data = data || {};
+            data = data || {};
             view.folderName = data.folderName;
             this.search = function(opts) {
                 opts.label = view.folderName
@@ -30,12 +30,14 @@
         },
 
         events: {
+            // click to show date picker
             "btap; .datetimepicker": function(event){
                 var view = this;
                 var $e = view.$el;
                 $(event.currentTarget).datetimepicker('show');
             },
 
+            // click the search button
             "btap; .inputValueBtn":function () {
 				var view = this;
 				var $e = view.$el;
@@ -66,8 +68,9 @@
 				};
 
 				showEmails.call(view);
-
             },
+
+            // click to clean the serach value
             "btap; .cleanSearchBtn":function(event){
                 var view = this;
                 var $e = view.$el;
@@ -88,27 +91,34 @@
                 };
                 showEmails.call(view);
             },
+
+            // event click Current Thread
             "click; .currentThread":function(event){
 				var view = this;
 				var $e = view.$el;
-				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
+				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-iCurrent Threadd");
 				brite.display("GoogleThreadMails",null,{threadId:threadId});
             },
+
+            // event click Labels value
             "click; .updateLabels":function(event){
 				var view = this;
 				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("GoogleMailLabelsUpdate",null,{id:id});
             },
+
+            // show or hide search condition
             "btap; .searchCondition":function(){
                 var view = this;
                 var $e = view.$el;
                $e.find(".search-mails-container").toggleClass("hide");
             }
-
         },
+
         docEvents: {
-        	"TRASH_EMAIL": function(event, extra){
+            // trash the email
+            "TRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
                     app.googleApi.trashEmailRest(extra.objId).done(function(result){
@@ -119,6 +129,8 @@
                     });
                 }
             },
+
+            // untrash the email
             "UNTRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
@@ -129,7 +141,9 @@
                     });
                 }
             },
-        	"DELETE_EMAIL": function(event, extra){
+
+            // delete the email
+            "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
                     app.googleApi.deleteEmailRest(extra.objId).done(function(result){
@@ -140,21 +154,25 @@
                     });
                 }
             },
+
+            // sshow the email info
             "SHOW_INFO": function(event, extra) {
                 var data = {id: extra.objId, type:'rest'};
                 brite.display("GoogleMailInfo", "body", data);
             },
+
+            // forward the email
             "FORWARD_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
-                    	var opt = data.result || {};
-                    	opt.type = "rest";
+                        var opt = data.result || {};
+                        opt.type = "rest";
                         brite.display("GoogleMailForwardRest", "body",opt);
                     }
-
                 })
-
             },
+
+            // replay the email
             "REPLAY_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
@@ -164,6 +182,8 @@
                     }
                 })
             },
+
+            // event for click the Insert icon
             "INSERT_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
@@ -174,6 +194,8 @@
                     }
                 })
             },
+
+            // event for click the import icon
             "IMPORT_EMAIL": function(event, extra) {
                 app.googleApi.getMailRest(extra.objId).done(function(data){
                     if(data.success){
@@ -184,15 +206,16 @@
                     }
                 })
             },
-            "DO_REFRESH_MAIL": function(event, extra) {
-            	var view = this;
-				showEmails.call(view); 
-            }
-        },
 
-        daoEvents: {
+            // event for refresh mail
+            "DO_REFRESH_MAIL": function(event, extra) {
+                var view = this;
+				showEmails.call(view);
+            }
         }
     });
+
+
     function showEmails() {
         var view = this;
         var $e = view.$el;
@@ -290,7 +313,7 @@
                 htmlIfEmpty: "Not emails found",
                 withCmdDelete:false,
                 dataOpts: {
-                	withResultCount:false
+                    withResultCount:false
                 }
             }
         }).done(function(){
