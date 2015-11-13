@@ -56,6 +56,7 @@
 						</div>
 					</div>
 
+                    <div class="issue-comments">
 					{{#each comments}}
 					<div class="row issue-comment" comment-number={{id}}>
 						<img class="user-avatar" src="{{user.avatarUrl}}"/>
@@ -81,21 +82,48 @@
 						</div>
 					</div>
 					{{/each}}
+					</div>
 					<div class="row issue-comment">
-						<img class="user-avatar" src="{{issue.user.avatarUrl}}"/>
+						<img class="user-avatar" src="{{avatarUrl}}"/>
 						<div class="comment-detail">
 							<div class="comment-header">
 								<span class="bold">Add Comment</span>
 							</div>
-							<div class="comment-body">
+							<div class="comment-body" issue-id="{{issue.number}}">
 								<div class="body-edit-comment">
-									<textarea class="edit-box" placeholder="Leave a comment"></textarea>
+									<textarea class="edit-box comment-add-text" placeholder="Leave a comment"></textarea>
 									<div class="opt-btns">
-										<button class="btn btn-success comment-update-btn">Add</button>
+										<button class="btn btn-success comment-add">Add</button>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="issue-comment-add" type="text/html">
+	<div class="row issue-comment" comment-number={{comment.id}}>
+		<img class="user-avatar" src="{{comment.user.avatarUrl}}"/>
+		<div class="comment-detail">
+			<div class="comment-header" data-body="{{comment.body}}">
+			<span class="bold">{{comment.user.login}}</span> commented on
+				{{#plus comment.createdAt.year 1900}}{{/plus}}-{{#lt comment.createdAt.month 9}}0{{/lt}}{{#plus comment.createdAt.month 1}}{{/plus}}-{{#lt comment.createdAt.day 10}}0{{/lt}}{{comment.createdAt.day}}
+				<span class="glyphicon glyphicon-pencil comments-edit"></span>
+					<span class="glyphicon glyphicon-remove comments-remove"></span>
+				</div>
+				<div class="comment-body">
+				<div class="body-content-comment">
+					{{#convertMDToHtml comment.body}}{{/convertMDToHtml}}
+				</div>
+                <div class="body-edit-comment hide">
+					<textarea class="edit-box"></textarea>
+					<div class="opt-btns" data-id={{comment.id}}>
+						<button class="btn btn-danger comment-cancel-btn">Cancel</button>
+						<button class="btn btn-success comment-update-btn">Update comment</button>
 					</div>
 				</div>
 			</div>
