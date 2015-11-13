@@ -158,13 +158,26 @@
 					render: function (obj) {
 						return getGroupId(obj.groupId)
 					}
-				}
+				},
+				{
+					text:"Edit",
+					attrs:"style='width: 60px; cursor:pointer; text-align: center;'",
+					render:function(obj){
+						return "<div class='glyphicon glyphicon-edit' data-cmd='EDIT_CONTACT'/>";
+					},
+				},
+				{
+					text:"Delete",
+					attrs:"style='width: 60px;cursor:pointer; text-align: center;'",
+					render:function(obj){
+						return "<div class='glyphicon glyphicon-remove' data-cmd='DELETE_CONTACT'/>";
+					},
+				},
 			],
 			opts: {
 				htmlIfEmpty: "Not contacts found",
 				withPaging: true,
-				cmdDelete: "DELETE_CONTACT",
-				cmdEdit: "EDIT_CONTACT"
+				withCmdDelete:false
 			}
 		});
 	}
