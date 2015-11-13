@@ -380,8 +380,21 @@ public class GmailImapService {
 
         inbox.open(Folder.READ_WRITE);
         Message msg = inbox.getMessage(emailId);
-        msg.setFlag(Flags.Flag.DELETED, true);
+        // If you want to delete a message from all folders, move it to the [Gmail]/Trash folder.
+        // If you delete a message from [Gmail]/Spam or [Gmail]/Trash, it will be deleted permanently.
+        String trashName = getGmailFolderName(imap,"\\Trash");
+        Folder trashFolder = imap.getFolder(trashName);
+        inbox.copyMessages(new Message[]{msg}, trashFolder);
         inbox.close(true);
+
+        //delete email in trash folder
+        Folder trashFolderDel = imap.getFolder(trashName);
+        trashFolderDel.open(Folder.READ_WRITE);
+        int count = trashFolderDel.getMessageCount();
+        Message msgDel = trashFolderDel.getMessage(count);
+        msgDel.setFlag(Flags.Flag.DELETED, true);
+        trashFolderDel.close(true);
+
         imap.close();
     }
     
