@@ -597,4 +597,30 @@ public class GithubRepositoriesHandler {
 			return WebResponse.fail(e.getMessage());
 		}
 	}
+
+	/**
+	 * add comment for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param issueId ID of issue
+	 * @param comment new comment
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/addComment")
+	public WebResponse addComment(@WebUser User user,@WebParam("name") String name,
+									 @WebParam("login") String login,@WebParam("issueId") String issueId,
+								     @WebParam("comment") String comment) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+
+		try{
+			return WebResponse.success(githubRepositoriesService.addComment(repo, user,issueId,comment));
+		}catch(Exception e){
+			return WebResponse.fail(e.getMessage());
+		}
+	}
 }

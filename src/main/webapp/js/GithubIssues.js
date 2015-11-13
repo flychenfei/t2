@@ -30,25 +30,30 @@
 				var name = $(event.target).closest("table").attr("data-name");
 				var login = $(event.target).closest("table").attr("data-login");
 				var issueNumber = $(event.target).closest("td").attr("data-issue-id");
-				app.githubApi.getIssue({
-					name:name,
-					login:login,
-					issueNumber:issueNumber
-				}).pipe(function(json){
-					brite.display("GithubIssue",$("body"),{
-						issue:json.result.issue,
-						comments:json.result.comment,
-						layout:{
-							left:'20%',
-							top:"100px",
-							width:'60%',
-							height:'auto'
-						},
-						info:{
-							name:name,
-							login:login,
-							issueNumber:issueNumber
-						}
+				var userInfo = null;
+				app.githubApi.showUserInfo().pipe(function(result){
+					userInfo = JSON.parse(result.result);
+					app.githubApi.getIssue({
+						name:name,
+						login:login,
+						issueNumber:issueNumber
+					}).pipe(function(json){
+						brite.display("GithubIssue",$("body"),{
+							issue:json.result.issue,
+							comments:json.result.comment,
+							avatarUrl:userInfo.avatar_url,
+							layout:{
+								left:'20%',
+								top:"100px",
+								width:'60%',
+								height:'auto'
+							},
+							info:{
+								name:name,
+								login:login,
+								issueNumber:issueNumber
+							}
+						});
 					});
 				});
 			},

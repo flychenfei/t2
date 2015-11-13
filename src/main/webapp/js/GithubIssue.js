@@ -4,10 +4,12 @@
 			var view = this;
 			view.issue = data.issue;
 			view.info = data.info;
+			Handlebars.registerPartial("issue-comment-add",Handlebars.templates["issue-comment-add"]);
 			return app.render("tmpl-GithubIssue",{
 				issue:data.issue,
 				comments:data.comments,
-				layout:data.layout
+				layout:data.layout,
+				avatarUrl:data.avatarUrl
 				});
 		},
 		events:{
@@ -163,6 +165,28 @@
 				var $issueTitle = $(event.target).closest(".dialogHead");
 				$issueTitle.find(".dialogTitle").removeClass("hide");
 				$issueTitle.find(".title-edit").addClass("hide");
+			},
+			"click;.comment-add":function(event){
+				var info = this.info;
+				var view = this;
+				var $commentBody = $(event.target).closest(".comment-body");
+				var issueId = $commentBody.attr("issue-id");
+				var comment = $commentBody.find(".comment-add-text").val();
+				if(comment == null){
+					alert("Comment can't null");
+				}else{
+					app.githubApi.addComment({
+						name:info.name,
+						login:info.login,
+						issueId:issueId,
+						comment:comment
+					}).pipe(function(result){
+						if(result.success == true){
+							view.$el.find(".issue-comments").append(render("issue-comment-add",{comment:result.result}));
+							$commentBody.find(".comment-add-text").val("");
+						}
+					});
+				}
 			}
 		}
 	});
