@@ -185,37 +185,37 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-envelope'/>"
+                        return "<div class='glyphicon glyphicon-envelope click-able'  data-cmd='SHOW_INFO' title='Show Info'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO' title='Show Info'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share'/>"
+                        return "<div class='glyphicon glyphicon-share click-able'  data-cmd='FORWARDING_EMAIL' title='Forward Email'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARDING_EMAIL' title='Forward Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share-alt'/>"
+                        return "<div class='glyphicon glyphicon-share-alt click-able' data-cmd='REPLAY_EMAIL' title='Replay Email'/>"
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL' title='Replay Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-trash'/>";
+                        return "<div class='glyphicon glyphicon-trash click-able' data-cmd='TRASH_EMAIL' title='Trash Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-remove'/>";
+                        return "<div class='glyphicon glyphicon-remove click-able' data-cmd='DELETE_EMAIL' title='Delete Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='DELETE_EMAIL' title='Delete Email'"
+                    attrs: "style='width:40px;'"
                 }
             ],
             opts: {
