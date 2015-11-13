@@ -112,14 +112,14 @@
 				},
 				{
 					text:"Edit",
-					attrs:"style='width: 15px'",
+					attrs:"style='width: 60px; cursor:pointer; text-align: center;'",
 					render:function(obj){
 						return obj.systemGroup ? "" : "<div class='glyphicon glyphicon-edit'/>";
 					},
 				},
 				{
 					text:"Delete",
-					attrs:"style='width: 15px'",
+					attrs:"style='width: 60px; cursor:pointer; text-align: center;'",
 					render:function(obj){
 						return obj.systemGroup ? "" : "<div class='glyphicon glyphicon-remove'/>";
 					},
