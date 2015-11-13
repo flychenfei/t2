@@ -290,12 +290,14 @@ public class GithubRepositoriesService {
 		releaseService.deleteRelease(repo, releaseId);
 	}
 
-	public Map getPullRequests(Repository repo, User user) throws IOException {
+	public Map getPullRequests(Repository repo, User user, String state) throws IOException {
 		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
 		List<PullRequest> pullRequests = pullRequestService.getPullRequests(repo,"all");
-		Map map = new HashMap<>();
-		map.put("pullRequests",pullRequests);
-		return map;
+		List<PullRequest> currentPullRequests = pullRequests.stream().filter(issue -> issue.getState().equals(state)).collect(Collectors.toList());
+		int currentSize = currentPullRequests.size();
+		int totalSize = pullRequests.size();
+		return MapUtil.mapIt("pullRequests",currentPullRequests,"openCount","open".equals(state) ? currentSize : totalSize - currentSize,
+				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
 	}
 
 	/*

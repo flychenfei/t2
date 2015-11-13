@@ -2,6 +2,27 @@
 	<div class="repository-name">
 		<span class="repository">{{login}} <span class="separator">/</span> {{reponame}}</span>
 	</div>
+	<div class="option" data-name="{{reponame}}" data-login="{{login}}">
+		{{#equal pullRequestState "open"}}
+		<span class="openPullRequests choosed">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
+		</span>
+		<span class="closedPullRequests unchoosed">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<span class="close-count unchoosed" data-count="{{closedCount}}">{{closedCount}} Closed</span>
+		</span>
+		{{else}}
+		<span class="openPullRequests unchoosed">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
+		</span>
+		<span class="closedPullRequests choosed">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<span class="close-count" data-count="{{closedCount}}">{{closedCount}} Closed</span>
+		</span>
+		{{/equal}}
+	</div>
 	<div class="container githubPullRequests">
 		<table class="table" data-name="{{reponame}}" data-login="{{login}}">
 			<tbody>

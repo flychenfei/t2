@@ -136,11 +136,12 @@
 				var login = $(event.target).closest("td").attr("data-login");
 				app.githubApi.getPullRequests({
 					name:name,
-					login:login
+					login:login,
+					state:"open"
 				}).pipe(function(json){
-					brite.display("GithubPullRequests",$(".tab-content"),{pullrequests:json.result.pullRequests,name:name,login:login});
+					brite.display("GithubPullRequests",$(".tab-content"),{pullrequests:json.result.pullRequests,name:name,login:login,pullRequestState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
 				});
-	}
+			}
 		}
 	});
 	

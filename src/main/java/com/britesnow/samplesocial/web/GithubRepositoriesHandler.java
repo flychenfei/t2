@@ -467,13 +467,13 @@ public class GithubRepositoriesHandler {
 	 */
 	@WebGet("/github/getPullRequests")
 	public WebResponse getPullRequests(@WebUser User user,@WebParam("name") String name,
-								   @WebParam("login") String login) throws IOException {
+								   @WebParam("login") String login,@WebParam("state") String state) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
 		owner.setLogin(login);
 		repo.setOwner(owner);
 		repo.setName(name);
-		return WebResponse.success(githubRepositoriesService.getPullRequests(repo, user));
+		return WebResponse.success(githubRepositoriesService.getPullRequests(repo, user,state));
 	}
 
 	/**
