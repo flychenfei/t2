@@ -255,58 +255,58 @@
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-envelope'/>";
+                        return "<div class='glyphicon glyphicon-envelope click-able' data-cmd='SHOW_INFO' title='Show Info'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='SHOW_INFO' title='Show Info'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share'/>";
+                        return "<div class='glyphicon glyphicon-share click-able' data-cmd='FORWARD_EMAIL' title='Forward Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='FORWARD_EMAIL' title='Forward Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share-alt'/>";
+                        return "<div class='glyphicon glyphicon-share-alt click-able' data-cmd='REPLAY_EMAIL' title='Replay Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='REPLAY_EMAIL' title='Replay Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-remove'/>";
+                        return "<div class='glyphicon glyphicon-remove click-able' data-cmd='DELETE_EMAIL' title='Delete Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='DELETE_EMAIL' title='Delete Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return view.isSearchTrashEmail ? "<div class='glyphicon glyphicon-transfer'/>" : "<div class='glyphicon glyphicon-trash'/>";
+                        return view.isSearchTrashEmail ? "<div class='glyphicon glyphicon-transfer click-able' data-cmd='UNTRASH_EMAIL' title='UnTrash Email'/>" : "<div class='glyphicon glyphicon-trash click-able' data-cmd='TRASH_EMAIL' title='Trash Email'/>";
                     },
-                    attrs: view.isSearchTrashEmail ? "style='width:40px;cursor:pointer'  data-cmd='UNTRASH_EMAIL' title='UnTrash Email'" : "style='width:40px;cursor:pointer'  data-cmd='TRASH_EMAIL' title='Trash Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-saved'/>";
+                        return "<div class='glyphicon glyphicon-saved click-able' data-cmd='INSERT_EMAIL' title='Insert Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='INSERT_EMAIL' title='Insert Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-import'/>";
+                        return "<div class='glyphicon glyphicon-import click-able' data-cmd='IMPORT_EMAIL' title='Import Email'/>";
                     },
-                    attrs: "style='width:40px;cursor:pointer'  data-cmd='IMPORT_EMAIL' title='Import Email'"
+                    attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<a href-'javascript:void(0)' class='currentThread'>Current Thread</a>";
+                        return "<a href-'javascript:void(0)' class='currentThread click-able'>Current Thread</a>";
                     },
-                    attrs: "style='width:120px;cursor:pointer'"
+                    attrs: "style='width:120px;'"
                 }
             ],
             opts: {
