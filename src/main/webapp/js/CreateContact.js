@@ -57,7 +57,7 @@
 			// --------- Events--------- //
 			events:{
 				//event for create/update button
-				"btap; .createContactBtn, .cancelBtn":function () {
+				"btap; .createContactBtn":function () {
 					var view = this;
 					view.submit();
 				},
