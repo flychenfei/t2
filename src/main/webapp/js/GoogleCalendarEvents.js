@@ -11,12 +11,12 @@
             var view = this;
             var $e = view.$el;
             
-            $e.find('.datetimepicker').datetimepicker({ 
-                format: 'yyyy-MM-dd', 
-                language: 'en', 
-                 pickDate: true, 
-                 pickTime: true, 
-                 inputMask: true 
+            $e.find(".datetimepicker").datetimepicker({
+                format: 'yyyy-MM-dd',
+                language: 'en',
+                pickDate: true,
+                pickTime: true,
+                inputMask: true
             });
             showCalendarEvents.call(view);
 
@@ -36,6 +36,12 @@
         },
 
         events: {
+            "btap; .datetimepicker": function(event){
+                var view = this;
+                var $e = view.$el;
+                $(event.currentTarget).datetimepicker('show');
+            },
+
         	"click;.btnAdd":function(e){
 	        	brite.display("CreateCalendarEvent",null,{id:null});
 	        },

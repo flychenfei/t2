@@ -37,7 +37,9 @@ public class GoogleCalendarSettingService {
             map.put("kind", setting.getKind());
             return map;
             }).collect(Collectors.toList());
-            pageToken = settings.getNextPageToken();
+            if(list.size() ==  pageSize){
+                pageToken = settings.getNextPageToken();
+            }
             return new Pair<String, List<Map>>(pageToken, list);
         } catch (IOException e) {
             // TODO Auto-generated catch block
