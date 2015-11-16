@@ -117,6 +117,11 @@ var app = app || {};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/getPullRequests",params);
 		},
+		editPullRequest:function(opts){
+			var params = opts||{};
+			params.method="Post";
+			return app.getJsonData(contextPath+"/github/editPullRequest",params);
+		},
 
 		editIssue:function(opts){
 			var params = opts||{};

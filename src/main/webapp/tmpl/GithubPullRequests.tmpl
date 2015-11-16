@@ -33,8 +33,8 @@
                     <td></td>
                 </tr>
 			{{#each pullrequests}}
-			<tr>
-				<td class="sha" data-pullrequest-id="{{number}}">
+			<tr data-pullrequest-id="{{number}}">
+				<td class="sha">
 					<div><span class="messageTitle">{{title}}</span></div>
 				</td>
 				<td class="sha">
@@ -43,15 +43,14 @@
 				<td class="sha">
 					<div><span class="author-login">{{user.login}} {{state}}</span></div>
 				</td>
+				<td class="sha">
 				{{#equal state "open"}}
-				<td class="sha">
 					<div><span class="btn btn-close">Close</span></div>
-				</td>
 				{{else}}
-				<td class="sha">
 					<div><span class="btn btn-open">Open</span></div>
-				</td>
 				{{/equal}}
+                <img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+				</td>
 			</tr>
 			{{/each}}
 			</tbody>

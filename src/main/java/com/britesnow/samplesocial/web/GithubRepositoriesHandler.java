@@ -7,6 +7,7 @@ import com.britesnow.samplesocial.entity.GithubRelease;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.PullRequest;
 import org.eclipse.egit.github.core.Repository;
 
 import com.britesnow.samplesocial.entity.User;
@@ -474,6 +475,36 @@ public class GithubRepositoriesHandler {
 		repo.setOwner(owner);
 		repo.setName(name);
 		return WebResponse.success(githubRepositoriesService.getPullRequests(repo, user,state));
+	}
+
+	/**
+	 * edit PullRequest
+	 * @param user
+	 * @param repoName  name of repository
+	 * @param pullRequestId  id of PullRequest
+	 * @param state  state of repository
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebPost("/github/editPullRequest")
+	public WebResponse editPullRequest(@WebUser User user,@WebParam("repoName") String repoName,
+								   @WebParam("pullRequestId") Integer pullRequestId, @WebParam("state") String state,
+								   @WebParam("login") String login) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(repoName);
+		PullRequest pullRequest = new PullRequest();
+		pullRequest.setNumber(pullRequestId);
+		pullRequest.setState(state);
+		try {
+			pullRequest = githubRepositoriesService.editPullRequest(repo, user, pullRequest);
+			return WebResponse.success(pullRequest);
+		} catch (Exception e) {
+			return WebResponse.fail(e.getMessage());
+		}
 	}
 
 	/**

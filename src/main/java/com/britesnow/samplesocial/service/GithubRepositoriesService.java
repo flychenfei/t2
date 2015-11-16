@@ -300,6 +300,11 @@ public class GithubRepositoriesService {
 				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
 	}
 
+	public PullRequest editPullRequest(Repository repo, User user, PullRequest pullRequest) throws IOException {
+		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
+		return pullRequestService.editPullRequest(repo,pullRequest);
+	}
+
 	/*
 	 * edit Issue
 	 * @param repo
