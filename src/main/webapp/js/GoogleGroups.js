@@ -26,6 +26,9 @@
 			//event for group edit icon
 			"click; .glyphicon-edit": function(event){
 				var view = this;
+				if(view.$el.find(".listItem").hasClass("deleting")){
+					return;
+				}
 				var $row = $(event.currentTarget).closest("tr");
 				var title = $row.attr("data-title");
 				var etag = $row.attr("data-etag");
@@ -37,16 +40,31 @@
 			//event for group delete icon
 			"click; .glyphicon-remove": function(event){
 				var view = this;
+				var $listItem = view.$el.find(".listItem");
+				
+				if($listItem.hasClass("deleting")){
+					return;
+				}
+
+				$listItem.addClass("deleting");
 				var $row = $(event.currentTarget).closest("tr");
 				var etag = $row.attr("data-etag");
 				var $id = $row.attr("data-obj_id");
 				var groupId = getGroupId($id);
+
+				var dfd = $.Deferred();
 				app.googleApi.deleteGroup(groupId, etag).done(function (extradata) {
 					if (extradata && extradata.result) {
 						setTimeout((function () {
 							showGroups();
+							setTimeout((function(){
+								dfd.resolve();
+							}), 6000);
 						}), 3000);
 					}
+					dfd.done(function(){
+						$listItem.removeClass("deleting");
+					});
 				});
 		 	}
 		},

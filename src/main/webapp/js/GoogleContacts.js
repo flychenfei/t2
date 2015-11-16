@@ -63,15 +63,30 @@
 
 			//delete contact
 			"DELETE_CONTACT": function(event, extraData) {
+				var view = this;
+				var $listItem = view.$el.find(".listItem");
+				if($listItem.hasClass("deleting")){
+					return;
+				}
+				var $listItem = view.$el.find(".listItem");
+				$listItem.addClass("deleting");
+
 				if (extraData && extraData.objId) {
 					var contactId = getContactId(extraData.objId);
 					var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");
+					var dfd = $.Deferred();
 					app.googleApi.deleteContact(contactId, etag).done(function (extradata) {
 						if (extradata && extradata.result) {
 							setTimeout((function () {
 								$(document).trigger("DO_REFRESH_CONTACT");
+								setTimeout((function(){
+									dfd.resolve();
+								}), 3000);
 							}), 3000);
 						}
+						dfd.done(function () {
+							$listItem.removeClass("deleting");
+						});
 					});
 				}
 
@@ -79,6 +94,10 @@
 
 			//edit contact
 			"EDIT_CONTACT": function(event, extraData){
+				var view = this;
+				if(view.$el.find(".listItem").hasClass("deleting")){
+					return;
+				}
 				if (extraData && extraData.objId) {
 					var contactId = getContactId(extraData.objId);
 					var etag = $(extraData.event.currentTarget).closest("tr").attr("etag");
