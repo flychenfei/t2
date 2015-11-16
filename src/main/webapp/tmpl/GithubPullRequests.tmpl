@@ -43,6 +43,15 @@
 				<td class="sha">
 					<div><span class="author-login">{{user.login}} {{state}}</span></div>
 				</td>
+				{{#equal state "open"}}
+				<td class="sha">
+					<div><span class="btn btn-close">Close</span></div>
+				</td>
+				{{else}}
+				<td class="sha">
+					<div><span class="btn btn-open">Open</span></div>
+				</td>
+				{{/equal}}
 			</tr>
 			{{/each}}
 			</tbody>
