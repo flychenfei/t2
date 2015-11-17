@@ -1,8 +1,11 @@
 package com.britesnow.samplesocial.mail;
 
 
+import com.google.appengine.repackaged.com.google.io.protocol.proto.RPC_ServiceDescriptor;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -26,9 +29,9 @@ public class MailInfo {
         this.subject = subject;
         if(ccAddress != null && ccAddress.length >0){
             ArrayList cc = new ArrayList<String>();
-            for(Address address : ccAddress){
+            Stream.of(ccAddress).forEach(address -> {
                 cc.add(address.toString());
-            }
+            });
             this.cc = cc;
         }
     }
