@@ -54,7 +54,7 @@ public class GmailRestService {
     
     private List<Map> cacheLabels = null;
 
-    public Pair<String, List<MailInfo>> gmailSearch(String subject, String from, String to, 
+    public Pair<Integer, List<MailInfo>> gmailSearch(String subject, String from, String to,
     		String body, String sDate , String eDate, String srDate , String erDate,
     		String label, String hasAttachment , String attachmentName , String cc ,
     		String list, String hasCircle , String circle , String chatContent ,
@@ -178,15 +178,37 @@ public class GmailRestService {
             query.append(a);
         });
         System.out.println(query.toString());
-        ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).setQ(query.toString()).execute();
+        //get the total email count
+        ListMessagesResponse responseAll = gmail.users().messages().list("me").setMaxResults((long) count).setQ(query.toString()).execute();
+        List<Message> messageAll = new ArrayList<Message>();
+        List<String> pageToke = new ArrayList<String>();
+        while (responseAll.getMessages() != null) {
+            messageAll.addAll(responseAll.getMessages());
+            if (responseAll.getNextPageToken() != null) {
+                String pageToken = responseAll.getNextPageToken();
+                pageToke.add(pageToken);
+                responseAll = gmail.users().messages().list("me").setMaxResults((long) count).setQ(query.toString())
+                        .setPageToken(pageToken).execute();
+            } else {
+                break;
+            }
+        }
+        int total = 0;
+        if(messageAll != null){
+            total = messageAll.size();
+        }
         
+        if(!start.equals("")){
+            start = pageToke.get(Integer.parseInt(start) - 1);
+        }
+
+        ListMessagesResponse response = gmail.users().messages().list("me").setMaxResults((long) count).setPageToken(start).setQ(query.toString()).execute();
         final List<MailInfo> mails = new ArrayList();
         List<Message> messages = response.getMessages();
 
         final List<Map> labels = listLabels(false);
-        
+
         if(messages != null){
-            
             BatchRequest batch = gmail.batch();
             JsonBatchCallback<Message> callback = new JsonBatchCallback<Message>() {
 
@@ -208,8 +230,9 @@ public class GmailRestService {
             
             batch.execute();
         }
-        
-        return new Pair<String, List<MailInfo>>(response.getNextPageToken(), mails);
+
+        return new Pair<Integer, List<MailInfo>>(total, mails);
+        //return new Pair<String, List<MailInfo>>(response.getNextPageToken(), mails);
     }
 
     public HashMap gmailMessageList(String access_token, String start, Integer count)throws Exception{

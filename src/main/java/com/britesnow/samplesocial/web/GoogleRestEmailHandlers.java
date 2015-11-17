@@ -71,13 +71,14 @@ public class GoogleRestEmailHandlers {
 	        }
         }
         
-    	Pair<String, List<MailInfo>> pair = gmailRestService.gmailSearch(subject, from, to, body,
+    	Pair<Integer, List<MailInfo>> pair = gmailRestService.gmailSearch(subject, from, to, body,
     			startDate, endDate, startReceivedDate, endReceivedDate, label, hasAttachment,
     			attachmentName , cc , list,  hasCircle ,  circle ,  chatContent , unread,
     			category , deliveredTo , rfc822msgid , minSize, maxSize, pageIndex, pageSize);
         List<MailInfo> mailInfos = pair.getSecond();
         WebResponse result = WebResponse.success(mailInfos);
-        result.set("nextPageToken", pair.getFirst());
+        //result.set("nextPageToken", pair.getFirst());
+        result.set("result_count", pair.getFirst());
         return result;
     }
     

@@ -312,8 +312,9 @@
             opts: {
                 htmlIfEmpty: "Not emails found",
                 withCmdDelete:false,
+                withPaging: true,
                 dataOpts: {
-                    withResultCount:false
+                    withResultCount:true
                 }
             }
         }).done(function(){
