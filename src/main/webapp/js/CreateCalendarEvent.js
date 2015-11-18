@@ -135,7 +135,13 @@
                	data.endTime = endDateVal+" "+endHour+":"+ endMin+ ":00";
                	data.calendarId = $e.find(".calendar").val();
                 var input = $e.find("textarea[name='summary']");
-                if (input.val() == "") {
+                if (dateVal == ''){
+                    $e.find("input[name='startTime']").focus();
+                    $e.find("input[name='startTime']").closest("div").find("span.message").addClass("error").html("Please enter StartTime.");
+                } else if(endDateVal == ''){
+                    $e.find("input[name='endTime']").focus();
+                    $e.find("input[name='endTime']").closest("div").find("span.message").addClass("error").html("Please enter EndTime.");
+                } else if(input.val() == "") {
                     input.focus();
                     input.closest("div").addClass("error").find("span").html("Please enter summary.");
                 } else if($inviter.val() == ""){
@@ -144,7 +150,7 @@
                 } else if(!app.validate.email($inviter)){
                     $inviter.focus();
                     $inviter.closest("div").find("span").addClass("error").html("Please enter correct email address.");
-                } else {
+                }  else {
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
