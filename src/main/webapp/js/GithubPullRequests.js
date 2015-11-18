@@ -63,6 +63,33 @@
                 }).pipe(function(json){
                     refresh(view,json,repoName,login,loading,currentBtn,"open");
                 });
+            },
+            "click;.messageTitle":function(event){
+                var repoName = $(event.target).closest("table").attr("data-name");
+                var login = $(event.target).closest("table").attr("data-login");
+                var pullRequestId = $(event.target).closest("tr").attr("data-pullrequest-id");
+                app.githubApi.getPullRequest({
+                    name:repoName,
+                    login:login,
+                    pullRequestId:pullRequestId
+                }).pipe(function(json){
+                    if(json.success) {
+                        var pullRequest = json.result;
+                        brite.display("GithubPullRequestEdit", $("body"), {
+                            id: pullRequestId,
+                            title: pullRequest.title,
+                            body: pullRequest.body,
+                            login: login,
+                            repoName: repoName,
+                            layout: {
+                                left: '20%',
+                                top:"100px",
+                                width:'60%',
+                                height: 'auto'
+                            }
+                        });
+                    }
+                });
             }
         }
     });

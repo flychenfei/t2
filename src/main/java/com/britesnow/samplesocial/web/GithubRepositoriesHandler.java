@@ -459,6 +459,26 @@ public class GithubRepositoriesHandler {
 	}
 
 	/**
+	 * get one Pull Request for a repository
+	 * @param user
+	 * @param name name of repository
+	 * @param pullRequestId id of PullRequest
+	 * @param login current github user login name
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getPullRequest")
+	public WebResponse getPullRequests(@WebUser User user,@WebParam("name") String name,@WebParam("pullRequestId") Integer pullRequestId,
+								   @WebParam("login") String login,@WebParam("state") String state) throws IOException {
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		return WebResponse.success(githubRepositoriesService.getPullRequest(repo, user, pullRequestId));
+	}
+
+	/**
 	 * get Pull Requests for a repository
 	 * @param user
 	 * @param name name of repository
@@ -468,7 +488,7 @@ public class GithubRepositoriesHandler {
 	 */
 	@WebGet("/github/getPullRequests")
 	public WebResponse getPullRequests(@WebUser User user,@WebParam("name") String name,
-								   @WebParam("login") String login,@WebParam("state") String state) throws IOException {
+									   @WebParam("login") String login,@WebParam("state") String state) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
 		owner.setLogin(login);

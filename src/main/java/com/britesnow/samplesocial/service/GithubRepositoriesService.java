@@ -299,6 +299,11 @@ public class GithubRepositoriesService {
 				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
 	}
 
+	public PullRequest getPullRequest(Repository repo, User user, int id) throws IOException {
+		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
+		return pullRequestService.getPullRequest(repo,id);
+	}
+
 	public PullRequest editPullRequest(Repository repo, User user, PullRequest pullRequest) throws IOException {
 		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
 		return pullRequestService.editPullRequest(repo,pullRequest);
