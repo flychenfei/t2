@@ -126,18 +126,24 @@
                	
                	data.copyTo = $e.find(".copyTo").val();
                	data.iCalUID = view.iCalUID;
-                
-                if (startHour == "" || endHour == "") {
+
+                var input = $e.find("textarea[name='summary']");
+                if (dateVal == ''){
+                    $e.find("input[name='startTime']").focus();
+                    $e.find("input[name='startTime']").closest("div").find("span.message").addClass("error").html("Please enter StartTime.");
+                } else if(endDateVal == ''){
+                    $e.find("input[name='endTime']").focus();
+                    $e.find("input[name='endTime']").closest("div").find("span.message").addClass("error").html("Please enter EndTime.");
+                } else if(input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter summary.");
-                } else {
+                    input.closest(".control-group").find("span.message").addClass("error").html("Please enter summary.");
+                }  else {
                     app.googleApi.saveCopyCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
                         }), 3000);
                         view.close();
                     });
-
                 }
                 
             },
