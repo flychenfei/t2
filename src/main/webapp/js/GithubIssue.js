@@ -9,7 +9,8 @@
 				issue:data.issue,
 				comments:data.comments,
 				layout:data.layout,
-				avatarUrl:data.avatarUrl
+				avatarUrl:data.avatarUrl,
+				issueEvents:data.issueEvents
 				});
 		},
 		events:{

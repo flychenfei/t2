@@ -151,6 +151,12 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/addComment",params);
+		},
+
+		getIssueEvents:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/getIssueEvents",params);
 		}
     };
 })();

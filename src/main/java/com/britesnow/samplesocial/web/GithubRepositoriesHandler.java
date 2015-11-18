@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import com.britesnow.samplesocial.entity.GithubRelease;
+import com.britesnow.samplesocial.service.GithubIssueService;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -654,4 +655,28 @@ public class GithubRepositoriesHandler {
 			return WebResponse.fail(e.getMessage());
 		}
 	}
+	/**
+	 * get events for a issue
+	 * @param user
+	 * @param name name of repository
+	 * @param issueId ID of issue
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/getIssueEvents")
+	public WebResponse getIssueEvents(@WebUser User user,@WebParam("name") String name,
+									  @WebParam("login") String login,@WebParam("issueId") String issueId) throws IOException {
+			Repository repo = new Repository();
+			org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+			owner.setLogin(login);
+			repo.setOwner(owner);
+			repo.setName(name);
+
+			try{
+					return WebResponse.success(githubRepositoriesService.pageIssueEventsInMap(repo, user, issueId).next());
+				}catch(Exception e){
+					return WebResponse.fail(e.getMessage());
+				}
+		}
+
 }

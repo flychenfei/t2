@@ -33,26 +33,34 @@
 				var userInfo = null;
 				app.githubApi.showUserInfo().pipe(function(result){
 					userInfo = JSON.parse(result.result);
-					app.githubApi.getIssue({
+					app.githubApi.getIssueEvents({
 						name:name,
 						login:login,
-						issueNumber:issueNumber
-					}).pipe(function(json){
-						brite.display("GithubIssue",$("body"),{
-							issue:json.result.issue,
-							comments:json.result.comment,
-							avatarUrl:userInfo.avatar_url,
-							layout:{
-								left:'20%',
-								top:"100px",
-								width:'60%',
-								height:'auto'
-							},
-							info:{
-								name:name,
-								login:login,
-								issueNumber:issueNumber
-							}
+						issueId:issueNumber
+					}).pipe(function(reData){
+						var issueEvents = reData.result;
+						app.githubApi.getIssue({
+							name:name,
+							login:login,
+							issueNumber:issueNumber
+						}).pipe(function(json){
+							brite.display("GithubIssue",$("body"),{
+								issue:json.result.issue,
+								comments:json.result.comment,
+								avatarUrl:userInfo.avatar_url,
+								issueEvents:issueEvents,
+								layout:{
+									left:'20%',
+									top:"100px",
+									width:'60%',
+									height:'auto'
+								},
+								info:{
+									name:name,
+									login:login,
+									issueNumber:issueNumber
+								}
+							});
 						});
 					});
 				});
