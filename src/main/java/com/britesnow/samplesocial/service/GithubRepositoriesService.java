@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.*;
+import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.PullRequestService;
@@ -361,5 +362,17 @@ public class GithubRepositoriesService {
 	public Comment addComment(Repository repo, User user, String issueId,String comment) throws IOException {
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		return issueService.createComment(repo, issueId, comment);
+	}
+
+	/**
+	 * @param repo repo
+	 * @param user user
+	 * @param issueId issueId
+	 * @return
+	 * @throws IOException
+     */
+	public PageIterator<Map<String,Object>> pageIssueEventsInMap(Repository repo, User user, String issueId) throws IOException {
+		GithubIssueService issueService = new GithubIssueService(githubAuthService.createClient(user));
+		return issueService.pageIssueEventsInMap(repo.getOwner().getLogin(), repo.getName(), Integer.valueOf(issueId));
 	}
 }

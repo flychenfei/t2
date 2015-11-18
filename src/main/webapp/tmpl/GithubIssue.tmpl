@@ -28,8 +28,7 @@
 						{{/equal}}
 
 						<span class="opener">{{issue.user.login}}</span>
-						<span class="date-info">opened this issue on
-							{{#plus issue.createdAt.year 1900}}{{/plus}}-{{#lt issue.createdAt.month 9}}0{{/lt}}{{#plus issue.createdAt.month 1}}{{/plus}}-{{#lt issue.createdAt.day 10}}0{{/lt}}{{issue.createdAt.day}}
+						<span class="date-info">opened this issue on {{#formatDate issue.createdAt}}{{/formatDate}}
 							. {{issue.comments}} comments</span>
 					</div>
 
@@ -38,7 +37,7 @@
 						<div class="comment-detail">
 							<div class="comment-header">
 								<span class="bold">{{issue.user.login}}</span> commented on
-								{{#plus issue.createdAt.year 1900}}{{/plus}}-{{#lt issue.createdAt.month 9}}0{{/lt}}{{#plus issue.createdAt.month 1}}{{/plus}}-{{#lt issue.createdAt.day 10}}0{{/lt}}{{issue.createdAt.day}}
+								{{#formatDate issue.createdAt}}{{/formatDate}}
 								<span class="glyphicon glyphicon-pencil comment-edit"></span>
 							</div>
 							<div class="comment-body">
@@ -56,6 +55,112 @@
 						</div>
 					</div>
 
+					<div class="issue-events">
+						{{#each issueEvents}}
+							{{#equal event "assigned"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+								{{#equal assignee.login actor.login}}
+									<span class="event-user">{{actor.login}}</span> self-assigned this {{#formatDate created_at}}{{/formatDate}}
+								{{/equal}}
+
+								{{#notEqual assignee.login actor.login}}
+									<span class="event-user">{{actor.login}}</span> assigned this to {{assignee.login}} {{#formatDate created_at}}{{/formatDate}}
+								{{/notEqual}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "closed"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-ban-circle"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+								<span class="event-user">{{actor.login}}</span> closed this {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "reopened"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-ok-sign"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+								<span class="event-user">{{actor.login}}</span> reopened this {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "renamed"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+								<span class="event-user">{{actor.login}}</span> changed the title from <span class="event-rename">{{rename.from}}</span> to <span class="event-rename">{{rename.to}}</span> {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "labeled"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-tag"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> added <span class="tag" style="background-color:#{{label.color}};">{{label.name}}</span> label {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "unlabeled"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-tag"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> removed  <span class="tag" style="background-color:#{{label.color}};">{{label.name}}</span> label {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "referenced"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-bookmark"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> referenced this issue from a commit {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "locked"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> locked this issue {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "unlocked"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> unlocked this issue {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "milestoned"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> add milestone this issue {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "demilestoned"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> remove milestone this issue {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+
+							{{#equal event "unassigned"}}
+							<div class="event-row">
+							<i class="glyphicon glyphicon-pencil"/>
+							<img class="event-avatar" src="{{actor.avatar_url}}"/>
+							<span class="event-user">{{actor.login}}</span> unassigned this from {{assignee.login}} {{#formatDate created_at}}{{/formatDate}}
+							</div>
+							{{/equal}}
+						{{/each}}
+					</div>
+
                     <div class="issue-comments">
 					{{#each comments}}
 					<div class="row issue-comment" comment-number={{id}}>
@@ -63,7 +168,7 @@
 						<div class="comment-detail">
 							<div class="comment-header" data-body="{{body}}">
 								<span class="bold">{{user.login}}</span> commented on
-								{{#plus createdAt.year 1900}}{{/plus}}-{{#lt createdAt.month 9}}0{{/lt}}{{#plus createdAt.month 1}}{{/plus}}-{{#lt createdAt.day 10}}0{{/lt}}{{createdAt.day}}
+								{{#formatDate createdAt}}{{/formatDate}}
 								<span class="glyphicon glyphicon-pencil comments-edit"></span>
 								<span class="glyphicon glyphicon-remove comments-remove"></span>
 							</div>
