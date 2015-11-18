@@ -1,8 +1,6 @@
 package com.britesnow.samplesocial.mail;
 
 
-import com.google.appengine.repackaged.com.google.io.protocol.proto.RPC_ServiceDescriptor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;

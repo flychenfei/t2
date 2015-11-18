@@ -1,7 +1,6 @@
 package com.britesnow.samplesocial.entity;
 
 
-import org.eclipse.egit.github.core.*;
 import org.eclipse.egit.github.core.User;
 
 import java.io.Serializable;
