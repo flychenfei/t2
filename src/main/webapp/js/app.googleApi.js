@@ -16,6 +16,15 @@ var app = app || {};
             $.extend(params, opts);
             return app.getJsonData(contextPath + "/ggroup/list", params);
         },
+
+        "getGrouplist": function (opts) {
+            var params = {
+                method: "Get"
+            };
+            $.extend(params, opts);
+            return app.getJsonData(contextPath + "/ggroup/grouplist", params);
+        },
+
         createGroup: function(params){
             return app.getJsonData(contextPath + "/ggroup/create", params);
         },

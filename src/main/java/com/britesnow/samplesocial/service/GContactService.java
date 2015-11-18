@@ -112,6 +112,20 @@ public class GContactService {
         int count = contactGroupFeed.getTotalResults();
         return new Pair<List<ContactGroupEntry>, Integer>(contactGroupFeed.getEntries(), count);
     }
+
+    /**
+     * list groups with param
+     * @return
+     */
+    public Pair<List<ContactGroupEntry>, Integer> getGrouplist(int startIndex, int count) throws IOException, ServiceException {
+        URL feedUrl = new URL(BASE_GROUP_URL);
+        ContactQuery myQuery = new ContactQuery(feedUrl);
+        myQuery.setStartIndex(startIndex);
+        myQuery.setMaxResults(count);
+        ContactGroupFeed contactGroupFeed = getContactsService().getFeed(myQuery, ContactGroupFeed.class);
+        int total = contactGroupFeed.getTotalResults();
+        return new Pair<List<ContactGroupEntry>, Integer>(contactGroupFeed.getEntries(), total);
+    }
     // --------- /getData --------- //
 
     // --------- Delete --------- //
