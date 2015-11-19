@@ -2,12 +2,12 @@
 
 	/**
 	 * View: MailInfo
-	 *
+	 * Description: shwo the mail information
 	 */
 	brite.registerView("GoogleMailInfo", {
 		parent : "body"
 	}, {
-		
+
 		create : function(data, config) {
 			var view = this;
 			var dfd = $.Deferred();
@@ -24,11 +24,10 @@
 						dfd.resolve(data.result);
 					});
 				}
-				
 			} else {
 				dfd.resolve({});
 			}
-			
+
 			$.when(dfd).done(function(mail) {
 				if (!mail || !mail.attachments || mail.attachments.length == 0) {
 					mail.hideAttachments = true;
@@ -46,37 +45,34 @@
 
 			return createDfd.promise();
 		},
-		
+
 		events : {
-	 		"btap; .btnClose": function(){
-	 			var view = this;
-	 			view.close();
-	 		},
-	 		"btap; .attachment": function(e){
-	 			var view = this;
-	 			var $attachment = $(e.currentTarget);
-	 			var attachmentId = $attachment.attr("data-attachment-id");
-	 			var name = $attachment.attr("data-attachment-name");
-	 			var messageId = view.id;
-	 			if(view.type == 'rest'){
-		 			window.open(contextPath+"/gmailrest/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
-	 			}else{
-		 			window.open(contextPath+"/gmail/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
-	 			}
-	 		}
+			// event for close the page
+			"btap; .btnClose": function(){
+				var view = this;
+				view.close();
+			},
+
+			// event for click attachment
+			"btap; .attachment": function(e){
+				var view = this;
+				var $attachment = $(e.currentTarget);
+				var attachmentId = $attachment.attr("data-attachment-id");
+				var name = $attachment.attr("data-attachment-name");
+				var messageId = view.id;
+				if(view.type == 'rest'){
+					window.open(contextPath+"/gmailrest/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
+				}else{
+					window.open(contextPath+"/gmail/attachment?messageId="+messageId+"&attachmentId="+attachmentId+"&name="+name);
+				}
+			}
 		},
 
 		close : function(update) {
 			var view = this;
-			var $e = view.$el;
-
-			$e.bRemove();
+			view.$el.bRemove();
 			view.$screen.remove();
 		}
 	});
-
-	// --------- View Private Methods --------- //
-
-	// --------- /View Private Methods --------- //
 
 })();
