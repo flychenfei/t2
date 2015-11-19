@@ -1,11 +1,14 @@
 package com.britesnow.samplesocial.web;
 
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gdata.data.contacts.GroupMembershipInfo;
+import fi.foyt.foursquare.api.entities.Contact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -158,15 +161,29 @@ public class GoogleContactHandlers {
 	public WebResponse getContacts(@WebUser User user, @WebParam("groupId") String groupId,
 								   @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
 								   RequestContext rc) throws Exception {
-		Pair<List<ContactEntry>, Integer> pair;
-		pair = gContactService.getContactResults(groupId, pageIndex * pageSize + 1, pageSize);
-		List<ContactEntry> list = pair.getFirst();
+		Pair<List<ContactEntry>, Integer> contactPair = gContactService.getContactResults(groupId, pageIndex * pageSize + 1, pageSize);
+		Pair<List<ContactGroupEntry>, Integer> groupPair = gContactService.getGroupResults();
+		List<ContactEntry> list = contactPair.getFirst();
+		List<ContactGroupEntry> groupList = groupPair.getFirst();
 		List<ContactInfo> infos = new ArrayList<ContactInfo>();
 		for (ContactEntry contact : list) {
-			infos.add(ContactInfo.from(contact));
+			ContactInfo contactInfo = ContactInfo.from(contact);
+			List<GroupMembershipInfo> groupMembershipInfos = contact.getGroupMembershipInfos();
+			if(groupMembershipInfos != null){
+				List<String> groups = new ArrayList();
+				for(GroupMembershipInfo groupMembershipInfo : groupMembershipInfos){
+					for(ContactGroupEntry groupEntry : groupList){
+						if(groupEntry.getId().equals(groupMembershipInfo.getHref())){
+							groups.add(groupEntry.getTitle().getPlainText());
+						}
+					}
+				}
+				contactInfo.setGroups(groups);
+			}
+			infos.add(contactInfo);
 		}
 
-		return WebResponse.success(infos).setResultCount(pair.getSecond());
+		return WebResponse.success(infos).setResultCount(contactPair.getSecond());
 	}
 
 	/**
@@ -183,15 +200,29 @@ public class GoogleContactHandlers {
 	public WebResponse searchContacts(@WebUser User user, @WebParam("contactName") String contactName,
 									  @WebParam("pageSize") Integer pageSize, @WebParam("pageIndex") Integer pageIndex,
 									  RequestContext rc) throws Exception {
-		Pair<List<ContactEntry>, Integer> pair;
-		pair = gContactService.searchContactResults(contactName, pageIndex * pageSize + 1, pageSize);
-		List<ContactEntry> list = pair.getFirst();
+		Pair<List<ContactEntry>, Integer> contactPair = gContactService.searchContactResults(contactName, pageIndex * pageSize + 1, pageSize);
+		Pair<List<ContactGroupEntry>, Integer> groupPair = gContactService.getGroupResults();
+		List<ContactEntry> list = contactPair.getFirst();
+		List<ContactGroupEntry> groupList = groupPair.getFirst();
 		List<ContactInfo> infos = new ArrayList<ContactInfo>();
 		for (ContactEntry contact : list) {
-			infos.add(ContactInfo.from(contact));
+			ContactInfo contactInfo = ContactInfo.from(contact);
+			List<GroupMembershipInfo> groupMembershipInfos = contact.getGroupMembershipInfos();
+			if(groupMembershipInfos != null){
+				List<String> groups = new ArrayList();
+				for(GroupMembershipInfo groupMembershipInfo : groupMembershipInfos){
+					for(ContactGroupEntry groupEntry : groupList){
+						if(groupEntry.getId().equals(groupMembershipInfo.getHref())){
+							groups.add(groupEntry.getTitle().getPlainText());
+						}
+					}
+				}
+				contactInfo.setGroups(groups);
+			}
+			infos.add(contactInfo);
 		}
 
-		return WebResponse.success(infos).setResultCount(pair.getSecond());
+		return WebResponse.success(infos).setResultCount(contactPair.getSecond());
 	}
 
 	/**

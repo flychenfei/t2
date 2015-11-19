@@ -22,6 +22,8 @@ public class ContactInfo {
     private String id;
     private String etag;
 
+    private List<String> groups = null;
+
     public ContactInfo() {
     }
 
@@ -103,6 +105,14 @@ public class ContactInfo {
 
     public void setEtag(String etag) {
         this.etag = etag;
+    }
+
+    public List<String> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<String> groups) {
+        this.groups = groups;
     }
 
     public static ContactInfo from(ContactEntry entry) {

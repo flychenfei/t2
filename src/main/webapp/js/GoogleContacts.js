@@ -117,17 +117,17 @@
 	});
 
 	// --------- Private Methods --------- //
-	//get groupId
-	function getGroupId(url) {
-		var myregexp = /http:\/\/www.google.com\/m8\/feeds\/groups\/(.+)\/base\/(.+)/;
-		var match = myregexp.exec(url);
-		if (match != null) {
-			result = match[2];
-		} else {
-			result = "";
-		}
-		return result;
-	}
+//	//get groupId
+//	function getGroupId(url) {
+//		var myregexp = /http:\/\/www.google.com\/m8\/feeds\/groups\/(.+)\/base\/(.+)/;
+//		var match = myregexp.exec(url);
+//		if (match != null) {
+//			result = match[2];
+//		} else {
+//			result = "";
+//		}
+//		return result;
+//	}
 
 	//get contactId
 	function getContactId(url) {
@@ -175,7 +175,7 @@
 				{
 					text: "Group",
 					render: function (obj) {
-						return getGroupId(obj.groupId)
+						return obj.groups.join(",");
 					}
 				},
 				{
