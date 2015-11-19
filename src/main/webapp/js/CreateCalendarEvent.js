@@ -2,7 +2,7 @@
 (function () {
 
     /**
-     * Component: CreateTable
+     * Component: CreateCalendarEvent
      */
     (function ($) {
 
@@ -14,11 +14,14 @@
             create:function (data, config) {
             	view = this;
             	data = data || {};
+
+                /*********************************Data filling start****************************************/
+
                 if(data) {
                     this.id = data.id;
                     view.id = data.id;
                 }
-                
+
                 if(data.startTime){
                 	var date = new Date(data.startTime);
                 	data.startDate = date.format("yyyy-MM-dd");
@@ -29,8 +32,11 @@
                 	data.endDate = date.format("yyyy-MM-dd");
                 	this.endDate = date;
                 }
-                
+
                 this.calendarId = data.calendarId;
+
+                /*********************************Data filling end****************************************/
+
                 var html = app.render("tmpl-CreateCalendarEvent",data||{});
                 var $e = $(html);
                 return $e;
@@ -39,6 +45,8 @@
                 var view = this;
                 var $e = view.$el;
 
+                /***********************************init date Component******************************************************/
+
 				$e.find('.datetimepicker').datetimepicker({
 					format : 'yyyy-MM-dd',
 					language : 'en',
@@ -46,7 +54,7 @@
 					pickTime : true,
 					inputMask : true
 				});
-				
+
 				$e.find(".hour").each(function(){
 					var $hour = $(this);
 					for (var i = 0; i <= 23; i++) {
@@ -64,7 +72,7 @@
 						$hour.append("<option value='" + value + "' "+selected+">" + value + "</option>");
 					}
 				});
-				
+
 				$e.find(".min").each(function(){
 					var $min = $(this);
 					for (var i = 0; i <= 59; i++) {
@@ -82,7 +90,8 @@
 						$min.append("<option value='" + value + "' "+selected+">" + value + "</option>");
 					}
 				});
-				
+
+                /***********************************init date Component******************************************************/
 
 				$calendar = $e.find(".calendar");
 				$calendarOpt = $e.find(".calendarOpt");
@@ -99,7 +108,7 @@
 							$calendar.append("<option value='" + id + "' "+selected+">" + value + "</option>");
 						}
 					}
-				}); 
+				});
 
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
@@ -123,12 +132,12 @@
 
                 var $inviter = $e.find(".addInviter");
                 data.inviters = $inviter.val();
-                
+
                 var dateVal = $e.find("input[name='startTime']").val();
                 var startHour = $e.find(".startHour").val();
                 var startMin =$e.find(".startMin").val();
                	data.startTime = dateVal+" "+startHour+":"+ startMin+ ":00";
-               	
+
                 var endDateVal = $e.find("input[name='endTime']").val();
                 var endHour = $e.find(".endHour").val();
                 var endMin =$e.find(".endMin").val();
@@ -158,13 +167,11 @@
                         view.close();
                     });
                 }
-                
+
             },
 
             events:{
                 "btap; .datetimepicker": function(event){
-                    var view = this;
-                    var $e = view.$el;
                     $(event.currentTarget).datetimepicker('show');
                 },
 
@@ -173,6 +180,7 @@
                     var $e = view.$el;
                     view.submit();
                 },
+
                 "keydown": function (e) {
                     var view = this;
                     if (e.keyCode == 27) {
@@ -181,6 +189,7 @@
                         view.submit();
                     }
                 },
+
                 "btap; .cancelBtn":function () {
                     var view = this;
                     view.close();
