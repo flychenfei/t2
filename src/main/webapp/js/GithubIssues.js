@@ -44,11 +44,11 @@
 							login:login,
 							issueNumber:issueNumber
 						}).pipe(function(json){
+							var commentsEvents = refreshGroup(json.result.comment,issueEvents);
 							brite.display("GithubIssue",$("body"),{
 								issue:json.result.issue,
-								comments:json.result.comment,
+								commentsEvents:commentsEvents,
 								avatarUrl:userInfo.avatar_url,
-								issueEvents:issueEvents,
 								layout:{
 									left:'20%',
 									top:"100px",
@@ -152,5 +152,15 @@
 			var closeCount = +$closeCount.attr("data-count")+1;
 			$closeCount.html(closeCount+" Closed").attr("data-count",closeCount);
 		}
+	};
+
+	function refreshGroup(comments,events){
+		comments = comments.concat(events);
+		comments.sort(function(a,b){
+			var date1 = typeof(a.createdAt) == "undefined" ? new Date(a.created_at).getTime() : a.createdAt.time;
+			var date2 = typeof(b.createdAt) == "undefined" ? new Date(b.created_at).getTime() : b.createdAt.time;
+			return date1 - date2;
+		});
+		return comments;
 	}
 })();

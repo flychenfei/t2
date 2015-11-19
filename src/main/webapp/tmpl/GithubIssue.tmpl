@@ -55,8 +55,8 @@
 						</div>
 					</div>
 
-					<div class="issue-events">
-						{{#each issueEvents}}
+					<div class="issue-comments">
+                    {{#each commentsEvents}}
 							{{#equal event "assigned"}}
 							<div class="event-row">
 							<i class="glyphicon glyphicon-pencil"/>
@@ -158,11 +158,9 @@
 							<span class="event-user">{{actor.login}}</span> unassigned this from {{assignee.login}} {{#formatDate created_at}}{{/formatDate}}
 							</div>
 							{{/equal}}
-						{{/each}}
-					</div>
 
-                    <div class="issue-comments">
-					{{#each comments}}
+
+                    {{#equal user.type "User"}}
 					<div class="row issue-comment" comment-number={{id}}>
 						<img class="user-avatar" src="{{user.avatarUrl}}"/>
 						<div class="comment-detail">
@@ -186,6 +184,7 @@
 							</div>
 						</div>
 					</div>
+					{{/equal}}
 					{{/each}}
 					</div>
 					<div class="row issue-comment">
