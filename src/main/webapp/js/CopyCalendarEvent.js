@@ -2,7 +2,7 @@
 (function () {
 
     /**
-     * Component: CreateTable
+     * Component: CopyCalendarEvent
      */
     (function ($) {
 
@@ -14,6 +14,8 @@
             create:function (data, config) {
             	var view = this;
             	data = data || {};
+                /*********************************Data filling start****************************************/
+
                 view.calendarId = data.calendarId;
                 if(data.startTime){
                 	var date = new Date(data.startTime);
@@ -28,7 +30,8 @@
                 if(data.iCalUID){
                 	view.iCalUID = data.iCalUID;
                 }
-                
+
+                /*********************************Data filling end****************************************/
                 var html = app.render("tmpl-CopyCalendarEvent",data||{});
                 var $e = $(html);
                 return $e;
@@ -37,6 +40,7 @@
                 var view = this;
                 var $e = view.$el;
 
+                /***********************************init date Component******************************************************/
 				$e.find('.datetimepicker').datetimepicker({
 					format : 'yyyy-MM-dd',
 					language : 'en',
@@ -44,7 +48,7 @@
 					pickTime : true,
 					inputMask : true
 				});
-				
+
 				$e.find(".hour").each(function(){
 					var $hour = $(this);
 					for (var i = 0; i <= 23; i++) {
@@ -62,7 +66,7 @@
 						$hour.append("<option value='" + value + "' "+selected+">" + value + "</option>");
 					}
 				});
-				
+
 				$e.find(".min").each(function(){
 					var $min = $(this);
 					for (var i = 0; i <= 59; i++) {
@@ -80,7 +84,8 @@
 						$min.append("<option value='" + value + "' "+selected+">" + value + "</option>");
 					}
 				});
-				
+
+                /***********************************init date Component******************************************************/
 
 				$copy = $e.find(".copyEvent");
 				$copyTo = $e.find(".copyTo");
@@ -94,7 +99,7 @@
 						}
 					}
 
-				}); 
+				});
 
                 var mainScreen = view.mainScreen = $e.bComponent("MainScreen");
                 $e.find("form").find("input[type=text]").focus();
@@ -113,21 +118,22 @@
                 data.location=$e.find(".controls input[name='location'] ").val();
                 data.summary=$e.find(".controls textarea[name='summary'] ").val();
                 data.reminders=$e.find(".reminders").val();
-                
+
                 var dateVal = $e.find("input[name='startTime']").val();
                 var startHour = $e.find(".startHour").val();
                 var startMin =$e.find(".startMin").val();
                	data.startTime = dateVal+" "+startHour+":"+ startMin+ ":00";
-               	
+
                 var endDateVal = $e.find("input[name='endTime']").val();
                 var endHour = $e.find(".endHour").val();
                 var endMin =$e.find(".endMin").val();
                	data.endTime = endDateVal+" "+endHour+":"+ endMin+ ":00";
-               	
+
                	data.copyTo = $e.find(".copyTo").val();
                	data.iCalUID = view.iCalUID;
 
                 var input = $e.find("textarea[name='summary']");
+
                 if (dateVal == ''){
                     $e.find("input[name='startTime']").focus();
                     $e.find("input[name='startTime']").closest("div").find("span.message").addClass("error").html("Please enter StartTime.");
@@ -145,13 +151,11 @@
                         view.close();
                     });
                 }
-                
+
             },
 
             events:{
                 "btap; .datetimepicker": function(event){
-                    var view = this;
-                    var $e = view.$el;
                     $(event.currentTarget).datetimepicker('show');
                 },
 
