@@ -230,5 +230,20 @@ public class GoogleContactHandlers {
 		Pair<List<ContactGroupEntry>, Integer> pair = gContactService.getGroupResults();
 		return WebResponse.success(pair.getFirst()).set("result_count", pair.getSecond());
 	}
+
+	/**
+	 * list group
+	 * @param user   auth user
+	 * @param m  map
+	 * @return
+	 * @throws Exception
+	 */
+	@WebGet("/ggroup/grouplist")
+
+	public WebResponse getGrouplist(@WebModel Map m, @WebUser User user, @WebParam("pageSize") Integer pageSize,
+	                             @WebParam("pageIndex") Integer pageIndex,RequestContext rc) throws Exception {
+				Pair<List<ContactGroupEntry>, Integer> pair = gContactService.getGrouplist(pageIndex * pageSize + 1, pageSize);
+		return WebResponse.success(pair.getFirst()).set("result_count", pair.getSecond());
+	}
 	// --------- /getData --------- //
 }

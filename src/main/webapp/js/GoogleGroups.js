@@ -109,9 +109,9 @@
 	// --------- Private Methods --------- //
 	//show groups in the DataTable
 	function showGroups() {
-		var groups = app.googleApi.getGroups();
+		var groups = app.googleApi.getGrouplist;
 		return brite.display("DataTable", ".groups-container", {
-			gridData: groups,
+			dataProvider: {list: groups},
 			rowAttrs: function(obj){ return "data-type='Group' data-etag='{0}' data-title='{1}'".format(obj.etag, obj.title.text)},
 			columnDef:[
 				{
@@ -145,7 +145,7 @@
 			],
 			opts:{
 				htmlIfEmpty: "Not Groups found",
-				withPaging: false,
+				withPaging: true,
 				withCmdDelete:false
 			}
 		});
