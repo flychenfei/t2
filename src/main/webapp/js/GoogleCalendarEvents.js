@@ -10,7 +10,8 @@
         postDisplay: function (data, config) {
             var view = this;
             var $e = view.$el;
-            
+
+            /***********************************init date Component******************************************************/
             $e.find(".datetimepicker").datetimepicker({
                 format: 'yyyy-MM-dd',
                 language: 'en',
@@ -18,6 +19,8 @@
                 pickTime: true,
                 inputMask: true
             });
+            /***********************************init date Component******************************************************/
+
             showCalendarEvents.call(view);
 
 			$calendar = $e.find(".calendar");
@@ -37,8 +40,6 @@
 
         events: {
             "btap; .datetimepicker": function(event){
-                var view = this;
-                var $e = view.$el;
                 $(event.currentTarget).datetimepicker('show');
             },
 
@@ -46,9 +47,6 @@
 	        	brite.display("CreateCalendarEvent",null,{id:null});
 	        },
 	        "click;.showCanlendarView":function(){
-	        	var view = this;
-	        	var $e = view.$el;
-	        	
 	        	brite.display("GoogleCalendarView");
 	        },
 
@@ -117,7 +115,7 @@
         	"DO_REFRESH_CALENDAR_EVENT":function(){
                  var view = this;
                  showCalendarEvents.call(view);
-             },
+             }
             
             
         },
