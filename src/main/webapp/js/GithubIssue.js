@@ -7,10 +7,9 @@
 			Handlebars.registerPartial("issue-comment-add",Handlebars.templates["issue-comment-add"]);
 			return app.render("tmpl-GithubIssue",{
 				issue:data.issue,
-				comments:data.comments,
+				commentsEvents:data.commentsEvents,
 				layout:data.layout,
-				avatarUrl:data.avatarUrl,
-				issueEvents:data.issueEvents
+				avatarUrl:data.avatarUrl
 				});
 		},
 		events:{

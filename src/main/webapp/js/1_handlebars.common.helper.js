@@ -177,12 +177,11 @@
 		if(!date){
 			return "";
 		}
-		console.log(typeof(date) === "string");
 		if(typeof(date) === "string"){
 			date = new Date(date);
 			return date.getFullYear()+"-"+(date.getMonth() < 9 ? 0:"")+(date.getMonth()+1)+"-"+(date.getDate() < 10 ? 0:"")+(date.getDate());
 		}
-		return (date.year+1900)+"-"+(date.month < 9 ? 0:"")+(date.month+1)+"-"+(date.day < 10 ? 0:"")+(date.day);
+		return (date.year+1900)+"-"+(date.month < 9 ? 0:"")+(date.month+1)+"-"+(date.date < 10 ? 0:"")+(date.date);
 	});
 
 })(jQuery);
