@@ -2,60 +2,63 @@
 
 	/**
 	 * View: GoogleMailForwardImap
-	 *
+	 * Description: shwo the email forward page for IMAP
 	 */
 	brite.registerView("GoogleMailForwardImap", {
 		loadTmpl : true,
 		parent : "body"
 	}, {
-		
+
 		create : function(data, config) {
 			var view = this;
 			data = data || {};
-			view.type = data.type;
-			var dfd = $.Deferred();
 			var $html = app.render("tmpl-GoogleMailForwardImap",data);
 			//show a screen to prevent use click other places
 			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body"); 
 			return $html;
 		},
-		
+
 		events : {
-		    "btap; .addCC": function(){
-		        var view = this;
-		        var $e = view.$el;
-		        $e.find(".ccItems").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
-		    },
+			// event for click to add CC
+			"btap; .addCC": function(){
+				var view = this;
+				view.$el.find(".ccItems").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+			},
+
+			// event for remove the CC
             "btap; .removeCC": function(event){
                 var view = this;
-                var $e = view.$el;
-                var $btn = $(event.currentTarget).closest(".ccItem").remove();
-                },
-	 		"btap; .addAttachment": function(){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			$e.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
-	 		}, 
-	 		"btap; .removeAttachment": function(event){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			var $btn = $(event.currentTarget).closest(".attachmentItem").remove();
-	 		}, 
-	 		"btap; .btnClose": function(){
-	 			var view = this;
-	 			view.close();
-	 		}, 
-	 		"btap; .btnCreate": function(){
-	 			forwardMailImap.call(this);
-	 			view.close();
-	 		}
+                $(event.currentTarget).closest(".ccItem").remove();
+            },
+
+            // event for add attachment
+			"btap; .addAttachment": function(){
+				var view = this;
+				view.$el.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
+			},
+
+			// event for remove attachment
+			"btap; .removeAttachment": function(event){
+				var view = this;
+				$(event.currentTarget).closest(".attachmentItem").remove();
+			},
+
+			// event for close the page
+			"btap; .btnClose": function(){
+				var view = this;
+				view.close();
+			},
+
+			// event for forward the email
+			"btap; .btnCreate": function(){
+				forwardMailImap.call(this);
+				view.close();
+			}
 		},
 
 		close : function(update) {
 			var view = this;
-			var $e = view.$el;
-
-			$e.bRemove();
+			view.$el.bRemove();
 			view.$screen.remove();
 		}
 	});
@@ -88,7 +91,7 @@
 		$e.find("input[name='attachments']").each(function(){
 			files.push($(this)[0].files[0]);
 		});
-		
+
 		app.googleApi.sendMail({
 			to : to,
 			cc : cc,
@@ -97,10 +100,7 @@
 		},files).done(function() {
 			$(document).trigger("DO_REFRESH_MAIL");
 			view.close();
-
 		});
-
-
 	}
 
 	// --------- /View Private Methods --------- //
