@@ -2,7 +2,7 @@
 
 	/**
 	 * View: GoogleMailForwardRest
-	 *
+	 * Description: shwo the email forward page for Gamil API
 	 */
 	brite.registerView("GoogleMailForwardRest", {
 		loadTmpl : true,
@@ -12,49 +12,52 @@
 		create : function(data, config) {
 			var view = this;
 			data = data || {};
-			view.type = data.type;
-			var dfd = $.Deferred();
 			var $html = app.render("tmpl-GoogleMailForwardRest",data);
 			//show a screen to prevent use click other places
-			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body"); 
+			view.$screen = $("<div class='notTransparentScreen'></div>").appendTo("body");
 			return $html;
 		},
 
 		events : {
-	 		"btap; .addAttachment": function(){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			$e.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
-	 		},
-	 		"btap; .removeAttachment": function(event){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			var $btn = $(event.currentTarget).closest(".attachmentItem").remove();
-	 		},
-	 		"btap; .addCC": function(){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			$e.find(".cc").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
-	 		},
-	 		"btap; .removeCC": function(event){
-	 			var view = this;
-	 			var $e = view.$el;
-	 			$(event.currentTarget).closest(".ccItem").remove();
-	 		},
-	 		"btap; .btnClose": function(){
-	 			var view = this;
-	 			view.close();
-	 		},
-	 		"btap; .btnCreate": function(){
-	 			forwardMail.call(this);
-	 		}
+			// event for click to add attachment
+			"btap; .addAttachment": function(){
+				var view = this;
+				view.$el.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
+			},
+
+			// event for remove the attachment
+			"btap; .removeAttachment": function(event){
+				var view = this;
+				$(event.currentTarget).closest(".attachmentItem").remove();
+			},
+
+			// event for add CC
+			"btap; .addCC": function(){
+				var view = this;
+				view.$el.find(".cc").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+			},
+
+			// event for remove the CC
+			"btap; .removeCC": function(event){
+				var view = this;
+				$(event.currentTarget).closest(".ccItem").remove();
+			},
+
+			// event for close the page
+			"btap; .btnClose": function(){
+				var view = this;
+				view.close();
+			},
+
+			// event for forward the email
+			"btap; .btnCreate": function(){
+				forwardMail.call(this);
+			}
 		},
 
 		close : function(update) {
 			var view = this;
-			var $e = view.$el;
-
-			$e.bRemove();
+			view.$el.bRemove();
 			view.$screen.remove();
 		}
 	});
@@ -106,7 +109,5 @@
 			view.close();
 		});
 	}
-
 	// --------- /View Private Methods --------- //
-
 })();
