@@ -2,7 +2,7 @@
 (function () {
 
     /**
-     * Component: CreateTable
+     * Component: CreateCalendar
      */
     (function ($) {
 
@@ -36,6 +36,7 @@
             submit:function () {
                 var view = this;
                 var $e = this.$el;
+                $e.find(".form-group span.message").removeClass("error").empty();
                 var mainScreen = view.mainScreen;
                 data = {};
                 data.id = view.id;
@@ -43,7 +44,7 @@
                 var input = $e.find("textarea[name='summary']");
                 if (input.val() == "") {
                     input.focus();
-                    input.closest("div").addClass("error").find("span").html("Please enter summary.");
+                    input.closest(".form-group").find("span").addClass("error").html("Please enter summary.");
                 } else {
                     app.googleApi.saveCalendars(data).done(function (extraData) {
                         setTimeout((function () {
@@ -51,7 +52,6 @@
                         }), 3000);
                         view.close();
                     });
-
                 }
                 
             },
@@ -59,7 +59,6 @@
             events:{
                 "btap; .CreateCalendarBtn":function () {
                     var view = this;
-                    var $e = view.$el;
                     view.submit();
                 },
                 "keydown": function (e) {
