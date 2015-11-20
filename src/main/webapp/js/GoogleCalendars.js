@@ -9,8 +9,6 @@
 
         postDisplay: function (data, config) {
             var view = this;
-            var $e = view.$el;
-            
             showCalendars.call(view);
         },
 
@@ -83,21 +81,21 @@
                 {
                     text:"",
                     render:function(obj){
-                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-edit hander' data-cmd='EDIT_CALENDAR'></div>";
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-edit hander' data-cmd='EDIT_CALENDAR' title='edit'></div>";
                     },
 					attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-remove hander' data-cmd='DELETE_CALENDAR'></div>";
+                    	return (obj.accessRole == "reader" || obj.primary) ? "" : "<div class='glyphicon glyphicon-remove hander' data-cmd='DELETE_CALENDAR' title='delete'></div>";
                     },
 					attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                    	return "<div class='glyphicon glyphicon-share shareCalendar hander'></div>";
+                    	return "<div class='glyphicon glyphicon-share shareCalendar hander' title='share'></div>";
                     },
 					attrs: "style='width: 40px'"
                 }               
