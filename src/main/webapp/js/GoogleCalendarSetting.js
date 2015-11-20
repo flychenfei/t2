@@ -9,8 +9,6 @@
 
         postDisplay: function (data, config) {
             var view = this;
-            var $e = view.$el;
-            
             showCalendarSetting.call(view);
         },
 
