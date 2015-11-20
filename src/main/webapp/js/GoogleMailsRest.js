@@ -95,8 +95,7 @@
             // event click Current Thread
             "click; .currentThread":function(event){
 				var view = this;
-				var $e = view.$el;
-				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-iCurrent Threadd");
+				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
 				brite.display("GoogleThreadMails",null,{threadId:threadId});
             },
 
