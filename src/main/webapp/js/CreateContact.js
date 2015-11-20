@@ -10,8 +10,10 @@
 		}, {
 			// --------- View Interface Implement--------- //
 			create:function (data, config) {
+				var view = this;
 				if(data) {
-					this.contractId = data.id;
+					view.contractId = data.id;
+					view.groupId = data.groupId;
 				}
 				return app.render("tmpl-CreateContact",data||{});
 			},
@@ -19,7 +21,7 @@
 			postDisplay:function (data, config) {
 				var view = this;
 				var mainScreen = view.mainScreen = view.$el.bComponent("MainScreen");
-				view.$el.find("form").find("input[type=text]").focus();
+				showGroups.call(view);
 			},
 
 			close:function () {
@@ -36,12 +38,13 @@
 					data[$this.attr("name")] = $this.val();
 				});
 				data.id = view.contractId;
-				var input = view.$el.find("input[name='email']");
-
+				var $email = view.$el.find("input[name='email']");
+				var $group = view.$el.find(".grouplist option:selected");
+				data.groupId = $group.attr("data-id");
 				//check if have email
-				if (input.val() == "") {
-					input.focus();
-					input.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
+				if ($email.val() == "") {
+					$email.focus();
+					$email.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
 				} else {
 					app.googleApi.createContact(data).done(function (extraData) {
 						setTimeout((function () {
@@ -117,11 +120,29 @@
 					var $input = $(event.currentTarget);
 					var $controls = $input.parent();
 					$controls.removeClass("has-error");
-					var errorMsg = $controls.find("span");
-					errorMsg.text("");
+					var $errorMsg = $controls.find("span");
+					$errorMsg.text("");
 				},
 			}
 			// --------- Events--------- //
-		})
+		});
+	
+	//show groups
+	function showGroups(){
+		var view = this;
+		app.googleApi.getGroups().done(function(result){
+			var groups = result.result;
+			for(var i = 0; i < groups.length; i ++){
+				var groupId = groups[i].id;
+				if(groupId == view.groupId){
+					groups[i].isSelected = true;
+					break;
+				}
+			}
+			var $grouplist = view.$el.find(".grouplist").empty();
+			$grouplist.append(render("tmpl-CreateContact-groups", {groups: groups}));
+		});
+	}
+
 	})(jQuery);
 })();

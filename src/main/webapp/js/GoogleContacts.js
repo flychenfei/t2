@@ -7,10 +7,11 @@
 	},{
 		// --------- View Interface Implement--------- //
 		create: function (data, config) {
+			var view = this;
 			if(data && data.search) {
-				this.search = data.search;
+				view.search = data.search;
 			}else{
-				this.search = app.googleApi.getContacts;
+				view.search = app.googleApi.getContacts;
 			}
 			return app.render("tmpl-GoogleContacts");
 		},
@@ -33,21 +34,22 @@
 			//event for search contacts button
 			"btap; .inputValueBtn":function () {
 				var view = this;
-				var input = view.$el.find("input[name='contactName']");
+				var $input = view.$el.find("input[name='contactName']");
+				var $searchForContact = $input.closest(".searchForContact");
 				//check if have conatct name
-				if (input.val() == "") {
-					input.focus();
-					input.closest("div").addClass("error").find("span").html("Please enter value.");
+				if ($input.val() == "") {
+					$input.focus();
+					$searchForContact.addClass("error").find("span").html("Please enter value.");
 				} else {
-					var contactName = input.val();
+					var contactName = $input.val();
 					view.search = function(opts) {
 						opts = opts || {};
 						opts.contactName = contactName;
 						return app.googleApi.searchContact(opts);
 					};
 					showContacts.call(view);
-					input.closest("div").removeClass("error");
-					input.closest("div").find("span").html("");
+					$searchForContact.removeClass("error");
+					$searchForContact.find("span").html("");
 				}
 			},
 		},
@@ -68,7 +70,7 @@
 				if($listItem.hasClass("deleting")){
 					return;
 				}
-				var $listItem = view.$el.find(".listItem");
+
 				$listItem.addClass("deleting");
 
 				if (extraData && extraData.objId) {
@@ -117,17 +119,6 @@
 	});
 
 	// --------- Private Methods --------- //
-//	//get groupId
-//	function getGroupId(url) {
-//		var myregexp = /http:\/\/www.google.com\/m8\/feeds\/groups\/(.+)\/base\/(.+)/;
-//		var match = myregexp.exec(url);
-//		if (match != null) {
-//			result = match[2];
-//		} else {
-//			result = "";
-//		}
-//		return result;
-//	}
 
 	//get contactId
 	function getContactId(url) {

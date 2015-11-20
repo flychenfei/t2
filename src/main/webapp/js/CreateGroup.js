@@ -12,9 +12,10 @@
 		}, {
 			// --------- View Interface Implement--------- //
 			create:function (data, config) {
+				var view = this;
 				if(data) {
-					this.groupId = data.groupId;
-					this.etag = data.etag;
+					view.groupId = data.groupId;
+					view.etag = data.etag;
 				}
 				return app.render("tmpl-CreateGroup",data||{});
 			},
@@ -22,7 +23,6 @@
 			postDisplay:function (data, config) {
 				var view = this;
 				var mainScreen = view.mainScreen = view.$el.bComponent("MainScreen");
-				view.$el.find("form").find("input[type=text]").focus();
 			},
 
 			close:function () {
@@ -33,18 +33,18 @@
 			submit:function () {
 				var view = this;
 				var dfd;
-				var input = view.$el.find("input[name='name']");
+				var $input = view.$el.find("input[name='name']");
 				//check if have name
-				if (input.val() == "") {
-					input.focus();
-					input.closest("div").addClass("has-error").find("span").html("Please enter valid group name.");
+				if ($input.val() == "") {
+					$input.focus();
+					$input.closest("div").addClass("has-error").find("span").html("Please enter valid group name.");
 				} else {
 					if(view.groupId) {
 						//create group
 						dfd = app.googleApi.createGroup({groupId:view.groupId,etag:view.etag, groupName: input.val()})
 					}else{
 						//updated group
-						dfd = app.googleApi.createGroup({groupName: input.val()});
+						dfd = app.googleApi.createGroup({groupName: $input.val()});
 					}
 					dfd.done(function (extraData) {
 						setTimeout((function () {
