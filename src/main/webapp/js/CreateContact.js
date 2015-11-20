@@ -13,6 +13,7 @@
 				var view = this;
 				if(data) {
 					view.contractId = data.id;
+					view.groupId = data.groupId;
 				}
 				return app.render("tmpl-CreateContact",data||{});
 			},
@@ -20,6 +21,7 @@
 			postDisplay:function (data, config) {
 				var view = this;
 				var mainScreen = view.mainScreen = view.$el.bComponent("MainScreen");
+				showGroups.call(view);
 			},
 
 			close:function () {
@@ -37,7 +39,8 @@
 				});
 				data.id = view.contractId;
 				var $email = view.$el.find("input[name='email']");
-
+				var $group = view.$el.find(".grouplist option:selected");
+				data.groupId = $group.attr("data-id");
 				//check if have email
 				if ($email.val() == "") {
 					$email.focus();
@@ -122,6 +125,24 @@
 				},
 			}
 			// --------- Events--------- //
-		})
+		});
+	
+	//show groups
+	function showGroups(){
+		var view = this;
+		app.googleApi.getGroups().done(function(result){
+			var groups = result.result;
+			for(var i = 0; i < groups.length; i ++){
+				var groupId = groups[i].id;
+				if(groupId == view.groupId){
+					groups[i].isSelected = true;
+					break;
+				}
+			}
+			var $grouplist = view.$el.find(".grouplist").empty();
+			$grouplist.append(render("tmpl-CreateContact-groups", {groups: groups}));
+		});
+	}
+
 	})(jQuery);
 })();
