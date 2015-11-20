@@ -5,26 +5,10 @@
 		},
 		events:{
 			"click;.openIssues":function(event){
-				var name = $(event.target).closest("div").attr("data-name");
-				var login = $(event.target).closest("div").attr("data-login");
-				app.githubApi.getIssues({
-					name:name,
-					login:login,
-					state:"open"
-				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
-				});
+				refreshIssues(event,"open");
 			},
 			"click;.closedIssues":function(event){
-				var name = $(event.target).closest("div").attr("data-name");
-				var login = $(event.target).closest("div").attr("data-login");
-				app.githubApi.getIssues({
-					name:name,
-					login:login,
-					state:"closed"
-				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"closed",openCount: json.result.openCount,closedCount:json.result.closedCount});
-				});
+				refreshIssues(event,"closed");
 			},
 			"click;.message":function(event){
 				var name = $(event.target).closest("table").attr("data-name");
@@ -84,56 +68,10 @@
 				});
 			},
 			"click;.btn-close": function (event) {
-				var $btn = $(event.target);
-				if($btn.hasClass("loading")) return;
-				var name = $btn.closest("table").attr("data-name");
-				var login =$btn.closest("table").attr("data-login");
-				var number = $btn.closest("span").attr("data-issue-id");
-				$btn.html("Closing...").addClass("loading");
-				app.githubApi.editIssue({
-					name:name,
-					login:login,
-					state:"closed",
-					number:number
-				}).pipe(function(result){
-					if(result.success == true){
-						var $tr = $btn.closest("tr");
-						$btn.html("Closed")
-						$tr.animate({"opacity":0}, 1000, function(){
-							$tr.remove();
-							refreshIssueCount("close");
-						});
-					}else{
-						$btn.html("Close").removeClass("loading");
-						alert("change state failed,please check network");
-					}
-				})
+				changeIssueState(event,"closed","Closing...","Closed");
 			},
 			"click;.btn-open": function (event) {
-				var $btn = $(event.target);
-				if($btn.hasClass("loading")) return;
-				var name = $btn.closest("table").attr("data-name");
-				var login =$btn.closest("table").attr("data-login");
-				var number = $btn.closest("span").attr("data-issue-id");
-				$btn.html("Opening...").addClass("loading");
-				app.githubApi.editIssue({
-					name:name,
-					login:login,
-					state:"open",
-					number:number
-				}).pipe(function(result){
-					if(result.success == true){
-						var $tr = $btn.closest("tr");
-						$btn.html("Opened")
-						$tr.animate({"opacity":0}, 1000, function(){
-							$tr.remove();
-							refreshIssueCount("open");
-						});
-					}else{
-						$btn.html("Open").removeClass("loading");
-						alert("change state failed,please check network");
-					}
-				})
+				changeIssueState(event,"open","Opening...","Opened");
 			}
 		}
 	});
@@ -162,5 +100,44 @@
 			return date1 - date2;
 		});
 		return comments;
+	}
+
+	function changeIssueState(event,state,stating,stateBtn){
+		var $btn = $(event.target);
+		if($btn.hasClass("loading")) return;
+		var name = $btn.closest("table").attr("data-name");
+		var login =$btn.closest("table").attr("data-login");
+		var number = $btn.closest("span").attr("data-issue-id");
+		$btn.html(stating).addClass("loading");
+		app.githubApi.editIssue({
+			name:name,
+			login:login,
+			state:state,
+			number:number
+		}).pipe(function(result){
+			if(result.success == true){
+				var $tr = $btn.closest("tr");
+				$btn.html(stateBtn)
+				$tr.animate({"opacity":0}, 1000, function(){
+					$tr.remove();
+					refreshIssueCount(state);
+				});
+			}else{
+				$btn.html(stateBtn).removeClass("loading");
+				alert("change state failed,please check network");
+			}
+		})
+	}
+
+	function refreshIssues(event,state){
+		var name = $(event.target).closest("div").attr("data-name");
+		var login = $(event.target).closest("div").attr("data-login");
+		app.githubApi.getIssues({
+			name:name,
+			login:login,
+			state:state
+		}).pipe(function(json){
+			brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount});
+		});
 	}
 })();
