@@ -10,8 +10,9 @@
 		}, {
 			// --------- View Interface Implement--------- //
 			create:function (data, config) {
+				var view = this;
 				if(data) {
-					this.contractId = data.id;
+					view.contractId = data.id;
 				}
 				return app.render("tmpl-CreateContact",data||{});
 			},
@@ -19,7 +20,6 @@
 			postDisplay:function (data, config) {
 				var view = this;
 				var mainScreen = view.mainScreen = view.$el.bComponent("MainScreen");
-				view.$el.find("form").find("input[type=text]").focus();
 			},
 
 			close:function () {
@@ -36,12 +36,12 @@
 					data[$this.attr("name")] = $this.val();
 				});
 				data.id = view.contractId;
-				var input = view.$el.find("input[name='email']");
+				var $email = view.$el.find("input[name='email']");
 
 				//check if have email
-				if (input.val() == "") {
-					input.focus();
-					input.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
+				if ($email.val() == "") {
+					$email.focus();
+					$email.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
 				} else {
 					app.googleApi.createContact(data).done(function (extraData) {
 						setTimeout((function () {
@@ -117,8 +117,8 @@
 					var $input = $(event.currentTarget);
 					var $controls = $input.parent();
 					$controls.removeClass("has-error");
-					var errorMsg = $controls.find("span");
-					errorMsg.text("");
+					var $errorMsg = $controls.find("span");
+					$errorMsg.text("");
 				},
 			}
 			// --------- Events--------- //
