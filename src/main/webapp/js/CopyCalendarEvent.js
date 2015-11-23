@@ -31,6 +31,13 @@
                 	view.iCalUID = data.iCalUID;
                 }
 
+                if(data.reminders && data.reminders.overrides){
+                    $(data.reminders.overrides).each(function(i,temp){
+                        if(temp.method == 'email'){
+                            data.minutes = temp.minutes;
+                        }
+                    })
+                }
                 /*********************************Data filling end****************************************/
                 var html = app.render("tmpl-CopyCalendarEvent",data||{});
                 var $e = $(html);
