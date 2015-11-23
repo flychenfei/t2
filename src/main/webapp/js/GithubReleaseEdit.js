@@ -27,7 +27,7 @@
                 var tagName = $(":input[name='releaseTagName']",dialogContent);
                 var view = this;
                 var saveBtn = $(event.target);
-                var loading = $(".githubloading.save");
+                var loading = $(event.target).parent().find(".githubloading.save");
                 $(loading).toggleClass("hide");
                 $(saveBtn).toggleClass("hide");
                 if(releaseId == ""){
