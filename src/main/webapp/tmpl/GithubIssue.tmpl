@@ -116,6 +116,9 @@
 							<i class="glyphicon glyphicon-bookmark"/>
 							<img class="event-avatar" src="{{actor.avatar_url}}"/>
 							<span class="event-user">{{actor.login}}</span> referenced this issue from a commit {{#formatDate created_at}}{{/formatDate}}
+								{{#notEqual commit undefined}}
+								<div class="commit-message"><img class="event-avatar" src="{{actor.avatar_url}}"/>{{commit}}</div>
+								{{/notEqual}}
 							</div>
 							{{/equal}}
 
