@@ -23,27 +23,29 @@
 						issueId:issueNumber
 					}).pipe(function(reData){
 						var issueEvents = reData.result;
-						app.githubApi.getIssue({
-							name:name,
-							login:login,
-							issueNumber:issueNumber
-						}).pipe(function(json){
-							var commentsEvents = refreshGroup(json.result.comment,issueEvents);
-							brite.display("GithubIssue",$("body"),{
-								issue:json.result.issue,
-								commentsEvents:commentsEvents,
-								avatarUrl:userInfo.avatar_url,
-								layout:{
-									left:'20%',
-									top:"100px",
-									width:'60%',
-									height:'auto'
-								},
-								info:{
-									name:name,
-									login:login,
-									issueNumber:issueNumber
-								}
+						$.when(addCommit(name,login,issueEvents)).pipe(function(){
+							app.githubApi.getIssue({
+								name:name,
+								login:login,
+								issueNumber:issueNumber
+							}).pipe(function(json){
+								var commentsEvents = refreshGroup(json.result.comment,issueEvents);
+								brite.display("GithubIssue",$("body"),{
+									issue:json.result.issue,
+									commentsEvents:commentsEvents,
+									avatarUrl:userInfo.avatar_url,
+									layout:{
+										left:'20%',
+										top:"100px",
+										width:'60%',
+										height:'auto'
+									},
+									info:{
+										name:name,
+										login:login,
+										issueNumber:issueNumber
+									}
+								});
 							});
 						});
 					});
@@ -100,6 +102,31 @@
 			return date1 - date2;
 		});
 		return comments;
+	};
+
+	function addCommit(name,login,events){
+		var dfds = new Array();
+		var x = 0;
+		for(x = 0;x <events.length;x++){
+			if(events[x].event == "referenced" && typeof(events[x].commit_id) != "undefined"){
+				(function(p){
+					var dfd = $.Deferred();
+					dfds.push(dfd);
+					app.githubApi.getCommit({
+						name:name,
+						login:login,
+						sha:events[p].commit_id
+					}).pipe(function(result){
+						events[p].commit = result.result.commit.message;
+						dfd.resolve();
+					})
+				})(x);
+			}
+		}
+		var dfd = $.Deferred();
+		dfds.push(dfd);
+		dfd.resolve();
+		return dfds;
 	}
 
 	function changeIssueState(event,state,stating,stateBtn){
