@@ -2,6 +2,8 @@
 (function ($) {
 
     brite.registerView("GoogleFolders",{parent:".GoogleScreen-content",emptyParent:true}, {
+
+        // --------- View Interface Implement--------- //
         create: function (data, config) {
             return app.render("tmpl-GoogleFolders");
         },
@@ -10,17 +12,26 @@
             var view = this;
             showFolders.call(view);
         },
+        // --------- /View Interface Implement--------- //
 
+        // --------- Events--------- //
 		events: {
-        	"click;.btnAdd":function(e){
-	        	brite.display("CreateFolder",null,{id:null});
-	        },
-	        "click;.folderClass":function(e){
-	            var folderName =  $(e.currentTarget).closest("tr").attr("data-obj_id")
-	            brite.display("GoogleMails",".GoogleScreen-content",{folderName:folderName});
-	        }
+            // event for Add folder
+            "click;.btnAdd":function(e){
+                brite.display("CreateFolder",null,{id:null});
+            },
+
+            // event for show mails for this folder
+            "click;.folderClass":function(e){
+                var folderName =  $(e.currentTarget).closest("tr").attr("data-obj_id")
+                brite.display("GoogleMails",".GoogleScreen-content",{folderName:folderName});
+            }
         },
+        // --------- /Events--------- //
+
+        // --------- Document Events--------- //
         docEvents: {
+            // event for edit folder
             "EDIT_FOLDER":function(event, extraData){
                 if (extraData && extraData.objId) {
                     var $row = $(extraData.event.currentTarget).closest("tr");
@@ -28,6 +39,8 @@
                     brite.display("CreateFolder", null, {id:fullName, name:fullName})
                 }
             },
+
+            // event for delete folder
             "DELETE_FOLDER": function(event, extraData){
                 if (extraData && extraData.objId) {
                     app.googleApi.deleteFolder(extraData.objId).done(function (extradata) {
@@ -35,20 +48,21 @@
                             setTimeout((function () {
                                 showFolders();
                             }), 3000);
-
                         }
                     });
                 }
             },
-            "DO_REFRESH_FOLDERS":function(){
-            	var view = this;
-            	showFolders.call(view);
-            }
-        },
 
-        daoEvents: {
+            // event for refresh folder table
+            "DO_REFRESH_FOLDERS":function(){
+                var view = this;
+                showFolders.call(view);
+            }
         }
+        // --------- /Document Events--------- //
     });
+
+    // --------- Private Methods --------- //
     function showFolders() {
         var folders = app.googleApi.getFolders();
         return brite.display("DataTable", ".folders-container", {
@@ -63,8 +77,8 @@
                 {
                     text:"Name",
                     render:function(obj){
-                            return "<a src=\"#\" class=\"folderClass\"><span>{0}</span></a>".format(obj.fullName);
-                            }
+                        return "<a src=\"#\" class=\"folderClass\"><span>{0}</span></a>".format(obj.fullName);
+                    }
                 }
             ],
             opts:{
@@ -75,5 +89,6 @@
             }
         });
     }
+    // --------- Private Methods --------- //
 
 })(jQuery);
