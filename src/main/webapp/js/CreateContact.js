@@ -14,6 +14,7 @@
 				if(data) {
 					view.contractId = data.id;
 					view.groupId = data.groupId;
+					view.groups = data.groups;
 				}
 				return app.render("tmpl-CreateContact",data||{});
 			},
@@ -21,7 +22,6 @@
 			postDisplay:function (data, config) {
 				var view = this;
 				var mainScreen = view.mainScreen = view.$el.bComponent("MainScreen");
-				showGroups.call(view);
 			},
 
 			close:function () {
@@ -39,7 +39,7 @@
 				});
 				data.id = view.contractId;
 				var $email = view.$el.find("input[name='email']");
-				var $group = view.$el.find(".grouplist option:selected");
+				var $group = view.$el.find(".dropdown-menu input:checked");
 				data.groupId = $group.attr("data-id");
 				//check if have email
 				if ($email.val() == "") {
@@ -123,6 +123,17 @@
 					var $errorMsg = $controls.find("span");
 					$errorMsg.text("");
 				},
+
+				"click; .dropdown-toggle": function(event){
+					var view = this;
+					var $menu = view.$el.find(".dropdown-menu");
+					if($menu.is(":visible")){
+						$menu.hide();
+					}else{
+						showGroups.call(view);
+						$menu.show();
+					}
+				},
 			}
 			// --------- Events--------- //
 		});
@@ -134,12 +145,17 @@
 			var groups = result.result;
 			for(var i = 0; i < groups.length; i ++){
 				var groupId = groups[i].id;
-				if(groupId == view.groupId){
-					groups[i].isSelected = true;
-					break;
+				
+				if(view.groups){
+					for(var j = 0; j < view.groups.length; j ++){
+						if(groupId == view.groups[j]){
+							groups[i].isSelected = true;
+							break;
+						}
+					}
 				}
 			}
-			var $grouplist = view.$el.find(".grouplist").empty();
+			var $grouplist = view.$el.find(".dropdown-menu").empty();
 			$grouplist.append(render("tmpl-CreateContact-groups", {groups: groups}));
 		});
 	}

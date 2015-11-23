@@ -240,7 +240,19 @@ public class GoogleContactHandlers {
 		if (user != null && contactId != null) {
 			try {
 				ContactEntry entry = gContactService.getContactEntry(contactId);
-				return WebResponse.success(ContactInfo.from(entry));
+				List<GroupMembershipInfo> groupMembershipInfos = entry.getGroupMembershipInfos();
+				ContactInfo contactInfo = ContactInfo.from(entry);
+				if(groupMembershipInfos != null){
+					List<String> groups = new ArrayList<>();
+					for(GroupMembershipInfo groupMembershipInfo : groupMembershipInfos){
+						groups.add(groupMembershipInfo.getHref());
+
+						}
+					contactInfo.setGroups(groups);
+				}
+
+
+				return WebResponse.success(contactInfo);
 			} catch (Exception e) {
 				log.warn(String.format("get contact %s fail", contactId), e);
 				m.put("result", false);
