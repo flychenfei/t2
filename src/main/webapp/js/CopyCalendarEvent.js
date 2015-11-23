@@ -31,6 +31,13 @@
                 	view.iCalUID = data.iCalUID;
                 }
 
+                if(data.reminders && data.reminders.overrides){
+                    $(data.reminders.overrides).each(function(i,temp){
+                        if(temp.method == 'email'){
+                            data.minutes = temp.minutes;
+                        }
+                    })
+                }
                 /*********************************Data filling end****************************************/
                 var html = app.render("tmpl-CopyCalendarEvent",data||{});
                 var $e = $(html);
@@ -155,8 +162,9 @@
             },
 
             events:{
-                "btap; .datetimepicker": function(event){
-                    $(event.currentTarget).datetimepicker('show');
+                "btap; .datetimepicker .pick": function(event){
+                    var $target = $(event.currentTarget);
+                    $target.closest(".datetimepicker").datetimepicker('show');
                 },
 
                 "btap; .CopyCalendarEventBtn":function () {
