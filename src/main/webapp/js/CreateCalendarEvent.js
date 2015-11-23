@@ -171,8 +171,9 @@
             },
 
             events:{
-                "btap; .datetimepicker": function(event){
-                    $(event.currentTarget).datetimepicker('show');
+                "btap; .datetimepicker .pick": function(event){
+                    var $target = $(event.currentTarget);
+                    $target.closest(".datetimepicker").datetimepicker('show');
                 },
 
                 "btap; .CreateCalendarEventBtn":function () {
