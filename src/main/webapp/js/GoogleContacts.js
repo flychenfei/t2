@@ -164,9 +164,9 @@
 					attrs: "style='width: 25%'"
 				},
 				{
-					text: "Group",
+					text: "Groups",
 					render: function (obj) {
-						return obj.groups.join(",");
+						return obj.groups.join(", ");
 					}
 				},
 				{
