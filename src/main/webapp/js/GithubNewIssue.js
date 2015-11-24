@@ -15,6 +15,7 @@
 				this.$el.remove();
 			},
 			"click;.newissue":function(event){
+				var view = this;
 				var NewIssue = $(event.target).closest(".dialogContent");
 				var name = $(event.target).closest("div").attr("data-name");
 				var login = $(event.target).closest("div").attr("data-login");
@@ -30,14 +31,25 @@
 						body:$(body).val()
 					}).done(function(json){
 						console.info(json);
-						if(json.success == true){
-							window.location.reload();
-						}else{
-							alert("New Issue Failed");
-						}
+						refresh(view,json,name,login);
 					});
 				}
 			}
 		}
 	});
+
+	function refresh(view,json,repoName,login){
+		if (json.success) {
+			app.githubApi.getIssues({
+				name:repoName,
+				login:login,
+				state:"open"
+			}).pipe(function(json){
+				view.$el.remove();
+				brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:repoName,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
+			});
+		} else {
+			alert("New Issue Failed");
+		}
+	}
 })();
