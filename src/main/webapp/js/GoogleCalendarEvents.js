@@ -82,17 +82,19 @@
                 }
            },
            "btap; .deleteEvent": function(event, extraData) {
-           		var $btn = $(event.currentTarget);
-	        	var $tr = $btn.closest("tr");
-	        	var id = $tr.attr("data-obj_id");
-	        	var calendarId = $tr.attr("data-calendarId");
-                if (id) {
-                    app.googleApi.deleteCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
-                        setTimeout((function() {
-							$(document).trigger("DO_REFRESH_CALENDAR_EVENT");
-						}), 3000); 
-                    });
-                }
+               if(confirm("Are you sure to delete it?")){
+                   var $btn = $(event.currentTarget);
+                   var $tr = $btn.closest("tr");
+                   var id = $tr.attr("data-obj_id");
+                   var calendarId = $tr.attr("data-calendarId");
+                   if (id) {
+                       app.googleApi.deleteCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
+                           setTimeout((function() {
+                               $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
+                           }), 3000);
+                       });
+                   }
+               }
             },
 	        "btap; .copyEvent": function(event){
 	        	var view = this;
