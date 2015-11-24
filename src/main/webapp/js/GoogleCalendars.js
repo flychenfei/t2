@@ -34,14 +34,15 @@
                  showCalendars.call(view);
              },
             "DELETE_CALENDAR": function(event, extraData) {
-                if (extraData && extraData.objId) {
-                    app.googleApi.deleteCalendars({id:extraData.objId}).done(function (extradata) {
-						setTimeout((function() {
-							$(document).trigger("DO_REFRESH_CALENDAR");
-						}), 3000); 
-                    });
+                if(confirm("Are you sure to delete it?")){
+                    if (extraData && extraData.objId) {
+                        app.googleApi.deleteCalendars({id:extraData.objId}).done(function (extradata) {
+                            setTimeout((function() {
+                                $(document).trigger("DO_REFRESH_CALENDAR");
+                            }), 3000);
+                        });
+                    }
                 }
-
             },
             "EDIT_CALENDAR": function(event, extraData){
                 if (extraData && extraData.objId) {
