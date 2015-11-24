@@ -15,10 +15,9 @@
 
         postDisplay: function (data, config) {
             var view = this;
-            var $e = view.$el;
             view.isSearchTrashEmail = false;
 
-			$e.find('.datetimepicker').datetimepicker({
+			view.$el.find('.datetimepicker').datetimepicker({
 				format : 'yyyy-MM-dd',
 				language : 'en',
 				pickDate : true,
@@ -32,19 +31,15 @@
         events: {
             // click to show date picker
             "btap; .datetimepicker": function(event){
-                var view = this;
-                var $e = view.$el;
                 $(event.currentTarget).datetimepicker('show');
             },
 
             // click the search button
             "btap; .inputValueBtn":function () {
 				var view = this;
-				var $e = view.$el;
-				//view.submit();
 				var result = {};
                 view.isSearchTrashEmail = false;
-				$e.find(".search-mails-container :text").each(function() {
+				view.$el.find(".search-mails-container :text").each(function() {
 					if ($(this).val() !== "") {
                         if($(this).attr("name") == "label"){
                             var labelVals = $(this).val().toLowerCase();
@@ -53,7 +48,7 @@
 						result[$(this).attr("name")] = $(this).val();
 					}
 				});
-				$e.find(".search-mails-container .checkbox").each(function() {
+				view.$el.find(".search-mails-container .checkbox").each(function() {
 					if ($(this).val() !== "") {
 						result[$(this).attr("name")] = $(this).prop("checked");
 					}
@@ -73,13 +68,12 @@
             // click to clean the serach value
             "btap; .cleanSearchBtn":function(event){
                 var view = this;
-                var $e = view.$el;
-                $e.find(".search-mails-container :text").each(function() {
+                view.$el.find(".search-mails-container :text").each(function() {
                     if ($(this).val() !== "") {
                         $(this).val("");
                     }
                 });
-                $e.find(".search-mails-container .checkbox").each(function() {
+                view.$el.find(".search-mails-container .checkbox").each(function() {
                     if ($(this).val() !== "") {
                         $(this).prop("checked", false);
                     }
@@ -94,15 +88,12 @@
 
             // event click Current Thread
             "click; .currentThread":function(event){
-				var view = this;
 				var threadId = $(event.currentTarget).closest("tr").attr("data-thread-id");
 				brite.display("GoogleThreadMails",null,{threadId:threadId});
             },
 
             // event click Labels value
             "click; .updateLabels":function(event){
-				var view = this;
-				var $e = view.$el;
 				var id = $(event.currentTarget).closest("tr").attr("data-obj_id");
 				brite.display("GoogleMailLabelsUpdate",null,{id:id});
             },
@@ -110,8 +101,7 @@
             // show or hide search condition
             "btap; .searchCondition":function(){
                 var view = this;
-                var $e = view.$el;
-               $e.find(".search-mails-container").toggleClass("hide");
+                view.$el.find(".search-mails-container").toggleClass("hide");
             }
         },
 
@@ -241,7 +231,7 @@
                 {
                     text: "Subject",
                     render: function (obj) {
-                        return obj.subject;
+                        return "<div class='click-able'  data-cmd='SHOW_INFO'>"+obj.subject+"</div>";
                     }
                 },
                 {
