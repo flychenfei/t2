@@ -156,7 +156,7 @@
                 {
                     text: "#",
                     render: function (obj, idx) {
-                        return idx + 1
+                        return idx + 1;
                     },
                     attrs: "data-cmd='SHOW_INFO' style='width: 5%;cursor: pointer'"
                 },
@@ -164,7 +164,7 @@
                     text: "Date",
                     render: function (obj) {
                         var recDate = new Date(obj.date);
-                        return recDate.format("yyyy-MM-dd hh:mm:ss")
+                        return recDate.format("yyyy-MM-dd hh:mm:ss");
                     },
                     attrs: "style='width: 20%'"
 
@@ -172,34 +172,34 @@
                 {
                     text: "From",
                     render: function (obj) {
-                        return obj.from
+                        return obj.from;
                     },
                     attrs: "style='width: 25%'"
                 },
                 {
                     text: "Subject",
                     render: function (obj) {
-                        return obj.subject
+                        return "<div class='click-able'  data-cmd='SHOW_INFO'>"+obj.subject+"</div>";
                     }
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-envelope click-able'  data-cmd='SHOW_INFO' title='Show Info'/>"
+                        return "<div class='glyphicon glyphicon-envelope click-able'  data-cmd='SHOW_INFO' title='Show Info'/>";
                     },
                     attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share click-able'  data-cmd='FORWARDING_EMAIL' title='Forward Email'/>"
+                        return "<div class='glyphicon glyphicon-share click-able'  data-cmd='FORWARDING_EMAIL' title='Forward Email'/>";
                     },
                     attrs: "style='width:40px;'"
                 },
                 {
                     text: "",
                     render: function(){
-                        return "<div class='glyphicon glyphicon-share-alt click-able' data-cmd='REPLAY_EMAIL' title='Replay Email'/>"
+                        return "<div class='glyphicon glyphicon-share-alt click-able' data-cmd='REPLAY_EMAIL' title='Replay Email'/>";
                     },
                     attrs: "style='width:40px;'"
                 },
