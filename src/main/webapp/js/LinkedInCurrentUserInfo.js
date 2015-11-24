@@ -1,17 +1,15 @@
-(function(){
-	
-	brite.registerView("LinkedInCurrentUserInfo",{emptyParent:true},{
+(function () {
 
-		create: function(data,config){
-			return render("tmpl-LinkedInCurrentUserInfo",{data:data});
-		},
-		postDisplay: function () {
-        	
+    brite.registerView("LinkedInCurrentUserInfo", {emptyParent: true}, {
+
+        create: function (data, config) {
+            return render("tmpl-LinkedInCurrentUserInfo", {data: data});
         },
-		events:{
-			
-		}
-		
-	});
+        postDisplay: function () {
+
+        },
+        events: {}
+
+    });
 
 })();

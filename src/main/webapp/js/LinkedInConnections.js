@@ -1,8 +1,7 @@
-;
 (function ($) {
-    brite.registerView("LinkedInConnections",{parent:".LinkedInScreen-content",emptyParent:true}, {
+    brite.registerView("LinkedInConnections", {parent: ".LinkedInScreen-content", emptyParent: true}, {
         create: function (data, config) {
-        	return app.render("tmpl-LinkedInConnections");
+            return app.render("tmpl-LinkedInConnections");
         },
 
         postDisplay: function (data, config) {
@@ -10,18 +9,13 @@
             showConnections.call(view);
         },
 
-        events: {
-        	
-        },
-        docEvents: {
-           
-        },
-        daoEvents: {
-        }
+        events: {},
+        docEvents: {},
+        daoEvents: {}
     });
-    
+
     function showConnections() {
-        brite.display("DataTable", ".LinkedInScreen-content",{
+        brite.display("DataTable", ".LinkedInScreen-content", {
             dataProvider: {list: app.linkedInApi.getConnections},
             columnDef: [
                 {
@@ -54,7 +48,7 @@
                 },
                 {
                     text: "Info",
-                    render: function(){
+                    render: function () {
                         return "<div class='glyphicon glyphicon-user'/>"
                     },
                     attrs: "style='width:50px;text-align:center;cursor:pointer'  data-cmd='USER_INFO'"
@@ -68,5 +62,5 @@
         });
     }
 
-    
+
 })(jQuery);

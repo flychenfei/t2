@@ -1,22 +1,23 @@
-;
 (function ($) {
-    brite.registerView("LinkedInJobs",{parent:".LinkedInScreen-content",emptyParent:true}, {
+    brite.registerView("LinkedInJobs", {parent: ".LinkedInScreen-content", emptyParent: true}, {
         create: function (data, config) {
-        	return app.render("tmpl-LinkedInJobs");
+            return app.render("tmpl-LinkedInJobs");
         },
 
         postDisplay: function (data, config) {
-        	showJobs.call(this, data.keywork);
+            showJobs.call(this, data.keywork);
         }
     });
-    
+
     function showJobs(keywork) {
-    	var view = this;
-        brite.display("DataTable", ".LinkedInScreen-content",{
-            dataProvider: {list: function(params){
-                params.keywork = keywork.name;
-                return app.linkedInApi.searchJobs(params);
-            }},
+        var view = this;
+        brite.display("DataTable", ".LinkedInScreen-content", {
+            dataProvider: {
+                list: function (params) {
+                    params.keywork = keywork.name;
+                    return app.linkedInApi.searchJobs(params);
+                }
+            },
             columnDef: [
                 {
                     text: "#",
@@ -49,7 +50,7 @@
                 {
                     text: "Action",
                     render: function (obj) {
-                    	return "<a href='#'><div class='"+obj.check+"' id=\""+obj.id+"\">"+obj.mark+"</div></a>";
+                        return "<a href='#'><div class='" + obj.check + "' id=\"" + obj.id + "\">" + obj.mark + "</div></a>";
                     },
                     attrs: "style='width: 15%'"
                 }
@@ -57,9 +58,9 @@
             opts: {
                 htmlIfEmpty: "Not Jobs found",
                 withPaging: true,
-                withCmdDelete:false
+                withCmdDelete: false
             }
         });
     }
-    
+
 })(jQuery);

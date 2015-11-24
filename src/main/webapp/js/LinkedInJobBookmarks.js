@@ -1,8 +1,7 @@
-;
 (function ($) {
-    brite.registerView("LinkedInJobBookmarks",{parent:".LinkedInScreen-content",emptyParent:true}, {
+    brite.registerView("LinkedInJobBookmarks", {parent: ".LinkedInScreen-content", emptyParent: true}, {
         create: function (data, config) {
-        	return app.render("tmpl-LinkedInJobBookmarks");
+            return app.render("tmpl-LinkedInJobBookmarks");
         },
 
         postDisplay: function (data, config) {
@@ -11,25 +10,24 @@
         },
 
         events: {
-        	"click;.removebookmark":function(e){
-          	  var view = $(this);
-          	  var $e = (e.currentTarget);
-          	  var param = {};
-          	  param.id = $(e.currentTarget).attr("id");
-          	  app.linkedInApi.removebookmark(param).done(function (result) {
-          		  brite.display("LinkedInJobBookmarks");
-	                });
+
+            // event for the remove bookmark
+            "click;.removebookmark": function (e) {
+                var view = $(this);
+                var $e = (e.currentTarget);
+                var param = {};
+                param.id = $(e.currentTarget).attr("id");
+                app.linkedInApi.removebookmark(param).done(function (result) {
+                    brite.display("LinkedInJobBookmarks");
+                });
             }
         },
-        docEvents: {
-           
-        },
-        daoEvents: {
-        }
+        docEvents: {},
+        daoEvents: {}
     });
-    
+
     function showJobBookmarks() {
-    	brite.display("DataTable", ".LinkedInJobBookmarks",{
+        brite.display("DataTable", ".LinkedInJobBookmarks", {
             dataProvider: {list: app.linkedInApi.getJobBookmarks},
             columnDef: [
                 {
@@ -63,7 +61,7 @@
                 {
                     text: "Action",
                     render: function (obj) {
-                        return "<a href='#'><div class='removebookmark' id=\""+obj.job.id+"\">Remove Bookmark</div></a>"
+                        return "<a href='#'><div class='removebookmark' id=\"" + obj.job.id + "\">Remove Bookmark</div></a>"
                     },
                     attrs: "style='width: 15%' ata-cmd='REMOVE_BOOKMARK'"
                 },
@@ -71,9 +69,9 @@
             opts: {
                 htmlIfEmpty: "Not Job Bookmarks found",
                 withPaging: true,
-                withCmdDelete:false,
+                withCmdDelete: false,
             }
         });
     }
-    
+
 })(jQuery);

@@ -1,23 +1,24 @@
-;
 (function ($) {
-    brite.registerView("LinkedInPeoples",{parent:".LinkedInScreen-content",emptyParent:true}, {
+    brite.registerView("LinkedInPeoples", {parent: ".LinkedInScreen-content", emptyParent: true}, {
         create: function (data, config) {
-        	return app.render("tmpl-LinkedInPeoples");
+            return app.render("tmpl-LinkedInPeoples");
         },
 
         postDisplay: function (data, config) {
-        	var view = this;
-        	showPeoples.call(this, data.keywork);
+            var view = this;
+            showPeoples.call(this, data.keywork);
         }
     });
-    
+
     function showPeoples(keywork) {
         var view = this;
-        brite.display("DataTable", ".LinkedInScreen-content",{
-            dataProvider: {list: function(params){
-                params.keywork = keywork.name;
-                return app.linkedInApi.searchPeoples(params);
-            }},
+        brite.display("DataTable", ".LinkedInScreen-content", {
+            dataProvider: {
+                list: function (params) {
+                    params.keywork = keywork.name;
+                    return app.linkedInApi.searchPeoples(params);
+                }
+            },
             columnDef: [
                 {
                     text: "#",
@@ -45,7 +46,7 @@
             opts: {
                 htmlIfEmpty: "Not Peoples found",
                 withPaging: true,
-                withCmdDelete:false
+                withCmdDelete: false
             }
         });
     }

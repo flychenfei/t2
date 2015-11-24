@@ -1,17 +1,17 @@
-(function(){
-	
-	brite.registerView("LinkedInUserInfo", {emptyParent:false}, {
-		create: function(data,config){
-			return render("tmpl-LinkedInUserInfo",{data:data});
-		},
-		postDisplay: function () {
-        	
+(function () {
+
+    brite.registerView("LinkedInUserInfo", {emptyParent: false}, {
+        create: function (data, config) {
+            return render("tmpl-LinkedInUserInfo", {data: data});
         },
-		events:{
-			"click;.dialogCloseBtn":function(event){
-				this.$el.remove();
-			}
-		}
-	});
+        postDisplay: function () {
+
+        },
+        events: {
+            "click;.dialogCloseBtn": function (event) {
+                this.$el.remove();
+            }
+        }
+    });
 
 })();
