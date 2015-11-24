@@ -134,8 +134,21 @@
 						$menu.show();
 					}
 				},
-			}
+			},
 			// --------- Events--------- //
+
+			// --------- Document Events--------- //  
+			docEvents:{
+				//when click outside the dropdown, hide the dropdown menu
+				"click":function(event){
+					var view = this;
+					var $target = $(event.target);
+					if($target.closest(".dropdown").size() == 0){
+						view.$el.find(".dropdown .dropdown-menu").hide();
+					}
+				},
+			}
+			// --------- /Document Events--------- //  			
 		});
 	
 	//show groups
