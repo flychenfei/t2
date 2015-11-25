@@ -21,6 +21,10 @@
 				var login = $(event.target).closest("div").attr("data-login");
 				var title = $(".issue-title",NewIssue);
 				var body = $(".issue-body",NewIssue);
+				var saveBtn = $(event.target);
+				var loading = $(event.target).parent().find(".githubloading.save");
+				$(loading).toggleClass("hide");
+				$(saveBtn).toggleClass("hide");
 				if($(title).val() == "" || $(body).val() == ""){
 					alert("title or body is not null");
 				}else{
@@ -38,7 +42,7 @@
 		}
 	});
 
-	function refresh(view,json,repoName,login){
+	function refresh(view,json,repoName,login,loading,saveBtn){
 		if (json.success) {
 			app.githubApi.getIssues({
 				name:repoName,
@@ -50,6 +54,8 @@
 			});
 		} else {
 			alert("New Issue Failed");
+			$(loading).toggleClass("hide");
+			$(saveBtn).toggleClass("hide");
 		}
 	}
 })();
