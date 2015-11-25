@@ -147,6 +147,9 @@
                 } else if(endDateVal == ''){
                     $e.find("input[name='endTime']").focus();
                     $e.find("input[name='endTime']").closest("div").find("span.message").addClass("error").html("Please enter EndTime.");
+                } else if(app.dateformat.dateDiff('s',app.dateformat.strFormatToDate('yyyy-MM-dd HH:mm:ss',data.startTime),app.dateformat.strFormatToDate('yyyy-MM-dd HH:mm:ss',data.endTime)) < 0){
+                    $e.find("input[name='endTime']").focus();
+                    $e.find("input[name='endTime']").closest("div").find("span.message").addClass("error").html("EndTime should after than StartTime.");
                 } else if(input.val() == "") {
                     input.focus();
                     input.closest(".control-group").find("span.message").addClass("error").html("Please enter summary.");
