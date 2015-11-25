@@ -89,6 +89,6 @@
             }
         });
     }
-    // --------- Private Methods --------- //
+    // --------- /Private Methods --------- //
 
 })(jQuery);
