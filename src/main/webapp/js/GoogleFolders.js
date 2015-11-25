@@ -64,6 +64,7 @@
 
     // --------- Private Methods --------- //
     function showFolders() {
+        var view = this;
         var folders = app.googleApi.getFolders();
         return brite.display("DataTable", ".folders-container", {
             gridData: folders,
@@ -79,15 +80,37 @@
                     render:function(obj){
                         return "<a src=\"#\" class=\"folderClass\"><span>{0}</span></a>".format(obj.fullName);
                     }
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-edit' data-cmd='EDIT_FOLDER'></div>";
+                    },
+                    attrs: "style='width: 40px'"
+                },
+                {
+                    text:"",
+                    render:function(obj){
+                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-remove' data-cmd='DELETE_FOLDER'></div>";
+                    },
+                    attrs: "style='width: 40px'"
                 }
             ],
             opts:{
                 htmlIfEmpty: "Not Folder found",
                 withPaging: false,
-                cmdDelete: "DELETE_FOLDER",
-                cmdEdit: "EDIT_FOLDER"
+                withCmdEdit:false,
+                withCmdDelete: false
             }
         });
+    }
+
+    function checkFolderTypeByName(folderName){
+        var isSystemFolder = false;
+        if(folderName == "INBOX" || folderName.indexOf("[Gmail]") > -1){
+            isSystemFolder = true;
+        }
+        return isSystemFolder;
     }
     // --------- /Private Methods --------- //
 
