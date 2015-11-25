@@ -1,14 +1,14 @@
 package com.britesnow.samplesocial.web;
 
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.britesnow.samplesocial.web.annotation.JsonParam;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
-import fi.foyt.foursquare.api.entities.Contact;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,6 @@ import com.britesnow.samplesocial.model.ContactInfo;
 import com.britesnow.samplesocial.oauth.OauthException;
 import com.britesnow.samplesocial.service.GContactService;
 import com.britesnow.samplesocial.service.GoogleAuthService;
-import com.britesnow.samplesocial.web.annotation.WebObject;
 import com.britesnow.snow.util.Pair;
 import com.britesnow.snow.web.RequestContext;
 import com.britesnow.snow.web.param.annotation.WebModel;
@@ -49,15 +48,19 @@ public class GoogleContactHandlers {
 	 * @throws Exception
 	 */
 	@WebPost("/gcontact/create")
-	public WebResponse createContact(@WebUser User user, @WebObject ContactInfo contact) {
+	public WebResponse createContact(@WebUser User user, @JsonParam("contactsJson") Map contact) {
 		boolean result = true;
 		try {
-			if (contact.getId() == null) {
+
+			ContactInfo contactInfo = new ContactInfo();
+			BeanUtils.copyProperties(contactInfo, contact);
+
+			if (contactInfo.getId() == null) {
 				//create contact
-				gContactService.createContact(contact);
+				gContactService.createContact(contactInfo);
 			} else {
 				//update contact
-				gContactService.updateContactEntry(contact);
+				gContactService.updateContactEntry(contactInfo);
 			}
 
 		} catch (Exception e) {

@@ -110,6 +110,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     </dependency>
     <!-- /Snow -->
 
+    <!-- JSON -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.5.2</version>
+    </dependency>
+    <!-- /JSON -->
+
     <!-- Google apis -->
     <!-- Google apis -->
     <dependency>

@@ -7,6 +7,7 @@ import com.google.gdata.data.contacts.Birthday;
 import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
 import com.google.gdata.data.extensions.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ContactInfo {
     private String etag;
 
     private List<String> groups = null;
+    private String groupstr = null;
 
     public ContactInfo() {
     }
@@ -111,6 +113,8 @@ public class ContactInfo {
         return groups;
     }
 
+
+
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
@@ -158,13 +162,13 @@ public class ContactInfo {
         ContactEntry contactEntry = new ContactEntry();
 
         Name name = new Name();
-        if (this.getFullName() != null) {
+        if (StringUtils.isNotEmpty(this.getFullName())) {
             name.setFullName(new FullName(this.getFullName(), null));
         }
-        if (this.getGivenName() != null) {
+        if (StringUtils.isNotEmpty(this.getGivenName())) {
             name.setGivenName(new GivenName(this.getGivenName(), null));
         }
-        if (this.getFamilyName() != null) {
+        if (StringUtils.isNotEmpty(this.getFamilyName())) {
             name.setFamilyName(new FamilyName(this.getFamilyName(), ""));
         }
         contactEntry.setName(name);
@@ -172,7 +176,7 @@ public class ContactInfo {
             contactEntry.setContent(new PlainTextConstruct(this.getNotes()));
         }
         //set email
-        if (this.getEmail() != null) {
+        if (StringUtils.isNotEmpty(this.getEmail())) {
             Email primaryMail = new Email();
             primaryMail.setAddress(this.getEmail());
             primaryMail.setRel("http://schemas.google.com/g/2005#home");
@@ -180,7 +184,7 @@ public class ContactInfo {
             contactEntry.addEmailAddress(primaryMail);
         }
 
-        if (this.getPhone() != null) {
+        if (StringUtils.isNotEmpty(this.getPhone())) {
             PhoneNumber pn = new PhoneNumber();
             pn.setPhoneNumber(this.getPhone());
             pn.setPrimary(true);
@@ -188,19 +192,28 @@ public class ContactInfo {
             contactEntry.addPhoneNumber(pn);
         }
         //Add to a Group
-        if (this.getGroupId() != null) {
+        if (StringUtils.isNotEmpty(this.getGroupId())) {
             GroupMembershipInfo gm = new GroupMembershipInfo();
             gm.setHref(this.getGroupId());
             contactEntry.addGroupMembershipInfo(gm);
         }
-        if (this.getBir() != null) {
+
+        if (this.getGroups() != null) {
+            for(int i = 0; i < this.getGroups().size(); i++){
+                GroupMembershipInfo gm = new GroupMembershipInfo();
+                gm.setHref(this.getGroups().get(i));
+                contactEntry.addGroupMembershipInfo(gm);
+            }
+        }
+
+        if (StringUtils.isNotEmpty(this.getBir())) {
             Birthday b = new Birthday(this.getBir());
             contactEntry.setBirthday(b);
         }
-        if (this.getId() != null) {
+        if (StringUtils.isNotEmpty(this.getId())) {
             contactEntry.setId(this.getId());
         }
-        if (this.getEtag() != null) {
+        if (StringUtils.isNotEmpty(this.getEtag())) {
             contactEntry.setEtag(getEtag());
         }
         return contactEntry;

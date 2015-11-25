@@ -39,14 +39,22 @@
 				});
 				data.id = view.contractId;
 				var $email = view.$el.find("input[name='email']");
-				var $group = view.$el.find(".dropdown-menu input:checked");
-				data.groupId = $group.attr("data-id");
+
+				//checked groupid
+				var groups = [];
+				var $checked = view.$el.find(".dropdown-menu input:checked");
+				$checked.each(function(idx, item){
+				var $item = $(item);
+					groups.push($item.attr("data-id"));
+				});
+				data.groups = groups;
+
 				//check if have email
 				if ($email.val() == "") {
 					$email.focus();
 					$email.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
 				} else {
-					app.googleApi.createContact(data).done(function (extraData) {
+					app.googleApi.createContact({contactsJson:JSON.stringify(data)}).done(function (extraData) {
 						setTimeout((function () {
 							$(document).trigger("DO_REFRESH_CONTACT");
 						}), 5000);
