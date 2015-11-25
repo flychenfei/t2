@@ -31,9 +31,9 @@
 			<tr>
 				<td class="message" data-issue-id="{{number}}">
 					<div><span class="messageTitle">{{title}}</span></div>
-				</td>
-				<td class="sha">
-					<div><span class="messageTitle">{{user.login}} opened</span></div>
+					<div class="issueMeta">
+						<span class="messageTitle">#{{number}} opened {{#formatDate createdAt}}{{/formatDate}} by {{user.login}}</span>
+					</div>
 				</td>
 				{{#equal state "open"}}
 				<td class="sha">
