@@ -4,17 +4,26 @@
             return app.render("tmpl-GithubReleases",{releases:data.releases,reponame:data.name,login:data.login});
         },
         events:{
+            "click;.message":function(event){
+                var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
+                var name = $(event.target).closest("tr").find(".name").text();
+                var tagName =$(event.target).closest("tr").find(".tag-name").text();
+                var detail = true;
+                editRelease(event,releaseId,name,tagName,detail);
+            },
             "click;.edit":function(event){
                 var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
                 var name = $(event.target).closest("tr").find(".name").text();
                 var tagName =$(event.target).closest("tr").find(".tag-name").text();
-                editRelease(event,releaseId,name,tagName);
+                var detail;
+                editRelease(event,releaseId,name,tagName,detail);
             },
             "click;.new-release":function(event){
                 var releaseId;
                 var name = "";
                 var tagName = "";
-                editRelease(event,releaseId,name,tagName);
+                var detail;
+                editRelease(event,releaseId,name,tagName,detail);
             },
             "click;.remove":function(event){
                 var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
@@ -50,7 +59,7 @@
         }
     });
 
-    function editRelease(event,releaseId,name,tagName){
+    function editRelease(event,releaseId,name,tagName,detail){
         var login = $(event.target).closest("table").parent().attr("data-login");
         var repoName = $(event.target).closest("table").parent().attr("data-name");
         brite.display("GithubReleaseEdit",$("body"),{
@@ -62,7 +71,8 @@
             layout:{
                 left:'20%',
                 height:'auto'
-            }
+            },
+            detail: detail
         });
     }
 })();
