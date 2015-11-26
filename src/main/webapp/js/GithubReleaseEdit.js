@@ -7,7 +7,8 @@
                 tagName:data.tagName,
                 login: data.login,
                 repoName: data.repoName,
-                layout:data.layout
+                layout:data.layout,
+                detail:data.detail
             });
         },
         events:{
