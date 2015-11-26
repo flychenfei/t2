@@ -84,14 +84,14 @@
                 {
                     text:"",
                     render:function(obj){
-                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-edit' data-cmd='EDIT_FOLDER'></div>";
+                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-edit click-able' title='Edit Folder' data-cmd='EDIT_FOLDER'></div>";
                     },
                     attrs: "style='width: 40px'"
                 },
                 {
                     text:"",
                     render:function(obj){
-                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-remove' data-cmd='DELETE_FOLDER'></div>";
+                        return checkFolderTypeByName.call(view, obj.fullName) ? "" : "<div class='glyphicon glyphicon-remove click-able' title='Delete Folder' data-cmd='DELETE_FOLDER'></div>";
                     },
                     attrs: "style='width: 40px'"
                 }
