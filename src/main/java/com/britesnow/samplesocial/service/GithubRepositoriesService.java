@@ -7,7 +7,15 @@ import com.britesnow.snow.util.MapUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.fileupload.FileItem;
-import org.eclipse.egit.github.core.*;
+import org.eclipse.egit.github.core.Comment;
+import org.eclipse.egit.github.core.Download;
+import org.eclipse.egit.github.core.DownloadResource;
+import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.PullRequest;
+import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.SearchRepository;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.GitHubRequest;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.DownloadService;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -217,12 +225,12 @@ public class GithubRepositoriesService {
 	public Map getIssues(Repository repo,User user,String state) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		Map<String,String> filterData = new HashMap<>();
-		filterData.put("state","all");
+		filterData.put("state",state);
 		List<Issue> issues = issueService.getIssues(repo,filterData);
-		List<Issue> currentIssues = issues.stream().filter(issue -> issue.getState().equals(state)).collect(Collectors.toList());
-		int currentSize = currentIssues.size(),
-				totalSize = issues.size();
-		return MapUtil.mapIt("issues",currentIssues,"openCount","open".equals(state) ? currentSize : totalSize - currentSize,
+
+		int currentSize = issues.size(),
+				totalSize = countIssues(repo, user, null);
+		return MapUtil.mapIt("issues",issues,"openCount","open".equals(state) ? currentSize : totalSize - currentSize,
 				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
 	}
 
@@ -374,5 +382,31 @@ public class GithubRepositoriesService {
 	public PageIterator<Map<String,Object>> pageIssueEventsInMap(Repository repo, User user, String issueId) throws IOException {
 		GithubIssueService issueService = new GithubIssueService(githubAuthService.createClient(user));
 		return issueService.pageIssueEventsInMap(repo.getOwner().getLogin(), repo.getName(), Integer.valueOf(issueId));
+	}
+
+	/**
+	 * get the issues count
+	 * @param repo the repository
+	 * @param user the user
+	 * @param state open or closed
+	 * @return the matched issues count
+	 * @throws IOException
+     */
+	private int countIssues(Repository repo, User user, String state) throws IOException {
+		GitHubClient client = githubAuthService.createClient(user);
+		GitHubRequest request = new GitHubRequest();
+		StringBuilder uriBuilder = new StringBuilder("/search/issues?per_page=1&q=repo:");
+		uriBuilder.append(repo.getOwner().getLogin()).append("/").append(repo.getName());
+		if(state != null){
+			if("open".equalsIgnoreCase(state)){
+				uriBuilder.append("+state:open");
+			}else{
+				uriBuilder.append("+state:closed");
+			}
+		}
+		request.setUri(uriBuilder.toString());
+		request.setType(HashMap.class);
+		HashMap map = (HashMap)client.get(request).getBody();
+		return (int)Double.parseDouble(map.get("total_count").toString());
 	}
 }
