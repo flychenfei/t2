@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 
 public class ContactInfo {
-    private String fullName;
     private String givenName;
     private String familyName;
     private String phone;
@@ -29,13 +28,6 @@ public class ContactInfo {
     public ContactInfo() {
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getGivenName() {
         return givenName;
@@ -125,8 +117,6 @@ public class ContactInfo {
         if (name != null) {
             if (name.getFamilyName() != null)
                 info.setFamilyName(name.getFamilyName().getValue());
-            if (name.getFullName() != null)
-                info.setFullName(name.getFullName().getValue());
             if (name.getGivenName() != null)
                 info.setGivenName(name.getGivenName().getValue());
         }
@@ -162,9 +152,7 @@ public class ContactInfo {
         ContactEntry contactEntry = new ContactEntry();
 
         Name name = new Name();
-        if (StringUtils.isNotEmpty(this.getFullName())) {
-            name.setFullName(new FullName(this.getFullName(), null));
-        }
+
         if (StringUtils.isNotEmpty(this.getGivenName())) {
             name.setGivenName(new GivenName(this.getGivenName(), null));
         }

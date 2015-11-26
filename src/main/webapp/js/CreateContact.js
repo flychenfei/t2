@@ -35,7 +35,23 @@
 				data = {};
 				$controls.each(function(idx, obj){
 					var $this = $(this);
-					data[$this.attr("name")] = $this.val();
+					var $name = $this.attr("name");
+					data[$name] = $this.val();
+
+					//check email format
+					if($name == "email"){
+						checkEmail.call(view, $this);
+					}
+					//check phone number
+					if($name == "phone"){
+						checkPhone.call(view, $this);
+					}
+
+					//check birthday format
+					if($name == "bir"){
+						checkBirthday.call(view, $this);
+					}
+
 				});
 				data.id = view.contractId;
 				var $email = view.$el.find("input[name='email']");
@@ -49,18 +65,24 @@
 				});
 				data.groups = groups;
 
+				var $eachControls = view.$el.find(".form-group .controls");
+				var $saveBtn = view.$el.find(".createContactBtn");
+				if($eachControls.hasClass("has-error")){
+					$saveBtn.addClass("disabled");
+				}else{
+					$saveBtn.removeClass("disabled");
+				}
 				//check if have email
 				if ($email.val() == "") {
 					$email.focus();
 					$email.closest("div").addClass("has-error").find("span").html("Please enter valid contact name.");
-				} else {
+				} else if(!$eachControls.hasClass("has-error")) {
 					app.googleApi.createContact({contactsJson:JSON.stringify(data)}).done(function (extraData) {
 						setTimeout((function () {
 							$(document).trigger("DO_REFRESH_CONTACT");
 						}), 5000);
 						view.close();
 					});
-
 				}
 			},
 			// --------- /View Interface Implement--------- //
@@ -94,32 +116,26 @@
 					var $input = $(event.currentTarget);
 					var $name = $input.attr("name");
 					var $controls = $input.closest("div");
+					var $saveBtn = view.$el.find(".createContactBtn");
 					//check email format
 					if($name == "email"){
-						var emailRex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
-						if($input.val() && !emailRex.test($input.val())){
-						   $controls.addClass("has-error").find("span").html('username must be in an email format "yourname@yourcompany.com"');
-						} else {
-							$controls.removeClass("has-error").find("span").html("");
-						}
+						checkEmail.call(view, $input);
 					}
 					//check phone number
 					if($name == "phone"){
-						var phoneRex = new RegExp("^[0-9]*$");
-						if($input.val() && !phoneRex.test($input.val())){
-						   $controls.addClass("has-error").find("span").html("the phone should be numeric character");
-						} else {
-							$controls.removeClass("has-error").find("span").html("");
-						}
+						checkPhone.call(view, $input);
 					}
 
 					//check birthday format
 					if($name == "bir"){
-						if($input.val() && !$input.val().match(/^((?:19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
-						   $controls.addClass("has-error").find("span").html('birthday must be an format "YYYY-MM-DD"');
-						} else {
-							$controls.removeClass("has-error").find("span").html("");
-						}
+						checkBirthday.call(view, $input);
+					}
+
+					var $eachControls = view.$el.find(".form-group .controls");
+					if($eachControls.hasClass("has-error")){
+						$saveBtn.addClass("disabled");
+					}else{
+						$saveBtn.removeClass("disabled");
 					}
 				},
 
@@ -179,6 +195,43 @@
 			var $grouplist = view.$el.find(".dropdown-menu").empty();
 			$grouplist.append(render("tmpl-CreateContact-groups", {groups: groups}));
 		});
+	}
+
+	//check email format
+	function checkEmail($input){
+		var view = this;
+		var $controls = $input.closest("div")
+
+		var emailRex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
+		if($input.val() && !emailRex.test($input.val())){
+		   $controls.addClass("has-error").find("span").html('username must be in an email format "yourname@yourcompany.com"');
+		} else {
+			$controls.removeClass("has-error").find("span").html("");
+		}
+
+	}
+
+	//check phone number
+	function checkPhone($input){
+		var view = this;
+		var $controls = $input.closest("div");
+		var phoneRex = new RegExp("^[0-9]*$");
+		if($input.val() && !phoneRex.test($input.val())){
+		   $controls.addClass("has-error").find("span").html("the phone should be numeric character");
+		} else {
+			$controls.removeClass("has-error").find("span").html("");
+		}
+	}
+
+	//check birthday format
+	function checkBirthday($input){
+		var view = this;
+		var $controls = $input.closest("div");
+		if($input.val() && !$input.val().match(/^((?:19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
+		   $controls.addClass("has-error").find("span").html('birthday must be an format "YYYY-MM-DD"');
+		} else {
+			$controls.removeClass("has-error").find("span").html("");
+		}
 	}
 
 	})(jQuery);
