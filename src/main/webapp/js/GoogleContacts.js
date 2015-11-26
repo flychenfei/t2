@@ -135,6 +135,15 @@
 	//show contacts in the DataTable
 	function showContacts() {
 		var view = this;
+		function fullName(obj) {
+			if (typeof obj.givenName == "undefined") {
+				obj.givenName = "";
+			}
+			if (typeof obj.familyName == "undefined") {
+				obj.familyName = "";
+			}
+			return obj.givenName + " " + obj.familyName;
+		}
 		brite.display("DataTable", ".contacts-container", {
 			dataProvider: {list: view.search},
 			rowAttrs: function (obj) {
@@ -158,8 +167,8 @@
 				},
 				{
 					text: "Full Name",
-					render: function (obj) {
-						return (typeof obj.fullName == "undefined") ? "" : obj.fullName;
+					render: function (obj) { 
+						return fullName(obj);
 					},
 					attrs: "style='width: 25%'"
 				},
