@@ -153,6 +153,8 @@
 			if ( typeof month != "undefined") {
 				firstDateOfMonth.setMonth(month);
 
+			}else{
+				view.currentYear = firstDateOfMonth.getFullYear();
 			}
 			if ( typeof view.currentYear != "undefined") {
 				firstDateOfMonth.setYear(view.currentYear);
