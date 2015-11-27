@@ -2,13 +2,13 @@
   <div class="github">
 	  <div class="dialogBackground"></div>
       <div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
-          <div class="dialogHead">
+          <div class="dialogHead" style = "overflow: hidden;">
+              <span class="close dialogBtns dialogCloseBtn">&times;</span>
               {{#if detail}}
               <span class="dialogTitle">Release: {{name}}</span>
               {{else}}
               <span class="dialogTitle">{{#if id}}Edit{{else}}Create{{/if}} Release</span>
               {{/if}}
-              <span class="close dialogBtns dialogCloseBtn">&times;</span>
           </div>
           <div class="dialogBody" data-repository-name="{{repoName}}" data-release-id="{{id}}" data-login="{{login}}">
               <div>

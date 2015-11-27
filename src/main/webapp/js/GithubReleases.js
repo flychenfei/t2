@@ -6,15 +6,15 @@
         events:{
             "click;.message":function(event){
                 var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
-                var name = $(event.target).closest("tr").find(".name").text();
-                var tagName =$(event.target).closest("tr").find(".tag-name").text();
+                var name = $(event.target).closest("tr").find(".message").attr("data-release-name");
+                var tagName =$(event.target).closest("tr").find(".message").attr("data-release-tagname");
                 var detail = true;
                 editRelease(event,releaseId,name,tagName,detail);
             },
             "click;.edit":function(event){
                 var releaseId = $(event.target).closest("tr").find(".message").attr("data-release-id");
-                var name = $(event.target).closest("tr").find(".name").text();
-                var tagName =$(event.target).closest("tr").find(".tag-name").text();
+                var name = $(event.target).closest("tr").find(".message").attr("data-release-name");
+                var tagName =$(event.target).closest("tr").find(".message").attr("data-release-tagname");
                 var detail;
                 editRelease(event,releaseId,name,tagName,detail);
             },
@@ -69,8 +69,10 @@
             login: login,
             repoName: repoName,
             layout:{
-                left:'20%',
-                height:'auto'
+                left: '20%',
+                top:"100px",
+                width:'60%',
+                height: 'auto'
             },
             detail: detail
         });
