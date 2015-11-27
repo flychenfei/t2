@@ -44,6 +44,16 @@ var app = app || {};
 		}
 		return new Date(year, month, day, hour, minute, second);
 	}
+
+	app.dateformat.maxDayOfDate = function(date)
+	{
+		date = arguments[0] || new Date();
+		date.setDate(1);
+		date.setMonth(date.getMonth() + 1);
+		var time = date.getTime() - 24 * 60 * 60 * 1000;
+		var newDate = new Date(time);
+		return newDate.getDate();
+	}
 })(jQuery);
 
 
