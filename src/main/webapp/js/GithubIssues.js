@@ -1,7 +1,7 @@
 (function(){
 	brite.registerView("GithubIssues",{emptyParent:true},{
 		create:function(data,config){
-			return app.render("tmpl-GithubIssues",{issues:data.issues,name:data.name,login:data.login,issueState:data.issueState,openCount: data.openCount,closedCount:data.closedCount});
+			return app.render("tmpl-GithubIssues",{issues:data.issues,name:data.name,login:data.login,issueState:data.issueState,openCount: data.openCount,closedCount:data.closedCount,pageNum:data.pageNum,pageSum:data.pageSum});
 		},
 		events:{
 			"click;.openIssues":function(event){
@@ -74,6 +74,40 @@
 			},
 			"click;.btn-open": function (event) {
 				changeIssueState(event,"open","Opening...","Opened");
+			},
+			"click;.page-previous": function (event) {
+				var name = $(event.target).closest("div").attr("data-name");
+				var login = $(event.target).closest("div").attr("data-login");
+				var state = $(event.target).closest("div").attr("data-state");
+				var pageNum = parseInt($(event.target).closest("div").attr("data-pageNum"))-1;
+				var pageSum = parseInt($(event.target).closest("div").attr("data-pageSum"));
+				if(pageNum <= 1)pageNum = 1;
+				else if(pageNum >= pageSum)pageNum = pageSum;
+				app.githubApi.getIssues({
+					name:name,
+					login:login,
+					state:state,
+					pageNum:pageNum
+				}).pipe(function(json){
+					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:pageNum,pageSum:json.result.pageSum});
+				});
+			},
+			"click;.page-next": function (event) {
+				var name = $(event.target).closest("div").attr("data-name");
+				var login = $(event.target).closest("div").attr("data-login");
+				var state = $(event.target).closest("div").attr("data-state");
+				var pageNum = parseInt($(event.target).closest("div").attr("data-pageNum"))+1;
+				var pageSum = parseInt($(event.target).closest("div").attr("data-pageSum"));
+				if(pageNum <= 1)pageNum = 1;
+				else if(pageNum >= pageSum)pageNum = pageSum;
+				app.githubApi.getIssues({
+					name:name,
+					login:login,
+					state:state,
+					pageNum:pageNum
+				}).pipe(function(json){
+					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:pageNum,pageSum:json.result.pageSum});
+				});
 			}
 		}
 	});
@@ -162,9 +196,10 @@
 		app.githubApi.getIssues({
 			name:name,
 			login:login,
-			state:state
+			state:state,
+			pageNum:1
 		}).pipe(function(json){
-			brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount});
+			brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:1,pageSum:json.result.pageSum});
 		});
 	}
 })();

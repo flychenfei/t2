@@ -48,5 +48,12 @@
 			{{/each}}
 			</tbody>
 		</table>
+		<div class="pagination-container">
+			<div class="pagination">
+				<div class="btn page-button page-previous" data-name="{{name}}" data-login="{{login}}" data-state="{{issueState}}" data-pageNum="{{pageNum}}" data-pageSum="{{pageSum}}">Previous</div>
+				<span>{{pageNum}}:{{pageSum}}</span>
+				<div class="btn page-button page-next" data-name="{{name}}" data-login="{{login}}" data-state="{{issueState}}" data-pageNum="{{pageNum}}" data-pageSum="{{pageSum}}">Next</div>
+			</div>
+		</div>
 	</div>
 </script>

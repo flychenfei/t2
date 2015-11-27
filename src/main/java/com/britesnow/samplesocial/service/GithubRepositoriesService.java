@@ -222,16 +222,15 @@ public class GithubRepositoriesService {
 	 * @throws IOException
 	 */
 
-	public Map getIssues(Repository repo,User user,String state) throws IOException{
+	public Map getIssues(Repository repo,User user,String state,int pageNum) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		Map<String,String> filterData = new HashMap<>();
 		filterData.put("state",state);
-		List<Issue> issues = issueService.getIssues(repo,filterData);
-
-		int currentSize = issues.size(),
-				totalSize = countIssues(repo, user, null);
-		return MapUtil.mapIt("issues",issues,"openCount","open".equals(state) ? currentSize : totalSize - currentSize,
-				"closedCount","closed".equals(state) ? currentSize : totalSize - currentSize);
+		int openCount = countIssues(repo,user,"open");
+		int closedCount = countIssues(repo,user,"closed");
+		PageIterator<Issue> issues = issueService.pageIssues(repo,filterData,pageNum-1,25);
+		return MapUtil.mapIt("issues",issues.next(),"openCount",openCount,"closedCount",closedCount,
+				"pageSum","open".equals(state) ? openCount%25==0 ? openCount/25 : openCount/25+1 : closedCount%25==0 ? closedCount/25 : closedCount/25+1);
 	}
 
 	/*
@@ -310,12 +309,12 @@ public class GithubRepositoriesService {
 
 	public PullRequest getPullRequest(Repository repo, User user, int id) throws IOException {
 		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
-		return pullRequestService.getPullRequest(repo,id);
+		return pullRequestService.getPullRequest(repo, id);
 	}
 
 	public PullRequest editPullRequest(Repository repo, User user, PullRequest pullRequest) throws IOException {
 		PullRequestService pullRequestService = new PullRequestService(githubAuthService.createClient(user));
-		return pullRequestService.editPullRequest(repo,pullRequest);
+		return pullRequestService.editPullRequest(repo, pullRequest);
 	}
 
 	/*
