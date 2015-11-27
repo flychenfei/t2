@@ -119,11 +119,17 @@
 				for(var i = 0; i < data.result.length; i++){
 					var start = new Date(data.result[i].start);
 					var end = new Date(data.result[i].end);
-					for(var j = start.getDate(); j <= end.getDate(); j++){
-						$e.find("td[data-date-value='"+j+"']").addClass("busy");
+					if(start.getMonth() != end.getMonth()){
+						//if start and end are not same month,set the end day is the last day of month with start
+						for(var j = start.getDate(); j <= app.dateformat.maxDayOfDate(start); j++){
+							$e.find("td[data-date-value='"+j+"']").addClass("busy");
+						}
+					}else{
+						for(var j = start.getDate(); j <= end.getDate(); j++){
+							$e.find("td[data-date-value='"+j+"']").addClass("busy");
+						}
 					}
 				}
-				
 			});
 			
 		}
