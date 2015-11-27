@@ -116,9 +116,10 @@
 				app.githubApi.getIssues({
 					name:name,
 					login:login,
-					state:"open"
+					state:"open",
+					pageNum:1
 				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount});
+					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:1,pageSum:json.result.pageSum});
 				});
 			},
 			"click;.releases":function(event){

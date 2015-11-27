@@ -281,19 +281,21 @@ public class GithubRepositoriesHandler {
 	 * @param user
 	 * @param name name of repository
 	 * @param login current github user login name
+	 * @param pageNum Issues page number
 	 * @return
 	 * @throws IOException
 	 */
 	@WebGet("/github/getIssues")
 	public WebResponse getIssues(@WebUser User user,@WebParam("name") String name,
-								  @WebParam("login") String login,@WebParam("state") String state) throws IOException {
+								  @WebParam("login") String login,@WebParam("state") String state,
+								 @WebParam("pageNum") String pageNum) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
 		owner.setLogin(login);
 		repo.setOwner(owner);
 		repo.setName(name);
 		try{
-			return WebResponse.success(githubRepositoriesService.getIssues(repo, user,state));
+			return WebResponse.success(githubRepositoriesService.getIssues(repo, user,state,Integer.parseInt(pageNum)));
 		}catch(Exception e){
 			return WebResponse.fail(e.getMessage());
 		}
