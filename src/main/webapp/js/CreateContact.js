@@ -63,7 +63,13 @@
 				var $item = $(item);
 					groups.push($item.attr("data-id"));
 				});
-				data.groups = groups;
+				
+				//check if the groups change
+				if(view.groupsChange){
+					data.groups = groups;
+				}else{
+					data.groups = view.groups;
+				}
 
 				var $eachControls = view.$el.find(".form-group .controls");
 				var $saveBtn = view.$el.find(".createContactBtn");
@@ -148,6 +154,7 @@
 					$errorMsg.text("");
 				},
 
+				//event for show/hide the dropdown menu
 				"click; .dropdown-toggle": function(event){
 					var view = this;
 					var $menu = view.$el.find(".dropdown-menu");
@@ -157,6 +164,12 @@
 						showGroups.call(view);
 						$menu.show();
 					}
+				},
+
+				//event for if the user change the groups
+				"click; .dropdown-menu input": function(event){
+					var view = this;
+					view.groupsChange = true;
 				},
 			},
 			// --------- Events--------- //
