@@ -41,6 +41,11 @@
                 {
                     text: "Icon",
                     render: function (obj) {
+                        if(obj != null){
+                            var icon = JSON.parse(obj.icon);
+                            icon = icon.prefix+'bg_32'+icon.suffix;
+                            obj.icon = icon;
+                        }
                         return "<img src={0} />".format(obj.icon);
                     },
                     attrs: "style='width: 5%'"
