@@ -41,7 +41,7 @@
 				} else {
 					if(view.groupId) {
 						//create group
-						dfd = app.googleApi.createGroup({groupId:view.groupId,etag:view.etag, groupName: input.val()})
+						dfd = app.googleApi.createGroup({groupId:view.groupId,etag:view.etag, groupName: $input.val()})
 					}else{
 						//updated group
 						dfd = app.googleApi.createGroup({groupName: $input.val()});

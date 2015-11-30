@@ -15,6 +15,8 @@ public class ContactInfo {
     private String givenName;
     private String familyName;
     private String phone;
+    private String postalAddress;
+    private String imAddress;
     private String bir;
     private String groupId;
     private String email;
@@ -52,6 +54,14 @@ public class ContactInfo {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getPostalAddress() { return postalAddress; }
+
+    public void setPostalAddress(String postalAddress) { this.postalAddress = postalAddress;}
+
+    public String getImAddress() { return imAddress; }
+
+    public void setImAddress(String imAddress) { this.imAddress = imAddress; }
 
     public String getBir() {
         return bir;
@@ -113,6 +123,7 @@ public class ContactInfo {
 
     public static ContactInfo from(ContactEntry entry) {
         ContactInfo info = new ContactInfo();
+        //set name
         Name name = entry.getName();
         if (name != null) {
             if (name.getFamilyName() != null)
@@ -120,27 +131,45 @@ public class ContactInfo {
             if (name.getGivenName() != null)
                 info.setGivenName(name.getGivenName().getValue());
         }
+        //set phone number
         List<PhoneNumber> phoneNumbers = entry.getPhoneNumbers();
         if (phoneNumbers.size() > 0) {
             info.setPhone(phoneNumbers.get(0).getPhoneNumber());
         }
+        //set birthday
         if (entry.getBirthday() != null)
             info.setBir(entry.getBirthday().getValue());
+        //set imAddress
+        List<Im> ims = entry.getImAddresses();
+        if(ims.size() > 0){
+            info.setImAddress(ims.get(0).getAddress());
+        }
+
+        List<StructuredPostalAddress> pa = entry.getStructuredPostalAddresses();
+        if(pa.size() > 0){
+            info.setPostalAddress(pa.get(0).getFormattedAddress().getValue());
+        }
+
+        //set groups
         List<GroupMembershipInfo> groups = entry.getGroupMembershipInfos();
         if (groups.size() > 0) {
             info.setGroupId(groups.get(0).getHref());
         }
+        //set emails
         List<Email> emails = entry.getEmailAddresses();
         if (emails.size() > 0) {
             info.setEmail(emails.get(0).getAddress());
         }
+        //set content
         Content content = entry.getContent();
         if (content != null && content.getType() <= 5) {
             info.setNotes(entry.getTextContent().getContent().getPlainText());
         }
+        //set id
         if (entry.getId() != null) {
             info.setId(entry.getId());
         }
+        //set etag
         if (entry.getEtag() != null) {
             info.setEtag(entry.getEtag());
         }
@@ -150,7 +179,7 @@ public class ContactInfo {
 
     public ContactEntry to() {
         ContactEntry contactEntry = new ContactEntry();
-
+        //set name
         Name name = new Name();
 
         if (StringUtils.isNotEmpty(this.getGivenName())) {
@@ -163,6 +192,7 @@ public class ContactInfo {
         if (this.getNotes() != null) {
             contactEntry.setContent(new PlainTextConstruct(this.getNotes()));
         }
+
         //set email
         if (StringUtils.isNotEmpty(this.getEmail())) {
             Email primaryMail = new Email();
@@ -172,6 +202,7 @@ public class ContactInfo {
             contactEntry.addEmailAddress(primaryMail);
         }
 
+        //set phone
         if (StringUtils.isNotEmpty(this.getPhone())) {
             PhoneNumber pn = new PhoneNumber();
             pn.setPhoneNumber(this.getPhone());
@@ -179,6 +210,24 @@ public class ContactInfo {
             pn.setRel("http://schemas.google.com/g/2005#work");
             contactEntry.addPhoneNumber(pn);
         }
+
+        //set postal address
+        if (StringUtils.isNotEmpty(this.getPostalAddress())) {
+            StructuredPostalAddress postalAddress = new StructuredPostalAddress();
+            postalAddress.setFormattedAddress(new FormattedAddress(this.getPostalAddress()));
+            postalAddress.setPrimary(true);
+            postalAddress.setRel("http://schemas.google.com/g/2005#work");
+            contactEntry.addStructuredPostalAddress(postalAddress);
+        }
+
+        //set imAddress
+        if (StringUtils.isNotEmpty(this.getImAddress())) {
+            Im imAddress = new Im();
+            imAddress.setAddress(this.getImAddress());
+            imAddress.setRel("http://schemas.google.com/g/2005#home");
+            contactEntry.addImAddress(imAddress);
+        }
+
         //Add to a Group
         if (StringUtils.isNotEmpty(this.getGroupId())) {
             GroupMembershipInfo gm = new GroupMembershipInfo();
@@ -193,14 +242,16 @@ public class ContactInfo {
                 contactEntry.addGroupMembershipInfo(gm);
             }
         }
-
+        //set birthday
         if (StringUtils.isNotEmpty(this.getBir())) {
             Birthday b = new Birthday(this.getBir());
             contactEntry.setBirthday(b);
         }
+        //set id
         if (StringUtils.isNotEmpty(this.getId())) {
             contactEntry.setId(this.getId());
         }
+        //set etag
         if (StringUtils.isNotEmpty(this.getEtag())) {
             contactEntry.setEtag(getEtag());
         }
