@@ -156,7 +156,7 @@
                 }  else {
                     app.googleApi.saveCopyCalendarEvent(data).done(function (extraData) {
                         setTimeout((function () {
-                            $(document).trigger("DO_REFRESH_CALENDAR");
+                            $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
                         }), 3000);
                         view.close();
                     });
