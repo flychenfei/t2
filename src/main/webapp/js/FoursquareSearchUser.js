@@ -64,6 +64,10 @@
                 {
                     text: "photo",
                     render: function (obj) {
+                        if(obj != null){
+                            var photo = JSON.parse(obj.photo);
+                            obj.photo = photo.prefix+"32x32"+photo.suffix;
+                        }
                         return "<img src= '{0}' withd='100px'/>".format(obj.photo);
                     },
                     attrs: "style='width: 30%'"
