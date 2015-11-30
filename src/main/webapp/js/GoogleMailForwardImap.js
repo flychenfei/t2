@@ -22,7 +22,7 @@
 			// event for click to add CC
 			"btap; .addCC": function(){
 				var view = this;
-				view.$el.find(".ccItems").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC icon-remove'></span></div>");
+				view.$el.find(".ccItems").append("<div class='ccItem'><input type='text' name='cc' /> <span class='removeCC glyphicon glyphicon-remove'></span></div>");
 			},
 
 			// event for remove the CC
@@ -34,7 +34,7 @@
             // event for add attachment
 			"btap; .addAttachment": function(){
 				var view = this;
-				view.$el.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment icon-remove'></span></div>");
+				view.$el.find(".attachments").append("<div class='attachmentItem'><input type='file' name='attachments' /> <span class='removeAttachment glyphicon glyphicon-remove'></span></div>");
 			},
 
 			// event for remove attachment
