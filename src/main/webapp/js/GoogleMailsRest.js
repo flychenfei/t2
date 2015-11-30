@@ -2,6 +2,8 @@
 (function ($) {
 
     brite.registerView("GoogleMailsRest",{parent:".GoogleScreen-content",emptyParent:true}, {
+
+        // --------- View Interface Implement--------- //
         create: function (data, config) {
             var view = this;
             data = data || {};
@@ -27,7 +29,9 @@
 
             showEmails.call(view);
         },
+        // --------- /View Interface Implement--------- //
 
+        // --------- Events--------- //
         events: {
             // click to show date picker
             "btap; .datetimepicker": function(event){
@@ -104,7 +108,9 @@
                 view.$el.find(".search-mails-container").toggleClass("hide");
             }
         },
+        // --------- /Events--------- //
 
+        // --------- Document Events--------- //
         docEvents: {
             // trash the email
             "TRASH_EMAIL": function(event, extra){
@@ -202,9 +208,10 @@
 				showEmails.call(view);
             }
         }
+        // --------- /Document Events--------- //
     });
 
-
+    // --------- Private Methods --------- //
     function showEmails() {
         var view = this;
         var $e = view.$el;
@@ -323,4 +330,5 @@
             }
         });
     }
+    // --------- /Private Methods --------- //
 })(jQuery);
