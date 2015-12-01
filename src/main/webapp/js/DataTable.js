@@ -48,10 +48,10 @@
                 }else{
                     view.idKey = "id";
                 }
+
                 if(data.onDone && $.isFunction(data.onDone)){
                     view.onDone = data.onDone;
                 }
-
                 view.columnDef = data.columnDef;
                 view.opts = $.extend(true, getDefaultOptions(), data.opts || {});
                 view.isTreeMode = data.isTreeMode;
@@ -259,6 +259,10 @@
             var $e = view.$element;
             var opts = view.opts.dataOpts || {};
 
+            if(typeof view.opts.groupId != "undefined"){
+                opts.groupId = view.opts.groupId;
+            }
+            
             view.defaultState = state || "closed";
             if (eraseTreeStates) {
                 view.treeStates = {};
@@ -268,7 +272,7 @@
             var dfd = view.opts.withDataListening ?
                     dataProvider.list(opts) :
                     view.gridData;
-
+                    
             return dfd.done(function (data) {
                 if(view.onDone){
                     view.onDone(data);

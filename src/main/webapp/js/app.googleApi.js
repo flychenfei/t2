@@ -33,10 +33,9 @@ var app = app || {};
             return app.getJsonData(contextPath + "/ggroup/delete", params);
         },
         getContacts: function (opts) {
-            var params = {
-                method: "Get"
-            };
-            return app.getJsonData(contextPath + "/gcontact/list", $.extend(params, opts || {}));
+            var params = opts || {};
+            params.method = "Get";
+            return app.getJsonData(contextPath + "/gcontact/list", params);
         },
         deleteContact: function (contactId, etag) {
             var params = {"contactId": contactId, etag: etag};

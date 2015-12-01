@@ -8,6 +8,10 @@
 		// --------- View Interface Implement--------- //
 		create: function (data, config) {
 			var view = this;
+			
+			if(typeof data != "undefined"){
+				view.groupId = data.groupId || "";
+			}
 			if(data && data.search) {
 				view.search = data.search;
 			}else{
@@ -196,7 +200,8 @@
 			opts: {
 				htmlIfEmpty: "Not contacts found",
 				withPaging: true,
-				withCmdDelete:false
+				withCmdDelete:false,
+				groupId: view.groupId
 			}
 		});
 	}
