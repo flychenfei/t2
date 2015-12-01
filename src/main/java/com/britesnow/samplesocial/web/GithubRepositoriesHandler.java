@@ -506,6 +506,8 @@ public class GithubRepositoriesHandler {
 	 * @param repoName  name of repository
 	 * @param pullRequestId  id of PullRequest
 	 * @param state  state of repository
+	 * @param title  title of repository
+	 * @param body  body of repository
 	 * @param login current github user login name
 	 * @return
 	 * @throws IOException
@@ -513,6 +515,7 @@ public class GithubRepositoriesHandler {
 	@WebPost("/github/editPullRequest")
 	public WebResponse editPullRequest(@WebUser User user,@WebParam("repoName") String repoName,
 								   @WebParam("pullRequestId") Integer pullRequestId, @WebParam("state") String state,
+								   @WebParam("title") String title,@WebParam("body") String body,
 								   @WebParam("login") String login) throws IOException {
 		Repository repo = new Repository();
 		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
@@ -521,7 +524,15 @@ public class GithubRepositoriesHandler {
 		repo.setName(repoName);
 		PullRequest pullRequest = new PullRequest();
 		pullRequest.setNumber(pullRequestId);
-		pullRequest.setState(state);
+		if(state!=null) {
+			pullRequest.setState(state);
+		}
+		if(body!=null) {
+			pullRequest.setBody(body);
+		}
+		if(title!=null) {
+			pullRequest.setTitle(title);
+		}
 		try {
 			pullRequest = githubRepositoriesService.editPullRequest(repo, user, pullRequest);
 			return WebResponse.success(pullRequest);

@@ -43,14 +43,18 @@
 				<td class="sha">
 					<div><span class="author-login">{{user.login}} {{state}}</span></div>
 				</td>
-				<td class="sha">
+				<td class="sha btns">
 				{{#equal state "open"}}
 					<div><span class="btn btn-close">Close</span></div>
 				{{else}}
 					<div><span class="btn btn-open">Open</span></div>
 				{{/equal}}
-                <img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
 				</td>
+				<td class="sha btns">
+					<div class="glyphicon glyphicon-edit edit"></div>
+					<div class="glyphicon glyphicon-remove remove"></div>
+					<img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
+                </td>
 			</tr>
 			{{/each}}
 			</tbody>
