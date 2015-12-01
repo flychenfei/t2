@@ -66,6 +66,14 @@
 						$listItem.removeClass("deleting");
 					});
 				});
+		 	},
+
+		 	//event for click group name
+		 	"click; .groupName": function(event){
+		 		var view = this;
+		 		var $tr = $(event.currentTarget).closest("tr");
+		 		var $id = $tr.attr("data-obj_id");
+		 		brite.display("GoogleContacts",null,{groupId:$id});
 		 	}
 		},
 
@@ -112,7 +120,8 @@
 		var groups = app.googleApi.getGrouplist;
 		return brite.display("DataTable", ".groups-container", {
 			dataProvider: {list: groups},
-			rowAttrs: function(obj){ return "data-type='Group' data-etag='{0}' data-title='{1}'".format(obj.etag, obj.title.text)},
+			rowAttrs: function(obj){ 
+				return "data-type='Group' data-etag='{0}' data-title='{1}'".format(obj.etag, obj.title.text)},
 			columnDef:[
 				{
 					text:"#",
@@ -121,7 +130,7 @@
 				},
 				{
 					text:"Title",
-					attrs: " data-cmd='DO_REFRESH_CONTACT' style='cursor:pointer;width:40%' ",
+					attrs: "class='groupName' data-cmd='DO_REFRESH_CONTACT' style='cursor:pointer;width:40%' ",
 					render:function(obj){return obj.title.text}
 				},
 				{
