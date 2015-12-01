@@ -69,16 +69,17 @@
                 if (input.val() == "") {
                     input.focus();
                     input.closest("div").addClass("has-error").find("span").html("Please enter Access.");
-                } else {
+                } else if(!app.validate.email(input)){
+                    input.focus();
+                    input.closest("div").addClass("has-error").find("span").html("Please enter right Email Address.");
+                }else {
                     app.googleApi.saveShareCalendar(data).done(function (extraData) {
                         setTimeout((function () {
                             $(document).trigger("DO_REFRESH_CALENDAR");
                         }), 3000);
                         view.close();
                     });
-
                 }
-                
             },
 
             events:{
