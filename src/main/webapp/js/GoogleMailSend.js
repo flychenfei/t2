@@ -1,7 +1,7 @@
 ;(function() {
 
 	/**
-	 * View: MailSend
+	 * View: GoogleMailSend
 	 * Desctiption: the page for mail send
 	 */
 	brite.registerView("GoogleMailSend", {
