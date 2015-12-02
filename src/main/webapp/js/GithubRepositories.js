@@ -113,13 +113,18 @@
 			"click;.issues":function(event){
 				var name = $(event.target).closest("td").attr("data-repository-name");
 				var login = $(event.target).closest("td").attr("data-login");
-				app.githubApi.getIssues({
+				app.githubApi.getIssuesCount({
 					name:name,
 					login:login,
-					state:"open",
-					pageNum:1
-				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:"open",openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:1,pageSum:json.result.pageSum});
+					state:"open"
+				}).pipe(function(json1){
+					app.githubApi.getIssuesCount({
+						name:name,
+						login:login,
+						state:"closed"
+					}).pipe(function(json2){
+						brite.display("GithubIssues",$(".tab-content"),{name:name,login:login,issueState:"open",openCount: json1.result,closedCount:json2.result});
+					});
 				});
 			},
 			"click;.releases":function(event){

@@ -4,56 +4,27 @@
 		<div class="btn new-issue" data-name="{{name}}" data-login="{{login}}">New issue</div>
 	</div>
 	<div class="option" data-name="{{name}}" data-login="{{login}}">
-		{{#equal issueState "open"}}
   		<span class="openIssues choosed">
   			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
 		</span>
-		<span class="closedIssues unchoosed">
+		<span class="closedIssues">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 			<span class="close-count unchoosed" data-count="{{closedCount}}">{{closedCount}} Closed</span>
 		</span>
-		{{else}}
-		<span class="openIssues unchoosed">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
-		</span>
-		<span class="closedIssues choosed">
-			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-        	<span class="close-count" data-count="{{closedCount}}">{{closedCount}} Closed</span>
-        </span>
-		{{/equal}}
 	</div>
 	<div class="container githubIssues">
-		<table class="table" data-name="{{name}}" data-login="{{login}}">
-			<tbody>
-			{{#each issues}}
-			<tr>
-				<td class="message" data-issue-id="{{number}}">
-					<div><span class="messageTitle">{{title}}</span></div>
-					<div class="issueMeta">
-						<span class="messageTitle">#{{number}} opened {{#formatDate createdAt}}{{/formatDate}} by {{user.login}}</span>
-					</div>
-				</td>
-				{{#equal state "open"}}
-				<td class="sha">
-                	<div><span class="btn btn-close" data-issue-id="{{number}}">Close{{issueState}}</span></div>
-                </td>
-                {{else}}
-                <td class="sha">
-					<div><span class="btn btn-open" data-issue-id="{{number}}">Open</span></div>
-				</td>
-				{{/equal}}
-			</tr>
-			{{/each}}
-			</tbody>
-		</table>
-		<div class="pagination-container">
-			<div class="pagination">
-				<div class="btn page-button page-previous" data-name="{{name}}" data-login="{{login}}" data-state="{{issueState}}" data-pageNum="{{pageNum}}" data-pageSum="{{pageSum}}">Previous</div>
-				<span>{{pageNum}}:{{pageSum}}</span>
-				<div class="btn page-button page-next" data-name="{{name}}" data-login="{{login}}" data-state="{{issueState}}" data-pageNum="{{pageNum}}" data-pageSum="{{pageSum}}">Next</div>
+		<div class="issues-container"></div>
+	</div>
+</script>
+
+<script id="issueList" type="text/html">
+	<div>
+			<div class="message" data-issue-id="{{number}}">
+			<span class="messageTitle">{{title}}</span>
 			</div>
-		</div>
+			<div class="issueMeta">
+			<span class="messageTitle">#{{number}} opened {{#formatDate createdAt}}{{/formatDate}} by {{login}}</span>
+			</div>
 	</div>
 </script>

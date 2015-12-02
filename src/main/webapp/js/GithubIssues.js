@@ -1,20 +1,30 @@
 (function(){
 	brite.registerView("GithubIssues",{emptyParent:true},{
 		create:function(data,config){
-			return app.render("tmpl-GithubIssues",{issues:data.issues,name:data.name,login:data.login,issueState:data.issueState,openCount: data.openCount,closedCount:data.closedCount,pageNum:data.pageNum,pageSum:data.pageSum});
+			var view = this;
+			view.data =data;
+			return app.render("tmpl-GithubIssues",{name:data.name,login:data.login,issueState:data.issueState,openCount: data.openCount,closedCount:data.closedCount});
+		},
+		postDisplay:function(data,config){
+			var view = this;
+			showListIssues.call(view,"open");
 		},
 		events:{
 			"click;.openIssues":function(event){
-				refreshIssues(event,"open");
+				var view = this;
+				showListIssues.call(view,"open");
 			},
 			"click;.closedIssues":function(event){
-				refreshIssues(event,"closed");
+				var view = this;
+				showListIssues.call(view,"closed");
 			},
 			"click;.message":function(event){
-				var name = $(event.target).closest("table").attr("data-name");
-				var login = $(event.target).closest("table").attr("data-login");
-				var issueNumber = $(event.target).closest("td").attr("data-issue-id");
+				var view = this;
+				var name = view.data.name;
+				var login = view.data.login;
+				var issueNumber = $(event.target).closest("div").attr("data-issue-id");
 				var userInfo = null;
+				console.info(name+","+login+","+issueNumber);
 				app.githubApi.showUserInfo().pipe(function(result){
 					userInfo = JSON.parse(result.result);
 					app.githubApi.getIssueEvents({
@@ -69,45 +79,11 @@
 					})
 				});
 			},
-			"click;.btn-close": function (event) {
+			"click;.btn-closed": function (event) {
 				changeIssueState(event,"closed","Closing...","Closed");
 			},
 			"click;.btn-open": function (event) {
 				changeIssueState(event,"open","Opening...","Opened");
-			},
-			"click;.page-previous": function (event) {
-				var name = $(event.target).closest("div").attr("data-name");
-				var login = $(event.target).closest("div").attr("data-login");
-				var state = $(event.target).closest("div").attr("data-state");
-				var pageNum = parseInt($(event.target).closest("div").attr("data-pageNum"))-1;
-				var pageSum = parseInt($(event.target).closest("div").attr("data-pageSum"));
-				if(pageNum <= 1)pageNum = 1;
-				else if(pageNum >= pageSum)pageNum = pageSum;
-				app.githubApi.getIssues({
-					name:name,
-					login:login,
-					state:state,
-					pageNum:pageNum
-				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:pageNum,pageSum:json.result.pageSum});
-				});
-			},
-			"click;.page-next": function (event) {
-				var name = $(event.target).closest("div").attr("data-name");
-				var login = $(event.target).closest("div").attr("data-login");
-				var state = $(event.target).closest("div").attr("data-state");
-				var pageNum = parseInt($(event.target).closest("div").attr("data-pageNum"))+1;
-				var pageSum = parseInt($(event.target).closest("div").attr("data-pageSum"));
-				if(pageNum <= 1)pageNum = 1;
-				else if(pageNum >= pageSum)pageNum = pageSum;
-				app.githubApi.getIssues({
-					name:name,
-					login:login,
-					state:state,
-					pageNum:pageNum
-				}).pipe(function(json){
-					brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:pageNum,pageSum:json.result.pageSum});
-				});
 			}
 		}
 	});
@@ -164,10 +140,11 @@
 	}
 
 	function changeIssueState(event,state,stating,stateBtn){
+		var view = this;
 		var $btn = $(event.target);
 		if($btn.hasClass("loading")) return;
-		var name = $btn.closest("table").attr("data-name");
-		var login =$btn.closest("table").attr("data-login");
+		var name = view.data.name;
+		var login = view.data.login;
 		var number = $btn.closest("span").attr("data-issue-id");
 		$btn.html(stating).addClass("loading");
 		app.githubApi.editIssue({
@@ -190,16 +167,52 @@
 		})
 	}
 
-	function refreshIssues(event,state){
-		var name = $(event.target).closest("div").attr("data-name");
-		var login = $(event.target).closest("div").attr("data-login");
-		app.githubApi.getIssues({
-			name:name,
-			login:login,
-			state:state,
-			pageNum:1
-		}).pipe(function(json){
-			brite.display("GithubIssues",$(".tab-content"),{issues:json.result.issues,name:name,login:login,issueState:state,openCount: json.result.openCount,closedCount:json.result.closedCount,pageNum:1,pageSum:json.result.pageSum});
-		});
+	function showListIssues(state){
+		var view = this;
+		data = view.data;
+		var $e = view.$el;
+		if(state.issueState != null){
+			state="open";
+		}
+		if(state == "open"){
+			$e.find(".openIssues").addClass("choosed");
+			$e.find(".closedIssues").removeClass("choosed");
+		}else{
+			$e.find(".openIssues").removeClass("choosed");
+			$e.find(".closedIssues").addClass("choosed");
+		}
+		return brite.display("DataTable",".issues-container",{
+			dataProvider:{list:app.githubApi.getIssues},
+			columnDef: [
+				{
+					text:"",
+					render:function(obj){
+						return app.render("issueList",{number:obj.number,title:obj.title,createdAt:obj.createdAt,login:obj.user.login});
+					}
+				},
+				{
+					text:"",
+					render:function(obj){
+						if(obj.state == "open"){
+							return "<div class='sha'><span class='btn btn-closed' data-issue-id="+obj.number+">Closed</span></div>";
+						}else{
+							return "<div class='sha'><span class='btn btn-open' data-issue-id="+obj.number+">Open</span></div>"
+						}
+					},
+					attrs:"style='padding-right:10px;width:100px;'"
+				}
+			],
+			opts: {
+				htmlIfEmpty: "Not issues found",
+				withPaging:true,
+				withDataListening:true,
+				withCmdDelete:false,
+				dataOpts:{
+					login:data.login,
+					name:data.name,
+					state:state
+				}
+			}
+		})
 	}
 })();
