@@ -22,6 +22,9 @@
 
 		postDisplay: function (data, config) {
 			var view = this;
+			if(view.groupId){
+				view.$el.find(".returnBtn").removeClass("hide");
+			}
 			showContacts.call(view);
 		},
 		// --------- /View Interface Implement--------- //
@@ -56,6 +59,12 @@
 					$searchForContact.find("span").html("");
 				}
 			},
+
+			//event for click group back btn
+			"click; .returnBtn":function(event){
+				var view = this;
+				brite.display("GoogleGroups");
+			}
 		},
 		// --------- Events--------- //
 
