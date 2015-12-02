@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareRecentCheckins",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareRecentCheckins", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.recentCheckins;
             }
             return app.render("tmpl-FoursquareRecentCheckins");
@@ -16,15 +15,11 @@
             recentCheckins.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function recentCheckins() {
         var view = this;
@@ -41,9 +36,9 @@
                 {
                     text: "Category",
                     render: function (obj) {
-                        if(obj.categories && obj.categories.length > 0){
+                        if (obj.categories && obj.categories.length > 0) {
                             return obj.categories.name;
-                        }else{
+                        } else {
                             return "";
                         }
                     },

@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareVenuesCategories",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareVenuesCategories", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.venuesCategories;
             }
             return app.render("tmpl-FoursquareVenuesCategories");
@@ -16,15 +15,11 @@
             showCategorys.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function showCategorys() {
         var view = this;
@@ -41,9 +36,9 @@
                 {
                     text: "Icon",
                     render: function (obj) {
-                        if(obj != null){
+                        if (obj != null) {
                             var icon = JSON.parse(obj.icon);
-                            icon = icon.prefix+'bg_32'+icon.suffix;
+                            icon = icon.prefix + 'bg_32' + icon.suffix;
                             obj.icon = icon;
                         }
                         return "<img src={0} />".format(obj.icon);

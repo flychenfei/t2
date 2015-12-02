@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareVenuesTrending",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareVenuesTrending", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.searchUser;
             }
             return app.render("tmpl-FoursquareVenuesTrending");
@@ -16,15 +15,11 @@
             venuesTrending.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function venuesTrending() {
         var view = this;
@@ -41,7 +36,7 @@
                 {
                     text: "Category",
                     render: function (obj) {
-                            return obj.category;
+                        return obj.category;
                     },
                     attrs: "style='width: 15%'"
 

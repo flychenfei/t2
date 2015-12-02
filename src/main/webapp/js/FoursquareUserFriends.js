@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareUserFriends",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareUserFriends", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.getFriends;
             }
             return app.render("tmpl-FoursquareUserFriends");
@@ -16,21 +15,19 @@
             showFriends.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function showFriends() {
         var view = this;
         return brite.display("DataTable", ".FoursquareUserFriends", {
             dataProvider: {list: view.search},
-            onDone: function(obj){obj.result = obj.items||[]},
+            onDone: function (obj) {
+                obj.result = obj.items || []
+            },
             columnDef: [
                 {
                     text: "#",
