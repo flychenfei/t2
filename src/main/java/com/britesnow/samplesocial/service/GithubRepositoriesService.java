@@ -27,6 +27,7 @@ import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,15 +223,13 @@ public class GithubRepositoriesService {
 	 * @throws IOException
 	 */
 
-	public Map getIssues(Repository repo,User user,String state,int pageNum) throws IOException{
+	public List<Issue> getIssues(Repository repo,User user,String state,int pageIndex,int pageSize) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		Map<String,String> filterData = new HashMap<>();
 		filterData.put("state",state);
-		int openCount = countIssues(repo,user,"open");
-		int closedCount = countIssues(repo,user,"closed");
-		PageIterator<Issue> issues = issueService.pageIssues(repo,filterData,pageNum-1,25);
-		return MapUtil.mapIt("issues",issues.next(),"openCount",openCount,"closedCount",closedCount,
-				"pageSum","open".equals(state) ? openCount%25==0 ? openCount/25 : openCount/25+1 : closedCount%25==0 ? closedCount/25 : closedCount/25+1);
+		PageIterator<Issue> issues = issueService.pageIssues(repo,filterData,pageIndex+1,pageSize);
+		List<Issue> issueList = new ArrayList<>(issues.next());
+		return issueList;
 	}
 
 	/*
@@ -391,7 +390,7 @@ public class GithubRepositoriesService {
 	 * @return the matched issues count
 	 * @throws IOException
      */
-	private int countIssues(Repository repo, User user, String state) throws IOException {
+	public int countIssues(Repository repo, User user, String state) throws IOException {
 		GitHubClient client = githubAuthService.createClient(user);
 		GitHubRequest request = new GitHubRequest();
 		StringBuilder uriBuilder = new StringBuilder("/search/issues?per_page=1&q=repo:");
