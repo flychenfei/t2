@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareSearchUser",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareSearchUser", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.searchUser;
             }
             return app.render("tmpl-FoursquareSearchUser");
@@ -16,21 +15,19 @@
             searchUser.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function searchUser() {
         var view = this;
         return brite.display("DataTable", ".FoursquareSearchUser", {
             dataProvider: {list: view.search},
-            onDone: function(obj){obj.result = obj.result||[]},
+            onDone: function (obj) {
+                obj.result = obj.result || []
+            },
             columnDef: [
                 {
                     text: "#",
@@ -64,9 +61,9 @@
                 {
                     text: "photo",
                     render: function (obj) {
-                        if(obj != null){
+                        if (obj != null) {
                             var photo = JSON.parse(obj.photo);
-                            obj.photo = photo.prefix+"32x32"+photo.suffix;
+                            obj.photo = photo.prefix + "32x32" + photo.suffix;
                         }
                         return "<img src= '{0}' withd='100px'/>".format(obj.photo);
                     },

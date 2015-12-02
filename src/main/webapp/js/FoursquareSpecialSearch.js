@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareSpecialSearch",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareSpecialSearch", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.specialSearch;
             }
             return app.render("tmpl-FoursquareSpecialSearch");
@@ -16,24 +15,20 @@
             specialSearch.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function specialSearch() {
         var view = this;
         return brite.display("DataTable", ".FoursquareSpecialSearch", {
             dataProvider: {list: view.search},
-            onDone: function(data){
+            onDone: function (data) {
 
                 obj = data.result;
-                if(obj.items && obj.items.length >0 ){
+                if (obj.items && obj.items.length > 0) {
                     data.result = obj.items;
                 }
             },

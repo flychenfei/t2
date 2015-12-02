@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareUsersBadges",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareUsersBadges", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.usersBadges;
             }
             return app.render("tmpl-FoursquareUsersBadges");
@@ -16,15 +15,11 @@
             showBadges.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function showBadges() {
         var view = this;
@@ -41,7 +36,7 @@
                 {
                     text: "Image",
                     render: function (obj) {
-                        return "<img src={0} />".format(obj.image.prefix+"57"+obj.image.name);
+                        return "<img src={0} />".format(obj.image.prefix + "57" + obj.image.name);
                     },
                     attrs: "style='width: 5%;cursor: pointer'"
                 },

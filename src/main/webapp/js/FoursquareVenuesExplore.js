@@ -1,11 +1,10 @@
-;
 (function ($) {
 
-    brite.registerView("FoursquareVenuesExplore",{parent:".FoursquareScreen-content",emptyParent:true}, {
+    brite.registerView("FoursquareVenuesExplore", {parent: ".FoursquareScreen-content", emptyParent: true}, {
         create: function (data, config) {
-            if(data && data.search) {
+            if (data && data.search) {
                 this.search = data.search;
-            }else{
+            } else {
                 this.search = app.foursquareApi.venuesExplore();
             }
             return app.render("tmpl-FoursquareVenuesExplore");
@@ -16,24 +15,20 @@
             venuesExplore.call(view);
         },
 
-        events: {
-        },
+        events: {},
 
-        docEvents: {
+        docEvents: {},
 
-        },
-
-        daoEvents: {
-        }
+        daoEvents: {}
     });
     function venuesExplore() {
         var view = this;
         return brite.display("DataTable", ".FoursquareVenuesExplore", {
             dataProvider: {list: view.search},
-            onDone: function(data){
+            onDone: function (data) {
 
                 obj = data.result;
-                if(obj.groups && obj.groups.length >0 && obj.groups[0].items && obj.groups[0].items.length > 0){
+                if (obj.groups && obj.groups.length > 0 && obj.groups[0].items && obj.groups[0].items.length > 0) {
                     data.result = obj.groups[0].items;
                 }
             },
@@ -48,7 +43,7 @@
                 {
                     text: "Category",
                     render: function (obj) {
-                            return obj.category;
+                        return obj.category;
                     },
                     attrs: "style='width: 15%'"
 
