@@ -42,9 +42,7 @@
                         brite.display("LiveScreen");
             		}else if(menu == "dropbox"){
                         brite.display("DropboxScreen");
-            		}else if(menu == "office365"){
-                        brite.display("Office365Screen");
-                    }else if(menu == "oauth"){
+            		}else if(menu == "oauth"){
                   if($li.find("i").hasClass('glyphicon-chevron-down')){
                     var list = [
                       {name:"linkedin",label:"Connect to LinkedIn"},
