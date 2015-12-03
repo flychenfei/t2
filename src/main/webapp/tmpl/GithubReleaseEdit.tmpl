@@ -13,13 +13,13 @@
           <div class="dialogBody" data-repository-name="{{repoName}}" data-release-id="{{id}}" data-login="{{login}}">
               <div>
                   <div>Name:</div>
-                  <input type="text" name="releaseName" value="{{name}}" class="input-block-level" {{#if detail}} disabled {{/if}} placeholder="type the release name"/>
+                  <input type="text" name="releaseName" value="{{name}}" class="input-block-level" style="width: 100%;" {{#if detail}} disabled {{/if}} placeholder="type the release name"/>
               </div>
               <div>
                   <div>Tag Name:</div>
-                  <input type="text" name="releaseTagName" value="{{tagName}}" class="input-block-level" {{#if detail}} disabled {{/if}} placeholder="type the release tag name"/>
+                  <input type="text" name="releaseTagName" value="{{tagName}}" class="input-block-level" style="width: 100%;" {{#if detail}} disabled {{/if}} placeholder="type the release tag name"/>
               </div>
-              <div class="dialogBtns">
+              <div class="dialogBtns" style="margin-top:8px;">
                   <img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
                   <button class="btn btn-primary save">Save</button>
                   <button class="btn btn-primary cancel">Cancel</button>
