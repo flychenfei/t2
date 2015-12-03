@@ -194,7 +194,7 @@
 					text:"",
 					render:function(obj){
 						if(obj.state == "open"){
-							return "<div class='sha'><span class='btn btn-closed' data-issue-id="+obj.number+">Closed</span></div>";
+							return "<div class='sha'><span class='btn btn-closed' data-issue-id="+obj.number+">Close</span></div>";
 						}else{
 							return "<div class='sha'><span class='btn btn-open' data-issue-id="+obj.number+">Open</span></div>"
 						}
