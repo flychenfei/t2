@@ -103,11 +103,9 @@
             "TRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.trashEmail(extra.objId).done(function(result){
-                        setTimeout(function(){
-                            showEmails.call(view);
-                        }, 3000)
-
+                        showEmails.call(view);
                     });
                 }
             },
@@ -116,12 +114,9 @@
             "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.deleteEmail(extra.objId).done(function(result){
-                        console.log(result);
-                        setTimeout(function(){
-                            showEmails.call(view);
-                        }, 3000)
-
+                        showEmails.call(view);
                     });
                 }
             },
@@ -239,6 +234,11 @@
                 $mailsFolder.find(".folderName").html(view.folderName);
             }else{
                 $mailsFolder.hide();
+            }
+
+            //after show the table, move the screen
+            if(view.$screen){
+                view.$screen.remove();
             }
         });
     }
