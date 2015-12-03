@@ -54,6 +54,14 @@
 	        	view = this;
 	        	$e = view.$el;
 	        	var result = {};
+
+                var startDate = $e.find("input[name='startDate']").val();
+                var endDate = $e.find("input[name='endDate']").val();
+                if(app.dateformat.dateDiff('d',app.dateformat.strFormatToDate('yyyy-MM-dd',endDate),app.dateformat.strFormatToDate('yyyy-MM-dd',startDate)) > 0){
+                    alert("The start date should be before the end date");
+                    return false;
+                }
+
 	        	$e.find(".search-calendars-container :text").each(function(){
 	        		if($(this).val() != ""){
 	        			result[$(this).attr("name")] = $(this).val();
