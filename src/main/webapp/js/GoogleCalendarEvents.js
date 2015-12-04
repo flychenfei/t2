@@ -143,7 +143,7 @@
                 {
                     text: "Summary",
                     render: function (obj) {
-                        return obj.summary;
+                        return obj.summary || '';
                     },
                     attrs: "style='width: 300'"
 
