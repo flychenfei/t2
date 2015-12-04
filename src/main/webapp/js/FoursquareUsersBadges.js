@@ -38,7 +38,7 @@
                     render: function (obj) {
                         return "<img src={0} />".format(obj.image.prefix + "57" + obj.image.name);
                     },
-                    attrs: "style='width: 5%;cursor: pointer'"
+                    attrs: "style='width: 5%'"
                 },
                 {
                     text: "Name",
