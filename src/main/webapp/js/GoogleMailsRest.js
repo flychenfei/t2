@@ -116,11 +116,9 @@
             "TRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.trashEmailRest(extra.objId).done(function(result){
-                        setTimeout(function(){
-                            showEmails.call(view);
-                        }, 3000)
-
+                        showEmails.call(view);
                     });
                 }
             },
@@ -129,10 +127,9 @@
             "UNTRASH_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.untrashEmailRest(extra.objId).done(function(result){
-                        setTimeout(function(){
-                            showEmails.call(view);
-                        }, 3000)
+                        showEmails.call(view);
                     });
                 }
             },
@@ -141,16 +138,14 @@
             "DELETE_EMAIL": function(event, extra){
                 var view = this;
                 if(extra.objId){
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.deleteEmailRest(extra.objId).done(function(result){
-                        setTimeout(function(){
-                            showEmails.call(view);
-                        }, 3000)
-
+                        showEmails.call(view);
                     });
                 }
             },
 
-            // sshow the email info
+            // show the email info
             "SHOW_INFO": function(event, extra) {
                 var data = {id: extra.objId, type:'rest'};
                 brite.display("GoogleMailInfo", "body", data);
@@ -327,6 +322,11 @@
             }else{
                 $mailsFolder.hide();
                 $mailsFolder.removeClass('notHaveFooter');
+            }
+
+            //after show the table, move the screen
+            if(view.$screen){
+                view.$screen.remove();
             }
         });
     }
