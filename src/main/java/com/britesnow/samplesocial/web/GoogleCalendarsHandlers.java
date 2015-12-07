@@ -18,13 +18,12 @@ public class GoogleCalendarsHandlers {
     @Inject
     private GoogleCalendarsService googleCalendarsService;
 
-
     @WebGet("/googleCalendars/list")
-    public Object CalendarList(@WebParam("pageSize") Integer pageSize) throws Exception {
-        Pair<String, List<Map>> pair = googleCalendarsService.CalendarList(pageSize);
+    public Object CalendarList(@WebParam("pageSize") Integer pageSize,@WebParam("pageIndex") String pageIndex) throws Exception {
+        Pair<Integer, List<Map>> pair = googleCalendarsService.CalendarList(pageIndex,pageSize);
         List<Map> map = pair.getSecond();
         WebResponse result = WebResponse.success(map);
-        result.set("nextPageToken", pair.getFirst());
+        result.set("result_count", pair.getFirst());
         return result;
     }
     

@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,38 @@ public class GoogleCalendarsService {
 
     @Inject
     GoogleAuthService authService;
-    
-    public Pair<String, List<Map>> CalendarList(Integer pageSize){
+
+    public Pair<Integer, List<Map>> CalendarList(String start,Integer pageSize){
         
         String pageToken = null;
         try {
-            CalendarList calendarList = getCalendarsService().calendarList().list().setPageToken(pageToken).setMaxResults(pageSize).execute();
+            CalendarList calendarAllList = getCalendarsService().calendarList().list().setPageToken(pageToken).setMaxResults(pageSize).execute();
+
+            List<CalendarListEntry> calendarAll = new ArrayList<CalendarListEntry>();
+            List<String> pageToke = new ArrayList<String>();
+            while (calendarAllList.getItems() != null) {
+                calendarAll.addAll(calendarAllList.getItems());
+                if (calendarAllList.getNextPageToken() != null) {
+                    pageToken = calendarAllList.getNextPageToken();
+                    pageToke.add(pageToken);
+                    calendarAllList = getCalendarsService().calendarList().list().setPageToken(pageToken).setMaxResults(pageSize).execute();
+                } else {
+                    break;
+                }
+            }
+            int total = 0;
+            if(calendarAll != null){
+                total = calendarAll.size();
+            }
+
+            if(!"0".equals(start)){
+                start = pageToke.get(Integer.parseInt(start) - 1);
+            }else{
+                start = "";
+            }
+
+            CalendarList calendarList = getCalendarsService().calendarList().list().setPageToken(start).setMaxResults(pageSize).execute();
+
             List<CalendarListEntry> items = calendarList.getItems();
             List<Map> eventList = items.stream().map(calendarListEntry -> {
                 Map eventMap = new HashMap();
@@ -42,8 +69,7 @@ public class GoogleCalendarsService {
                 return eventMap;
             }).collect(Collectors.toList());
             
-            pageToken = calendarList.getNextPageToken();
-            return new Pair<String, List<Map>>(pageToken, eventList);
+            return new Pair<Integer, List<Map>>(total, eventList);
         } catch (IOException e) {
             e.printStackTrace();
         }
