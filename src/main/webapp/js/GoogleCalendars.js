@@ -107,7 +107,7 @@
                 withCmdEdit:false,
                 withCmdDelete: false,
                 dataOpts:{
-                	withResultCount:false
+                	withResultCount:true
                 }
             }
         });
