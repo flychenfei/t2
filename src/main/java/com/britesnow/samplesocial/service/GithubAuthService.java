@@ -88,9 +88,9 @@ public class GithubAuthService implements AuthService {
 
     public GitHubClient createClient(com.britesnow.samplesocial.entity.User user){
 		GitHubClient client = new GitHubClient();
-		client.setOAuth2Token(getToken(user).getToken());
-		client.setUserAgent("GitHubJava/2.1.0");
-		return client;
+        client.setOAuth2Token(getToken(user).getToken());
+        client.setUserAgent("GitHubJava/2.1.0");
+        return client;
     }
 
     public Token getToken(com.britesnow.samplesocial.entity.User user) {

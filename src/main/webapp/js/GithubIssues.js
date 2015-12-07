@@ -187,7 +187,7 @@
 				{
 					text:"",
 					render:function(obj){
-						return app.render("issueList",{number:obj.number,title:obj.title,createdAt:obj.createdAt,login:obj.user.login});
+						return app.render("issueList",{number:obj.number,title:obj.title,createdAt:obj.createdAt,login:obj.user.login,avatarUrl:obj.user.avatarUrl});
 					}
 				},
 				{

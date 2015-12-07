@@ -21,10 +21,11 @@
 <script id="issueList" type="text/html">
 	<div>
 			<div class="message" data-issue-id="{{number}}">
-			<span class="messageTitle">{{title}}</span>
+				<span class="messageTitle">{{title}}</span>
+				<image class="userImage" src="{{avatarUrl}}"/>
 			</div>
 			<div class="issueMeta">
-			<span class="messageTitle">#{{number}} opened {{#formatDate createdAt}}{{/formatDate}} by {{login}}</span>
+				<span class="messageTitle">#{{number}} opened {{#formatDate createdAt}}{{/formatDate}} by {{login}}</span>
 			</div>
 	</div>
 </script>
