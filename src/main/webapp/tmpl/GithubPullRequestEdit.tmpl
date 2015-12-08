@@ -1,21 +1,21 @@
 <script id="tmpl-GithubPullRequestEdit" type="text/html">
-  <div class="github">
+  <div class="github GithubPullRequestEdit">
 	  <div class="dialogBackground"></div>
       <div class="dialogContent" style="left:{{layout.left}};top:{{layout.top}};width:{{layout.width}};height:{{layout.height}}">
-          <div class="dialogHead" style = "overflow: hidden;">
+          <div class="dialogHead">
               <span class="close dialogBtns dialogCloseBtn">&times;</span>
               <span class="dialogTitle">PullRequest: {{title}}</span>
           </div>
           <div class="dialogBody" data-repository-name="{{repoName}}" data-pullrequest-id="{{id}}" data-login="{{login}}">
               <div>
                   <div>Title:</div>
-                  <input type="text" name="pullRequestTitle" value="{{title}}" class="input-block-level" {{#equal detail true}} disabled {{/equal}} style="width: 100%;" placeholder="type the pull request title"/>
+                  <input type="text" name="pullRequestTitle" value="{{title}}" class="input-block-level" {{#equal detail true}} disabled {{/equal}} placeholder="type the pull request title"/>
               </div>
               <div class="PullRequestBody">
                   <div>Body:</div>
                   <textarea class="form-control pullRequest-body" {{#equal detail true}} disabled {{/equal}} placeholder="Leave a comment">{{body}}</textarea>
               </div>
-              <div class="dialogBtns" style="margin-top: 16px;">
+              <div class="dialogBtns">
                   <img class="githubloading hide save" src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-32.gif"/>
                   <button class="btn btn-primary save" {{#equal detail true}}style = "diaplay: none" {{/equal}}>Save</button>
                   <button class="btn btn-primary cancel">Cancel</button>
