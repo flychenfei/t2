@@ -1,6 +1,7 @@
 (function(){
-	
+
 	brite.registerView("GoogleGmailAnalytics",{parent:".GoogleScreen-content",emptyParent:true},{
+        // --------- View Interface Implement--------- //
 		create: function(data, config){
 			return render("tmpl-GoogleGmailAnalytics");
 		},
@@ -9,16 +10,17 @@
 			var view = this;
 			showGmailAnalytics.call(view);
 		}
-		
+        // --------- /View Interface Implement--------- //
 	});
 
+    // --------- Private Methods --------- //
 	function showGmailAnalytics() {
         return brite.display("DataTable", ".GoogleGmailAnalytics", {
             dataProvider: {list: function(params){
                 return app.googleApi.getGmailAnalytics(params);
             }},
-            rowAttrs: function(obj){ 
-            	return "data-id='{0}'".format(obj.id)
+            rowAttrs: function(obj){
+                return "data-id='{0}'".format(obj.id)
             },
             columnDef:[
                 {
@@ -35,9 +37,8 @@
                         if(obj.messageSubject){
                             return obj.messageSubject;
                         }
-                    	return "No Subject";
+                        return "No Subject";
                     }
-
                 },
                 {
                     text:"Convetsation Name",
@@ -74,51 +75,51 @@
                 },
                 {
                     text:"Sender Email Address",
-                    attrs: "style='width: 10%; word-break: break-word;'",
+                    attrs: "class='normal-cell'",
                     render:function(obj){
-                    	return obj.senderEmailAddress
+                        return obj.senderEmailAddress
                     }
                 },
                 {
                     text:"Recipient Email Address",
-                    attrs: "style='width: 10%; word-break: break-word;'",
+                    attrs: "class='normal-cell'",
                     render:function(obj){
-                    	return obj.recipientEmailAddress
+                        return obj.recipientEmailAddress
                     }
                 },
                 {
                     text:"Message Type",
-                    attrs: "style='width: 10%; word-break: break-word;'",
+                    attrs: "class='normal-cell'",
                     render:function(obj){
-                    	return obj.messageType
+                        return obj.messageType
                     }
                 },
                 {
                     text:"Recipient Type",
-                    attrs: "style='width: 10%; word-break: break-word;'",
+                    attrs: "class='normal-cell'",
                     render:function(obj){
-                    	return obj.recipientType
+                        return obj.recipientType
                     }
                 },
                 {
                     text:"Attachments Number",
                     attrs: "style='width: 5%;'",
                     render:function(obj){
-                    	return obj.countOfAttachments
+                        return obj.countOfAttachments
                     }
                 },
                 {
                     text:"Message Size",
                     attrs: "style='width: 5%;'",
                     render:function(obj){
-                    	return obj.messageSize
+                        return obj.messageSize
                     }
                 },
                 {
                     text:"Message Length",
                     attrs: "style='width: 5%;'",
                     render:function(obj){
-                    	return obj.messageLength
+                        return obj.messageLength
                     }
                 }
             ],
@@ -129,4 +130,5 @@
             }
         });
     }
+    // --------- /Private Methods --------- //
 })();
