@@ -58,6 +58,7 @@
                 view.treeDef = data.treeDef;
                 view.dataProvider = data.dataProvider;
                 view.sortData = {index:-1, order:"asc"};
+                view.showLoading = data.showLoading || false;
                 if (view.opts.withDataListening) {
                     daoEvents["dataChange; " + view.dataType] = function () {
                         refreshDataTable.call(view);
@@ -258,6 +259,9 @@
             var view = this;
             var $e = view.$element;
             var opts = view.opts.dataOpts || {};
+            if(view.showLoading){
+                view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
+            }
 
             if(typeof view.opts.groupId != "undefined"){
                 opts.groupId = view.opts.groupId;
@@ -296,7 +300,9 @@
                 var dataTableHtml = renderDataTable.call(view);
                 var $html = $(dataTableHtml);
                 $e.bEmpty().append($html);
-
+                if(view.$screen){
+                    view.$screen.remove();
+                }
             });
         }
 

@@ -37,9 +37,7 @@
                 if(confirm("Are you sure to delete it?")){
                     if (extraData && extraData.objId) {
                         app.googleApi.deleteCalendars({id:extraData.objId}).done(function (extradata) {
-                            setTimeout((function() {
-                                $(document).trigger("DO_REFRESH_CALENDAR");
-                            }), 3000);
+                            $(document).trigger("DO_REFRESH_CALENDAR");
                         });
                     }
                 }
@@ -109,8 +107,9 @@
                 dataOpts:{
                 	withResultCount:true
                 }
-            }
+            },
+            showLoading:true
         });
     }
-    
+
 })(jQuery);
