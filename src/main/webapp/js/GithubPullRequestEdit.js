@@ -6,6 +6,7 @@
                 title:data.title,
                 body:data.body,
                 login: data.login,
+                state:data.state,
                 repoName: data.repoName,
                 detail: data.detail,
                 layout:data.layout
@@ -23,6 +24,7 @@
                 var dialogBody = $(event.target).closest(".dialogBody");
                 var repoName =  dialogBody.attr("data-repository-name");
                 var login = dialogBody.attr("data-login");
+                var state = dialogBody.attr("data-state");
                 var pullRequestId = dialogBody.attr("data-pullrequest-id");
                 var title = $(":input[name='pullRequestTitle']",dialogContent).val();
                 var body = dialogBody.find(".pullRequest-body").val();
@@ -39,9 +41,33 @@
                     title:title,
                     body:body
                 }).pipe(function (json) {
-                    //refresh(view,json,repoName,login,loading,saveBtn);
+                    refresh(view,json,repoName,login,state,loading,saveBtn);
                 });
             }
         }
     });
+
+    function refresh(view,json,repoName,login,state,loading,saveBtn){
+        if (json.success) {
+            app.githubApi.getPullRequests({
+                name:repoName,
+                login:login,
+                state:state
+            }).pipe(function(json){
+                view.$el.remove();
+                brite.display("GithubPullRequests",$(".tab-content"),{
+                    pullrequests:json.result.pullRequests,
+                    name:repoName,
+                    login:login,
+                    pullRequestState:state,
+                    openCount: json.result.openCount,
+                    closedCount:json.result.closedCount
+                });
+            });
+        } else {
+            alert(json.errorMessage);
+            $(loading).toggleClass("hide");
+            $(saveBtn).toggleClass("hide");
+        }
+    }
 })();

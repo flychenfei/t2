@@ -20,13 +20,15 @@
                 var repoName = $(event.target).closest("table").attr("data-name");
                 var login = $(event.target).closest("table").attr("data-login");
                 var pullRequestId = $(event.target).closest("tr").attr("data-pullrequest-id");
-                editPullRequest(event,pullRequestId,repoName,login);
+                var state = $(event.target).closest("tr").find(".state").text();
+                editPullRequest(event,pullRequestId,repoName,login,state);
             },
             "click;.messageTitle":function(event){
                 var repoName = $(event.target).closest("table").attr("data-name");
                 var login = $(event.target).closest("table").attr("data-login");
                 var pullRequestId = $(event.target).closest("tr").attr("data-pullrequest-id");
-                editPullRequest(event,pullRequestId,repoName,login,true);
+                var state = $(event.target).closest("tr").find(".state").text();
+                editPullRequest(event,pullRequestId,repoName,login,state,true);
             }
         }
     });
@@ -84,7 +86,7 @@
         });
     }
 
-    function editPullRequest(event,pullRequestId,repoName,login,detail){
+    function editPullRequest(event,pullRequestId,repoName,login,state,detail){
         app.githubApi.getPullRequest({
             name:repoName,
             login:login,
@@ -97,6 +99,7 @@
                     title: pullRequest.title,
                     body: pullRequest.body,
                     login: login,
+                    state:state,
                     repoName: repoName,
                     detail: detail,
                     layout: {
