@@ -155,9 +155,7 @@
                     input.closest(".control-group").find("span.message").addClass("error").html("Please enter summary.");
                 }  else {
                     app.googleApi.saveCopyCalendarEvent(data).done(function (extraData) {
-                        setTimeout((function () {
-                            $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
-                        }), 3000);
+                        $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
                         view.close();
                     });
                 }

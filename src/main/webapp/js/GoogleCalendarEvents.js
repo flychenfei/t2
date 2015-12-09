@@ -97,9 +97,7 @@
                    var calendarId = $tr.attr("data-calendarId");
                    if (id) {
                        app.googleApi.deleteCalendarEvent({id:id, calendarId:calendarId}).done(function (data) {
-                           setTimeout((function() {
-                               $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
-                           }), 3000);
+                           $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
                        });
                    }
                }
@@ -202,7 +200,8 @@
                 dataOpts:{
                 	withResultCount:false
                 }
-            }
+            },
+            showLoading:true
         });
     }
     

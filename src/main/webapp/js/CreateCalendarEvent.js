@@ -170,9 +170,7 @@
                     $inviter.closest("div").find("span").addClass("error").html("Please enter correct email address.");
                 }  else {
                     app.googleApi.saveCalendarEvent(data).done(function (extraData) {
-                        setTimeout((function () {
-                            $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
-                        }), 3000);
+                        $(document).trigger("DO_REFRESH_CALENDAR_EVENT");
                         view.close();
                     });
                 }

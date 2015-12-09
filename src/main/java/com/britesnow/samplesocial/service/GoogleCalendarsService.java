@@ -50,7 +50,7 @@ public class GoogleCalendarsService {
                 total = calendarAll.size();
             }
 
-            if(!"0".equals(start)){
+            if(!"0".equals(start) && start != null){
                 start = pageToke.get(Integer.parseInt(start) - 1);
             }else{
                 start = "";

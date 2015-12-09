@@ -47,9 +47,7 @@
                     input.closest(".form-group").find("span").addClass("error").html("Please enter summary.");
                 } else {
                     app.googleApi.saveCalendars(data).done(function (extraData) {
-                        setTimeout((function () {
-                            $(document).trigger("DO_REFRESH_CALENDAR");
-                        }), 3000);
+                        $(document).trigger("DO_REFRESH_CALENDAR");
                         view.close();
                     });
                 }
