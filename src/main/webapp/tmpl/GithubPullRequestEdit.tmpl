@@ -6,7 +6,7 @@
               <span class="close dialogBtns dialogCloseBtn">&times;</span>
               <span class="dialogTitle">PullRequest: {{title}}</span>
           </div>
-          <div class="dialogBody" data-repository-name="{{repoName}}" data-pullrequest-id="{{id}}" data-login="{{login}}">
+          <div class="dialogBody" data-repository-name="{{repoName}}" data-pullrequest-id="{{id}}" data-login="{{login}}" data-state="{{state}}">
               <div>
                   <div>Title:</div>
                   <input type="text" name="pullRequestTitle" value="{{title}}" class="input-block-level" {{#equal detail true}} disabled {{/equal}} placeholder="type the pull request title"/>
