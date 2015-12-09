@@ -2,9 +2,11 @@ package com.britesnow.samplesocial.web;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import com.britesnow.samplesocial.entity.GithubRelease;
 import com.britesnow.samplesocial.service.GithubIssueService;
+import javafx.util.Pair;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
@@ -737,5 +739,26 @@ public class GithubRepositoriesHandler {
 					return WebResponse.fail(e.getMessage());
 				}
 		}
+
+	/**
+	 * search the content by keywords
+	 * @param user
+	 * @param searchContent
+	 * @return
+	 * @throws IOException
+	 */
+	@WebGet("/github/searchContentByKeyWord")
+	public WebResponse searchContentByKeyWord(@WebUser User user,
+											  @WebParam("searchContent") String searchContent,
+											  @WebParam("name") String name,@WebParam("login") String login,
+											  @WebParam("pageIndex") String pageIndex, @WebParam("pageSize") String pageSize)throws IOException{
+		Repository repo = new Repository();
+		org.eclipse.egit.github.core.User owner = githubUserService.getGithubUser(user);
+		owner.setLogin(login);
+		repo.setOwner(owner);
+		repo.setName(name);
+		Pair<List<Issue>,Integer> searchIssues = githubRepositoriesService.searchContentByKeyWord(repo, user, searchContent,Integer.parseInt(pageIndex),Integer.parseInt(pageSize));
+		return WebResponse.success(searchIssues.getKey()).set("result_count",searchIssues.getValue().toString());
+	}
 
 }

@@ -6,6 +6,7 @@ import com.britesnow.snow.util.JsonUtil;
 import com.britesnow.snow.util.MapUtil;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import javafx.util.Pair;
 import org.apache.commons.fileupload.FileItem;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Download;
@@ -407,4 +408,21 @@ public class GithubRepositoriesService {
 		HashMap map = (HashMap)client.get(request).getBody();
 		return (int)Double.parseDouble(map.get("total_count").toString());
 	}
+
+	/**
+	 * search the content by keywords
+	 * @param user
+	 * @param searchContent
+	 * @return
+	 * @throws IOException
+	 */
+	public Pair<List<Issue>,Integer> searchContentByKeyWord(Repository repo, User user, String searchContent,int pageIndex,int pageSize) throws IOException{
+		IssueService issueService = new IssueService(githubAuthService.createClient(user));
+		GitHubClient client = githubAuthService.createClient(user);
+		GithubIssueService githubIssueService = new GithubIssueService(client);
+		return githubIssueService.searchContentByKeyWord(repo.generateId(), searchContent,pageIndex,pageSize);
+	}
+
+
+
 }

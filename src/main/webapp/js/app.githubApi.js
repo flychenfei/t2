@@ -168,6 +168,11 @@ var app = app || {};
 			var params = opts||{};
 			params.method="Get";
 			return app.getJsonData(contextPath+"/github/getIssuesCount",params);
+		},
+		searchContentByKeyWord:function(opts){
+			var params = opts||{};
+			params.method="Get";
+			return app.getJsonData(contextPath+"/github/searchContentByKeyWord",params);
 		}
     };
 })();
