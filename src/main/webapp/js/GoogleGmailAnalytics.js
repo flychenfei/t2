@@ -9,8 +9,21 @@
 		postDisplay: function (data, config) {
 			var view = this;
 			showGmailAnalytics.call(view);
-		}
+		},
         // --------- /View Interface Implement--------- //
+
+        // --------- Document Events--------- //
+        docEvents: {
+            // show the email info
+            "SHOW_INFO": function(event, extra) {
+                if(extra.objId){
+                    var data = {id: extra.objId, type:'rest'};
+                    brite.display("GoogleMailInfo", "body", data);
+                }
+            }
+        }
+        // --------- /Document Events--------- //
+
 	});
 
     // --------- Private Methods --------- //
@@ -20,8 +33,9 @@
                 return app.googleApi.getGmailAnalytics(params);
             }},
             rowAttrs: function(obj){
-                return "data-id='{0}'".format(obj.id)
+                return "data-id='"+obj.messageId+"'"
             },
+            idKey: 'messageId',
             columnDef:[
                 {
                     text:"#",
@@ -35,7 +49,7 @@
                     attrs: "style='width: 10%;'",
                     render:function(obj){
                         if(obj.messageSubject){
-                            return obj.messageSubject;
+                            return "<div class='click-able'  data-cmd='SHOW_INFO'>"+obj.messageSubject+"</div>";
                         }
                         return "No Subject";
                     }

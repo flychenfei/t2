@@ -16,6 +16,7 @@ CREATE TABLE "gmailanalytics"
 (
 	"id" bigserial NOT NULL,
 	"userId" bigint NOT NULL,
+	"messageId" character varying(256),
 	"messageSubject" character varying(256),
 	"senderTimeStamp" timestamp,
 	"recipientTimeStamp" timestamp,

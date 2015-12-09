@@ -85,6 +85,8 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String, String>> 
         GmailAnalytics gmailAnalytics = new GmailAnalytics();
         gmailAnalytics.setMessageSize(Integer.toUnsignedLong(message.getSizeEstimate()));
         MessagePart messagePart = message.getPayload();
+        // set email message id
+        gmailAnalytics.setMessageId(message.getId());
         if (messagePart != null) {
             if (!Strings.isNullOrEmpty(messagePart.getMimeType())) {
                 gmailAnalytics.setMessageType((messagePart.getMimeType()));
