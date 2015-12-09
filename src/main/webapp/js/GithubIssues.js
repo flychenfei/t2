@@ -84,6 +84,46 @@
 			},
 			"click;.btn-open": function (event) {
 				changeIssueState(event,"open","Opening...","Opened");
+			},
+			"click;.searchButton":function(event){
+				var searchContent = $(".searchContent");
+				var view = this;
+				var data = view.data;
+				if(searchContent.val() != ""){
+					brite.display("DataTable",".issues-container",{
+						dataProvider:{list:app.githubApi.searchContentByKeyWord},
+						columnDef: [
+							{
+								text:"",
+								render:function(obj){
+									return app.render("issueList",{number:obj.number,title:obj.title,createdAt:obj.createdAt,login:obj.user.login,avatarUrl:obj.user.avatarUrl});
+								}
+							},
+							{
+								text:"",
+								render:function(obj){
+									if(obj.state == "open"){
+										return "<div class='sha'><span class='btn btn-closed' data-issue-id="+obj.number+">Close</span></div>";
+									}else{
+										return "<div class='sha'><span class='btn btn-open' data-issue-id="+obj.number+">Open</span></div>"
+									}
+								},
+								attrs:"style='padding-right:10px;width:100px;'"
+							}
+						],
+						opts: {
+							htmlIfEmpty: "Not issues found",
+							withPaging:true,
+							withDataListening:true,
+							withCmdDelete:false,
+							dataOpts:{
+								login:data.login,
+								name:data.name,
+								searchContent:searchContent.val()
+							}
+						}
+					})
+				}
 			}
 		}
 	});

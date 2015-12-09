@@ -1,11 +1,19 @@
 package com.britesnow.samplesocial.service;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.util.Pair;
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.GitHubRequest;
+import org.eclipse.egit.github.core.client.GsonUtils;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.PagedRequest;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +22,7 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_ISSUE
 import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_EVENTS;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_FIRST;
 import static org.eclipse.egit.github.core.client.PagedRequest.PAGE_SIZE;
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 
 public class GithubIssueService extends IssueService {
 
@@ -65,4 +74,29 @@ public class GithubIssueService extends IssueService {
         }.getType());
         return createPageIterator(request);
     }
+
+    public Pair<List<Issue>,Integer> searchContentByKeyWord(String repoId,String searchContent,int pageStart,int pageSize) throws IOException {
+        pageStart++;
+        if(pageSize < 1)pageSize=10;
+        GitHubRequest request = new GitHubRequest();
+        StringBuilder uriBuilder = new StringBuilder("/search/issues?");
+        uriBuilder.append("per_page=").append(pageSize);
+        uriBuilder.append("&page=").append(pageStart);
+        uriBuilder.append("&q=repo:").append(repoId);
+        if(searchContent != null){
+            uriBuilder.append((" "+searchContent).replaceAll("\\s+","+"));
+        }
+        request.setUri(uriBuilder);
+        request.setType(new TypeToken<Map>(){}.getType());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(client.getStream(request),CHARSET_UTF8),1024);
+        Gson gson = GsonUtils.getGson();
+        SearchIssuesContainer searchIssuesContainer = gson.fromJson(reader,SearchIssuesContainer.class);
+        return new Pair<>(searchIssuesContainer.items,searchIssuesContainer.totalCount);
+    }
+
+    class SearchIssuesContainer{
+        List<Issue> items;
+        Integer totalCount;
+    }
+
 }
