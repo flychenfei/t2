@@ -6,7 +6,8 @@ import org.postgresql.util.PGInterval;
 
 public class GmailAnalytics extends UserScopedEntity<Long> {
 
-	private String messageSubject;
+    private String messageId;
+    private String messageSubject;
 	private LocalDateTime senderTimeStamp;
 	private LocalDateTime recipientTimeStamp;
 	private String conversationName;
@@ -196,6 +197,13 @@ public class GmailAnalytics extends UserScopedEntity<Long> {
 		this.elapsedTimeSincePreviousMessage = elapsedTimeSincePreviousMessage;
 	}
 
-	// --------- /Persistent Properties --------- //
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+// --------- /Persistent Properties --------- //
 
 }
