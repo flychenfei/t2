@@ -20,7 +20,7 @@ CREATE TABLE "gmailanalytics"
 	"messageSubject" character varying(256),
 	"senderTimeStamp" timestamp,
 	"recipientTimeStamp" timestamp,
-	"ConversationName" character varying(256),
+	"conversationName" character varying(256),
 	"messageType" character varying(32),
 	"senderEmailAddress" character varying(256),
 	"recipientEmailAddress" character varying(256),
