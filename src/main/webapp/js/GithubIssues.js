@@ -124,6 +124,11 @@
 						}
 					})
 				}
+			},
+			"keydown;.searchContent":function(event){
+				if(event.keyCode == 13){
+					$(".searchButton").trigger("click");
+				}
 			}
 		}
 	});
