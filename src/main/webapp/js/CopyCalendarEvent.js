@@ -99,9 +99,11 @@
 				app.googleApi.listCalendars().done(function(data) {
 
 					for (var i = 0; i < data.result.length; i++) {
-						var id = data.result[i].id;
+					    var id = data.result[i].id;
 						var value = data.result[i].summary;
-						if (data.result[i].id != view.calendarId) {
+                        var accessRole = data.result[i].accessRole;
+                        //can not copy to the accessRole is 'reader' or 'freeBusyReader' item
+						if (data.result[i].id != view.calendarId && accessRole != 'reader' && accessRole != 'freeBusyReader') {
 							$copyTo.append("<option value='" + id + "' >" + value + "</option>");
 						}
 					}
