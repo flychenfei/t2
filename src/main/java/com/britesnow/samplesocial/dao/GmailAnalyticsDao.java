@@ -71,7 +71,7 @@ public class GmailAnalyticsDao extends BaseDao<GmailAnalytics, Long>{
 			analytics.put("id", gmailAnalytics.getId());
             analytics.put("messageId", gmailAnalytics.getMessageId());
 			analytics.put("messageSubject", gmailAnalytics.getMessageSubject());
-			analytics.put("conversation", gmailAnalytics.getConvetsationName());
+			analytics.put("conversation", gmailAnalytics.getConversationName());
 			analytics.put("senderTimeStamp", gmailAnalytics.getSenderTimeStamp()!=null?gmailAnalytics.getSenderTimeStamp().toString():"");
 			analytics.put("recipientTimeStamp", gmailAnalytics.getRecipientTimeStamp()!=null?gmailAnalytics.getRecipientTimeStamp().toString():"");
 			analytics.put("senderEmailAddress", gmailAnalytics.getSenderEmailAddress());

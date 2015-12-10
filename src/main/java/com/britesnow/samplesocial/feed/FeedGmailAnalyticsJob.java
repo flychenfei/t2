@@ -98,7 +98,7 @@ public class FeedGmailAnalyticsJob implements Callable<HashMap<String, String>> 
                 MessagePartHeaders.stream().forEach(header -> {
                     if (header.getName().equals("Subject")) {
                         gmailAnalytics.setMessageSubject(header.getValue());
-                        gmailAnalytics.setConvetsationName((header.getValue()));
+                        gmailAnalytics.setConversationName("("+header.getValue()+")");
                     }
                     if (header.getName().equals("From")) {
                         gmailAnalytics.setSenderEmailAddress(header.getValue());

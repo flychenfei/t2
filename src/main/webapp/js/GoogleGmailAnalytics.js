@@ -55,13 +55,13 @@
                     }
                 },
                 {
-                    text:"Convetsation Name",
+                    text:"Conversation Name",
                     attrs: "style='width: 10%;'",
                     render:function(obj){
                         if(obj.conversation){
                             return obj.conversation;
                         }
-                        return "No Convetsation name";
+                        return "No Conversation name";
                     }
 
                 },

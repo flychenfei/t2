@@ -71,17 +71,17 @@ public class GmailAnalytics extends UserScopedEntity<Long> {
 	}
 
 	/**
-	 * @return the convetsationName
+	 * @return the conversationName
 	 */
-	public String getConvetsationName() {
+	public String getConversationName() {
 		return conversationName;
 	}
 
 	/**
-	 * @param convetsationName the convetsationName to set
+	 * @param conversationName the conversationName to set
 	 */
-	public void setConvetsationName(String convetsationName) {
-		this.conversationName = convetsationName;
+	public void setConversationName(String conversationName) {
+		this.conversationName = conversationName;
 	}
 
 	/**
