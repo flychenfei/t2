@@ -56,10 +56,10 @@
                         result[$(this).attr("name")] = $(this).prop("checked");
                     }
                 });
+
                 view.search = function(opts) {
                     opts = opts || [];
                     $.extend(opts, result)
-                    opts.label = view.folderName;
                     return app.googleApi.searchEmails(opts)
                 };
                 showEmails.call(view);
@@ -81,7 +81,6 @@
                 });
                 view.search = function(opts) {
                     opts = opts || [];
-                    opts.label = view.folderName;
                     return app.googleApi.searchEmails(opts)
                 };
                 showEmails.call(view);
