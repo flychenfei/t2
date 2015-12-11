@@ -78,7 +78,7 @@
                 {
                     text:"Name",
                     render:function(obj){
-                        return "<a src=\"#\" class=\"folderClass\"><span>{0}</span></a>".format(obj.fullName);
+                        return "<a src=\"#\" class=\"folderClass\" style=\"cursor:pointer;\"><span>{0}</span></a>".format(obj.fullName);
                     }
                 },
                 {
