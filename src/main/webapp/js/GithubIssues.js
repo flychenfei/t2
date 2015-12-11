@@ -86,6 +86,11 @@
 				changeIssueState(event,"open","Opening...","Opened");
 			},
 			"click;.searchButton":function(event){
+				var view = this;
+				var $e = view.$el;
+				$e.find(".closedIssues").removeClass("choosed");
+				$e.find(".openIssues").removeClass("choosed");
+
 				var searchContent = $(".searchContent");
 				var view = this;
 				var data = view.data;
