@@ -32,7 +32,7 @@
 					if (data.result[i].primary) {
 						selected = "selected";
 					}
-					$calendar.append("<option value='" + id + "' " + selected + ">" + value + "</option>");
+					$calendar.append("<option value='" + id + "' " + selected + " title='"+value+"'>" + value + "</option>");
 				}
 			});
 
