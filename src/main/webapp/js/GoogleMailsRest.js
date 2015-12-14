@@ -12,7 +12,7 @@
                 opts.label = view.folderName
                 return app.googleApi.searchEmailsRest(opts)
             };
-            return app.render("tmpl-GoogleMailsRest");
+            return app.render("tmpl-GoogleMailsRest",{folderName:view.folderName});
         },
 
         postDisplay: function (data, config) {
