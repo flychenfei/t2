@@ -91,6 +91,12 @@
                 var view = this;
                 var $e = view.$el;
                 $e.find(".search-mails-container").toggleClass("hide");
+            },
+
+            // back to Folders IMAP
+            "btap; .back_folder":function () {
+                var view = this;
+                brite.display("GoogleFolders");
             }
 
         },
