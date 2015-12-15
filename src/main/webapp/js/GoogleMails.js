@@ -234,11 +234,19 @@
             }
         }).done(function(){
             var $mailsFolder = $e.find(".imapMails-folder");
+             var $tfoot = $e.closest('.GoogleMailsRest').find(".mails-container .tfoot");
             if(typeof view.folderName != "undefined" && view.folderName != null){
+                if($tfoot.length > 0){
+                    $mailsFolder.removeClass('notHaveFooter');
+                }else{
+                    $mailsFolder.addClass('notHaveFooter');
+                }
+
                 $mailsFolder.show();
                 $mailsFolder.find(".folderName").html(view.folderName);
             }else{
                 $mailsFolder.hide();
+                $mailsFolder.removeClass('notHaveFooter');
             }
 
             //after show the table, move the screen
