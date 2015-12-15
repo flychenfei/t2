@@ -93,7 +93,7 @@ public class GoogleCalendarEventsService {
             }).collect(Collectors.toList());
             
             pageToken = events.getNextPageToken();
-           return new Pair<String, List<Map>>(pageToken, eventList);
+            return new Pair<String, List<Map>>(pageToken, eventList);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -276,7 +276,6 @@ public class GoogleCalendarEventsService {
                     DateTime stime = new DateTime(start, TimeZone.getTimeZone("UTC"));
                     event.setStart(new EventDateTime().setDateTime(stime));
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
@@ -290,7 +289,6 @@ public class GoogleCalendarEventsService {
                     DateTime etime = new DateTime(end, TimeZone.getTimeZone("UTC"));
                     event.setEnd(new EventDateTime().setDateTime(etime));
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }else{
@@ -343,6 +341,7 @@ public class GoogleCalendarEventsService {
                 try {
                     start = sdf.parse(startTime);
                 } catch (ParseException e) {
+                    e.printStackTrace();
                 }
                 if(start == null){
                     start = new Date();
@@ -358,6 +357,7 @@ public class GoogleCalendarEventsService {
                 try {
                     end = sdf.parse(endTime);
                 } catch (ParseException e) {
+                    e.printStackTrace();
                 }
                 if(end == null){
                     end = new Date();
