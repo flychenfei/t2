@@ -27,6 +27,11 @@
 				inputMask : true
 			});
 
+            // when from filter by Folders Rest, show the loading screen
+            if(typeof view.folderName != "undefined" && view.folderName != null){
+                view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
+            }
+
             showEmails.call(view);
         },
         // --------- /View Interface Implement--------- //
