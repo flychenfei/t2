@@ -141,7 +141,12 @@
                 {
                     text: "Summary",
                     render: function (obj) {
-                        return obj.summary || '';
+                        if(obj.summary != null && obj.summary.length > 230){
+                            var summary = obj.location.substring(0,230) + "...";
+                            return "<div title='"+obj.summary+"'>"+summary+"</div>";
+                        }else{
+                            return obj.summary || "";
+                        }
                     },
                     attrs: "style='width: 300'"
 
@@ -149,7 +154,12 @@
                 {
                     text: "Location",
                     render: function (obj) {
-                        return obj.location || "";
+                        if(obj.location != null && obj.location.length > 100){
+                            var location = obj.location.substring(0,100) + "...";
+                            return "<div title='"+obj.location+"'>"+location+"</div>";
+                        }else{
+                            return obj.location || "";
+                        }
                     },
                     attrs: "style='width: 10%'"
                 },
