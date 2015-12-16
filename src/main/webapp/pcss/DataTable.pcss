@@ -1,159 +1,159 @@
 
 .dataTable {
-	h3 {
-		border: none;
-	}
-	table {
-		border: 1px solid #000;
-		.cursor {
-			cursor: pointer;
-		}
-		.word-break {
-			word-break: break-word;
-		}
-		.span-block {
-			display: block;
-		}
-	}
-	.listHead {
-		margin-bottom: 0px;
-		border-collapse: collapse;
-		border: 1px solid #000;
-		th {
-			background: #cccccc;
-			border: 1px solid #000;
-		}
-	}
-	.listItem {
-		overflow: auto;
-		width: 100%;
-		margin-bottom: 5px;
-		border-collapse: collapse;
-		border: 1px solid #000;
-		td {
-			border: 1px solid #000;
-		}
-		&.deleting {
-			.glyphicon {
-				opacity: .5;
-				&:hover {
-					cursor: not-allowed;
-				}
-			}
-		}
-	}
-	.tfoot {
-		display: block;
-		float: right;
-		margin-right: 20px;
-		margin-top: 20px;
-		margin-bottom: 10px;
-		position: relative;
-		.info {
-			line-height: 30px;
-			margin-right: 20px
-		}
-		.nums {
-			float: right;
-			border: 1px solid #dddddd;
-			span:hover {
-				background: #0088cc;
-			}
-			.num {
-				display: block;
-				float: left;
-				border-right: 1px solid #dddddd;
-				height: 30px;
-				line-height: 30px;
-				text-align: center;
-				min-width: 30px;
-				cursor: pointer;
-				.action {
-					color: #0088cc;
-					cursor: pointer;
-				}
-				.num:last-child {
-					border-right: 0px solid #dddddd;
-				}
-				tbody tr td.info {
-					background-color: #f9f9f9;
-				}
-			}
-		}
-	}
-	.thead-ico {
-		display: inline-block;
-		margin-right: 5px;
-		margin-left: 5px;
-		
-	}
-	.tree-ico {
-		display: inline-block;
-		margin-right: 5px;
-		margin-left: 5px;
-		float: left;
-	}
-	th[data-action=sort] {
-		cursor: pointer;
-	}
-	td[data-cmd] {
-		width: 50px;
-	}
-	td {
-		overflow: hidden;
-	}
-	.spacer {
-		display: inline-block;
-		width: 32px;
-		height: 10px;
-	}
-	.img {
-		width: 30px;
-		height: 30px;
-		margin: -7px 0 -10px 0;
-	}
-	.icon-remove, .icon-edit {
-		cursor: pointer;
-	}
-	.navLink, .actionLink {
-		color: #5588bb;
-	}
-	td.info {
-		color: #777;
-		padding: 10px;
-		text-align: center;
-		border-bottom: none;
-		width: 100%;
-	}
-	.showRows {
-		line-height: 30px;
-		display: block;
-		float: left;
-		margin-right: 20px
-	}
-	.goto {
-		line-height: 30px;
-		display: block;
-		float: left;
-		margin-right: 20px
-	}
+    h3 {
+        border: none;
+    }
+    table {
+        border: 1px solid #000;
+        .cursor {
+            cursor: pointer;
+        }
+        .word-break {
+            word-break: break-word;
+        }
+        .span-block {
+            display: block;
+        }
+    }
+    .listHead {
+        margin-bottom: 0px;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        th {
+            background: #cccccc;
+            border: 1px solid #000;
+        }
+    }
+    .listItem {
+        overflow: auto;
+        width: 100%;
+        margin-bottom: 5px;
+        border-collapse: collapse;
+        border: 1px solid #000;
+        td {
+            border: 1px solid #000;
+        }
+        &.deleting {
+            .glyphicon {
+                opacity: .5;
+                &:hover {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+    .tfoot {
+        display: block;
+        float: right;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        position: relative;
+        .info {
+            line-height: 30px;
+            margin-right: 20px
+        }
+        .nums {
+            float: right;
+            border: 1px solid #dddddd;
+            span:hover {
+                background: #0088cc;
+            }
+            .num {
+                display: block;
+                float: left;
+                border-right: 1px solid #dddddd;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                min-width: 30px;
+                cursor: pointer;
+                .action {
+                    color: #0088cc;
+                    cursor: pointer;
+                }
+                .num:last-child {
+                    border-right: 0px solid #dddddd;
+                }
+                tbody tr td.info {
+                    background-color: #f9f9f9;
+                }
+            }
+        }
+    }
+    .thead-ico {
+        display: inline-block;
+        margin-right: 5px;
+        margin-left: 5px;
 
-	input[name='gotoPage'] {
-		width: 50px;
-		height: 30px;
-	}
-	select[name='pageSize'] {
-		width: 80px;
-		height: 30px;
-		border: 1px solid #ccc;
-		&:focus {
-			-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 178, 238, 0.6);
-			outline: none;
-		}
-	}
-	.click-able {
-		cursor: pointer;
-	}
+    }
+    .tree-ico {
+        display: inline-block;
+        margin-right: 5px;
+        margin-left: 5px;
+        float: left;
+    }
+    th[data-action=sort] {
+        cursor: pointer;
+    }
+    td[data-cmd] {
+        width: 50px;
+    }
+    td {
+        overflow: hidden;
+    }
+    .spacer {
+        display: inline-block;
+        width: 32px;
+        height: 10px;
+    }
+    .img {
+        width: 30px;
+        height: 30px;
+        margin: -7px 0 -10px 0;
+    }
+    .icon-remove, .icon-edit {
+        cursor: pointer;
+    }
+    .navLink, .actionLink {
+        color: #5588bb;
+    }
+    td.info {
+        color: #777;
+        padding: 10px;
+        text-align: center;
+        border-bottom: none;
+        width: 100%;
+    }
+    .showRows {
+        line-height: 30px;
+        display: block;
+        float: left;
+        margin-right: 20px
+    }
+    .goto {
+        line-height: 30px;
+        display: block;
+        float: left;
+        margin-right: 20px
+    }
+
+    input[name='gotoPage'] {
+        width: 50px;
+        height: 30px;
+    }
+    select[name='pageSize'] {
+        width: 80px;
+        height: 30px;
+        border: 1px solid #ccc;
+        &:focus {
+            -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 178, 238, 0.6);
+            outline: none;
+        }
+    }
+    .click-able {
+        cursor: pointer;
+    }
 }
 
 

@@ -9,17 +9,17 @@
 /* --------- .spreadX --------- */
 // looping the recursive way
 .spreadX (@index) when (@index > 0) {
-	(~".spread@{index}") {
-		.spread(@index);
-	}
-	.spreadX(@index - 1);
+    (~".spread@{index}") {
+        .spread(@index);
+    }
+    .spreadX(@index - 1);
 }
 
 .spreadX(0) {
 }
 
 .spread (@columns) {
-	width: @columns * @columnWidth + (@columns - 1) * @gutter;
+    width: @columns * @columnWidth + (@columns - 1) * @gutter;
 }
 
 .spreadX (12);
@@ -29,17 +29,17 @@
 /* --------- .startLX --------- */
 // looping the recursive way
 .startLX (@index) when (@index > 0) {
-	(~".startL@{index}") {
-		.startL(@index);
-	}
-	.startLX(@index - 1);
+    (~".startL@{index}") {
+        .startL(@index);
+    }
+    .startLX(@index - 1);
 }
 
 .startLX(0) {
 }
 
 .startL (@columns) {
-	left: (@columns - 1) * @columnWidth + (@columns - 2) * @gutter + @gutter;
+    left: (@columns - 1) * @columnWidth + (@columns - 2) * @gutter + @gutter;
 }
 
 .startLX (12);
