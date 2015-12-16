@@ -116,7 +116,6 @@ public class GoogleCalendarsService {
     }
     
     public void saveShareCalendar(String calendarId, String role, String scopeType, String scopeValue) {
-        // TODO Auto-generated method stub
        try{
            AclRule rule = new AclRule();
            Scope scope = new Scope();
@@ -133,7 +132,6 @@ public class GoogleCalendarsService {
     }
     
     public Pair<String, List<Map>> getShareCalendar(String calendarId) {
-        // TODO Auto-generated method stub
         try{
             
             com.google.api.services.calendar.model.Calendar calendar = getCalendarsService().calendars().get("primary").execute();

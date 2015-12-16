@@ -416,11 +416,11 @@ public class GithubRepositoriesService {
 	 * @return
 	 * @throws IOException
 	 */
-	public Pair<List<Issue>,Integer> searchContentByKeyWord(Repository repo, User user, String searchContent,int pageIndex,int pageSize) throws IOException{
+	public Pair<List<Issue>,Integer> searchContentByKeyWord(Repository repo, User user, String searchContent,String state,int pageIndex,int pageSize) throws IOException{
 		IssueService issueService = new IssueService(githubAuthService.createClient(user));
 		GitHubClient client = githubAuthService.createClient(user);
 		GithubIssueService githubIssueService = new GithubIssueService(client);
-		return githubIssueService.searchContentByKeyWord(repo.generateId(), searchContent,pageIndex,pageSize);
+		return githubIssueService.searchContentByKeyWord(repo.generateId(), searchContent,state,pageIndex,pageSize);
 	}
 
 

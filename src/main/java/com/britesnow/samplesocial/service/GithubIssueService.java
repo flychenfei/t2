@@ -75,7 +75,7 @@ public class GithubIssueService extends IssueService {
         return createPageIterator(request);
     }
 
-    public Pair<List<Issue>,Integer> searchContentByKeyWord(String repoId,String searchContent,int pageStart,int pageSize) throws IOException {
+    public Pair<List<Issue>,Integer> searchContentByKeyWord(String repoId,String searchContent,String state,int pageStart,int pageSize) throws IOException {
         pageStart++;
         if(pageSize < 1)pageSize=10;
         GitHubRequest request = new GitHubRequest();
@@ -83,6 +83,7 @@ public class GithubIssueService extends IssueService {
         uriBuilder.append("per_page=").append(pageSize);
         uriBuilder.append("&page=").append(pageStart);
         uriBuilder.append("&q=repo:").append(repoId);
+        uriBuilder.append("+state:").append(state);
         if(searchContent != null){
             uriBuilder.append((" "+searchContent).replaceAll("\\s+","+"));
         }

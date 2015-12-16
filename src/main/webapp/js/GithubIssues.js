@@ -13,10 +13,12 @@
 			"click;.openIssues":function(event){
 				var view = this;
 				showListIssues.call(view,"open");
+				$(".searchContent").val("");
 			},
 			"click;.closedIssues":function(event){
 				var view = this;
 				showListIssues.call(view,"closed");
+				$(".searchContent").val("");
 			},
 			"click;.message":function(event){
 				var view = this;
@@ -86,17 +88,22 @@
 				changeIssueState(event,"open","Opening...","Opened");
 			},
 			"click;.searchButton":function(event){
-				var view = this;
-				var $e = view.$el;
-				$e.find(".closedIssues").removeClass("choosed");
-				$e.find(".openIssues").removeClass("choosed");
-
+				var str = $(".choosed").find(".issue-state").html();
+				var state = $.trim(str.substring(str.length-6, str.length).toLocaleLowerCase());
 				var searchContent = $(".searchContent");
 				var view = this;
 				var data = view.data;
+
 				if(searchContent.val() != ""){
 					brite.display("DataTable",".issues-container",{
 						dataProvider:{list:app.githubApi.searchContentByKeyWord},
+						onDone:function(data){
+							if(state == "open"){
+								$(".searchOpenCount").text(data.result_count);
+							}else{
+								$(".searchClosedCount").text(data.result_count);
+							}
+						},
 						columnDef: [
 							{
 								text:"",
@@ -124,7 +131,8 @@
 							dataOpts:{
 								login:data.login,
 								name:data.name,
-								searchContent:searchContent.val()
+								searchContent:searchContent.val(),
+								state:state
 							}
 						}
 					})
@@ -233,6 +241,13 @@
 		}
 		return brite.display("DataTable",".issues-container",{
 			dataProvider:{list:app.githubApi.getIssues},
+			onDone:function(data){
+				if(state == "open"){
+					$(".searchOpenCount").text(data.result_count);
+				}else{
+					$(".searchClosedCount").text(data.result_count);
+				}
+			},
 			columnDef: [
 				{
 					text:"",

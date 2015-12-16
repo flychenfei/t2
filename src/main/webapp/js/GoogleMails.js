@@ -91,6 +91,12 @@
                 var view = this;
                 var $e = view.$el;
                 $e.find(".search-mails-container").toggleClass("hide");
+            },
+
+            // back to Folders IMAP
+            "btap; .back_folder":function () {
+                var view = this;
+                brite.display("GoogleFolders");
             }
 
         },
@@ -228,11 +234,19 @@
             }
         }).done(function(){
             var $mailsFolder = $e.find(".imapMails-folder");
+             var $tfoot = $e.closest('.GoogleMailsRest').find(".mails-container .tfoot");
             if(typeof view.folderName != "undefined" && view.folderName != null){
+                if($tfoot.length > 0){
+                    $mailsFolder.removeClass('notHaveFooter');
+                }else{
+                    $mailsFolder.addClass('notHaveFooter');
+                }
+
                 $mailsFolder.show();
                 $mailsFolder.find(".folderName").html(view.folderName);
             }else{
                 $mailsFolder.hide();
+                $mailsFolder.removeClass('notHaveFooter');
             }
 
             //after show the table, move the screen
