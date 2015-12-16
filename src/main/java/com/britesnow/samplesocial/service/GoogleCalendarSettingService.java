@@ -42,7 +42,6 @@ public class GoogleCalendarSettingService {
             }
             return new Pair<String, List<Map>>(pageToken, list);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

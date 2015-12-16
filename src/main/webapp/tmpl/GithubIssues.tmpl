@@ -10,11 +10,11 @@
 	<div class="option" data-name="{{name}}" data-login="{{login}}">
   		<span class="openIssues choosed">
   			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="open-count" data-count="{{openCount}}">{{openCount}} Open</span>
+			<span class="open-count issue-state" data-count="{{openCount}}"><span class="searchOpenCount">{{openCount}}</span>  Open</span>
 		</span>
 		<span class="closedIssues">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-			<span class="close-count unchoosed" data-count="{{closedCount}}">{{closedCount}} Closed</span>
+			<span class="close-count unchoosed issue-state" data-count="{{closedCount}}"><span class="searchClosedCount">{{closedCount}}</span> Closed</span>
 		</span>
 	</div>
 	<div class="container githubIssues">

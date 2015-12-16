@@ -38,7 +38,6 @@ public class GoogleCalendarEventsHandlers {
         if (calendarId == null || calendarId.equals("")) {
             calendarIds = new String[]{"primary"} ;
         }else{
-            
             calendarIds = calendarId.split(",");
         }
         

@@ -106,6 +106,12 @@
             "btap; .searchCondition":function(){
                 var view = this;
                 view.$el.find(".search-mails-container").toggleClass("hide");
+            },
+
+            // back to Folders Rest
+            "btap; .back_folder":function () {
+                var view = this;
+                brite.display("GoogleFoldersRest");
             }
         },
         // --------- /Events--------- //
