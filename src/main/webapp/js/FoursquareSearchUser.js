@@ -25,7 +25,7 @@
         var view = this;
         return brite.display("DataTable", ".FoursquareSearchUser", {
             dataProvider: {list: view.search},
-            onDone: function (obj) {
+            onDone: function (obj) {console.log(obj)
                 obj.result = obj.result || []
             },
             columnDef: [
@@ -79,7 +79,7 @@
                 {
                     text: "Relationship",
                     render: function (obj) {
-                        return obj.relationship;
+                        return obj.relationship || [];
                     }
                 }
             ],
