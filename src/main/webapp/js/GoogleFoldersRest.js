@@ -42,14 +42,11 @@
 
             // event for delete folder
             "DELETE_FOLDER": function(event, extraData){
+                var view = this;
                 if (extraData && extraData.objId) {
+                    view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
                     app.googleApi.deleteLabelRest(extraData.objId).done(function (extradata) {
-                        if (extradata && extradata.result) {
-                            setTimeout((function () {
-                                showFolders();
-                            }), 3000);
-
-                        }
+                        showFolders.call(view);
                     });
                 }
             },
@@ -65,6 +62,7 @@
 
     // --------- Private Methods --------- //
     function showFolders() {
+        var view = this;
         var folders = app.googleApi.listLabelsRest({force:true});
         return brite.display("DataTable", ".folders-container", {
             gridData: folders,
@@ -97,6 +95,11 @@
                 withPaging: false,
                 withCmdEdit:false,
                 withCmdDelete: false
+            }
+        }).done(function(){
+            //after show the table, move the screen
+            if(view.$screen){
+                view.$screen.remove();
             }
         });
     }
