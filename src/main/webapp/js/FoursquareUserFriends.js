@@ -34,7 +34,7 @@
                     render: function (obj, idx) {
                         return idx + 1
                     },
-                    attrs: "style='width: 5%;cursor: pointer'"
+                    attrs: "style='width: 5%'"
                 },
                 {
                     text: "First Name",
