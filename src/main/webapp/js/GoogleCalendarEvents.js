@@ -31,6 +31,7 @@
 					var selected = "";
 					if (data.result[i].primary) {
 						selected = "selected";
+                        view.calSelected = id;
 					}
 					$calendar.append("<option value='" + id + "' " + selected + " title='"+value+"'>" + value + "</option>");
 				}
@@ -50,6 +51,12 @@
 	        	brite.display("GoogleCalendarView");
 	        },
 
+            "click;.resetCalendar": function(){
+                var view = this;
+                view.$el.find("input[name='startDate'] ").val("");
+                view.$el.find("input[name='endDate'] ").val("");
+                view.$el.find(".calendar option[value='"+view.calSelected+"']").prop("selected", 'selected');
+            },
 	        "click;.searchCalendar":function(){
 	        	view = this;
 	        	$e = view.$el;
@@ -116,7 +123,7 @@
                         }
                     });
                 }
-           },            
+           }
         },
 
         docEvents: {
@@ -124,8 +131,6 @@
                  var view = this;
                  showCalendarEvents.call(view);
              }
-            
-            
         },
 
         daoEvents: {
