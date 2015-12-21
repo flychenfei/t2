@@ -104,7 +104,7 @@
                         var accessRole = data.result[i].accessRole;
                         //can not copy to the accessRole is 'reader' or 'freeBusyReader' item
 						if (data.result[i].id != view.calendarId && accessRole != 'reader' && accessRole != 'freeBusyReader') {
-							$copyTo.append("<option value='" + id + "' >" + value + "</option>");
+							$copyTo.append("<option value='" + id + "' title='"+value+"'>" + value + "</option>");
 						}
 					}
 
