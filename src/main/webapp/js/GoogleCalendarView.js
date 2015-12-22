@@ -34,7 +34,12 @@
 					$calendar.append("<div class='calendarItem'>"+"<input name = 'calendar' type = 'checkbox' "+checked+" id='"+id+"' />"+value+"" +"</div>");
 				}
 			});
-			showEvents.call(view);
+			view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
+			showEvents.call(view).done(function(){
+				if(view.$screen){
+					view.$screen.remove();
+				}
+			});
 		},
 
 		events:{
@@ -57,12 +62,16 @@
 						view.currentYear = view.currentYear -1;
 					}
 				}
-	
-				showEvents.call(view,month);
+				view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
+				showEvents.call(view,month).done(function(){
+					if(view.$screen){
+						view.$screen.remove();
+					}
+				});
 			},
 
 			"click;.searchCalendar":function() {
-				view = this;
+				var view = this;
 				$e = view.$el;
 				var result = {};
 				var list = new Array(); 
@@ -73,7 +82,12 @@
 					i++;
 				});
 				view.list = list.join(",");
-				showEvents.call(view);
+				view.$screen = $("<div class='notTransparentScreen'><span class='loading'>Loading data ...</span></div>").appendTo("body");
+				showEvents.call(view).done(function(){
+					if(view.$screen){
+						view.$screen.remove();
+					}
+				});
 			},
 
            }
@@ -83,7 +97,7 @@
 			var view = this;
 			var $e = view.$el;
 			showCalendar.call(view,month);
-			
+			var dfd = $.Deferred();
 			var startDate = new Date();
 			if ( typeof month != "undefined") {
 				startDate.setMonth(month);
@@ -105,16 +119,6 @@
 				pageSize:100,
 				calendarIds:view.list
 			};
-			app.googleApi.listByCalendars(opts).done(function(data){
-				for(var i = 0; i < data.result.length; i++){
-					var event = data.result[i];
-					var color = event.backgroundColor;
-					var date = event.date.dateTime || event.date.date;
-					var d = new Date(date.value).format("yyyy-MM-dd");
-					$e.find("td[data-date='"+d+"'] .events").append("<div style='color:"+color+"'>"+event.summary+"</div>");
-				}
-				
-			});
 			app.googleApi.listFreeBusy(opts).done(function(data){
 				for(var i = 0; i < data.result.length; i++){
 					var start = new Date(data.result[i].start);
@@ -131,7 +135,19 @@
 					}
 				}
 			});
-			
+
+			app.googleApi.listByCalendars(opts).done(function(data){
+				for(var i = 0; i < data.result.length; i++){
+					var event = data.result[i];
+					var color = event.backgroundColor;
+					var date = event.date.dateTime || event.date.date;
+					var d = new Date(date.value).format("yyyy-MM-dd");
+					$e.find("td[data-date='"+d+"'] .events").append("<div style='color:"+color+"'>"+event.summary+"</div>");
+				}
+				dfd.resolve();
+			});
+
+			return dfd.promise();
 		}
         
         function showCalendar(month){
